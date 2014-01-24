@@ -1,1 +1,1 @@
-add_executable(exe Example.cpp Main.cpp)
+file(GLOB EXAMPLE_FILES Src/*.cpp)
