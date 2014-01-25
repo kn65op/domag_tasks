@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 2.8) 
 
 #variables
-set(PROJECT_NAME "domag")
 set(SRC_DIR "Src")
 set(SRC2_DIR "Src")
 set(MAIN_SRC_DIR "Src/Main")
@@ -10,7 +9,7 @@ set(DEBUG_BIN_DIR "Debug")
 set(RELEASE_BIN_DIR "Release")
 
 #project
-project (DOMAG)
+project (domag)
 
 #externial libs
 
@@ -25,7 +24,7 @@ file(GLOB GMOCK_TEST_FILES ${SRC_DIR}/GmockTest/*.cpp)
 file(GLOB TEST_FILES ${TEST_DIR}/*.cpp)
 
 #executables
-add_executable(${DEBUG_BIN_DIR}/exe_debug ${GMOCK_TEST_FILES} ${MAIN_FILE})
+add_executable(${DEBUG_BIN_DIR}/${PROJECT_NAME} ${GMOCK_TEST_FILES} ${MAIN_FILE})
 
 #test
 add_subdirectory(Test)

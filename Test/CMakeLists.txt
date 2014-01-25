@@ -2,18 +2,20 @@ set(TEST_DIR ".")
 set(TEST_EXE_DIR "${TEST_DIR}/Exe")
 set(TEST_EXE ${TEST_EXE_DIR}/Tester)
 
-set(gmock_SOURCE_DIR /usr/src/gmock/src)
-set(gtest_SOURCE_DIR /usr/src/gmock/src)
-set(gtest_dir /usr/src/gtest)
+set(GMOCK_DIR /usr/src/gmock)
+set(GTEST_DIR /usr/src/gtest)
+set(GMOCK_SOURCE_DIR ${GMOCK_DIR}/src)
+set(GTEST_SOURCE_DIR ${GTEST_DIR}/src)
+
+set(LIB_GMOCK gmock)
 
 #project includes
 include_directories(${PROJECT_SOURCE_DIR}/${SRC2_DIR}/GmockTest)
 
 #externial libs
 
-#add_subdirectory(/usr/src/gtest gtest)
-include_directories(/usr/src/gtest)
-add_subdirectory(/usr/src/gmock gmock)
+include_directories(${GTEST_DIR})
+add_subdirectory(${GMOCK_DIR} gmock)
 
 #files
 file(GLOB TEST_FILES ${TEST_DIR}/*.cpp)
@@ -21,19 +23,7 @@ file(GLOB TEST_FILES ${TEST_DIR}/*.cpp)
 #tests
 enable_testing()
 
-#add_library(gmock
-#	"${gtest_dir}/src/gtest-all.cc")
-#
-#add_library(gmock_main
-#	"${gtest_dir}/src/gtest-all.cc"
-#	"${gtest_dir}/src/gtest-main.cc")
-#
-#include_directories("${gmock_SOURCE_DIR}/include"
-#	"${gmock_SOURCE_DIR}"
-#	"${gtest_SOURCE_DIR}/include"
-#	"${gtest_SOURCE_DIR}")
-#
 
 add_executable(${TEST_EXE} ${TEST_FILES} ${GMOCK_TEST_FILES})
-target_link_libraries(${TEST_EXE} gmock)
-add_test(gtests ${TEST_EXE_DIR}/Tester) 
+target_link_libraries(${TEST_EXE} ${LIB_GMOCK})
+add_test(gtests ${TEST_EXE}) 
