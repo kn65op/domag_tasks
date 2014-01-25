@@ -6,10 +6,14 @@ set(gmock_SOURCE_DIR /usr/src/gmock/src)
 set(gtest_SOURCE_DIR /usr/src/gmock/src)
 set(gtest_dir /usr/src/gtest)
 
+#project includes
+include_directories(${PROJECT_SOURCE_DIR}/${SRC2_DIR}/GmockTest)
+
 #externial libs
 
-add_subdirectory(/usr/src/gtest gtest)
-#add_subdirectory(/usr/src/gmock gmock)
+#add_subdirectory(/usr/src/gtest gtest)
+include_directories(/usr/src/gtest)
+add_subdirectory(/usr/src/gmock gmock)
 
 #files
 file(GLOB TEST_FILES ${TEST_DIR}/*.cpp)
@@ -30,6 +34,6 @@ enable_testing()
 #	"${gtest_SOURCE_DIR}")
 #
 
-add_executable(${TEST_EXE} ${TEST_FILES} ${EXAMPLE_FILES})
-target_link_libraries(${TEST_EXE} gtest)
+add_executable(${TEST_EXE} ${TEST_FILES} ${GMOCK_TEST_FILES})
+target_link_libraries(${TEST_EXE} gmock)
 add_test(gtests ${TEST_EXE_DIR}/Tester) 

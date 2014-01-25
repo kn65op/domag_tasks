@@ -1,6 +1,7 @@
 #include <iostream>
+#include "GMockTetsMocks/AdderMock.h"
 
-#include <gtest/gtest.h>
+using namespace ::testing;
 
 TEST(Test, TestTrue)
 {
@@ -9,7 +10,15 @@ TEST(Test, TestTrue)
 
 TEST(Test, TestFalse)
 {
-	ASSERT_TRUE(false);
+	ASSERT_FALSE(false);
+}
+
+TEST(MockTest, AdderTest)
+{
+	AdderMock adder;
+	EXPECT_CALL(adder, add(1,2)).WillOnce(Return(3));
+
+	adder.add(1, 2);
 }
 
 int main(int argc, char **argv) {
