@@ -18,7 +18,7 @@ TEST(MockTest, AdderTest)
 	AdderMock adder;
 	EXPECT_CALL(adder, add(1,2)).WillOnce(Return(3));
 
-	adder.add(1, 2);
+	ASSERT_EQ(3, adder.add(1, 2));
 }
 
 int main(int argc, char **argv) {
