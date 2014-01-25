@@ -23,6 +23,7 @@ file(GLOB TEST_FILES ${TEST_DIR}/*.cpp)
 #tests
 enable_testing()
 
+file(MAKE_DIRECTORY ${TEST_EXE_DIR})
 
 add_executable(${TEST_EXE} ${TEST_FILES} ${GMOCK_TEST_FILES})
 target_link_libraries(${TEST_EXE} ${LIB_GMOCK})
