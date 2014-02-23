@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../GmockTest/Adder.h"
+#include "GmockTest/Adder.h"
 
 
 int main()

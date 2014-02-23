@@ -10,7 +10,7 @@
 
 #include <gmock/gmock.h>
 
-#include <Adder.h>
+#include <GmockTest/Adder.h>
 
 struct AdderMock : public Adder
 {
