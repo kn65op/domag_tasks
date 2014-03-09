@@ -37,6 +37,6 @@ enable_testing()
 
 file(MAKE_DIRECTORY ${TEST_EXE_DIR})
 
-add_executable(${TEST_EXE} ${MAIN_TEST_FILES} ${DEPOT_TEST_FILES})
+add_executable(${TEST_EXE} ${MAIN_TEST_FILES} ${DEPOT_FILES} ${DEPOT_TEST_FILES})
 target_link_libraries(${TEST_EXE} ${LIB_GMOCK})
 add_test(gtests ${TEST_EXE}) 

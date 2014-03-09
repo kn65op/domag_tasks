@@ -31,7 +31,7 @@ include_directories(${SRC_DIR})
 
 #files
 file(GLOB EXAMPLE_FILES ${SRC_DIR}/*.cpp)
-#file(GLOB GMOCK_TEST_FILES ${SRC_DIR}/GmockTest/*.cpp)
+file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
 
 #executables
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
