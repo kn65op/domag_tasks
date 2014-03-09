@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 
 #variables
 set(SRC_DIR "Code")
-set(MAIN_SRC_DIR "${SRC_DIR}/Main/Src")
+set(MAIN_SRC_DIR "${SRC_DIR}/Main/src")
 set(MAIN_FILE "${MAIN_SRC_DIR}/Main.cpp")
 set(DEBUG_BIN_DIR "Debug")
 set(RELEASE_BIN_DIR "Release")
