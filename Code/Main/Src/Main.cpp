@@ -2,5 +2,5 @@
 
 int main()
 {
-	std::cout << "domag\n";
+  std::cout << "domag\n";
 }
