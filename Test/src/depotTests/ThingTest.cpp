@@ -2,7 +2,14 @@
 
 #include <gtest/gtest.h>        
 
-TEST(ThingTests, ThingCreate)
+using namespace ::testing;
+
+struct ThingTests : public Test
 {
-  Thing t;
+    Thing t;
+};
+
+TEST_F(ThingTests, ThingCreatedShouldNotHaveEmptyName)
+{
+  ASSERT_NE(t.getName(), "");
 }

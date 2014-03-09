@@ -5,6 +5,10 @@
 
 class Thing
 {
+public:
+  Thing();
+  
+  std::string getName() const;
 private:
     std::string name;
 };
