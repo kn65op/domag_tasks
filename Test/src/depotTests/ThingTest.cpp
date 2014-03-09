@@ -18,3 +18,10 @@ TEST_F(ThingTests, ThingSetNameShouldNotAcceptEmptyName)
 {
   ASSERT_THROW(t.setName(""), Thing::NameEmptyException);
 }
+
+TEST_F(ThingTests, ThingAfterSetNameShouldGetSameName)
+{
+  std::string name = "name";
+  t.setName(name);
+  ASSERT_EQ(t.getName(), name);
+}
