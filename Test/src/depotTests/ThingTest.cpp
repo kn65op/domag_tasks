@@ -13,3 +13,8 @@ TEST_F(ThingTests, ThingCreatedShouldNotHaveEmptyName)
 {
   ASSERT_NE(t.getName(), "");
 }
+
+TEST_F(ThingTests, ThingSetNameShouldNotAcceptEmptyName)
+{
+  ASSERT_THROW(t.setName(""), Thing::NameEmptyException);
+}

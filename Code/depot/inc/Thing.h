@@ -6,9 +6,14 @@
 class Thing
 {
 public:
+  class NameEmptyException
+  {
+  };
+  
   Thing();
   
-  std::string getName() const;
+  std::string getName() const noexcept;
+  void setName(std::string n);
 private:
     std::string name;
 };
