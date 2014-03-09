@@ -14,6 +14,17 @@ project (domag)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
+#tests
+set(COVERAGE_COMMAND "gcov")
+
+set(CTEST_MEMORYCHECK_COMMAND "valgrind")
+set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --quiet
+--tool=memcheck --leak-check=yes --show-reachable=yes
+--num-callers=100 --verbose --demangle=yes")
 
 #includes
 include_directories(${SRC_DIR})
@@ -23,7 +34,12 @@ file(GLOB EXAMPLE_FILES ${SRC_DIR}/*.cpp)
 #file(GLOB GMOCK_TEST_FILES ${SRC_DIR}/GmockTest/*.cpp)
 
 #executables
-add_executable(${DEBUG_BIN_DIR}/${PROJECT_NAME} ${MAIN_FILE})
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	add_definitions(--coverage)
+	add_executable(${DEBUG_BIN_DIR}/${PROJECT_NAME} ${MAIN_FILE})
+elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+	add_executable(${RELEASE_BIN_DIR}/${PROJECT_NAME} ${MAIN_FILE})
+endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
 #test
 add_subdirectory(Test)
