@@ -1,5 +1,7 @@
 #include "../inc/Thing.h"
 
+using depot::Thing;
+
 std::string Thing::getName()const noexcept 
 {
   return name;
@@ -14,7 +16,7 @@ void Thing::setName(std::string n)
 {
   if (n.empty())
   {
-    throw NameEmptyException();
+    throw       NameEmptyException();
   }
   name = n;
 }

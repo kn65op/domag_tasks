@@ -3,23 +3,24 @@
 #include <gtest/gtest.h>        
 
 using namespace ::testing;
+using depot::Thing;
 
-struct ThingTests : public Test
+struct ThingTest: public Test
 {
     Thing t;
 };
 
-TEST_F(ThingTests, ThingCreatedShouldNotHaveEmptyName)
+TEST_F(ThingTest, ThingCreatedShouldNotHaveEmptyName)
 {
   ASSERT_NE(t.getName(), "");
 }
 
-TEST_F(ThingTests, ThingSetNameShouldNotAcceptEmptyName)
+TEST_F(ThingTest, ThingSetNameShouldNotAcceptEmptyName)
 {
   ASSERT_THROW(t.setName(""), Thing::NameEmptyException);
 }
 
-TEST_F(ThingTests, ThingAfterSetNameShouldGetSameName)
+TEST_F(ThingTest, ThingAfterSetNameShouldGetSameName)
 {
   std::string name = "name";
   t.setName(name);

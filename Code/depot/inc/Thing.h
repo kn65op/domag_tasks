@@ -3,13 +3,22 @@
 
 #include <string>
 
-class Thing
+namespace depot
+{
+
+class IThing
 {
 public:
   class NameEmptyException
   {
   };
-  
+  virtual std::string getName() const noexcept = 0;
+  virtual void setName(std::string n) = 0;
+};
+
+class Thing : public IThing
+{
+public:
   Thing();
   
   std::string getName() const noexcept;
@@ -17,5 +26,7 @@ public:
 private:
     std::string name;
 };
+
+}
 
 #endif // THING_H
