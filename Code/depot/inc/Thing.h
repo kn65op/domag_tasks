@@ -14,6 +14,8 @@ public:
   };
   virtual std::string getName() const noexcept = 0;
   virtual void setName(std::string n) = 0;
+  
+  virtual ~IThing() {};
 };
 
 class Thing : public IThing

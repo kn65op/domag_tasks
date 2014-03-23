@@ -3,11 +3,17 @@
 
 namespace depot
 {
-
-class ThingMock : public IThing
+namespace ut
 {
-  MOCK_CONST_METHOD0(setName, void(std::string));
-  MOCK_METHOD1(getName, std::string());
+
+struct ThingMock : public IThing
+{
+  MOCK_CONST_METHOD0(getNameMock, std::string());
+  std::string getName() const noexcept
+  {
+    return getNameMock();
+  }
+  MOCK_METHOD1(setName, void(std::string));
 };
 
-}
+}}              
