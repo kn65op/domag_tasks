@@ -11,6 +11,7 @@ set(RELEASE_BIN_DIR "Release")
 project (domag)
 
 #externial libs
+FIND_PACKAGE( Boost 1.54 COMPONENTS date_time REQUIRED )
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++11")
@@ -36,10 +37,15 @@ file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
 #executables
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 	add_definitions(--coverage)
-	add_executable(${DEBUG_BIN_DIR}/${PROJECT_NAME} ${MAIN_FILE})
+	set(EXE_FILE ${DEBUG_BIN_DIR}/${PROJECT_NAME})
 elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	add_executable(${RELEASE_BIN_DIR}/${PROJECT_NAME} ${MAIN_FILE})
+        set(EXE_FILE ${RELEASE_BIN_DIR}/${PROJECT_NAME})
 endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+
+add_executable(${EXE_FILE} ${MAIN_FILE})
+
+#libraries
+TARGET_LINK_LIBRARIES(${EXE_FILE} ${Boost_LIBRARIES} )
 
 #test
 add_subdirectory(Test)

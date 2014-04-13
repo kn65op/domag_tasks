@@ -27,7 +27,7 @@ include_directories(${TEST_INC_DIR}/${DEPOT_MOCKS_DIR}/)
 include_directories(${GTEST_DIR})
 add_subdirectory(${GMOCK_DIR} gmock)
 
-#files
+#test files
 file(GLOB MAIN_TEST_FILES ${TEST_SRC_DIR}/*.cpp)
 
 file(GLOB DEPOT_TEST_FILES ${TEST_SRC_DIR}/${DEPOT_TESTS_DIR}/*.cpp)
@@ -39,4 +39,5 @@ file(MAKE_DIRECTORY ${TEST_EXE_DIR})
 
 add_executable(${TEST_EXE} ${MAIN_TEST_FILES} ${DEPOT_FILES} ${DEPOT_TEST_FILES})
 target_link_libraries(${TEST_EXE} ${LIB_GMOCK})
+TARGET_LINK_LIBRARIES(${TEST_EXE} ${Boost_LIBRARIES} )
 add_test(gtests ${TEST_EXE}) 

@@ -7,13 +7,14 @@ Item::Item(std::shared_ptr<IThing> thing)
 {
 }
 
-void Item::buy(double amount, double price)
+void Item::buy(double amount, double price, date bdate)
 {
   if (buyed)
   {
     throw ItemAlreadyBuyed();
   }
-  buyed = true; 
+  buyed = true;
+  buy_date = bdate;
   quantity = amount;
   price_per_unit = price / quantity;    
 }
@@ -35,4 +36,9 @@ void Item::consume(double amount)
     throw NoQuantityToConsume();
   }
   quantity -= amount;
+}
+
+boost::gregorian::date Item::getBuyDate() const
+{
+  return buy_date;
 }
