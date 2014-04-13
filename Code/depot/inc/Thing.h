@@ -23,8 +23,8 @@ class Thing : public IThing
 public:
   Thing();
   
-  std::string getName() const noexcept;
-  void setName(std::string n);
+  std::string getName() const noexcept override;
+  void setName(std::string n) override;
 private:
     std::string name;
 };

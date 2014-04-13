@@ -8,11 +8,38 @@ namespace depot
 {
 
 class IThing;
+
+class IItem
+{
+public:
+  virtual void buy(double amount, double price = 0) = 0;
+  virtual double getQuantity() const = 0;
+  virtual double getPricePerUnit() const = 0;
+  virtual void consume(double amount) = 0;
   
-class Item
+  struct NoQuantityToConsume
+  {
+  };
+  
+  struct ItemAlreadyBuyed
+  {
+  };
+};
+  
+class Item : public IItem
 {
 public: 
   Item(std::shared_ptr<IThing> thing);
+  
+  void buy(double amount, double price = 0) override;
+  double getQuantity() const override;
+  double getPricePerUnit() const override;
+  void consume(double amount) override;
+  
+private:
+  bool buyed = false;
+  double quantity = 0;
+  double price_per_unit = 0;
 };
 
 }

@@ -4,6 +4,10 @@
 
 using namespace ::testing;
 using depot::Item;
+using depot::IItem;
+
+//TODO: best before
+//TODO: buy and consume
 
 struct ItemTest : public Test
 {
@@ -25,6 +29,39 @@ struct ItemTest : public Test
     
 };
 
-TEST_F(ItemTest, itemNeedToBeKindOfSomeThing)
+TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
 {
+  item->buy(3);
+  EXPECT_EQ(item->getQuantity(), 3);
+}
+
+TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
+{
+  item->buy(1);
+  ASSERT_THROW(item->buy(1), IItem::ItemAlreadyBuyed);
+}
+
+TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
+{
+  item->buy(3, 6.30);
+  ASSERT_EQ(item->getQuantity(), 3);
+  EXPECT_EQ(item->getPricePerUnit(), 2.10);
+}
+
+TEST_F(ItemTest, ShouldNotBeAbleToConsumeWhenThereIsNoItem)
+{
+  ASSERT_THROW(item->consume(0.01), IItem::NoQuantityToConsume);
+}
+
+TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
+{
+  item->buy(1);
+  ASSERT_THROW(item->consume(1.01), IItem::NoQuantityToConsume);
+}
+
+TEST_F(ItemTest, AfterConsumptionQuantityShouldDecrease)
+{
+  item->buy(1);
+  item->consume(0.5);
+  ASSERT_EQ(item->getQuantity(), 0.5);
 }
