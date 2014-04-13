@@ -78,3 +78,15 @@ TEST_F(ItemTest, BuyShouldSetSpecifiedBuyDate)
   item->buy(1, 0, boost::gregorian::from_simple_string(date));
   ASSERT_EQ(item->getBuyDate(), boost::gregorian::from_simple_string(date));
 }
+
+TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
+{
+  item->buy(1);
+  item->consume(0.1);
+  item->consume(0.5);
+  item->consume(0.4);
+  
+  ASSERT_EQ(item->getQuantity(), 0);
+  
+  
+}
