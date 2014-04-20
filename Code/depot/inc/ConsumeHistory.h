@@ -12,15 +12,15 @@ class ConsumeHistory
 {
 public:
   using Date = boost::gregorian::date;
-  using ConsumeHistoryEntry = std::pair<double, Date>;
-  using ConsumeHistoryList = std::vector<ConsumeHistoryEntry>;
+  using Entry = std::pair<double, Date>;
+  using List = std::vector<Entry>;
   
   void push_back(int amount, Date date);
-  void push_back(const ConsumeHistoryEntry &entry);
+  void push_back(const Entry &entry);
   
-  ConsumeHistoryList getList() const;
+  List getList() const;
 private:
-  ConsumeHistoryList entries;
+  List entries;
 };
 
 }

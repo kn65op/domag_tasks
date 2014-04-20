@@ -2,17 +2,17 @@
 
 using namespace depot;
 
-void ConsumeHistory::push_back(const ConsumeHistoryEntry &entry)
+void ConsumeHistory::push_back(const Entry &entry)
 {
   entries.push_back(entry);
 }
 
 void ConsumeHistory::push_back(int amount, Date date)
 {
-  push_back(ConsumeHistoryEntry{amount, date});
+  push_back(Entry{amount, date});
 }
 
-ConsumeHistory::ConsumeHistoryList ConsumeHistory::getList() const
+ConsumeHistory::List ConsumeHistory::getList() const
 {
   return entries;
 }

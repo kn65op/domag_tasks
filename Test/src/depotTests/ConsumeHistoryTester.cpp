@@ -17,8 +17,8 @@ TEST_F(ConsumeHistoryTest, pushBackByDoubleAndDateShouldAddConsume)
 {
   ch.push_back(1, now);
   
-  ConsumeHistory::ConsumeHistoryList list;
-  ConsumeHistory::ConsumeHistoryEntry entry{1, now};
+  ConsumeHistory::List list;
+  ConsumeHistory::Entry entry{1, now};
   list.push_back(entry);
   
   EXPECT_EQ(list, ch.getList());
@@ -26,8 +26,8 @@ TEST_F(ConsumeHistoryTest, pushBackByDoubleAndDateShouldAddConsume)
 
 TEST_F(ConsumeHistoryTest, pushBackByEntryShouldAddConsume)
 {
-  ConsumeHistory::ConsumeHistoryEntry entry{1, now};
-  ConsumeHistory::ConsumeHistoryList list;
+  ConsumeHistory::Entry entry{1, now};
+  ConsumeHistory::List list;
   list.push_back(entry);
   ch.push_back(entry);
   
