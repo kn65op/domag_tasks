@@ -29,16 +29,22 @@ double Item::getPricePerUnit() const
   return price_per_unit;
 }
 
-void Item::consume(double amount)
+void Item::consume(double amount, Date date)
 {
   if (amount > quantity)
   {
     throw NoQuantityToConsume();
   }
   quantity -= amount;
+  history.push_back(amount, date);
 }
 
 boost::gregorian::date Item::getBuyDate() const
 {
   return buy_date;
+}
+
+ConsumeHistory::List Item::getConsumeHistory() const
+{
+  return history.getList();
 }

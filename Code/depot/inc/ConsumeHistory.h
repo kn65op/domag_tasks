@@ -15,7 +15,7 @@ public:
   using Entry = std::pair<double, Date>;
   using List = std::vector<Entry>;
   
-  void push_back(int amount, Date date);
+  void push_back(double amount, Date date);
   void push_back(const Entry &entry);
   
   List getList() const;
