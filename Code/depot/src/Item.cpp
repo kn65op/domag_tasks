@@ -7,7 +7,7 @@ Item::Item(std::shared_ptr<IThing> thing)
 {
 }
 
-void Item::buy(double amount, double price, date bdate)
+void Item::buy(double amount, double price, Date bdate)
 {
   if (buyed)
   {
