@@ -1,9 +1,10 @@
 #include "../inc/Container.h"
+#include <algorithm>
 
 using namespace depot;
 
 
-void Container::addItem(std::unique_ptr<IItem> item)
+void Container::addItem(Item item)
 {
   items.push_back(std::move(item));
 }
@@ -24,4 +25,16 @@ const Container::SelectedItems Container::getNonConsumedItems() const
     }
   }
   return selected;
+}
+
+Container::Item Container::removeItem(const Item & to_remove)
+{
+  auto it = items.end();
+  if ((it = std::find(items.begin(), items.end(), to_remove)) != items.end())
+  {
+    auto ret = std::move(*it);
+    items.erase(it);
+    return ret;
+  }
+  throw NoSuchElement();
 }

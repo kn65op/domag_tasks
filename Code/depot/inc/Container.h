@@ -11,9 +11,14 @@ namespace depot
 class Container
 {
 public:
-  typedef std::vector<std::unique_ptr<IItem>> Items;
+  struct NoSuchElement
+  {
+  };
+  typedef std::unique_ptr<IItem> Item;
+  typedef std::vector<Item> Items;
   typedef std::vector<std::reference_wrapper<IItem>> SelectedItems;
   void addItem(std::unique_ptr<IItem> item);
+  Item removeItem(const Item & to_remove);
   
   const Items & getItems() const;
   const SelectedItems getNonConsumedItems() const;
