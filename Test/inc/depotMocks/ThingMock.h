@@ -1,3 +1,5 @@
+#pragma once
+
 #include "depot/inc/Thing.h"
 #include "gmock/gmock.h"
 

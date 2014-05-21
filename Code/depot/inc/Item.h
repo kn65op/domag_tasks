@@ -1,6 +1,5 @@
 #ifndef ITEM_H
 #define ITEM_H
-#include "Container.h"
 #include "ConsumeHistory.h"
 
 #include <memory>
@@ -14,6 +13,8 @@ class IThing;
 class IItem
 {
 public:
+  virtual ~IItem() {}
+  
   using Date = boost::gregorian::date;
 
   virtual void buy(double amount, double price, Date bdate) = 0;
@@ -36,6 +37,11 @@ class Item : public IItem
 {
 public:
   Item(std::shared_ptr<IThing> thing);
+  Item(const Item &) = delete;
+  Item(const Item &&) = delete;
+  
+  IItem & operator=(const Item &) = delete;
+  IItem & operator=(const Item &&) = delete;
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
   double getQuantity() const override;
