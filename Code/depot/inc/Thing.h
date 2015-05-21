@@ -1,5 +1,4 @@
-#ifndef THING_H
-#define THING_H
+#pragma once
 
 #include <string>
 
@@ -14,7 +13,7 @@ public:
   };
   virtual std::string getName() const noexcept = 0;
   virtual void setName(std::string n) = 0;
-  
+
   virtual ~IThing() {};
 };
 
@@ -22,7 +21,7 @@ class Thing : public IThing
 {
 public:
   Thing();
-  
+
   std::string getName() const noexcept override;
   void setName(std::string n) override;
 private:
@@ -30,5 +29,3 @@ private:
 };
 
 }
-
-#endif // THING_H

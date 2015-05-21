@@ -1,5 +1,5 @@
-#ifndef ITEM_H
-#define ITEM_H
+#pragma once
+
 #include "ConsumeHistory.h"
 
 #include <memory>
@@ -14,7 +14,7 @@ class IItem
 {
 public:
   virtual ~IItem() {}
-  
+
   using Date = boost::gregorian::date;
 
   virtual void buy(double amount, double price, Date bdate) = 0;
@@ -39,7 +39,7 @@ public:
   Item(std::shared_ptr<IThing> thing);
   Item(const Item &) = delete;
   Item(const Item &&) = delete;
-  
+
   IItem & operator=(const Item &) = delete;
   IItem & operator=(const Item &&) = delete;
 
@@ -49,7 +49,7 @@ public:
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
   boost::gregorian::date getBuyDate() const override;
   ConsumeHistory::List getConsumeHistory() const override;
-  
+
 private:
   bool buyed = false;
   double quantity = 0;
@@ -59,6 +59,3 @@ private:
 };
 
 }
-
-#endif // ITEM_H
-

@@ -1,5 +1,4 @@
-#ifndef CONSUMEHISTORY_H
-#define CONSUMEHISTORY_H
+#pragma once
 
 #include <vector>
 #include <utility>
@@ -14,15 +13,13 @@ public:
   using Date = boost::gregorian::date;
   using Entry = std::pair<double, Date>;
   using List = std::vector<Entry>;
-  
+
   void push_back(double amount, Date date);
   void push_back(const Entry &entry);
-  
+
   List getList() const;
 private:
   List entries;
 };
 
 }
-
-#endif // CONSUMEHISTORY_H

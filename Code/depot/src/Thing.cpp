@@ -2,7 +2,7 @@
 
 using depot::Thing;
 
-std::string Thing::getName()const noexcept 
+std::string Thing::getName()const noexcept
 {
   return name;
 }
@@ -10,13 +10,13 @@ std::string Thing::getName()const noexcept
 Thing::Thing()
 {
   name = "Unnamed thing";
-}       
+}
 
 void Thing::setName(std::string n)
 {
   if (n.empty())
   {
-    throw       NameEmptyException();
+    throw NameEmptyException();
   }
   name = n;
 }

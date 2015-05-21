@@ -1,5 +1,4 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#pragma once
 
 #include "Item.h"
 #include <memory>
@@ -7,7 +6,7 @@
 
 namespace depot
 {
-  
+
 class Container
 {
 public:
@@ -19,7 +18,7 @@ public:
   typedef std::vector<std::reference_wrapper<IItem>> SelectedItems;
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
-  
+
   const Items & getItems() const;
   const SelectedItems getNonConsumedItems() const;
 private:
@@ -27,5 +26,3 @@ private:
 };
 
 }
-
-#endif // CONTAINER_H
