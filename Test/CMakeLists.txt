@@ -2,7 +2,7 @@ set(TEST_DIR ".")
 set(TEST_EXE_DIR "${TEST_DIR}")
 set(TEST_SRC_DIR "${TEST_DIR}/src")
 set(TEST_INC_DIR "${TEST_DIR}/inc")
-set(TEST_EXE ${TEST_EXE_DIR}/Tester)
+set(TEST_EXE Tester)
 
 if ("${GMOCK_DIR}" STREQUAL "")
 	message(STATUS "No GMOCK_DIR variable set, trying to use system gmock")
