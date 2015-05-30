@@ -66,9 +66,6 @@ add_dependencies(${TEST_EXE} ${TLOGGER_TARGET})
 
 set(COVERAGE_DIR coverage)
 set(SOURCE_RAW_FILES_DIR "${CMAKE_BINARY_DIR}/Test/CMakeFiles/Tester.dir/__/Code")
-set(ONE_MINUTE_CHANGES_COVERAGE_RAW_FILES_DIR "${CMAKE_BINARY_DIR}/Test/CMakeFiles/Tester.dir/__/Code/one_minute_changes/src")
-set(ONE_MINUTE_CHANGES_COVERAGE_RAW_FILES "${CMAKE_BINARY_DIR}/Test/CMakeFiles/Tester.dir/__/Code/one_minute_changes/src/*.gcda")
-set(ONE_MINUTE_CHANGES_O_FILES "${ONE_MINUTE_CHANGES_COVERAGE_RAW_FILES_DIR}/*.o")
 
 add_custom_target(coverage)
 add_custom_command(TARGET coverage
@@ -76,7 +73,7 @@ add_custom_command(TARGET coverage
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 add_custom_command(TARGET coverage
-	COMMAND rm -rf ${ONE_MINUTE_CHANGES_COVERAGE_RAW_FILES} && ../${TEST_EXE}  && lcov -d  ${SOURCE_RAW_FILES_DIR} --capture --output-file one_minute_changes.info && genhtml one_minute_changes.info 
+	COMMAND find ${CMAKE_BINARY_DIR} -name *.gcda -exec rm {} "\;" && ../${TEST_EXE}  && lcov -d  ${SOURCE_RAW_FILES_DIR} --capture --output-file one_minute_changes.info && genhtml one_minute_changes.info 
 	WORKING_DIRECTORY ${COVERAGE_DIR})
 
 add_dependencies(coverage ${TEST_EXE})
