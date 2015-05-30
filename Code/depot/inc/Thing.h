@@ -25,7 +25,7 @@ public:
   std::string getName() const noexcept override;
   void setName(std::string n) override;
 private:
-    std::string name;
+  std::string name;
 };
 
 }
