@@ -12,110 +12,116 @@ using depot::IItem;
 struct ItemTest : public Test
 {
   using Date = boost::gregorian::date;
-  
-  std::unique_ptr<Item> item;
-  std::shared_ptr<depot::IThing> thing_mock{nullptr};
-  
+
+  std::shared_ptr<depot::ut::ThingMock> thing = std::make_shared<depot::ut::ThingMock>();
+  Item item;
+
+  ItemTest() :
+    item{thing}
+  {}
+
   void SetUp()
   {
-    thing_mock = std::make_shared<depot::ut::ThingMock>();
-    item = std::unique_ptr<Item>{new Item{thing_mock}};
   }
-  
+
   void TearDown()
   {
-    thing_mock.reset();
-    
-    //clear expectations
   }
-    
+
 };
 
 TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
 {
-  item->buy(3);
-  EXPECT_EQ(item->getQuantity(), 3);
+  item.buy(3);
+  EXPECT_EQ(item.getQuantity(), 3);
 }
 
 TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
 {
-  item->buy(1);
-  ASSERT_THROW(item->buy(1), IItem::ItemAlreadyBuyed);
+  item.buy(1);
+  ASSERT_THROW(item.buy(1), IItem::ItemAlreadyBuyed);
 }
 
 TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
 {
-  item->buy(3, 6.30);
-  ASSERT_EQ(item->getQuantity(), 3);
-  EXPECT_EQ(item->getPricePerUnit(), 2.10);
+  item.buy(3, 6.30);
+  ASSERT_EQ(item.getQuantity(), 3);
+  EXPECT_EQ(item.getPricePerUnit(), 2.10);
 }
 
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeWhenThereIsNoItem)
-{       
-  ASSERT_THROW(item->consume(0.01), IItem::NoQuantityToConsume);
+{
+  ASSERT_THROW(item.consume(0.01), IItem::NoQuantityToConsume);
 }
 
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
 {
-  item->buy(1); 
-  ASSERT_THROW(item->consume(1.01), IItem::NoQuantityToConsume);
+  item.buy(1);
+  ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
 }
 
 TEST_F(ItemTest, AfterConsumptionQuantityShouldDecrease)
 {
-  item->buy(1);
-  item->consume(0.5);
-  ASSERT_EQ(item->getQuantity(), 0.5);
+  item.buy(1);
+  item.consume(0.5);
+  ASSERT_EQ(item.getQuantity(), 0.5);
 }
 
 TEST_F(ItemTest, BuyByDefaultShouldSetTodayAsBuyDate)
 {
-  item->buy(1);
-  ASSERT_EQ(item->getBuyDate(), boost::gregorian::day_clock::local_day());
+  item.buy(1);
+  ASSERT_EQ(item.getBuyDate(), boost::gregorian::day_clock::local_day());
 }
 
 TEST_F(ItemTest, BuyShouldSetSpecifiedBuyDate)
 {
   std::string date = "2013-01-01";
-  item->buy(1, 0, boost::gregorian::from_simple_string(date));
-  ASSERT_EQ(item->getBuyDate(), boost::gregorian::from_simple_string(date));
+  item.buy(1, 0, boost::gregorian::from_simple_string(date));
+  ASSERT_EQ(item.getBuyDate(), boost::gregorian::from_simple_string(date));
 }
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
 {
-  item->buy(1);
-  item->consume(0.1);
-  item->consume(0.5);
-  item->consume(0.4);
-  
+  item.buy(1);
+  item.consume(0.1);
+  item.consume(0.5);
+  item.consume(0.4);
+
   depot::ConsumeHistory::List list;
   Date now = boost::gregorian::day_clock::local_day();
-  
-  list.push_back({0.1, now}); 
+
+  list.push_back({0.1, now});
   list.push_back({0.5, now});
   list.push_back({0.4, now});
-  
-  ASSERT_EQ(item->getQuantity(), 0);
-  
-  EXPECT_EQ(item->getConsumeHistory(), list);
+
+  ASSERT_EQ(item.getQuantity(), 0);
+
+  EXPECT_EQ(item.getConsumeHistory(), list);
 }
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistoryWithDates)
 {
-  item->buy(1);
+  item.buy(1);
   std::string sdate = "2013-01-01";
-  item->consume(0.1, boost::gregorian::from_simple_string(sdate));
-  item->consume(0.5);
-  item->consume(0.4);
-  
+  item.consume(0.1, boost::gregorian::from_simple_string(sdate));
+  item.consume(0.5);
+  item.consume(0.4);
+
   depot::ConsumeHistory::List list;
   Date now = boost::gregorian::day_clock::local_day();
-  
-  list.push_back({0.1, boost::gregorian::from_simple_string(sdate)}); 
+
+  list.push_back({0.1, boost::gregorian::from_simple_string(sdate)});
   list.push_back({0.5, now});
   list.push_back({0.4, now});
-  
-  ASSERT_EQ(item->getQuantity(), 0);
-  
-  EXPECT_EQ(item->getConsumeHistory(), list);
+
+  ASSERT_EQ(item.getQuantity(), 0);
+
+  EXPECT_EQ(item.getConsumeHistory(), list);
+}
+
+TEST_F(ItemTest, GetNameOfItemShouldReturnValidName)
+{
+  std::string name{"name"};
+  EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
+  EXPECT_EQ(name, item.getThing()->getName());
 }

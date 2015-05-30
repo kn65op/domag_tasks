@@ -1,5 +1,4 @@
 #include "depot/inc/Thing.h"
-#include "ItemMock.h"
 
 #include <gtest/gtest.h>
 

@@ -20,6 +20,8 @@ class ItemMock : public IItem {
       boost::gregorian::date());
   MOCK_CONST_METHOD0(getConsumeHistory,
       ConsumeHistory::List());
+  MOCK_CONST_METHOD0(getThing,
+      std::shared_ptr<IThing>());
 };
 
 }}  // namespace depot::ut

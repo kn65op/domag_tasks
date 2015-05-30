@@ -4,7 +4,8 @@
 
 using namespace depot;
 
-Item::Item(std::shared_ptr<IThing> thing)
+Item::Item(std::shared_ptr<IThing> thing_of) :
+    thing{thing_of}
 {
 }
 
@@ -50,4 +51,9 @@ boost::gregorian::date Item::getBuyDate() const
 ConsumeHistory::List Item::getConsumeHistory() const
 {
   return history.getAllConsumes();
+}
+
+std::shared_ptr<IThing> Item::getThing() const
+{
+  return thing;
 }
