@@ -66,6 +66,7 @@ add_dependencies(${TEST_EXE} ${TLOGGER_TARGET})
 
 set(COVERAGE_DIR coverage)
 set(SOURCE_RAW_FILES_DIR "${CMAKE_BINARY_DIR}/Test/CMakeFiles/Tester.dir/__/Code")
+set(COVERAGE_INFO domag.info)
 
 add_custom_target(coverage)
 add_custom_command(TARGET coverage
@@ -73,7 +74,7 @@ add_custom_command(TARGET coverage
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 add_custom_command(TARGET coverage
-	COMMAND find ${CMAKE_BINARY_DIR} -name *.gcda -exec rm {} "\;" && ../${TEST_EXE}  && lcov -d  ${SOURCE_RAW_FILES_DIR} --capture --output-file one_minute_changes.info && genhtml one_minute_changes.info 
+	COMMAND find ${CMAKE_BINARY_DIR} -name *.gcda -exec rm {} "\;" && ../${TEST_EXE}  && lcov -d  ${SOURCE_RAW_FILES_DIR} --capture --output-file ${COVERAGE_INFO} && genhtml ${COVERAGE_INFO}
 	WORKING_DIRECTORY ${COVERAGE_DIR})
 
 add_dependencies(coverage ${TEST_EXE})
