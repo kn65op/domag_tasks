@@ -21,7 +21,7 @@ TEST_F(ConsumeHistoryTest, pushBackByDoubleAndDateShouldAddConsume)
   ConsumeHistory::Entry entry{1.1, now};
   list.push_back(entry);
   
-  EXPECT_EQ(list, ch.getList());
+  EXPECT_EQ(list, ch.getAllConsumes());
 }
 
 TEST_F(ConsumeHistoryTest, pushBackByEntryShouldAddConsume)
@@ -31,5 +31,5 @@ TEST_F(ConsumeHistoryTest, pushBackByEntryShouldAddConsume)
   list.push_back(entry);
   ch.push_back(entry);
   
-  EXPECT_EQ(list, ch.getList());
+  EXPECT_EQ(list, ch.getAllConsumes());
 }

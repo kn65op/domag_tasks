@@ -46,5 +46,5 @@ boost::gregorian::date Item::getBuyDate() const
 
 ConsumeHistory::List Item::getConsumeHistory() const
 {
-  return history.getList();
+  return history.getAllConsumes();
 }

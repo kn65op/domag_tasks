@@ -17,7 +17,7 @@ public:
   void push_back(double amount, Date date);
   void push_back(const Entry &entry);
 
-  List getList() const;
+  List getAllConsumes() const;
 private:
   List entries;
 };

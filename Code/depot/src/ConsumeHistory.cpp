@@ -12,7 +12,7 @@ void ConsumeHistory::push_back(double amount, Date date)
   push_back(Entry{amount, date});
 }
 
-ConsumeHistory::List ConsumeHistory::getList() const
+ConsumeHistory::List ConsumeHistory::getAllConsumes() const
 {
   return entries;
 }
