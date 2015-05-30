@@ -1,5 +1,6 @@
 #include "depot/inc/Item.h"
 #include "depot/inc/Thing.h"
+#include <TLogger.h>
 
 using namespace depot;
 
@@ -11,12 +12,13 @@ void Item::buy(double amount, double price, Date bdate)
 {
   if (buyed)
   {
+    LOG << "Item already buyed";
     throw ItemAlreadyBuyed();
   }
   buyed = true;
   buy_date = bdate;
   quantity = amount;
-  price_per_unit = price / quantity;    
+  price_per_unit = price / quantity;
 }
 
 double Item::getQuantity() const
@@ -33,6 +35,7 @@ void Item::consume(double amount, Date date)
 {
   if (amount > quantity)
   {
+    LOG << "There is no amount available to consume";
     throw NoQuantityToConsume();
   }
   quantity -= amount;

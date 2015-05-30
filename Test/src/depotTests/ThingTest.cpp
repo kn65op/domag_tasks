@@ -1,15 +1,14 @@
 #include "depot/inc/Thing.h"
+#include "ItemMock.h"
 
-#include <gtest/gtest.h>        
+#include <gtest/gtest.h>
 
 using namespace ::testing;
 using depot::Thing;
 
-//TODO: needs   
-
 struct ThingTest: public Test
 {
-    Thing t;
+  Thing t;
 };
 
 TEST_F(ThingTest, ThingCreatedShouldNotHaveEmptyName)

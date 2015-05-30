@@ -59,7 +59,10 @@ file(MAKE_DIRECTORY ${TEST_EXE_DIR})
 add_executable(${TEST_EXE} ${MAIN_TEST_FILES} ${DEPOT_FILES} ${DEPOT_TEST_FILES})
 TARGET_LINK_LIBRARIES(${TEST_EXE} ${Boost_LIBRARIES} )
 target_link_libraries(${TEST_EXE} ${LIB_GMOCK})
+TARGET_LINK_LIBRARIES(${TEST_EXE} ${TLOGGER_LIBRARIES})
 add_test(NAME gtests COMMAND ${TEST_EXE}) 
+
+add_dependencies(${TEST_EXE} ${TLOGGER_TARGET})
 
 set(COVERAGE_DIR coverage)
 set(SOURCE_RAW_FILES_DIR "${CMAKE_BINARY_DIR}/Test/CMakeFiles/Tester.dir/__/Code")

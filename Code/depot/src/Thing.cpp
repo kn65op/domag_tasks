@@ -1,4 +1,5 @@
 #include "../inc/Thing.h"
+#include <TLogger.h>
 
 using depot::Thing;
 
@@ -9,6 +10,7 @@ std::string Thing::getName()const noexcept
 
 Thing::Thing()
 {
+  LOG << "Unnamed thing created";
   name = "Unnamed thing";
 }
 
