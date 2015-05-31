@@ -9,19 +9,26 @@ struct ArticleTest: public Test
   Article t;
 };
 
-TEST_F(ArticleTest, ThingCreatedShouldNotHaveEmptyName)
+TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 {
   ASSERT_NE(t.getName(), "");
 }
 
-TEST_F(ArticleTest, ThingSetNameShouldNotAcceptEmptyName)
+TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
 {
   ASSERT_THROW(t.setName(""), Article::NameEmptyException);
 }
 
-TEST_F(ArticleTest, ThingAfterSetNameShouldGetSameName)
+TEST_F(ArticleTest, ArticleAfterSetNameShouldGetSameName)
 {
   std::string name = "name";
   t.setName(name);
   ASSERT_EQ(t.getName(), name);
+}
+
+TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
+{
+  std::string unit{"unit"};
+  t.setUnit(unit);
+  ASSERT_EQ(unit, t.getUnit());
 }

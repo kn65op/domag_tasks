@@ -15,7 +15,9 @@ struct ArticleMock : public IArticle
   {
     return getNameMock();
   }
-  MOCK_METHOD1(setName, void(std::string));
+  MOCK_METHOD1(setName, void(const std::string& ));
+  MOCK_CONST_METHOD0(getUnit, std::string());
+  MOCK_METHOD1(setUnit, void(const std::string& ));
 };
 
-}}              
+}}

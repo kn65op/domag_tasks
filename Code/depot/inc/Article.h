@@ -12,7 +12,9 @@ public:
   {
   };
   virtual std::string getName() const noexcept = 0;
-  virtual void setName(std::string n) = 0;
+  virtual void setName(const std::string& n) = 0;
+  virtual std::string getUnit() const = 0;
+  virtual void setUnit(const std::string& u) = 0;
 
   virtual ~IArticle() {};
 };
@@ -23,7 +25,9 @@ public:
   Article();
 
   std::string getName() const noexcept override;
-  void setName(std::string n) override;
+  void setName(const std::string& n) override;
+  std::string getUnit() const override;
+  void setUnit(const std::string& u) override;
 private:
   std::string name;
   std::string unit;

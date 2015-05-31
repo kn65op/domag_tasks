@@ -15,11 +15,21 @@ Article::Article()
   name = "Unnamed article";
 }
 
-void Article::setName(std::string n)
+void Article::setName(const std::string& n)
 {
   if (n.empty())
   {
     throw NameEmptyException();
   }
   name = n;
+}
+
+void Article::setUnit(const std::string& u)
+{
+  unit = u;
+}
+
+std::string Article::getUnit() const
+{
+  return unit;
 }
