@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "depot/inc/Item.h"
-#include "ThingMock.h"
+
+#include "../../inc/depotMocks/ArticleMock.h"
 
 using namespace ::testing;
 using depot::Item;
@@ -13,7 +14,7 @@ struct ItemTest : public Test
 {
   using Date = boost::gregorian::date;
 
-  std::shared_ptr<depot::ut::ThingMock> thing = std::make_shared<depot::ut::ThingMock>();
+  std::shared_ptr<depot::ut::ArticleMock> thing = std::make_shared<depot::ut::ArticleMock>();
   Item item;
 
   ItemTest() :

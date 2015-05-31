@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ConsumeHistory.h"
-#include "Thing.h"
-
 #include <memory>
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include "Article.h"
 
 namespace depot
 {
@@ -22,7 +21,7 @@ public:
   virtual void consume(double amount, Date date) = 0;
   virtual boost::gregorian::date getBuyDate() const = 0;
   virtual ConsumeHistory::List getConsumeHistory() const = 0;
-  virtual std::shared_ptr<IThing> getThing() const = 0;
+  virtual std::shared_ptr<IArticle> getThing() const = 0;
 
   struct NoQuantityToConsume
   {
@@ -36,7 +35,7 @@ public:
 class Item : public IItem
 {
 public:
-  Item(std::shared_ptr<IThing> thing_of);
+  Item(std::shared_ptr<IArticle> thing_of);
   Item(const Item &) = delete;
   Item(const Item &&) = delete;
 
@@ -49,10 +48,10 @@ public:
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
   boost::gregorian::date getBuyDate() const override;
   ConsumeHistory::List getConsumeHistory() const override;
-  std::shared_ptr<IThing> getThing() const override;
+  std::shared_ptr<IArticle> getThing() const override;
 
 private:
-  std::shared_ptr<IThing> thing;
+  std::shared_ptr<IArticle> thing;
   bool buyed = false;
   double quantity = 0;
   double price_per_unit = 0;

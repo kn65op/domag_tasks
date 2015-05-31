@@ -1,10 +1,10 @@
 #include "depot/inc/Item.h"
-#include "depot/inc/Thing.h"
 #include <TLogger.h>
+#include "../inc/Article.h"
 
 using namespace depot;
 
-Item::Item(std::shared_ptr<IThing> thing_of) :
+Item::Item(std::shared_ptr<IArticle> thing_of) :
     thing{thing_of}
 {
 }
@@ -53,7 +53,7 @@ ConsumeHistory::List Item::getConsumeHistory() const
   return history.getAllConsumes();
 }
 
-std::shared_ptr<IThing> Item::getThing() const
+std::shared_ptr<IArticle> Item::getThing() const
 {
   return thing;
 }

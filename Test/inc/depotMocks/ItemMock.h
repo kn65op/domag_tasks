@@ -21,7 +21,7 @@ class ItemMock : public IItem {
   MOCK_CONST_METHOD0(getConsumeHistory,
       ConsumeHistory::List());
   MOCK_CONST_METHOD0(getThing,
-      std::shared_ptr<IThing>());
+      std::shared_ptr<IArticle>());
 };
 
 }}  // namespace depot::ut

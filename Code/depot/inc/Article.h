@@ -5,7 +5,7 @@
 namespace depot
 {
 
-class IThing
+class IArticle
 {
 public:
   class NameEmptyException
@@ -14,18 +14,19 @@ public:
   virtual std::string getName() const noexcept = 0;
   virtual void setName(std::string n) = 0;
 
-  virtual ~IThing() {};
+  virtual ~IArticle() {};
 };
 
-class Thing : public IThing
+class Article : public IArticle
 {
 public:
-  Thing();
+  Article();
 
   std::string getName() const noexcept override;
   void setName(std::string n) override;
 private:
   std::string name;
+  std::string unit;
 };
 
 }
