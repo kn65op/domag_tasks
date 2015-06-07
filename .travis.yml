@@ -16,7 +16,7 @@ before_script:
 script:
   if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi &&
   cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 &&
-  make -j 16 &&
+  make -j `nproc` &&
   Test/Tester
 
 env:
@@ -33,5 +33,5 @@ addons:
       description: "<Your project description here>"
     notification_email: kn65op+github@gmail.com
     build_command_prepend: cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0
-    build_command: make -j 4
+    build_command: make -j `nproc`
     branch_pattern: coverity_scan
