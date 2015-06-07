@@ -10,7 +10,7 @@ set(RELEASE_BIN_DIR "Release")
 project (domag)
 
 #external libs
-FIND_PACKAGE( Boost 1.54 COMPONENTS date_time REQUIRED )
+FIND_PACKAGE( Boost 1.46 COMPONENTS date_time REQUIRED )
 FIND_PACKAGE( TLogger REQUIRED PATHS TLogger)
 
 #compiler options
