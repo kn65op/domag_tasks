@@ -1,0 +1,36 @@
+language: cpp
+compiler:
+  - gcc
+  
+before_script:
+  # We need this line to have g++4.8 available in apt
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - curl -O https://googlemock.googlecode.com/files/gmock-1.7.0.zip
+  - unzip gmock-1.7.0.zip
+  - mkdir _build
+  - cd _build
+  - sudo apt-get update -qq
+  - sudo apt-get install libboost-dev libboost-date-time-dev libboost-program-options-dev google-mock gcc-4.9 g++-4.9
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
+  
+script:
+  if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi &&
+  cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 &&
+  make -j 16 &&
+  Test/Tester
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "Iur6iq0Qe3MXfBNVJIIcyHUfeh7zy5IJxRx1sxhHV77fGN5oLUC2hkMlzOOPBOMstyQIHuW3lnamJzUuwEnXS2RUX7DVFiDfBlWgtWGQndMrkqZcNDnBFu+nDGv7M45evGb/baX/2nNyHoghDkTdWaRroJzrQMR1lCuMnn0FQB6p3iOs4ZvooswoeEnKfa45jYVlFmz+UgKQGDOapAOPKcrUHFvcO8CtAx9xWS1LWzlWHlzwALt9Df8XtHyM5Z/lH+13vFEdV+FXsjTQvleqo6ngSjpVLAGZ4k5IHknRcpZY3/yOD1Hp8hnCCHOpwYfiFwAYk6xBxZUq5CnnmgzdPb5iIN+WQHl6DDNpH/WdjHcfzrHxFuCKqi/rCKxyGwK7tfxwTE/QqHFrdYER7JkzStBt5J/VB6T/7XyZnT+8SghrdNkP23YGgKvDuQGd7gJucjcHy2fMkNOUrVz3k7auGGuJDZfPyNKE7jH+ZlTO3NR+/CjFlg9I+UeiQRB9QSilkLdSvOwmz8fC2ha8qw9E7j+yIV8+HaE29gh4cghtspxL4FuGFGWfSJXqnbpRkG8dHEelvWFBzae5s098pL5fcy9v3dRqpcGt7s38y2glekkItN3ZibUA7jy4JwCteDJn3YlxjVzfgkinvMQxvOvxGma+w3pG1IYYQsNsxFlP6HU="
+
+addons:
+  coverity_scan:
+    project:
+      name: "kn65op/domag"
+      description: "<Your project description here>"
+    notification_email: kn65op+github@gmail.com
+    build_command_prepend: cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0
+    build_command: make -j 4
+    branch_pattern: coverity_scan
