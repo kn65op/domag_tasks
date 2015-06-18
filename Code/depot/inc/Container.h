@@ -1,18 +1,17 @@
 #pragma once
 
-#include "Item.h"
 #include <memory>
 #include <functional>
+#include "AbstractContainer.h"
+#include "Storable.h"
+#include "Item.h"
 
 namespace depot
 {
 
-class Container
+class Container : public AbstractContainer, public Storable
 {
 public:
-  struct NoSuchElement
-  {
-  };
   typedef std::unique_ptr<IItem> Item;
   typedef std::vector<Item> Items;
   typedef std::vector<std::reference_wrapper<IItem>> SelectedItems;
