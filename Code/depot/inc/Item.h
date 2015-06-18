@@ -12,6 +12,12 @@ class IItem
 {
 public:
   virtual ~IItem() {}
+  IItem() = default;
+  IItem(const IItem &) = delete;
+  IItem(const IItem &&) = delete;
+
+  IItem & operator=(const IItem &) = delete;
+  IItem & operator=(const IItem &&) = delete;
 
   using Date = boost::gregorian::date;
 
@@ -36,11 +42,6 @@ class Item : public IItem
 {
 public:
   Item(std::shared_ptr<IArticle> thing_of);
-  Item(const Item &) = delete;
-  Item(const Item &&) = delete;
-
-  IItem & operator=(const Item &) = delete;
-  IItem & operator=(const Item &&) = delete;
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
   double getQuantity() const override;
