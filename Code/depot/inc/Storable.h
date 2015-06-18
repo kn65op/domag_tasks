@@ -20,15 +20,8 @@ public:
   }
 
 private:
-  virtual void removeFromContainer()
-  {
-
-  }
-
-  virtual void addToContainer(AbstractContainer& new_container)
-  {
-
-  }
+  virtual void removeFromContainer() = 0;
+  virtual void addToContainer(AbstractContainer& new_container) = 0;
 };
 
 }

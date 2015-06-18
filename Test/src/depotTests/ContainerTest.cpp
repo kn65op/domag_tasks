@@ -72,4 +72,9 @@ TEST_F(ContainerTest, ContainerShouldThrowWhenRemovingNonExistingItem)
   EXPECT_THROW(c.removeItem(std::unique_ptr<ItemMock>(new ItemMock())), Container::NoSuchElement);
 }
 
+TEST_F(ContainerTest, ContainerShouldThrowWhenRemovingNonExistingConstainer)
+{
+  EXPECT_THROW(c.removeContainer(std::make_shared<Contaienr*>())), Container::NoSuchElement);
+}
+
 //TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
