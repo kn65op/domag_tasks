@@ -27,6 +27,9 @@ public:
 private:
   std::string name;
   Items items;
+
+  void removeFromContainer() override;
+  void addToContainer(AbstractContainer& new_container) override;
 };
 
 }

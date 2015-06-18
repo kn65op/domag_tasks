@@ -43,3 +43,16 @@ Container::Item Container::removeItem(const Item & to_remove)
   LOG << "no item to remove";
   throw NoSuchElement();
 }
+
+void Container::removeContainer(ContainerInside container)
+{
+  throw NoSuchElement();
+}
+
+void Container::removeFromContainer()
+{
+}
+
+void Container::addToContainer(AbstractContainer& container)
+{
+}
