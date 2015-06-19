@@ -55,6 +55,22 @@ TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
   EXPECT_EQ(c.getNonConsumedItems().size(), 3);
 }
 
+TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
+{
+  c.addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  c.addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+
+  const Container::Items &items = c.getItems();
+  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[0].get())), getQuantity()).WillOnce(Return(0));
+  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[1].get())), getQuantity()).WillOnce(Return(1));
+
+  ASSERT_EQ(c.getItems().size(), 2);
+
+  c.removeItem(c.getNonConsumedItems()[0]);
+
+  EXPECT_EQ(c.getItems().size(), 1);
+}
+
 TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
 {
   c.addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
@@ -67,14 +83,23 @@ TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
   EXPECT_EQ(c.getItems().size(), 1);
 }
 
-TEST_F(ContainerTest, ContainerShouldThrowWhenRemovingNonExistingItem)
+TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
 {
   EXPECT_THROW(c.removeItem(std::unique_ptr<ItemMock>(new ItemMock())), Container::NoSuchElement);
 }
 
-TEST_F(ContainerTest, ContainerShouldThrowWhenRemovingNonExistingConstainer)
+TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstainer)
 {
   EXPECT_THROW(c.removeContainer(std::make_shared<Container>()), Container::NoSuchElement);
+}
+
+TEST_F(ContainerTest, AfterAddingOneContainerShourReturnOneContainerAndShouldBeRemoveable)
+{
+  auto cont = std::make_shared<Container>();
+  c.addContainer(cont);
+  EXPECT_EQ(1, c.getContainers().size());
+  c.removeContainer(cont);
+  EXPECT_EQ(0, c.getContainers().size());
 }
 
 //TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)

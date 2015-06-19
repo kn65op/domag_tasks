@@ -12,21 +12,27 @@ namespace depot
 class Container : public AbstractContainer, public Storable
 {
 public:
-  typedef std::unique_ptr<IItem> Item;
-  typedef std::vector<Item> Items;
-  typedef std::vector<std::reference_wrapper<IItem>> SelectedItems;
+  using Item = std::unique_ptr<IItem>;
+  using Items = std::vector<Item>;
+  using ItemReference = std::reference_wrapper<Item>;
+  using SelectedItems = std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside> ;
 
+  virtual ~Container() {}
+
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
+  Item removeItem(ItemReference to_remove);
   void addContainer(ContainerInside container);
-  void removeContainer(ContainerInside container);
+  ContainerInside removeContainer(ContainerInside container);
   const Items & getItems() const;
-  const SelectedItems getNonConsumedItems() const;
+  const Containers& getContainers() const;
+  const SelectedItems getNonConsumedItems();
 private:
   std::string name;
   Items items;
+  Containers containers;
 
   void removeFromContainer() override;
   void addToContainer(AbstractContainer& new_container) override;

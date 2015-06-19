@@ -16,18 +16,18 @@ const Container::Items& Container::getItems() const
   return items;
 }
 
-const Container::SelectedItems Container::getNonConsumedItems() const
+const Container::SelectedItems Container::getNonConsumedItems()
 {
   LOG << "selecting non consumed items";
-  Container::SelectedItems selected;
+  Container::SelectedItems non_consumed;
   for (auto & item : items)
   {
     if (item->getQuantity() > 0)
     {
-      selected.push_back(*item);
+      non_consumed.push_back(std::ref(item));
     }
   }
-  return selected;
+  return non_consumed;
 }
 
 Container::Item Container::removeItem(const Item & to_remove)
@@ -44,9 +44,35 @@ Container::Item Container::removeItem(const Item & to_remove)
   throw NoSuchElement();
 }
 
-void Container::removeContainer(ContainerInside container)
+Container::Item Container::removeItem(ItemReference to_remove)
 {
+  LOG << "removing item by reference";
+  return removeItem(to_remove.get());
+}
+
+void Container::addContainer(ContainerInside container)
+{
+  LOG << "add container";
+  containers.push_back(container);
+}
+
+Container::ContainerInside Container::removeContainer(ContainerInside container)
+{
+  LOG << "Remove container";
+  auto container_position = containers.end();
+  if ((container_position = std::find(containers.begin(), containers.end(), container)) != containers.end())
+  {
+    auto ret = *container_position;
+    containers.erase(container_position);
+    return ret;
+  }
+  LOG << "not found container";
   throw NoSuchElement();
+}
+
+const Container::Containers& Container::getContainers() const
+{
+  return containers;
 }
 
 void Container::removeFromContainer()
