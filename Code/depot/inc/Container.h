@@ -23,7 +23,7 @@ public:
 
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
-  Item removeItem(ItemReference to_remove);
+  Item removeItem(const ItemReference to_remove);
   void addContainer(ContainerInside container);
   ContainerInside removeContainer(ContainerInside container);
   const Items & getItems() const;

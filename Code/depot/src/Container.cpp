@@ -44,7 +44,7 @@ Container::Item Container::removeItem(const Item & to_remove)
   throw NoSuchElement();
 }
 
-Container::Item Container::removeItem(ItemReference to_remove)
+Container::Item Container::removeItem(const ItemReference to_remove)
 {
   LOG << "removing item by reference";
   return removeItem(to_remove.get());
