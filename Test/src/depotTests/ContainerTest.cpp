@@ -61,12 +61,14 @@ TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
   c.addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
 
   const Container::Items &items = c.getItems();
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[0].get())), getQuantity()).WillOnce(Return(0));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[1].get())), getQuantity()).WillOnce(Return(1));
+  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[0].get())), getQuantity()).WillRepeatedly(Return(0));
+  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[1].get())), getQuantity()).WillRepeatedly(Return(1));
 
   ASSERT_EQ(c.getItems().size(), 2);
 
-  c.removeItem(c.getNonConsumedItems()[0]);
+  auto quntity_expected = c.getNonConsumedItems()[0].get()->getQuantity();
+  auto removed_item = c.removeItem(c.getNonConsumedItems()[0]);
+  EXPECT_EQ(quntity_expected, removed_item->getQuantity());
 
   EXPECT_EQ(c.getItems().size(), 1);
 }
