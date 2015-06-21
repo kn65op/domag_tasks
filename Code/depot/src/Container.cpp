@@ -77,15 +77,6 @@ const Container::Containers& Container::getContainers() const
   return containers;
 }
 
-void Container::removeFromContainer()
-{
-  storehause->removeContainer(shared_from_this());
-}
-
-void Container::addToContainer(std::shared_ptr<AbstractContainer> container)
-{
-}
-
 std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
   if (storehause)

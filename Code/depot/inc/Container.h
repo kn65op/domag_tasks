@@ -48,8 +48,6 @@ private:
   Containers containers;
   std::shared_ptr<Container> storehause;
 
-  void removeFromContainer() override;
-  void addToContainer(std::shared_ptr<AbstractContainer> new_container) override;
   std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
