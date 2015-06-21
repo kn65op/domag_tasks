@@ -54,6 +54,7 @@ void Container::addContainer(ContainerInside container)
 {
   LOG << "add container";
   containers.push_back(container);
+  container->storehause = shared_from_this();
 }
 
 Container::ContainerInside Container::removeContainer(ContainerInside container)
@@ -64,6 +65,7 @@ Container::ContainerInside Container::removeContainer(ContainerInside container)
   {
     auto ret = *container_position;
     containers.erase(container_position);
+    container->storehause = nullptr;
     return ret;
   }
   LOG << "not found container";
@@ -77,8 +79,18 @@ const Container::Containers& Container::getContainers() const
 
 void Container::removeFromContainer()
 {
+  storehause->removeContainer(shared_from_this());
 }
 
-void Container::addToContainer(AbstractContainer& container)
+void Container::addToContainer(std::shared_ptr<AbstractContainer> container)
 {
+}
+
+std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
+{
+  if (storehause)
+  {
+    return storehause;
+  }
+  throw LiesNowhere();
 }

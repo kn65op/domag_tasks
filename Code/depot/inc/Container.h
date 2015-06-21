@@ -9,9 +9,16 @@
 namespace depot
 {
 
-class Container : public AbstractContainer, public Storable
+class Container : public std::enable_shared_from_this<Container>, public AbstractContainer, public Storable
 {
 public:
+  struct LiesNowhere
+  {
+
+  };
+  Container(const Container &) = delete;
+  Container* operator=(const Container&) = delete;
+
   using Item = std::unique_ptr<IItem>;
   using Items = std::vector<Item>;
   using ItemReference = std::reference_wrapper<Item>;
@@ -19,6 +26,10 @@ public:
   using ContainerInside = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside> ;
 
+  static std::shared_ptr<Container> createContainer()
+  {
+    return std::shared_ptr<Container>(new Container());
+  }
   virtual ~Container() {}
 
   void addItem(std::unique_ptr<IItem> item);
@@ -30,12 +41,16 @@ public:
   const Containers& getContainers() const;
   const SelectedItems getNonConsumedItems();
 private:
+  Container() = default;
+
   std::string name;
   Items items;
   Containers containers;
+  std::shared_ptr<Container> storehause;
 
   void removeFromContainer() override;
-  void addToContainer(AbstractContainer& new_container) override;
+  void addToContainer(std::shared_ptr<AbstractContainer> new_container) override;
+  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
 }
