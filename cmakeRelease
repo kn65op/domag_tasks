@@ -1,2 +1,2 @@
 #!/bin/bash
-./cmakeWithBuildType Release
+../cmakeWithBuildType Release $@
