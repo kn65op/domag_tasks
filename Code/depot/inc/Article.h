@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include <vector>
 
 namespace depot
 {
@@ -9,6 +11,9 @@ class IArticle
 {
 public:
   class NameEmptyException
+  {
+  };
+  class NoExistDependentArticle
   {
   };
   virtual std::string getName() const noexcept = 0;
@@ -22,15 +27,22 @@ public:
 class Article : public IArticle
 {
 public:
+  using DependentArticle = std::shared_ptr<Article>;
+  using Articles = std::vector<DependentArticle>;
   Article();
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
   std::string getUnit() const override;
   void setUnit(const std::string& u) override;
+  void addDependentArticle(DependentArticle article);
+  Articles& getArticles();
+  DependentArticle removeDependentArticle(DependentArticle article);
+
 private:
   std::string name;
   std::string unit;
+  Articles articles;
 };
 
 }
