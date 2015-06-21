@@ -111,9 +111,9 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBe
 {
   auto cont = Container::createContainer();
   c->addContainer(cont);
-  EXPECT_EQ(1, c->getContainers().size());
+  EXPECT_EQ(1U, c->getContainers().size());
   c->removeContainer(cont);
-  EXPECT_EQ(0, c->getContainers().size());
+  EXPECT_EQ(0U, c->getContainers().size());
 }
 
 TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndSecondShouldHave)
@@ -122,13 +122,26 @@ TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndS
   auto container_inside = Container::createContainer();
 
   c->addContainer(container_inside);
-  ASSERT_EQ(1, c->getContainers().size());
-  ASSERT_EQ(0, container_second->getContainers().size());
+  ASSERT_EQ(1U, c->getContainers().size());
+  ASSERT_EQ(0U, container_second->getContainers().size());
 
   container_second->addContainer(c->removeContainer(container_inside));
 
-  EXPECT_EQ(0, c->getContainers().size());
-  EXPECT_EQ(1, container_second->getContainers().size());
+  EXPECT_EQ(0U, c->getContainers().size());
+  EXPECT_EQ(1U, container_second->getContainers().size());
 }
 
-//TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
+TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
+{
+  auto container_second = Container::createContainer();
+  auto item = std::make_unique<ItemMock>();
+  c->addItem(std::move(item));
+
+  ASSERT_EQ(1U, c->getItems().size());
+  ASSERT_EQ(0U, container_second->getItems().size());
+
+  container_second->addItem(c->removeItem(c->getItems()[0]));
+
+  EXPECT_EQ(0U, c->getItems().size());
+  EXPECT_EQ(1U, container_second->getItems().size());
+}
