@@ -6,43 +6,60 @@ using depot::Article;
 
 struct ArticleTest: public Test
 {
-  Article t;
+  Article::ArticlePtr article = Article::createArticle();
 };
 
 TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 {
-  ASSERT_NE(t.getName(), "");
+  ASSERT_NE(article->getName(), "");
 }
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
 {
-  ASSERT_THROW(t.setName(""), Article::NameEmptyException);
+  ASSERT_THROW(article->setName(""), Article::NameEmptyException);
 }
 
 TEST_F(ArticleTest, ArticleAfterSetNameShouldGetSameName)
 {
   std::string name = "name";
-  t.setName(name);
-  ASSERT_EQ(t.getName(), name);
+  article->setName(name);
+  ASSERT_EQ(article->getName(), name);
 }
 
 TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
 {
   std::string unit{"unit"};
-  t.setUnit(unit);
-  ASSERT_EQ(unit, t.getUnit());
+  article->setUnit(unit);
+  ASSERT_EQ(unit, article->getUnit());
 }
 
 TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalShouldNotHaveDependedArticles)
 {
-  auto article = std::make_shared<Article>();
-  t.addDependentArticle(article);
-  EXPECT_EQ(1U, t.getArticles().size());
-  t.removeDependentArticle(article);
-  EXPECT_EQ(0U, t.getArticles().size());
+  auto article = Article::createArticle();
+  article->addDependentArticle(article);
+  EXPECT_EQ(1U, article->getArticles().size());
+  article->removeDependentArticle(article);
+  EXPECT_EQ(0U, article->getArticles().size());
 }
 
 TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 {
-  EXPECT_THROW(t.removeDependentArticle(std::make_shared<Article>()), Article::NoExistDependentArticle);
+  EXPECT_THROW(article->removeDependentArticle(Article::createArticle()), Article::NoExistDependentArticle);
 }
+/*
+TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLies)
+{
+  auto article_inside = Article::createArticle();
+  article->addDependentArticle(article_inside);
+  EXPECT_EQ(article, article_inside->getPrecedentArticle());
+}
+
+TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)
+{
+  auto cont = Container::createContainer();
+  c->addContainer(cont);
+  EXPECT_EQ(1U, c->getContainers().size());
+  c->removeContainer(cont);
+  EXPECT_EQ(0U, c->getContainers().size());
+}
+*/

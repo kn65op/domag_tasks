@@ -38,6 +38,7 @@ std::string Article::getUnit() const
 
 void Article::addDependentArticle(DependentArticle article)
 {
+  LOG << "Add dependent article" << article->name;
   articles.push_back(article);
 }
 
@@ -48,11 +49,18 @@ Article::Articles& Article::getArticles()
 
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
+  LOG << "Remove dependent article" << article->name;
   auto article_position = std::find(articles.begin(), articles.end(), article);
   if (article_position == articles.end())
   {
+    LOG << "Not found article to remove: " << article->name;
     throw NoExistDependentArticle();
   }
   auto removed_article = articles.erase(article_position);
   return *removed_article;
+}
+
+Article::ArticlePtr Article::createArticle()
+{
+  return ArticlePtr(new Article());
 }

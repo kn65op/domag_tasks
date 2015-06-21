@@ -29,7 +29,9 @@ class Article : public IArticle
 public:
   using DependentArticle = std::shared_ptr<Article>;
   using Articles = std::vector<DependentArticle>;
-  Article();
+  using ArticlePtr = std::shared_ptr<Article>;
+
+  static ArticlePtr createArticle();
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
@@ -43,6 +45,8 @@ private:
   std::string name;
   std::string unit;
   Articles articles;
+
+  Article();
 };
 
 }
