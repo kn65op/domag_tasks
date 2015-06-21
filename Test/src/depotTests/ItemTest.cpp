@@ -138,3 +138,22 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
   item.setStorehause(nullptr);
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
 }
+
+TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)
+{
+  EXPECT_THROW(Item{nullptr}, Item::ArticleCannotBeEmpty);
+  EXPECT_THROW(item.changeArticle(nullptr), Item::ArticleCannotBeEmpty);
+}
+
+TEST_F(ItemTest, ShouldBeAbleToChangeArticle)
+{
+  std::string name{"name"};
+  EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
+  EXPECT_EQ(name, item.getThing()->getName());
+
+  auto second_thing = std::make_shared<depot::ut::ArticleMock>();
+  std::string second_name{"second name"};
+  item.changeArticle(second_thing);
+  EXPECT_CALL(*second_thing, getNameMock()).WillOnce(Return(second_name));
+  EXPECT_EQ(second_name, item.getThing()->getName());
+}

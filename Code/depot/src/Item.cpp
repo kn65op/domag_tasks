@@ -2,11 +2,17 @@
 #include <TLogger.h>
 #include "../inc/Article.h"
 
-using namespace depot;
+using depot::Item;
+using depot::ConsumeHistory;
+using depot::AbstractContainer;
 
 Item::Item(std::shared_ptr<IArticle> thing_of) :
     thing{thing_of}
 {
+  if (!thing)
+  {
+    throw ArticleCannotBeEmpty();
+  }
 }
 
 void Item::buy(double amount, double price, Date bdate)
@@ -53,7 +59,7 @@ ConsumeHistory::List Item::getConsumeHistory() const
   return history.getAllConsumes();
 }
 
-std::shared_ptr<IArticle> Item::getThing() const
+Item::Article Item::getThing() const
 {
   return thing;
 }
@@ -70,4 +76,13 @@ std::shared_ptr<AbstractContainer> Item::getStorehauseImpl() const
 void Item::setStorehause(Storehause store)
 {
   storehause = store;
+}
+
+void Item::changeArticle(Article art)
+{
+  if (!art)
+  {
+    throw ArticleCannotBeEmpty{};
+  }
+  thing = art;
 }
