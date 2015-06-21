@@ -39,30 +39,35 @@ TEST_F(ContainerTest, GetItemsShouldReturnAllItemsAfterSomeAdded)
 
 TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
 {
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  auto item1 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item1, getQuantity()).WillOnce(Return(0));
+  auto item2 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item2, getQuantity()).WillOnce(Return(1));
+  auto item3 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item3, getQuantity()).WillOnce(Return(0));
+  auto item4 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item4, getQuantity()).WillOnce(Return(5));
+  auto item5 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item5, getQuantity()).WillOnce(Return(5));
 
-  const Container::Items &items = c->getItems();
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[0].get())), getQuantity()).WillOnce(Return(0));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[1].get())), getQuantity()).WillOnce(Return(1));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[2].get())), getQuantity()).WillOnce(Return(0));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[3].get())), getQuantity()).WillOnce(Return(5));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[4].get())), getQuantity()).WillOnce(Return(5));
+  c->addItem(std::move(item1));
+  c->addItem(std::move(item2));
+  c->addItem(std::move(item3));
+  c->addItem(std::move(item4));
+  c->addItem(std::move(item5));
 
   EXPECT_EQ(c->getNonConsumedItems().size(), 3);
 }
 
 TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
 {
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  auto item1 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item1, getQuantity()).WillRepeatedly(Return(0));
+  auto item2 = std::make_unique<ItemMock>();
+  EXPECT_CALL(*item2, getQuantity()).WillRepeatedly(Return(1));
 
-  const Container::Items &items = c->getItems();
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[0].get())), getQuantity()).WillRepeatedly(Return(0));
-  EXPECT_CALL(*(dynamic_cast<ItemMock*>(items[1].get())), getQuantity()).WillRepeatedly(Return(1));
+  c->addItem(std::move(item1));
+  c->addItem(std::move(item2));
 
   ASSERT_EQ(c->getItems().size(), 2);
 
