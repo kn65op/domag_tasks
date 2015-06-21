@@ -2,6 +2,7 @@
 #include "depot/inc/Item.h"
 
 #include "../../inc/depotMocks/ArticleMock.h"
+#include "depot/inc/Container.h"
 
 using namespace ::testing;
 using depot::Item;
@@ -125,4 +126,15 @@ TEST_F(ItemTest, GetNameOfItemShouldReturnValidName)
   std::string name{"name"};
   EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
   EXPECT_EQ(name, item.getThing()->getName());
+}
+
+TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
+{
+  using depot::Container;
+  EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
+  auto container = Container::createContainer();
+  item.setStorehause(container);
+  EXPECT_EQ(container, item.getStorehause());
+  item.setStorehause(nullptr);
+  EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
 }

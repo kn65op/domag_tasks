@@ -57,3 +57,17 @@ std::shared_ptr<IArticle> Item::getThing() const
 {
   return thing;
 }
+
+std::shared_ptr<AbstractContainer> Item::getStorehauseImpl() const
+{
+  if (storehause)
+  {
+    return storehause;
+  }
+  throw NoStorehause();
+}
+
+void Item::setStorehause(Storehause store)
+{
+  storehause = store;
+}

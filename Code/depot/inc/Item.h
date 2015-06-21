@@ -4,6 +4,8 @@
 #include <memory>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include "Article.h"
+#include "Storable.h"
+#include "AbstractContainer.h"
 
 namespace depot
 {
@@ -36,11 +38,16 @@ public:
   struct ItemAlreadyBuyed
   {
   };
+
+  struct NoStorehause
+  {
+  };
 };
 
-class Item : public IItem
+class Item : public IItem, public Storable
 {
 public:
+  using Storehause = std::shared_ptr<AbstractContainer>;
   Item(std::shared_ptr<IArticle> thing_of);
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
@@ -50,6 +57,7 @@ public:
   boost::gregorian::date getBuyDate() const override;
   ConsumeHistory::List getConsumeHistory() const override;
   std::shared_ptr<IArticle> getThing() const override;
+  void setStorehause(Storehause store);
 
 private:
   std::shared_ptr<IArticle> thing;
@@ -58,6 +66,9 @@ private:
   double price_per_unit = 0;
   Date buy_date;
   ConsumeHistory history;
+  Storehause storehause;
+
+  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
 }
