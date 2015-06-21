@@ -16,6 +16,9 @@ public:
   class NoExistDependentArticle
   {
   };
+  class NoPrecedentArticle
+  {
+  };
   virtual std::string getName() const noexcept = 0;
   virtual void setName(const std::string& n) = 0;
   virtual std::string getUnit() const = 0;
@@ -24,7 +27,7 @@ public:
   virtual ~IArticle() {};
 };
 
-class Article : public IArticle
+class Article : public IArticle, public std::enable_shared_from_this<Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -40,11 +43,13 @@ public:
   void addDependentArticle(DependentArticle article);
   Articles& getArticles();
   DependentArticle removeDependentArticle(DependentArticle article);
+  ArticlePtr getPrecedentArticle();
 
 private:
   std::string name;
   std::string unit;
   Articles articles;
+  ArticlePtr precedent;
 
   Article();
 };

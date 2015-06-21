@@ -46,20 +46,17 @@ TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 {
   EXPECT_THROW(article->removeDependentArticle(Article::createArticle()), Article::NoExistDependentArticle);
 }
-/*
-TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLies)
+
+TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
+{
+  EXPECT_THROW(article->getPrecedentArticle(), Article::NoPrecedentArticle);
+}
+
+TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveValidPrecedentAndAfterRemovalItShouldHaveNone)
 {
   auto article_inside = Article::createArticle();
   article->addDependentArticle(article_inside);
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
+  article->removeDependentArticle(article_inside);
+  EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);
 }
-
-TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)
-{
-  auto cont = Container::createContainer();
-  c->addContainer(cont);
-  EXPECT_EQ(1U, c->getContainers().size());
-  c->removeContainer(cont);
-  EXPECT_EQ(0U, c->getContainers().size());
-}
-*/

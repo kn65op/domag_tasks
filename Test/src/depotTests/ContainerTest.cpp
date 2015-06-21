@@ -104,12 +104,14 @@ TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
   EXPECT_THROW(c->getStorehause(), Container::LiesNowhere);
 }
 
-TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLies)
+TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLiesAndAfterRemovalItShouldHaveNone)
 {
   auto container = Container::createContainer();
   auto container_inside = Container::createContainer();
   container->addContainer(container_inside);
   EXPECT_EQ(container, container_inside->getStorehause());
+  container->removeContainer(container_inside);
+  EXPECT_THROW(container_inside->getStorehause(), Container::LiesNowhere);
 }
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)

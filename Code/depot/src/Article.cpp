@@ -40,6 +40,7 @@ void Article::addDependentArticle(DependentArticle article)
 {
   LOG << "Add dependent article" << article->name;
   articles.push_back(article);
+  article->precedent = shared_from_this();
 }
 
 Article::Articles& Article::getArticles()
@@ -57,10 +58,20 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
     throw NoExistDependentArticle();
   }
   auto removed_article = articles.erase(article_position);
+  (*removed_article)->precedent = nullptr;
   return *removed_article;
 }
 
 Article::ArticlePtr Article::createArticle()
 {
   return ArticlePtr(new Article());
+}
+
+Article::ArticlePtr Article::getPrecedentArticle()
+{
+  if (precedent)
+  {
+    return precedent;
+  }
+  throw NoPrecedentArticle();
 }
