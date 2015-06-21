@@ -65,7 +65,7 @@ Container::ContainerInside Container::removeContainer(ContainerInside container)
   {
     auto ret = *container_position;
     containers.erase(container_position);
-    container->storehause = nullptr;
+    ret->storehause = nullptr;
     return ret;
   }
   LOG << "not found container";
