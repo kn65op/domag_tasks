@@ -12,6 +12,7 @@ project (domag)
 #external libs
 FIND_PACKAGE( Boost 1.46 COMPONENTS date_time REQUIRED )
 FIND_PACKAGE( TLogger REQUIRED PATHS TLogger)
+FIND_PACKAGE( THelper REQUIRED PATHS THelper)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1y")
@@ -43,6 +44,7 @@ link_directories(${CMAKE_BINARY_DIR}/${TLOGGER_LIBRARIES_DIR})
 #includes
 include_directories(${SRC_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
+include_directories(${THELPER_INCLUDE_DIRS})
 
 set(BUILD_TESTS "false")
 add_subdirectory(TLogger)

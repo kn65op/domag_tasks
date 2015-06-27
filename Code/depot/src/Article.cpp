@@ -13,7 +13,6 @@ std::string Article::getName()const noexcept
 Article::Article()
 {
   LOG << "Unnamed article created";
-  name = "Unnamed article";
 }
 
 void Article::setName(const std::string& n)
@@ -38,7 +37,7 @@ std::string Article::getUnit() const
 
 void Article::addDependentArticle(DependentArticle article)
 {
-  LOG << "Add dependent article" << article->name;
+  LOG << "Add dependent article" << article->name.getContent();
   articles.push_back(article);
   article->precedent = shared_from_this();
 }
@@ -50,11 +49,11 @@ Article::Articles& Article::getArticles()
 
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
-  LOG << "Remove dependent article" << article->name;
+  LOG << "Remove dependent article" << article->name.getContent();
   auto article_position = std::find(articles.begin(), articles.end(), article);
   if (article_position == articles.end())
   {
-    LOG << "Not found article to remove: " << article->name;
+    LOG << "Not found article to remove: " << article->name.getContent();
     throw NoExistDependentArticle();
   }
   auto removed_article = articles.erase(article_position);

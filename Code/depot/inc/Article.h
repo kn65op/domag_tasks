@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "String/UniqueString.hpp"
+
 namespace depot
 {
 
@@ -23,6 +25,10 @@ public:
   virtual void setName(const std::string& n) = 0;
   virtual std::string getUnit() const = 0;
   virtual void setUnit(const std::string& u) = 0;
+
+  IArticle() = default;
+  IArticle(const IArticle&) = delete;
+  IArticle& operator=(const IArticle&) = delete;
 
   virtual ~IArticle() {};
 };
@@ -46,7 +52,9 @@ public:
   ArticlePtr getPrecedentArticle();
 
 private:
-  std::string name;
+  static const int UniqueStringCategory = 1;
+
+  THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
   std::string unit;
   Articles articles;
   ArticlePtr precedent;
