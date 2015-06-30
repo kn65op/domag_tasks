@@ -21,14 +21,27 @@ TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
   EXPECT_NE(article->getName(), "");
 }
 
-TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveThisName)
+TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperName)
 {
   std::string beer_string{"Beer"};
   auto beer = TopLevelArticles::createTopLevelArticle(beer_string);
   EXPECT_EQ(beer_string, beer->getName());
+
   std::string wheat_beer_string{"Wheat beer"};
   auto wheat_beer = Article::createDependentArticle(beer, wheat_beer_string);
   EXPECT_EQ(wheat_beer_string, wheat_beer->getName());
+}
+
+TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNameAndUnit)
+{
+  std::string unit = "liter";
+  std::string beer_string{"Beer"};
+  auto beer = TopLevelArticles::createTopLevelArticle(beer_string, unit);
+  EXPECT_EQ(unit, beer->getUnit());
+
+  std::string wheat_beer_string{"Wheat beer"};
+  auto wheat_beer = Article::createDependentArticle(beer, wheat_beer_string, unit);
+  EXPECT_EQ(unit, wheat_beer->getUnit());
 }
 
 TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)

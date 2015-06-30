@@ -46,6 +46,7 @@ public:
   ~Article();
   static ArticlePtr createDependentArticle(ArticlePtr precedent);
   static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name);
+  static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name, const std::string& unit);
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
@@ -67,6 +68,7 @@ private:
 
   Article();
   Article(const std::string &name);
+  Article(const std::string &name, const std::string &unit);
 };
 
 class TopLevelArticles
@@ -77,6 +79,7 @@ public:
 
   static Article::ArticlePtr createTopLevelArticle();
   static Article::ArticlePtr createTopLevelArticle(const std::string& name);
+  static Article::ArticlePtr createTopLevelArticle(const std::string& name, const std::string& unit);
   static void removeTopLevelArticle(ArticlePtr article);
   static const Container& getTopLevelArticles();
   static void clearTopLevelArticles();

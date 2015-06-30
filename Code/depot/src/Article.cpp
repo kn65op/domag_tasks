@@ -23,6 +23,13 @@ Article::Article(const std::string& n) :
   LOG << "Article " << name.getContent() << "created";
 }
 
+Article::Article(const std::string& n, const std::string &u) :
+    name{n},
+    unit{u}
+{
+  LOG << "Article " << name.getContent() << "created";
+}
+
 std::string Article::getName()const noexcept
 {
   return name;
@@ -99,6 +106,13 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const 
   return new_article;
 }
 
+Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const std::string &n, const std::string &u)
+{
+  ArticlePtr new_article{new Article(n, u)};
+  precedent->addDependentArticle(new_article);
+  return new_article;
+}
+
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
 {
   ArticlePtr new_article{new Article()};
@@ -109,6 +123,13 @@ Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n)
 {
   ArticlePtr new_article{new Article(n)};
+  addArticleToTopLevelArticles(new_article);
+  return new_article;
+}
+
+Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n, const std::string &u)
+{
+  ArticlePtr new_article{new Article(n, u)};
   addArticleToTopLevelArticles(new_article);
   return new_article;
 }
