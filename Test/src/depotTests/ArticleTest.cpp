@@ -44,12 +44,12 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleShouldNotBeCreatedWithEmptyName)
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNameAndUnit)
 {
-  std::string unit = "liter";
-  std::string beer_string{"Beer"};
+  const std::string unit = "liter";
+  const std::string beer_string{"Beer"};
   auto beer = TopLevelArticles::createTopLevelArticle(beer_string, unit);
   EXPECT_EQ(unit, beer->getUnit());
 
-  std::string wheat_beer_string{"Wheat beer"};
+  const std::string wheat_beer_string{"Wheat beer"};
   auto wheat_beer = Article::createDependentArticle(beer, wheat_beer_string, unit);
   EXPECT_EQ(unit, wheat_beer->getUnit());
 }
@@ -66,14 +66,14 @@ TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
 
 TEST_F(ArticleTest, ArticleAfterSetNameShouldGetSameName)
 {
-  std::string name = "name";
+  const std::string name = "name";
   article->setName(name);
   ASSERT_EQ(article->getName(), name);
 }
 
 TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
 {
-  std::string unit{"unit"};
+  const std::string unit{"unit"};
   article->setUnit(unit);
   ASSERT_EQ(unit, article->getUnit());
 }
