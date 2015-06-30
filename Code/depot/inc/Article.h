@@ -69,6 +69,8 @@ private:
   Article();
   Article(const std::string &name);
   Article(const std::string &name, const std::string &unit);
+
+  void checkPassedName(const std::string& name);
 };
 
 class TopLevelArticles

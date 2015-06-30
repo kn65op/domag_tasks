@@ -20,6 +20,7 @@ Article::Article()
 Article::Article(const std::string& n) :
     name{n}
 {
+  checkPassedName(n);
   LOG << "Article " << name.getContent() << "created";
 }
 
@@ -27,7 +28,16 @@ Article::Article(const std::string& n, const std::string &u) :
     name{n},
     unit{u}
 {
-  LOG << "Article " << name.getContent() << "created";
+  checkPassedName(n);
+  LOG << "Article " << name.getContent() << "with unit: " << unit << "created";
+}
+
+void Article::checkPassedName(const std::string& n)
+{
+  if (n.empty())
+  {
+    throw NameEmptyException();
+  }
 }
 
 std::string Article::getName()const noexcept

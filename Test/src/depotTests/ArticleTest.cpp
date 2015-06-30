@@ -32,6 +32,16 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
   EXPECT_EQ(wheat_beer_string, wheat_beer->getName());
 }
 
+TEST_F(ArticleTest, TopLevelAndDependentArticleShouldNotBeCreatedWithEmptyName)
+{
+  EXPECT_THROW(TopLevelArticles::createTopLevelArticle(""), Article::NameEmptyException);
+  EXPECT_THROW(Article::createDependentArticle(article, ""), Article::NameEmptyException);
+
+  const std::string unit{"l"};
+  EXPECT_THROW(TopLevelArticles::createTopLevelArticle("", unit), Article::NameEmptyException);
+  EXPECT_THROW(Article::createDependentArticle(article, "", unit), Article::NameEmptyException);
+}
+
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNameAndUnit)
 {
   std::string unit = "liter";
@@ -51,7 +61,7 @@ TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
 {
-  ASSERT_THROW(article->setName(""), Article::NameEmptyException);
+  EXPECT_THROW(article->setName(""), Article::NameEmptyException);
 }
 
 TEST_F(ArticleTest, ArticleAfterSetNameShouldGetSameName)
