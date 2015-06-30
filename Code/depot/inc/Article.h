@@ -44,6 +44,7 @@ public:
   using AllArticles = std::map<std::string, ArticleWeakPtr>;
 
   ~Article();
+  static ArticlePtr createDependentArticle(ArticlePtr precedent);
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;

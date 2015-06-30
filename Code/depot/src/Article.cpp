@@ -12,14 +12,14 @@ Article::~Article()
 {
 }
 
-std::string Article::getName()const noexcept
-{
-  return name;
-}
-
 Article::Article()
 {
   LOG << "Unnamed article created";
+}
+
+std::string Article::getName()const noexcept
+{
+  return name;
 }
 
 void Article::setName(const std::string& n)
@@ -70,13 +70,6 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
   return *removed_article;
 }
 
-Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
-{
-  ArticlePtr new_article{new Article()};
-  addArticleToTopLevelArticles(new_article);
-  return new_article;
-}
-
 Article::ArticlePtr Article::getPrecedentArticle()
 {
   if (precedent)
@@ -84,6 +77,20 @@ Article::ArticlePtr Article::getPrecedentArticle()
     return precedent;
   }
   throw NoPrecedentArticle();
+}
+
+Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent)
+{
+  ArticlePtr new_article{new Article()};
+  precedent->addDependentArticle(new_article);
+  return new_article;
+}
+
+Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
+{
+  ArticlePtr new_article{new Article()};
+  addArticleToTopLevelArticles(new_article);
+  return new_article;
 }
 
 const TopLevelArticles::Container& TopLevelArticles::getTopLevelArticles()
