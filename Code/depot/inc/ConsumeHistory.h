@@ -18,6 +18,7 @@ public:
   void push_back(const Entry &entry);
 
   List getAllConsumes() const;
+
 private:
   List entries;
 };

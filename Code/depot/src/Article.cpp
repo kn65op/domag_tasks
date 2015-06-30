@@ -4,6 +4,13 @@
 #include <algorithm>
 
 using depot::Article;
+using depot::TopLevelArticles;
+
+TopLevelArticles::Container TopLevelArticles::top_level_articles;
+
+Article::~Article()
+{
+}
 
 std::string Article::getName()const noexcept
 {
@@ -40,6 +47,7 @@ void Article::addDependentArticle(DependentArticle article)
   LOG << "Add dependent article" << article->name.getContent();
   articles.push_back(article);
   article->precedent = shared_from_this();
+  TopLevelArticles::removeTopLevelArticle(article);
 }
 
 Article::Articles& Article::getArticles()
@@ -58,12 +66,15 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
   }
   auto removed_article = articles.erase(article_position);
   (*removed_article)->precedent = nullptr;
+  TopLevelArticles::addArticleToTopLevelArticles(article);
   return *removed_article;
 }
 
-Article::ArticlePtr Article::createArticle()
+Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
 {
-  return ArticlePtr(new Article());
+  ArticlePtr new_article{new Article()};
+  addArticleToTopLevelArticles(new_article);
+  return new_article;
 }
 
 Article::ArticlePtr Article::getPrecedentArticle()
@@ -73,4 +84,36 @@ Article::ArticlePtr Article::getPrecedentArticle()
     return precedent;
   }
   throw NoPrecedentArticle();
+}
+
+const TopLevelArticles::Container& TopLevelArticles::getTopLevelArticles()
+{
+  return top_level_articles;
+}
+
+void TopLevelArticles::addArticleToTopLevelArticles(ArticlePtr article)
+{
+  LOG << "Adding top level article";
+  top_level_articles.push_back(article);
+}
+
+void TopLevelArticles::removeArticleFromTopLevelArticles(ArticlePtr article)
+{
+  auto article_position = std::find(top_level_articles.begin(), top_level_articles.end(), article);
+  LOG << "Searching if top level article exists";
+  if (article_position != top_level_articles.end())
+  {
+    LOG << "Removing top level article";
+    top_level_articles.erase(article_position);
+  }
+}
+
+void TopLevelArticles::removeTopLevelArticle(ArticlePtr article)
+{
+  removeArticleFromTopLevelArticles(article);
+}
+
+void TopLevelArticles::clearTopLevelArticles()
+{
+  top_level_articles.clear();
 }

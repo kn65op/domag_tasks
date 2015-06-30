@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <map>
 #include <vector>
 
 #include "String/UniqueString.hpp"
@@ -39,8 +40,10 @@ public:
   using DependentArticle = std::shared_ptr<Article>;
   using Articles = std::vector<DependentArticle>;
   using ArticlePtr = std::shared_ptr<Article>;
+  using ArticleWeakPtr = std::weak_ptr<Article>;
+  using AllArticles = std::map<std::string, ArticleWeakPtr>;
 
-  static ArticlePtr createArticle();
+  ~Article();
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
@@ -52,6 +55,7 @@ public:
   ArticlePtr getPrecedentArticle();
 
 private:
+  friend class TopLevelArticles;
   static const int UniqueStringCategory = 1;
 
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
@@ -60,6 +64,26 @@ private:
   ArticlePtr precedent;
 
   Article();
+};
+
+class TopLevelArticles
+{
+public:
+  using ArticlePtr = Article::ArticlePtr;
+  using Container = std::vector<ArticlePtr>;
+
+  static Article::ArticlePtr createTopLevelArticle();
+  static void removeTopLevelArticle(ArticlePtr article);
+  static const Container& getTopLevelArticles();
+  static void clearTopLevelArticles();
+
+private:
+  friend class Article;
+
+  static Container top_level_articles;
+
+  static void addArticleToTopLevelArticles(ArticlePtr article);
+  static void removeArticleFromTopLevelArticles(ArticlePtr article);
 };
 
 }

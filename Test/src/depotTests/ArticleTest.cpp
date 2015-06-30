@@ -3,15 +3,27 @@
 
 using namespace ::testing;
 using depot::Article;
+using depot::TopLevelArticles;
 
 struct ArticleTest: public Test
 {
-  Article::ArticlePtr article = Article::createArticle();
+  Article::ArticlePtr article = TopLevelArticles::createTopLevelArticle();
+
+  void TearDown()
+  {
+//    TopLevelArticles::removeTopLevelArticle(article);
+    TopLevelArticles::clearTopLevelArticles();
+  }
 };
 
 TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 {
   ASSERT_NE(article->getName(), "");
+}
+
+TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)
+{
+  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
@@ -35,16 +47,22 @@ TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
 
 TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalShouldNotHaveDependedArticles)
 {
-  auto article = Article::createArticle();
-  article->addDependentArticle(article);
+  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  auto article_dependent = TopLevelArticles::createTopLevelArticle();
+  EXPECT_EQ(2, TopLevelArticles::getTopLevelArticles().size());
+  article->addDependentArticle(article_dependent);
+  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
   EXPECT_EQ(1U, article->getArticles().size());
-  article->removeDependentArticle(article);
+  article->removeDependentArticle(article_dependent);
   EXPECT_EQ(0U, article->getArticles().size());
+  EXPECT_EQ(2, TopLevelArticles::getTopLevelArticles().size());
+  TopLevelArticles::removeTopLevelArticle(article_dependent);
+  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 {
-  EXPECT_THROW(article->removeDependentArticle(Article::createArticle()), Article::NoExistDependentArticle);
+  EXPECT_THROW(article->removeDependentArticle(TopLevelArticles::createTopLevelArticle()), Article::NoExistDependentArticle);
 }
 
 TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
@@ -54,9 +72,10 @@ TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
 
 TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveValidPrecedentAndAfterRemovalItShouldHaveNone)
 {
-  auto article_inside = Article::createArticle();
+  auto article_inside = TopLevelArticles::createTopLevelArticle();
   article->addDependentArticle(article_inside);
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
   article->removeDependentArticle(article_inside);
   EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);
+  TopLevelArticles::removeTopLevelArticle(article_inside);
 }
