@@ -65,6 +65,7 @@ private:
   ArticlePtr precedent;
 
   Article();
+  Article(const std::string &name);
 };
 
 class TopLevelArticles
@@ -74,6 +75,7 @@ public:
   using Container = std::vector<ArticlePtr>;
 
   static Article::ArticlePtr createTopLevelArticle();
+  static Article::ArticlePtr createTopLevelArticle(const std::string& name);
   static void removeTopLevelArticle(ArticlePtr article);
   static const Container& getTopLevelArticles();
   static void clearTopLevelArticles();

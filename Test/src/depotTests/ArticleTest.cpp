@@ -18,7 +18,14 @@ struct ArticleTest: public Test
 
 TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 {
-  ASSERT_NE(article->getName(), "");
+  EXPECT_NE(article->getName(), "");
+}
+
+TEST_F(ArticleTest, TopLevelArticleCreatedWithNameShouldHaveThisName)
+{
+  std::string beer_string{"Beer"};
+  auto beer = TopLevelArticles::createTopLevelArticle(beer_string);
+  EXPECT_EQ(beer_string, beer->getName());
 }
 
 TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)

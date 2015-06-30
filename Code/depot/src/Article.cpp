@@ -17,6 +17,12 @@ Article::Article()
   LOG << "Unnamed article created";
 }
 
+Article::Article(const std::string& n) :
+    name{n}
+{
+  LOG << "Article " << name.getContent() << "created";
+}
+
 std::string Article::getName()const noexcept
 {
   return name;
@@ -89,6 +95,13 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent)
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
 {
   ArticlePtr new_article{new Article()};
+  addArticleToTopLevelArticles(new_article);
+  return new_article;
+}
+
+Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n)
+{
+  ArticlePtr new_article{new Article(n)};
   addArticleToTopLevelArticles(new_article);
   return new_article;
 }
