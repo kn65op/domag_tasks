@@ -45,6 +45,7 @@ public:
 
   ~Article();
   static ArticlePtr createDependentArticle(ArticlePtr precedent);
+  static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name);
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
