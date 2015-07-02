@@ -68,6 +68,10 @@ std::string Article::getUnit() const
 void Article::addDependentArticle(DependentArticle article)
 {
   LOG << "Add dependent article" << article->name.getContent();
+  if (article.get() == this)
+  {
+    throw CannotMakeDependent("Trying to make yourself dependent");
+  }
   articles.push_back(article);
   article->precedent = shared_from_this();
   TopLevelArticles::removeTopLevelArticle(article);

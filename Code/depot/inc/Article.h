@@ -22,6 +22,12 @@ public:
   class NoPrecedentArticle
   {
   };
+  class CannotMakeDependent : public std::logic_error
+  {
+  public:
+    CannotMakeDependent(const std::string& msg) : std::logic_error(msg)
+    {}
+  };
   virtual std::string getName() const noexcept = 0;
   virtual void setName(const std::string& n) = 0;
   virtual std::string getUnit() const = 0;

@@ -92,6 +92,11 @@ TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalSho
   EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
 }
 
+TEST_F(ArticleTest, ShouldNotBeAbleToAddYourselfAsDependentArticle)
+{
+  EXPECT_THROW(article->addDependentArticle(article), Article::CannotMakeDependent);
+}
+
 TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 {
   EXPECT_THROW(article->removeDependentArticle(TopLevelArticles::createTopLevelArticle()), Article::NoExistDependentArticle);
@@ -109,4 +114,9 @@ TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveV
   article->removeDependentArticle(article_inside);
   EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);
   TopLevelArticles::removeTopLevelArticle(article_inside);
+}
+
+TEST_F(ArticleTest, StoreShouldStoreAllArticles)
+{
+
 }
