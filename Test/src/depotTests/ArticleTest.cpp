@@ -11,7 +11,6 @@ struct ArticleTest: public Test
 
   void TearDown()
   {
-//    TopLevelArticles::removeTopLevelArticle(article);
     TopLevelArticles::clearTopLevelArticles();
   }
 };
