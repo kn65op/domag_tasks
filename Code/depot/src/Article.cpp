@@ -105,7 +105,7 @@ Article::Articles& Article::getArticles()
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
   LOG << "Remove dependent article" << article->name.getContent();
-  auto article_position = std::find(dependent_articles.begin(), dependent_articles.end(), article);
+  const auto article_position = std::find(dependent_articles.begin(), dependent_articles.end(), article);
   if (article_position == dependent_articles.end())
   {
     LOG << "Not found article to remove: " << article->name.getContent();
