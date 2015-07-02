@@ -69,7 +69,7 @@ void Article::addDependentArticle(DependentArticle article)
 {
   LOG << "Add dependent article" << article->name.getContent();
   checkIfArticleCanBeAdded(article);
-  articles.push_back(article);
+  dependent_articles.push_back(article);
   article->precedent = shared_from_this();
   TopLevelArticles::removeTopLevelArticle(article);
 }
@@ -99,19 +99,19 @@ void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
 
 Article::Articles& Article::getArticles()
 {
-  return articles;
+  return dependent_articles;
 }
 
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
   LOG << "Remove dependent article" << article->name.getContent();
-  auto article_position = std::find(articles.begin(), articles.end(), article);
-  if (article_position == articles.end())
+  auto article_position = std::find(dependent_articles.begin(), dependent_articles.end(), article);
+  if (article_position == dependent_articles.end())
   {
     LOG << "Not found article to remove: " << article->name.getContent();
     throw NoExistDependentArticle();
   }
-  auto removed_article = articles.erase(article_position);
+  auto removed_article = dependent_articles.erase(article_position);
   (*removed_article)->precedent = nullptr;
   TopLevelArticles::addArticleToTopLevelArticles(article);
   return *removed_article;

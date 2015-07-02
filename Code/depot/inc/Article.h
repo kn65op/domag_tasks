@@ -78,7 +78,7 @@ private:
 
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
   std::string unit;
-  Articles articles;
+  Articles dependent_articles;
   ArticlePtr precedent;
 
   Article();
