@@ -32,7 +32,7 @@ Article::Article(const std::string& n, const std::string &u) :
   LOG << "Article " << name.getContent() << "with unit: " << unit << "created";
 }
 
-void Article::checkPassedName(const std::string& n)
+void Article::checkPassedName(const std::string& n) const
 {
   if (n.empty())
   {
@@ -68,13 +68,22 @@ std::string Article::getUnit() const
 void Article::addDependentArticle(DependentArticle article)
 {
   LOG << "Add dependent article" << article->name.getContent();
+  checkIfArticleCanBeAdded(article);
+  articles.push_back(article);
+  article->precedent = shared_from_this();
+  TopLevelArticles::removeTopLevelArticle(article);
+}
+
+void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
+{
   if (article.get() == this)
   {
     throw CannotMakeDependent("Trying to make yourself dependent");
   }
-  articles.push_back(article);
-  article->precedent = shared_from_this();
-  TopLevelArticles::removeTopLevelArticle(article);
+  if(precedent)
+  {
+    precedent->checkIfArticleCanBeAdded(article);
+  }
 }
 
 Article::Articles& Article::getArticles()

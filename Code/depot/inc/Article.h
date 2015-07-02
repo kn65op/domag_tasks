@@ -76,7 +76,8 @@ private:
   Article(const std::string &name);
   Article(const std::string &name, const std::string &unit);
 
-  void checkPassedName(const std::string& name);
+  void checkPassedName(const std::string& name) const;
+  void checkIfArticleCanBeAdded(const DependentArticle) const;
 };
 
 class TopLevelArticles
