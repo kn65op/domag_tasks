@@ -76,13 +76,24 @@ void Article::addDependentArticle(DependentArticle article)
 
 void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
 {
+  LOG << "Check if make self dependency";
   if (article.get() == this)
   {
+    LOG << "Making self dependency";
     throw CannotMakeDependent("Trying to make yourself dependent");
   }
-  if(precedent)
+  try
   {
-    precedent->checkIfArticleCanBeAdded(article);
+    LOG << "Check adding as dependent one of precedents";
+    if(precedent)
+    {
+      precedent->checkIfArticleCanBeAdded(article);
+    }
+  }
+  catch(const CannotMakeDependent&)
+  {
+    LOG << "Making circular dependency";
+    throw CannotMakeDependent("Trying to add as dependent article one of precedents");
   }
 }
 

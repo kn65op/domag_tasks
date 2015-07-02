@@ -13,14 +13,23 @@ namespace depot
 class IArticle
 {
 public:
-  class NameEmptyException
+  class NameEmptyException : public std::logic_error
   {
+  public:
+    NameEmptyException(const std::string& msg = "Cannot set empty name") : std::logic_error(msg)
+    {}
   };
-  class NoExistDependentArticle
+  class NoExistDependentArticle : public std::logic_error
   {
+  public:
+    NoExistDependentArticle(const std::string& msg = "There is no such dependent article") : std::logic_error(msg)
+    {}
   };
-  class NoPrecedentArticle
+  class NoPrecedentArticle : public std::logic_error
   {
+  public:
+    NoPrecedentArticle(const std::string& msg = "There is no precedent article") : std::logic_error(msg)
+    {}
   };
   class CannotMakeDependent : public std::logic_error
   {

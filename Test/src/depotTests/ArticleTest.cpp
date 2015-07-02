@@ -102,6 +102,7 @@ TEST_F(ArticleTest, ShouldNotBeAbleToMakeCircularDependency)
   auto article_middle = Article::createDependentArticle(article);
   auto article_bottom = Article::createDependentArticle(article_middle);
   EXPECT_THROW(article_bottom->addDependentArticle(article), Article::CannotMakeDependent);
+  EXPECT_THROW(article_bottom->addDependentArticle(article_middle), Article::CannotMakeDependent);
 }
 
 TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
