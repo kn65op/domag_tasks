@@ -15,7 +15,7 @@ before_script:
   
 script:
   if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi &&
-  cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 &&
+  cmake -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 .. &&
   make -j `nproc` &&
   Test/Tester
 
