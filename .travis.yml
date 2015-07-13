@@ -10,7 +10,7 @@ before_script:
   - mkdir _build
   - cd _build
   - sudo apt-get update -qq
-  - sudo apt-get install libboost-dev libboost-date-time-dev libboost-program-options-dev google-mock gcc-4.9 g++-4.9
+  - sudo apt-get install libboost-dev libboost-date-time-dev libboost-program-options-dev google-mock gcc-4.9 g++-4.9 cmake
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
   - cmake --version
   
