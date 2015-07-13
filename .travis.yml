@@ -8,7 +8,7 @@ before_script:
   - curl -O https://googlemock.googlecode.com/files/gmock-1.7.0.zip
   - unzip gmock-1.7.0.zip
   - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
-  - tar xvzf cmake-3.2.3-Linux-x86_64.tar.gz cmake-3.2.3-Linux-x86_64/bin/cmake
+  - tar xvzf cmake-3.2.3-Linux-x86_64.tar.gz
   - ls -al cmake-3.2.3-Linux-x86_64/bin/cmake
   - mkdir _build
   - cd _build
