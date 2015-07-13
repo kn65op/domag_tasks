@@ -19,14 +19,14 @@ set(THelper_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/THelper")
 set(BUILD_TESTS "false")
 
 add_subdirectory(${LIBRARIES_DIR}/TLogger)
-FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger")
+FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
 
 add_subdirectory(${LIBRARIES_DIR}/THelper)
-FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper)
+FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
 
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
-FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp)
+FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1y")
