@@ -15,10 +15,10 @@ before_script:
   - cmake --version
   
 script:
-  if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi &&
-  cmake -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 .. &&
-  make -j `nproc` &&
-  Test/Tester
+  -  if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi
+  -  cmake -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0 .. || cat _build/libraries/yaml-cpp/yaml-cpp-targets.cmake || cat libraries/yaml-cpp/yaml-cpp-targets.cmake
+  -  make -j `nproc`
+  -  Test/Tester
 
 env:
   global:
