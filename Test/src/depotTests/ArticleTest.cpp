@@ -55,7 +55,7 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
 
 TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)
 {
-  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
@@ -79,17 +79,17 @@ TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
 
 TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalShouldNotHaveDependedArticles)
 {
-  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
   auto article_dependent = TopLevelArticles::createTopLevelArticle();
-  EXPECT_EQ(2, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(2U, TopLevelArticles::getTopLevelArticles().size());
   article->addDependentArticle(article_dependent);
-  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
   EXPECT_EQ(1U, article->getArticles().size());
   article->removeDependentArticle(article_dependent);
   EXPECT_EQ(0U, article->getArticles().size());
-  EXPECT_EQ(2, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(2U, TopLevelArticles::getTopLevelArticles().size());
   TopLevelArticles::removeTopLevelArticle(article_dependent);
-  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ShouldNotBeAbleToAddYourselfAsDependentArticle)
