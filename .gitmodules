@@ -1,9 +1,9 @@
 [submodule "libraries/yaml-cpp"]
 	path = libraries/yaml-cpp
-	url = git@github.com:jbeder/yaml-cpp.git
+	url = https://github.com/jbeder/yaml-cpp.git
 [submodule "libraries/THelper"]
 	path = libraries/THelper
-	url = git@github.com:kn65op/THelper.git
+	url = https://github.com/kn65op/THelper.git
 [submodule "libraries/TLogger"]
 	path = libraries/TLogger
-	url = git@github.com:kn65op/TLogger.git
+	url = https://github.com/kn65op/TLogger.git
