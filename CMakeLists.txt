@@ -24,7 +24,7 @@ FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger")
 add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper)
 
-set(YAML_CPP_BUILD_TOOLS OFF)
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
 FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp)
 
