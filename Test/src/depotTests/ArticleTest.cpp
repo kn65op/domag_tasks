@@ -55,7 +55,7 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
 
 TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)
 {
-  EXPECT_EQ(1, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)

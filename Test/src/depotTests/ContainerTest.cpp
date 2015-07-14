@@ -24,7 +24,7 @@ TEST_F(ContainerTest, GetItemsShouldReturnOneItemAfterOneAdded)
 
   const Container::Items &items = c->getItems();
 
-  EXPECT_EQ(items.size(), 1);
+  EXPECT_EQ(items.size(), 1U);
 }
 
 TEST_F(ContainerTest, GetItemsShouldReturnAllItemsAfterSomeAdded)
