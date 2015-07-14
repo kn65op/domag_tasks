@@ -152,3 +152,8 @@ TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
   EXPECT_EQ(0U, c->getItems().size());
   EXPECT_EQ(1U, container_second->getItems().size());
 }
+
+TEST_F(ContainerTest, ContainerShouldNotContainItslelf)
+{
+  c->addContainer(c);
+}
