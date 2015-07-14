@@ -152,3 +152,17 @@ TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
   EXPECT_EQ(0U, c->getItems().size());
   EXPECT_EQ(1U, container_second->getItems().size());
 }
+
+TEST_F(ContainerTest, ContainerShouldNotBeInsideItself)
+{
+  EXPECT_THROW(c->addContainer(c), Container::CannotInsertContainerIntoItself);
+}
+
+TEST_F(ContainerTest, ContainerShouldNotMakeCircularDependecies)
+{
+  auto container_middle = Container::createContainer();
+  auto container_bottom = Container::createContainer();
+  c->addContainer(container_middle);
+  container_middle->addContainer(container_bottom);
+  EXPECT_THROW(container_bottom->addContainer(c), Container::CannotInsertContainerIntoItself);
+}

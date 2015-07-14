@@ -50,9 +50,31 @@ Container::Item Container::removeItem(const ItemReference to_remove)
   return removeItem(to_remove.get());
 }
 
+void Container::checkIfContainerCanBeAdded(ContainerInside container) const
+{
+  if (container.get() == this)
+  {
+    LOG << "Connot put container inside itself";
+    throw CannotInsertContainerIntoItself();
+  }
+  try
+  {
+    if (storehause)
+    {
+      storehause->checkIfContainerCanBeAdded(container);
+    }
+  }
+  catch(const CannotInsertContainerIntoItself&)
+  {
+    LOG << "Making ciruclar dependency";
+    throw CannotInsertContainerIntoItself("Trying to add container that is in upper hierarchy");
+  }
+}
+
 void Container::addContainer(ContainerInside container)
 {
   LOG << "add container";
+  checkIfContainerCanBeAdded(container);
   containers.push_back(container);
   container->storehause = shared_from_this();
 }
