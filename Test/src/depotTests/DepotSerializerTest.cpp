@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../../../Code/depot/inc/DepotSerializer.h"
+#include <sstream>
 
 using namespace ::testing;
 
@@ -10,4 +11,6 @@ struct DepotSerializerTest : public Test
 
 TEST_F(DepotSerializerTest, D)
 {
+  std::ostringstream output;
+  serializer.serialize(output);
 }
