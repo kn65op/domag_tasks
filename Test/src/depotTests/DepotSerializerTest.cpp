@@ -29,10 +29,12 @@ TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
   std::ostringstream output;
 
   auto article_name = "Art1"s;
-  auto article = depot::TopLevelArticles::createTopLevelArticle(article_name);
+  auto article_unit = "Unit"s;
+  auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
-  expected_output += "  - name: " + article_name;
+  expected_output += "  - name: " + article_name + "\n";
+  expected_output += "  - unit: " + article_unit;
   EXPECT_EQ(expected_output, output.str());
 }
