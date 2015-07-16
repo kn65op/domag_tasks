@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 namespace depot
 {
 namespace serialize
@@ -7,6 +9,8 @@ namespace serialize
 
 class DepotSerializer
 {
+public:
+  void serialize(std::ostream& out);
 };
 
 }

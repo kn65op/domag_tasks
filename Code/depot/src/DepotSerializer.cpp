@@ -1,17 +1,8 @@
 #include "../inc/DepotSerializer.h"
-#include <iostream>
 
-namespace depot
+using namespace depot::serialize;
+
+void DepotSerializer::serialize(std::ostream& out)
 {
-namespace serialize
-{
-
-class DepotSerializer
-{
-public:
-  void serialize(std::ostream& out);
-
-};
-
-}
+  out << "Version: 1\n";
 }
