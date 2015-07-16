@@ -32,6 +32,10 @@ auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> Ya
   article_node["id"] = articles[article];
   article_node["name"] = article->getName();
   article_node["unit"] = article->getUnit();
+  for (const auto & dependent_article : article->getArticles())
+  {
+    article_node["dependent_articles"].push_back(articles[dependent_article]);
+  }
   nodes.push_back(std::move(article_node));
   for (const auto & dependent_article : article->getArticles())
   {
