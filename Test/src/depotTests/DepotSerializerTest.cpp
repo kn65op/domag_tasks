@@ -28,18 +28,18 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
 {
   std::ostringstream output;
 
-  auto article_name = "Art1"s;
-  auto article_unit = "Unit"s;
-  auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
-  auto second_article_name = "Art2"s;
-  auto second_article_unit = "Unit"s;
-  auto second_article = depot::TopLevelArticles::createTopLevelArticle(second_article_name, second_article_unit);
-  auto dependent_name = "dependent"s;
-  auto dependent_unit = "dependent unit"s;
-  auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
-  auto dependent_dependent_name = "dependent_dependent"s;
-  auto dependent_dependent_unit = "dependent_dependent unit"s;
-  auto dependent_dependent_articlearticle= depot::Article::createDependentArticle(dependent_article, dependent_dependent_name, dependent_dependent_unit);
+  const auto article_name = "Art1"s;
+  const auto article_unit = "Unit"s;
+  const auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
+  const auto second_article_name = "Art2"s;
+  const auto second_article_unit = "Unit"s;
+  const auto second_article = depot::TopLevelArticles::createTopLevelArticle(second_article_name, second_article_unit);
+  const auto dependent_name = "dependent"s;
+  const auto dependent_unit = "dependent unit"s;
+  const auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
+  const auto dependent_dependent_name = "dependent_dependent"s;
+  const auto dependent_dependent_unit = "dependent_dependent unit"s;
+  const auto dependent_dependent_articlearticle= depot::Article::createDependentArticle(dependent_article, dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
