@@ -33,5 +33,5 @@ auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> Ya
       nodes.push_back(std::move(node));
     }
   }
-  return nodes;
+  return std::move(nodes);
 }
