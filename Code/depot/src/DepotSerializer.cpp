@@ -8,6 +8,11 @@ void DepotSerializer::serialize(std::ostream& out)
 {
   out << "Version: 1\n";
   storeArticlesId();
+  serializeAllArticles(out);
+}
+
+void DepotSerializer::serializeAllArticles(std::ostream& out)
+{
   YAML::Node all_articles_node;
   const auto top_level_articles = depot::TopLevelArticles::getTopLevelArticles();
   for (const auto & article : top_level_articles)
