@@ -11,17 +11,27 @@ void DepotSerializer::serialize(std::ostream& out)
   YAML::Node all_articles_node;
   for (auto & article : top_level_articles)
   {
-    YAML::Node article_node;
-    article_node["name"] = article->getName();
-    article_node["unit"] = article->getUnit();
-    all_articles_node["Articles"].push_back(article_node);
-    for (auto & dependent_article : article->getArticles())
+    for (auto & node : serializeArticle(article))
     {
-      YAML::Node article_node;
-      article_node["name"] = dependent_article->getName();
-      article_node["unit"] = dependent_article->getUnit();
-      all_articles_node["Articles"].push_back(article_node);
+      all_articles_node["Articles"].push_back(std::move(node));
     }
   }
   out << all_articles_node;
+}
+
+auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> YamlNodes
+{
+  YamlNodes nodes;
+  YAML::Node article_node;
+  article_node["name"] = article->getName();
+  article_node["unit"] = article->getUnit();
+  nodes.push_back(std::move(article_node));
+  for (auto & dependent_article : article->getArticles())
+  {
+    for (auto & node : serializeArticle(dependent_article))
+    {
+      nodes.push_back(std::move(node));
+    }
+  }
+  return nodes;
 }

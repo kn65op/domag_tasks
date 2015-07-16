@@ -31,6 +31,9 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   auto article_name = "Art1"s;
   auto article_unit = "Unit"s;
   auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
+  auto second_article_name = "Art2"s;
+  auto second_article_unit = "Unit"s;
+  auto second_article = depot::TopLevelArticles::createTopLevelArticle(second_article_name, second_article_unit);
   auto dependent_name = "dependent"s;
   auto dependent_unit = "dependent unit"s;
   auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
@@ -45,6 +48,8 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   expected_output += "  - name: " + dependent_name + "\n";
   expected_output += "    unit: " + dependent_unit + "\n";
   expected_output += "  - name: " + dependent_dependent_name + "\n";
-  expected_output += "    unit: " + dependent_dependent_unit;
+  expected_output += "    unit: " + dependent_dependent_unit + "\n";
+  expected_output += "  - name: " + second_article_name + "\n";
+  expected_output += "    unit: " + second_article_unit;
   EXPECT_EQ(expected_output, output.str());
 }

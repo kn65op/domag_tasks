@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include "Article.h"
+#include "yaml-cpp/yaml.h"
 
 namespace depot
 {
@@ -15,6 +16,9 @@ public:
   void serialize(std::ostream& out);
 
 private:
+  using YamlNodes = std::vector<YAML::Node>;
+  YamlNodes serializeArticle(const Article::ArticlePtr & article);
+
   std::map<Article::ArticlePtr, int> articles;
 };
 
