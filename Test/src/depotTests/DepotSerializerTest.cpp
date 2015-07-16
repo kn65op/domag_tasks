@@ -24,7 +24,7 @@ TEST_F(DepotSerializerTest, ShouldWriteVersionNumberWhenThereIsNoData)
   EXPECT_EQ(expected_output, output.str());
 }
 
-TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
+TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
 {
   std::ostringstream output;
 
@@ -33,13 +33,18 @@ TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
   auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
   auto dependent_name = "dependent"s;
   auto dependent_unit = "dependent unit"s;
-  auto article_dependent = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
+  auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
+  auto dependent_dependent_name = "dependent_dependent"s;
+  auto dependent_dependent_unit = "dependent_dependent unit"s;
+  auto dependent_dependent_articlearticle= depot::Article::createDependentArticle(dependent_article, dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
   expected_output += "  - name: " + article_name + "\n";
   expected_output += "    unit: " + article_unit + "\n";
   expected_output += "  - name: " + dependent_name + "\n";
-  expected_output += "    unit: " + dependent_unit;
+  expected_output += "    unit: " + dependent_unit + "\n";
+  expected_output += "  - name: " + dependent_dependent_name + "\n";
+  expected_output += "    unit: " + dependent_dependent_unit;
   EXPECT_EQ(expected_output, output.str());
 }
