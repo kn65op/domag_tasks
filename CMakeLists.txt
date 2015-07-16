@@ -5,14 +5,28 @@ set(SRC_DIR "Code")
 set(MAIN_SRC_DIR "${SRC_DIR}/Main")
 set(DEBUG_BIN_DIR "Debug")
 set(RELEASE_BIN_DIR "Release")
+set(LIBRARIES_DIR "libraries")
+set(LIBRARIES_BIN_DIR "libraries")
 
 #project
 project (domag)
 
 #external libs
 FIND_PACKAGE( Boost 1.46 COMPONENTS date_time REQUIRED )
-FIND_PACKAGE( TLogger REQUIRED PATHS TLogger)
-FIND_PACKAGE( THelper REQUIRED PATHS THelper)
+
+set(TLogger_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/TLogger")
+set(THelper_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/THelper")
+set(BUILD_TESTS "false")
+
+add_subdirectory(${LIBRARIES_DIR}/TLogger)
+FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
+
+add_subdirectory(${LIBRARIES_DIR}/THelper)
+FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
+
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
+add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
+FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1y")
@@ -39,16 +53,12 @@ set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --quiet
 --tool=memcheck --leak-check=yes --show-reachable=yes
 --num-callers=100 --verbose --demangle=yes")
 
-link_directories(${CMAKE_BINARY_DIR}/${TLOGGER_LIBRARIES_DIR})
+link_directories(${TLOGGER_LIBRARIES_DIR})
 
 #includes
 include_directories(${SRC_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
-
-set(BUILD_TESTS "false")
-add_subdirectory(TLogger)
-
 
 #files
 #file(GLOB EXAMPLE_FILES ${SRC_DIR}/*.cpp)
@@ -73,8 +83,9 @@ set(EXE_FILE ${PROJECT_NAME})
 add_executable(${EXE_FILE} ${MAIN_FILES})
 
 #libraries
-TARGET_LINK_LIBRARIES(${EXE_FILE} ${Boost_LIBRARIES}
-                                  ${TLOGGER_LIBRARIES} )
+TARGET_LINK_LIBRARIES(${EXE_FILE}
+                      ${Boost_LIBRARIES}
+		      ${TLOGGER_LIBRARIES} )
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
 			  

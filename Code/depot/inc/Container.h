@@ -12,10 +12,20 @@ namespace depot
 class Container : public std::enable_shared_from_this<Container>, public AbstractContainer, public Storable
 {
 public:
-  struct LiesNowhere
+  struct LiesNowhere : public std::logic_error
   {
-
+    LiesNowhere(const std::string& msg = "Container is not inside other container") :
+      std::logic_error(msg)
+    {}
   };
+
+  struct CannotInsertContainerIntoItself : public std::logic_error
+  {
+    CannotInsertContainerIntoItself(const std::string& msg = "Container cannot  be inside itself") :
+      std::logic_error(msg)
+    {}
+  };
+
   Container(const Container &) = delete;
   Container* operator=(const Container&) = delete;
 
@@ -47,6 +57,8 @@ private:
   Items items;
   Containers containers;
   std::shared_ptr<Container> storehause;
+
+  void checkIfContainerCanBeAdded(ContainerInside container) const;
 
   std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
