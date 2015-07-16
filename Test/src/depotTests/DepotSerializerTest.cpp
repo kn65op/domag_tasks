@@ -43,13 +43,17 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
-  expected_output += "  - name: " + article_name + "\n";
+  expected_output += "  - id: 1\n";
+  expected_output += "    name: " + article_name + "\n";
   expected_output += "    unit: " + article_unit + "\n";
-  expected_output += "  - name: " + dependent_name + "\n";
+  expected_output += "  - id: 2\n";
+  expected_output += "    name: " + dependent_name + "\n";
   expected_output += "    unit: " + dependent_unit + "\n";
-  expected_output += "  - name: " + dependent_dependent_name + "\n";
+  expected_output += "  - id: 3\n";
+  expected_output += "    name: " + dependent_dependent_name + "\n";
   expected_output += "    unit: " + dependent_dependent_unit + "\n";
-  expected_output += "  - name: " + second_article_name + "\n";
+  expected_output += "  - id: 4\n";
+  expected_output += "    name: " + second_article_name + "\n";
   expected_output += "    unit: " + second_article_unit;
   EXPECT_EQ(expected_output, output.str());
 }
