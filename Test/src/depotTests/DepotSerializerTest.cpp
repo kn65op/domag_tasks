@@ -35,6 +35,6 @@ TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
 
   expected_output += "Articles:\n";
   expected_output += "  - name: " + article_name + "\n";
-  expected_output += "  - unit: " + article_unit;
+  expected_output += "    unit: " + article_unit;
   EXPECT_EQ(expected_output, output.str());
 }
