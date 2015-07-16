@@ -59,6 +59,7 @@ link_directories(${TLOGGER_LIBRARIES_DIR})
 include_directories(${SRC_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
+include_directories(${YAML_CPP_INCLUDE_DIR})
 
 #files
 #file(GLOB EXAMPLE_FILES ${SRC_DIR}/*.cpp)
@@ -85,7 +86,8 @@ add_executable(${EXE_FILE} ${MAIN_FILES})
 #libraries
 TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${Boost_LIBRARIES}
-		      ${TLOGGER_LIBRARIES} )
+		      ${TLOGGER_LIBRARIES}
+		      ${YAML_CPP_LIBRARIES})
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
 			  

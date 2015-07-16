@@ -33,6 +33,6 @@ TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
-  expected_output += "  - name: " + article_name + "\n";
+  expected_output += "  - name: " + article_name;
   EXPECT_EQ(expected_output, output.str());
 }
