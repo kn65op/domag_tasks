@@ -7,9 +7,9 @@ using namespace depot::serialize;
 void DepotSerializer::serialize(std::ostream& out)
 {
   out << "Version: 1\n";
-  auto top_level_articles = depot::TopLevelArticles::getTopLevelArticles();
+  const auto top_level_articles = depot::TopLevelArticles::getTopLevelArticles();
   YAML::Node all_articles_node;
-  for (auto & article : top_level_articles)
+  for (const auto & article : top_level_articles)
   {
     for (auto & node : serializeArticle(article))
     {
@@ -26,7 +26,7 @@ auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> Ya
   article_node["name"] = article->getName();
   article_node["unit"] = article->getUnit();
   nodes.push_back(std::move(article_node));
-  for (auto & dependent_article : article->getArticles())
+  for (const auto & dependent_article : article->getArticles())
   {
     for (auto & node : serializeArticle(dependent_article))
     {
