@@ -13,7 +13,7 @@ before_script:
   - mkdir _build
   - cd _build
   - sudo apt-get update -qq
-  - sudo apt-get install libboost-dev libboost-date-time-dev libboost-program-options-dev gcc-4.9 g++-4.9
+  - sudo apt-get install gcc-4.9 g++-4.9
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
   # Install newer boost compatible with gcc 4.8.
   - wget  --output-document=boost-trunk.tar.bz2 http://ufpr.dl.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2
