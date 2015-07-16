@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <map>
+#include "Article.h"
 
 namespace depot
 {
@@ -11,6 +13,9 @@ class DepotSerializer
 {
 public:
   void serialize(std::ostream& out);
+
+private:
+  std::map<Article::ArticlePtr, int> articles;
 };
 
 }

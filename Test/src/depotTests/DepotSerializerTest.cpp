@@ -31,10 +31,15 @@ TEST_F(DepotSerializerTest, ShouldWriteTopLevelArticle)
   auto article_name = "Art1"s;
   auto article_unit = "Unit"s;
   auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
+  auto dependent_name = "dependent"s;
+  auto dependent_unit = "dependent unit"s;
+  auto article_dependent = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
   serializer.serialize(output);
 
   expected_output += "Articles:\n";
   expected_output += "  - name: " + article_name + "\n";
-  expected_output += "    unit: " + article_unit;
+  expected_output += "    unit: " + article_unit + "\n";
+  expected_output += "  - name: " + dependent_name + "\n";
+  expected_output += "    unit: " + dependent_unit;
   EXPECT_EQ(expected_output, output.str());
 }

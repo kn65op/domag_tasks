@@ -15,6 +15,13 @@ void DepotSerializer::serialize(std::ostream& out)
     article_node["name"] = article->getName();
     article_node["unit"] = article->getUnit();
     all_articles_node["Articles"].push_back(article_node);
+    for (auto & dependent_article : article->getArticles())
+    {
+      YAML::Node article_node;
+      article_node["name"] = dependent_article->getName();
+      article_node["unit"] = dependent_article->getUnit();
+      all_articles_node["Articles"].push_back(article_node);
+    }
   }
   out << all_articles_node;
 }
