@@ -56,7 +56,7 @@ private:
   std::string name;
   Items items;
   Containers containers;
-  std::shared_ptr<Container> storehause;
+  std::weak_ptr<Container> storehause;
 
   void checkIfContainerCanBeAdded(ContainerInside container) const;
 

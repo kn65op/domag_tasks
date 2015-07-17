@@ -10,6 +10,7 @@ TopLevelArticles::Container TopLevelArticles::top_level_articles;
 
 Article::~Article()
 {
+  LOG << "Removing: " << name.getContent() << "\n";
 }
 
 Article::Article()
@@ -85,9 +86,9 @@ void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
   try
   {
     LOG << "Check adding as dependent one of precedents";
-    if(precedent)
+    if(auto precedent_real = precedent.lock())
     {
-      precedent->checkIfArticleCanBeAdded(article);
+      precedent_real->checkIfArticleCanBeAdded(article);
     }
   }
   catch(const CannotMakeDependent&)
@@ -112,16 +113,16 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
     throw NoExistDependentArticle();
   }
   auto removed_article = dependent_articles.erase(article_position);
-  (*removed_article)->precedent = nullptr;
+  (*removed_article)->precedent.reset();
   TopLevelArticles::addArticleToTopLevelArticles(article);
   return *removed_article;
 }
 
 Article::ArticlePtr Article::getPrecedentArticle()
 {
-  if (precedent)
+  if (auto precedent_real = precedent.lock())
   {
-    return precedent;
+    return precedent_real;
   }
   throw NoPrecedentArticle();
 }
@@ -197,5 +198,6 @@ void TopLevelArticles::removeTopLevelArticle(ArticlePtr article)
 
 void TopLevelArticles::clearTopLevelArticles()
 {
+  LOG << "Clearing top level articles";
   top_level_articles.clear();
 }

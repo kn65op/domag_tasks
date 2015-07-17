@@ -55,6 +55,7 @@ public:
   using DependentArticle = std::shared_ptr<Article>;
   using Articles = std::vector<DependentArticle>;
   using ArticlePtr = std::shared_ptr<Article>;
+  using PrecedentArticle = std::weak_ptr<Article>;
   using ArticleWeakPtr = std::weak_ptr<Article>;
   using AllArticles = std::map<std::string, ArticleWeakPtr>;
 
@@ -79,7 +80,7 @@ private:
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
   std::string unit;
   Articles dependent_articles;
-  ArticlePtr precedent;
+  PrecedentArticle precedent;
 
   Article();
   Article(const std::string &name);

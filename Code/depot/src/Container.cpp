@@ -59,9 +59,9 @@ void Container::checkIfContainerCanBeAdded(ContainerInside container) const
   }
   try
   {
-    if (storehause)
+    if (auto storehause_real = storehause.lock())
     {
-      storehause->checkIfContainerCanBeAdded(container);
+      storehause_real->checkIfContainerCanBeAdded(container);
     }
   }
   catch(const CannotInsertContainerIntoItself&)
@@ -87,7 +87,7 @@ Container::ContainerInside Container::removeContainer(ContainerInside container)
   {
     auto ret = *container_position;
     containers.erase(container_position);
-    ret->storehause = nullptr;
+    ret->storehause.reset();
     return ret;
   }
   LOG << "not found container";
@@ -101,9 +101,9 @@ const Container::Containers& Container::getContainers() const
 
 std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
-  if (storehause)
+  if (auto storehause_real = storehause.lock())
   {
-    return storehause;
+    return storehause_real;
   }
   throw LiesNowhere();
 }
