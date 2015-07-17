@@ -19,6 +19,7 @@ private:
   using YamlNodes = std::vector<YAML::Node>;
   void serializeAllArticles(std::ostream& out);
   YamlNodes serializeArticle(const Article::ArticlePtr & article);
+  YAML::Node serializeArticleData(const Article::ArticlePtr & article);
   void storeArticlesId();
   void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
 
