@@ -16,7 +16,7 @@ before_script:
   - sudo apt-get install gcc-4.9 g++-4.9
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
   # Install newer boost compatible with gcc 4.8.
-  - wget  --output-document=boost-trunk.tar.bz2 http://ufpr.dl.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2
+  - wget  --output-document=boost-trunk.tar.bz2 http://ufpr.dl.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2
   - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost-trunk"
   - export CMAKE_MODULE_PATH="$BOOST_ROOT"
   - mkdir -p $BOOST_ROOT
