@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <functional>
+#include "HierarchicalClass.h"
 #include "AbstractContainer.h"
 #include "Storable.h"
 #include "Item.h"

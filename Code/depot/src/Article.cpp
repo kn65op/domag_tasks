@@ -6,11 +6,11 @@
 using depot::Article;
 using depot::TopLevelArticles;
 
-TopLevelArticles::Container TopLevelArticles::top_level_articles;
+template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesContainer depot::HierarchicalClass<Entity>::top_level_entities;
 
 Article::~Article()
 {
-  LOG << "Removing: " << name.getContent() << "\n";
+  LOG << "Removing: " << name.getContent();
 }
 
 Article::Article()
@@ -129,41 +129,27 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const 
 
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n, const std::string &u)
 {
-  Article::checkPassedName(n);
-  ArticlePtr new_article{new Article(n, u)};
-  addArticleToTopLevelArticles(new_article);
-  return new_article;
+  return Article::createTopLevelEntity(n, u);
 }
 
 const TopLevelArticles::Container& TopLevelArticles::getTopLevelArticles()
 {
-  return top_level_articles;
+  return Article::getTopLevelEntities();
 }
 
 void TopLevelArticles::addArticleToTopLevelArticles(ArticlePtr article)
 {
   LOG << "Adding top level article";
-  top_level_articles.push_back(article);
-}
-
-void TopLevelArticles::removeArticleFromTopLevelArticles(ArticlePtr article)
-{
-  auto article_position = std::find(top_level_articles.begin(), top_level_articles.end(), article);
-  LOG << "Searching if top level article exists";
-  if (article_position != top_level_articles.end())
-  {
-    LOG << "Removing top level article";
-    top_level_articles.erase(article_position);
-  }
+  Article::addEntityToTopLevelEntities(article);
 }
 
 void TopLevelArticles::removeTopLevelArticle(ArticlePtr article)
 {
-  removeArticleFromTopLevelArticles(article);
+  Article::removeTopLevelEntity(article);
 }
 
 void TopLevelArticles::clearTopLevelArticles()
 {
   LOG << "Clearing top level articles";
-  top_level_articles.clear();
+  Article::clearTopLevelEntites();
 }

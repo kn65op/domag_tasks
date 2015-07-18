@@ -4,7 +4,7 @@
 #include <memory>
 #include <map>
 #include <vector>
-
+#include "HierarchicalClass.h"
 #include "THelper/String/UniqueString.hpp"
 
 namespace depot
@@ -49,7 +49,7 @@ public:
   virtual ~IArticle() {};
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>
+class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass<Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -58,6 +58,11 @@ public:
   using PrecedentArticle = std::weak_ptr<Article>;
   using ArticleWeakPtr = std::weak_ptr<Article>;
   using AllArticles = std::map<std::string, ArticleWeakPtr>;
+
+//#for Hierar
+  using NoPrecedentException = IArticle::NoPrecedentArticle;
+  using CircularDependencyException = IArticle::CannotMakeDependent;
+  using NoInfreriorException = IArticle::NoExistDependentArticle;
 
   ~Article();
   static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name = "", const std::string& unit = "");
@@ -70,9 +75,14 @@ public:
   Articles& getArticles();
   DependentArticle removeDependentArticle(DependentArticle article);
   ArticlePtr getPrecedentArticle();
+  static void doCreationChecks(const std::string& name, const std::string &)
+  {
+    checkPassedName(name);
+  }
 
 private:
   friend class TopLevelArticles;
+  friend class HierarchicalClass<Article>;
   static const int UniqueStringCategory = 1;
 
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
@@ -101,10 +111,7 @@ public:
 private:
   friend class Article;
 
-  static Container top_level_articles;
-
   static void addArticleToTopLevelArticles(ArticlePtr article);
-  static void removeArticleFromTopLevelArticles(ArticlePtr article);
 };
 
 }
