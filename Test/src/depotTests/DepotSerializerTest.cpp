@@ -68,3 +68,13 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   expected_output += "    unit: " + second_article_unit;
   EXPECT_EQ(expected_output, output.str());
 }
+
+TEST_F(DepotSerializerTest, SholdWriteAllContainers)
+{
+  std::ostringstream output;
+
+  serializer.serialize(output);
+
+  expected_output += "Containers:\n";
+//  EXPECT_EQ(expected_output, output.str());
+}
