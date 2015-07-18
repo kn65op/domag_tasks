@@ -134,13 +134,6 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent)
   return new_article;
 }
 
-Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const std::string &n)
-{
-  ArticlePtr new_article{new Article(n)};
-  precedent->addDependentArticle(new_article);
-  return new_article;
-}
-
 Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const std::string &n, const std::string &u)
 {
   ArticlePtr new_article{new Article(n, u)};
@@ -151,13 +144,6 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const 
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
 {
   ArticlePtr new_article{new Article()};
-  addArticleToTopLevelArticles(new_article);
-  return new_article;
-}
-
-Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n)
-{
-  ArticlePtr new_article{new Article(n)};
   addArticleToTopLevelArticles(new_article);
   return new_article;
 }
