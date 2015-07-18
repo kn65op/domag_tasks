@@ -13,6 +13,9 @@ namespace depot
 class IItem
 {
 public:
+  using Ptr = std::unique_ptr<IItem>;
+  using Reference = std::reference_wrapper<Ptr>;
+
   virtual ~IItem() {}
   IItem() = default;
   IItem(const IItem &) = delete;

@@ -29,9 +29,9 @@ public:
   Container(const Container &) = delete;
   Container* operator=(const Container&) = delete;
 
-  using Item = std::unique_ptr<IItem>;
+  using Item = depot::IItem::Ptr;
   using Items = std::vector<Item>;
-  using ItemReference = std::reference_wrapper<Item>;
+  using ItemReference = depot::IItem::Reference;
   using SelectedItems = std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside> ;
