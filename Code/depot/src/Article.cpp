@@ -15,7 +15,7 @@ Article::~Article()
 
 Article::Article()
 {
-  LOG << "Unnamed article created";
+  LOG << "Unnamed article created: " << name.getContent();
 }
 
 Article::Article(const std::string& n, const std::string &u) :
