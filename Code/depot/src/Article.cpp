@@ -18,13 +18,6 @@ Article::Article()
   LOG << "Unnamed article created";
 }
 
-Article::Article(const std::string& n) :
-    name{n}
-{
-  checkPassedName(n);
-  LOG << "Article " << name.getContent() << "created";
-}
-
 Article::Article(const std::string& n, const std::string &u) :
     name{n},
     unit{u}
