@@ -22,15 +22,15 @@ Article::Article(const std::string& n, const std::string &u) :
     name{n},
     unit{u}
 {
-  checkPassedName(n);
   LOG << "Article " << name.getContent() << "with unit: " << unit << "created";
 }
 
-void Article::checkPassedName(const std::string& n) const
+void Article::checkPassedName(const std::string& n)
 {
   if (n.empty())
   {
-    throw NameEmptyException();
+    LOG << "Set default category name";
+    THelper::String::UniqueStdCategorizedString<Article::UniqueStringCategory>::setDefaultName("Unnamed Category");
   }
 }
 
@@ -120,13 +120,6 @@ Article::ArticlePtr Article::getPrecedentArticle()
   throw NoPrecedentArticle();
 }
 
-Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent)
-{
-  ArticlePtr new_article{new Article()};
-  precedent->addDependentArticle(new_article);
-  return new_article;
-}
-
 Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const std::string &n, const std::string &u)
 {
   ArticlePtr new_article{new Article(n, u)};
@@ -134,15 +127,9 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const 
   return new_article;
 }
 
-Article::ArticlePtr TopLevelArticles::createTopLevelArticle()
-{
-  ArticlePtr new_article{new Article()};
-  addArticleToTopLevelArticles(new_article);
-  return new_article;
-}
-
 Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n, const std::string &u)
 {
+  Article::checkPassedName(n);
   ArticlePtr new_article{new Article(n, u)};
   addArticleToTopLevelArticles(new_article);
   return new_article;

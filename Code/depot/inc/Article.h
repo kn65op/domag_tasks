@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-#include "String/UniqueString.hpp"
+#include "THelper/String/UniqueString.hpp"
 
 namespace depot
 {
@@ -60,8 +60,7 @@ public:
   using AllArticles = std::map<std::string, ArticleWeakPtr>;
 
   ~Article();
-  static ArticlePtr createDependentArticle(ArticlePtr precedent);
-  static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name, const std::string& unit = "");
+  static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name = "", const std::string& unit = "");
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
@@ -84,7 +83,7 @@ private:
   Article();
   Article(const std::string &name, const std::string &unit = "");
 
-  void checkPassedName(const std::string& name) const;
+  static void checkPassedName(const std::string& name);
   void checkIfArticleCanBeAdded(const DependentArticle) const;
 };
 
@@ -94,8 +93,7 @@ public:
   using ArticlePtr = Article::ArticlePtr;
   using Container = std::vector<ArticlePtr>;
 
-  static Article::ArticlePtr createTopLevelArticle();
-  static Article::ArticlePtr createTopLevelArticle(const std::string& name, const std::string& unit = "");
+  static Article::ArticlePtr createTopLevelArticle(const std::string& name = "", const std::string& unit = "");
   static void removeTopLevelArticle(ArticlePtr article);
   static const Container& getTopLevelArticles();
   static void clearTopLevelArticles();

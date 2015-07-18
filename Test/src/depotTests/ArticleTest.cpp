@@ -17,7 +17,7 @@ struct ArticleTest: public Test
 
 TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 {
-  EXPECT_NE(article->getName(), "");
+  EXPECT_NE("", article->getName());
 }
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperName)
@@ -31,14 +31,14 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
   EXPECT_EQ(wheat_beer_string, wheat_beer->getName());
 }
 
-TEST_F(ArticleTest, TopLevelAndDependentArticleShouldNotBeCreatedWithEmptyName)
+TEST_F(ArticleTest, TopLevelAndDependentArticleShouldBeCreatedWithEmptyName)
 {
-  EXPECT_THROW(TopLevelArticles::createTopLevelArticle(""), Article::NameEmptyException);
-  EXPECT_THROW(Article::createDependentArticle(article, ""), Article::NameEmptyException);
+  EXPECT_NO_THROW(TopLevelArticles::createTopLevelArticle(""));
+  EXPECT_NO_THROW(Article::createDependentArticle(article, ""));
 
   const std::string unit{"l"};
-  EXPECT_THROW(TopLevelArticles::createTopLevelArticle("", unit), Article::NameEmptyException);
-  EXPECT_THROW(Article::createDependentArticle(article, "", unit), Article::NameEmptyException);
+  EXPECT_NO_THROW(TopLevelArticles::createTopLevelArticle("", unit));
+  EXPECT_NO_THROW(Article::createDependentArticle(article, "", unit));
 }
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNameAndUnit)
