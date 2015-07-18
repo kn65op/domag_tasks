@@ -14,7 +14,7 @@ void DepotSerializer::serialize(std::ostream& out)
 void DepotSerializer::serializeAllArticles(std::ostream& out)
 {
   YAML::Node all_articles_node;
-  const auto top_level_articles = depot::TopLevelArticles::getTopLevelArticles();
+  const auto top_level_articles = depot::Article::getTopLevelArticles();
   for (const auto & article : top_level_articles)
   {
     for (auto & node : serializeArticle(article))
@@ -54,7 +54,7 @@ auto DepotSerializer::serializeArticleData(const Article::ArticlePtr& article) -
 
 void DepotSerializer::storeArticlesId()
 {
-  const auto top_level_articles = depot::TopLevelArticles::getTopLevelArticles();
+  const auto top_level_articles = depot::Article::getTopLevelArticles();
   for (const auto & article : top_level_articles)
   {
     storeArticleAndItsDependentsId(article);

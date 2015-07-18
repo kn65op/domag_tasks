@@ -4,7 +4,6 @@
 #include <algorithm>
 
 using depot::Article;
-using depot::TopLevelArticles;
 
 template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesContainer depot::HierarchicalClass<Entity>::top_level_entities;
 
@@ -65,7 +64,7 @@ void Article::addDependentArticle(DependentArticle article)
   checkIfArticleCanBeAdded(article);
   dependent_articles.push_back(article);
   article->precedent = shared_from_this();
-  TopLevelArticles::removeTopLevelArticle(article);
+  removeTopLevelEntity(article);
 }
 
 void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
@@ -107,7 +106,7 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
   }
   auto removed_article = dependent_articles.erase(article_position);
   (*removed_article)->precedent.reset();
-  TopLevelArticles::addArticleToTopLevelArticles(article);
+  addEntityToTopLevelEntities(article);
   return *removed_article;
 }
 
@@ -125,31 +124,4 @@ Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const 
   ArticlePtr new_article{new Article(n, u)};
   precedent->addDependentArticle(new_article);
   return new_article;
-}
-
-Article::ArticlePtr TopLevelArticles::createTopLevelArticle(const std::string &n, const std::string &u)
-{
-  return Article::createTopLevelEntity(n, u);
-}
-
-const TopLevelArticles::Container& TopLevelArticles::getTopLevelArticles()
-{
-  return Article::getTopLevelEntities();
-}
-
-void TopLevelArticles::addArticleToTopLevelArticles(ArticlePtr article)
-{
-  LOG << "Adding top level article";
-  Article::addEntityToTopLevelEntities(article);
-}
-
-void TopLevelArticles::removeTopLevelArticle(ArticlePtr article)
-{
-  Article::removeTopLevelEntity(article);
-}
-
-void TopLevelArticles::clearTopLevelArticles()
-{
-  LOG << "Clearing top level articles";
-  Article::clearTopLevelEntites();
 }

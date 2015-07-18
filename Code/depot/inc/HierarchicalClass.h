@@ -46,11 +46,13 @@ public:
     top_level_entities.clear();
   }
 
+protected:
   static void addEntityToTopLevelEntities(EntitySharedPtr entity)
   {
     top_level_entities.push_back(entity);
   }
 
+private:
   static EntitiesContainer top_level_entities;
 };
 

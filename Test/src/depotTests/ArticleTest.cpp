@@ -3,15 +3,14 @@
 
 using namespace ::testing;
 using depot::Article;
-using depot::TopLevelArticles;
 
 struct ArticleTest: public Test
 {
-  Article::ArticlePtr article = TopLevelArticles::createTopLevelArticle();
+  Article::ArticlePtr article = Article::createTopLevelArticle();
 
   void TearDown()
   {
-    TopLevelArticles::clearTopLevelArticles();
+    Article::clearTopLevelArticles();
   }
 };
 
@@ -23,7 +22,7 @@ TEST_F(ArticleTest, ArticleCreatedShouldNotHaveEmptyName)
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperName)
 {
   std::string beer_string{"Beer"};
-  auto beer = TopLevelArticles::createTopLevelArticle(beer_string);
+  auto beer = Article::createTopLevelArticle(beer_string);
   EXPECT_EQ(beer_string, beer->getName());
 
   std::string wheat_beer_string{"Wheat beer"};
@@ -33,11 +32,11 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleShouldBeCreatedWithEmptyName)
 {
-  EXPECT_NO_THROW(TopLevelArticles::createTopLevelArticle(""));
+  EXPECT_NO_THROW(Article::createTopLevelArticle(""));
   EXPECT_NO_THROW(Article::createDependentArticle(article, ""));
 
   const std::string unit{"l"};
-  EXPECT_NO_THROW(TopLevelArticles::createTopLevelArticle("", unit));
+  EXPECT_NO_THROW(Article::createTopLevelArticle("", unit));
   EXPECT_NO_THROW(Article::createDependentArticle(article, "", unit));
 }
 
@@ -45,7 +44,7 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
 {
   const std::string unit = "liter";
   const std::string beer_string{"Beer"};
-  auto beer = TopLevelArticles::createTopLevelArticle(beer_string, unit);
+  auto beer = Article::createTopLevelArticle(beer_string, unit);
   EXPECT_EQ(unit, beer->getUnit());
 
   const std::string wheat_beer_string{"Wheat beer"};
@@ -55,7 +54,7 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
 
 TEST_F(ArticleTest, AllArticlesShouldBeStoredInOnePlaseAndShouldBeSearchalbe)
 {
-  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, Article::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ArticleSetNameShouldNotAcceptEmptyName)
@@ -79,17 +78,17 @@ TEST_F(ArticleTest, ShouldBeAbleToSetUnit)
 
 TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalShouldNotHaveDependedArticles)
 {
-  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
-  auto article_dependent = TopLevelArticles::createTopLevelArticle();
-  EXPECT_EQ(2U, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, Article::getTopLevelArticles().size());
+  auto article_dependent = Article::createTopLevelArticle();
+  EXPECT_EQ(2U, Article::getTopLevelArticles().size());
   article->addDependentArticle(article_dependent);
-  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(1U, Article::getTopLevelArticles().size());
   EXPECT_EQ(1U, article->getArticles().size());
   article->removeDependentArticle(article_dependent);
   EXPECT_EQ(0U, article->getArticles().size());
-  EXPECT_EQ(2U, TopLevelArticles::getTopLevelArticles().size());
-  TopLevelArticles::removeTopLevelArticle(article_dependent);
-  EXPECT_EQ(1U, TopLevelArticles::getTopLevelArticles().size());
+  EXPECT_EQ(2U, Article::getTopLevelArticles().size());
+  Article::removeTopLevelArticle(article_dependent);
+  EXPECT_EQ(1U, Article::getTopLevelArticles().size());
 }
 
 TEST_F(ArticleTest, ShouldNotBeAbleToAddYourselfAsDependentArticle)
@@ -107,7 +106,7 @@ TEST_F(ArticleTest, ShouldNotBeAbleToMakeCircularDependency)
 
 TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 {
-  EXPECT_THROW(article->removeDependentArticle(TopLevelArticles::createTopLevelArticle()), Article::NoExistDependentArticle);
+  EXPECT_THROW(article->removeDependentArticle(Article::createTopLevelArticle()), Article::NoExistDependentArticle);
 }
 
 TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
@@ -121,7 +120,7 @@ TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveV
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
   article->removeDependentArticle(article_inside);
   EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);
-  TopLevelArticles::removeTopLevelArticle(article_inside);
+  Article::removeTopLevelArticle(article_inside);
 }
 
 TEST_F(ArticleTest, StoreShouldStoreAllArticles)

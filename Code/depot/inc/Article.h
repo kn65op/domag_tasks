@@ -49,7 +49,7 @@ public:
   virtual ~IArticle() {};
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass<Article>
+class Article : public IArticle, public std::enable_shared_from_this<Article>, private HierarchicalClass<Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -80,6 +80,26 @@ public:
     checkPassedName(name);
   }
 
+  static HierarchicalClass::EntitySharedPtr createTopLevelArticle(const std::string& name = "", const std::string& unit = "")
+  {
+    return createTopLevelEntity(name, unit);
+  }
+
+  static void removeTopLevelArticle(HierarchicalClass::EntitySharedPtr article)
+  {
+    removeTopLevelEntity(article);
+  }
+
+  static const HierarchicalClass::EntitiesContainer& getTopLevelArticles()
+  {
+    return getTopLevelEntities();
+  }
+
+  static void clearTopLevelArticles()
+  {
+    clearTopLevelEntites();
+  }
+
 private:
   friend class TopLevelArticles;
   friend class HierarchicalClass<Article>;
@@ -95,23 +115,6 @@ private:
 
   static void checkPassedName(const std::string& name);
   void checkIfArticleCanBeAdded(const DependentArticle) const;
-};
-
-class TopLevelArticles
-{
-public:
-  using ArticlePtr = Article::ArticlePtr;
-  using Container = std::vector<ArticlePtr>;
-
-  static Article::ArticlePtr createTopLevelArticle(const std::string& name = "", const std::string& unit = "");
-  static void removeTopLevelArticle(ArticlePtr article);
-  static const Container& getTopLevelArticles();
-  static void clearTopLevelArticles();
-
-private:
-  friend class Article;
-
-  static void addArticleToTopLevelArticles(ArticlePtr article);
 };
 
 }

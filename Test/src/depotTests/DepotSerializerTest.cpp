@@ -13,7 +13,7 @@ struct DepotSerializerTest : public Test
 
   void TearDown() override
   {
-    depot::TopLevelArticles::clearTopLevelArticles();
+    depot::Article::clearTopLevelArticles();
   }
 };
 
@@ -30,10 +30,10 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
 
   const auto article_name = "Art1"s;
   const auto article_unit = "Unit"s;
-  const auto article = depot::TopLevelArticles::createTopLevelArticle(article_name, article_unit);
+  const auto article = depot::Article::createTopLevelArticle(article_name, article_unit);
   const auto second_article_name = "Art2"s;
   const auto second_article_unit = "Unit"s;
-  const auto second_article = depot::TopLevelArticles::createTopLevelArticle(second_article_name, second_article_unit);
+  const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
   const auto dependent_name = "dependent"s;
   const auto dependent_unit = "dependent unit"s;
   const auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
