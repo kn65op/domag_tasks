@@ -57,6 +57,7 @@ link_directories(${TLOGGER_LIBRARIES_DIR})
 
 #includes
 include_directories(${SRC_DIR})
+include_directories(${BOOST_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
