@@ -21,7 +21,7 @@ Article::Article(const std::string& n, const std::string &u) :
     name{n},
     unit{u}
 {
-  LOG << "Article " << name.getContent() << "with unit: " << unit << "created";
+  LOG << "Article " << name.getContent() << "with unit: " << unit << " created";
 }
 
 void Article::checkPassedName(const std::string& n)
@@ -29,7 +29,7 @@ void Article::checkPassedName(const std::string& n)
   if (n.empty())
   {
     LOG << "Set default category name";
-    THelper::String::UniqueStdCategorizedString<Article::UniqueStringCategory>::setDefaultName("Unnamed Category");
+    THelper::String::UniqueStdCategorizedString<Article::UniqueStringCategory>::setDefaultName("Unnamed Article");
   }
 }
 
@@ -61,67 +61,26 @@ std::string Article::getUnit() const
 void Article::addDependentArticle(DependentArticle article)
 {
   LOG << "Add dependent article" << article->name.getContent();
-  checkIfArticleCanBeAdded(article);
-  dependent_articles.push_back(article);
-  article->precedent = shared_from_this();
-  removeTopLevelEntity(article);
-}
-
-void Article::checkIfArticleCanBeAdded(const DependentArticle article) const
-{
-  LOG << "Check if make self dependency";
-  if (article.get() == this)
-  {
-    LOG << "Making self dependency";
-    throw CannotMakeDependent("Trying to make yourself dependent");
-  }
-  try
-  {
-    LOG << "Check adding as dependent one of precedents";
-    if(auto precedent_real = precedent.lock())
-    {
-      precedent_real->checkIfArticleCanBeAdded(article);
-    }
-  }
-  catch(const CannotMakeDependent&)
-  {
-    LOG << "Making circular dependency";
-    throw CannotMakeDependent("Trying to add as dependent article one of precedents");
-  }
+  addInferiorEntity(article);
 }
 
 Article::Articles& Article::getArticles()
 {
-  return dependent_articles;
+  return getInferiorEntities();
 }
 
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
   LOG << "Remove dependent article" << article->name.getContent();
-  const auto article_position = std::find(dependent_articles.begin(), dependent_articles.end(), article);
-  if (article_position == dependent_articles.end())
-  {
-    LOG << "Not found article to remove: " << article->name.getContent();
-    throw NoExistDependentArticle();
-  }
-  auto removed_article = dependent_articles.erase(article_position);
-  (*removed_article)->precedent.reset();
-  addEntityToTopLevelEntities(article);
-  return *removed_article;
+  return removeInferiorEntity(article);
 }
 
 Article::ArticlePtr Article::getPrecedentArticle()
 {
-  if (auto precedent_real = precedent.lock())
-  {
-    return precedent_real;
-  }
-  throw NoPrecedentArticle();
+  return getPrecedentEntity();
 }
 
 Article::ArticlePtr Article::createDependentArticle(ArticlePtr precedent, const std::string &n, const std::string &u)
 {
-  ArticlePtr new_article{new Article(n, u)};
-  precedent->addDependentArticle(new_article);
-  return new_article;
+  return createDependentEntity(precedent, n, u);
 }

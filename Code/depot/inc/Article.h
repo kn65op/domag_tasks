@@ -1,5 +1,6 @@
 #pragma once
 
+#include <TLogger.h>
 #include <string>
 #include <memory>
 #include <map>
@@ -16,27 +17,44 @@ public:
   class NameEmptyException : public std::logic_error
   {
   public:
-    NameEmptyException(const std::string& msg = "Cannot set empty name") : std::logic_error(msg)
-    {}
+    NameEmptyException(const std::string& msg = "Cannot set empty name") :
+        std::logic_error(msg)
+    {
+    }
   };
   class NoExistDependentArticle : public std::logic_error
   {
   public:
-    NoExistDependentArticle(const std::string& msg = "There is no such dependent article") : std::logic_error(msg)
-    {}
+    NoExistDependentArticle(const std::string& msg = "There is no such dependent article") :
+        std::logic_error(msg)
+    {
+    }
   };
   class NoPrecedentArticle : public std::logic_error
   {
   public:
-    NoPrecedentArticle(const std::string& msg = "There is no precedent article") : std::logic_error(msg)
-    {}
+    NoPrecedentArticle(const std::string& msg = "There is no precedent article") :
+        std::logic_error(msg)
+    {
+    }
   };
   class CannotMakeDependent : public std::logic_error
   {
   public:
-    CannotMakeDependent(const std::string& msg) : std::logic_error(msg)
-    {}
+    CannotMakeDependent(const std::string& msg) :
+        std::logic_error(msg)
+    {
+    }
   };
+  class InvalidArticle : public std::logic_error
+  {
+  public:
+    InvalidArticle(const std::string& msg = "Invalid pointer was passed to make shared") :
+        std::logic_error(msg)
+    {
+    }
+  };
+
   virtual std::string getName() const noexcept = 0;
   virtual void setName(const std::string& n) = 0;
   virtual std::string getUnit() const = 0;
@@ -46,10 +64,14 @@ public:
   IArticle(const IArticle&) = delete;
   IArticle& operator=(const IArticle&) = delete;
 
-  virtual ~IArticle() {};
+  virtual ~IArticle()
+  {
+  }
+  ;
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>, private HierarchicalClass<Article>
+class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass<
+    Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -62,7 +84,7 @@ public:
 //#for Hierar
   using NoPrecedentException = IArticle::NoPrecedentArticle;
   using CircularDependencyException = IArticle::CannotMakeDependent;
-  using NoInfreriorException = IArticle::NoExistDependentArticle;
+  using NoInferiorException = IArticle::NoExistDependentArticle;
 
   ~Article();
   static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name = "", const std::string& unit = "");
@@ -100,21 +122,28 @@ public:
     clearTopLevelEntites();
   }
 
+  static ArticlePtr makeSharedPtr(HierarchicalClass<Article>* article_candidate)
+  {
+    auto article = dynamic_cast<Article*>(article_candidate);
+    if (article)
+    {
+      return article->shared_from_this();
+    }
+    throw InvalidArticle();
+  }
+
 private:
   friend class TopLevelArticles;
-  friend class HierarchicalClass<Article>;
+  friend class HierarchicalClass<Article> ;
   static const int UniqueStringCategory = 1;
 
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
   std::string unit;
-  Articles dependent_articles;
-  PrecedentArticle precedent;
 
   Article();
   Article(const std::string &name, const std::string &unit = "");
 
   static void checkPassedName(const std::string& name);
-  void checkIfArticleCanBeAdded(const DependentArticle) const;
 };
 
 }
