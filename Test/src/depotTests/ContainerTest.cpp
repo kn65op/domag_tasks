@@ -8,7 +8,7 @@ using depot::ut::ItemMock;
 
 struct ContainerTest : public Test
 {
-  std::shared_ptr<Container> c = Container::createContainer();
+  std::shared_ptr<Container> c = Container::createTopLevelContainer();
 
   void TearDown() override
   {
@@ -102,7 +102,7 @@ TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
 
 TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstainer)
 {
-  EXPECT_THROW(c->removeContainer(Container::createContainer()), Container::NoSuchElement);
+  EXPECT_THROW(c->removeContainer(Container::createTopLevelContainer()), Container::NoSuchElement);
 }
 TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
 {
@@ -111,8 +111,8 @@ TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLiesAndAfterRemovalItShouldHaveNone)
 {
-  auto container = Container::createContainer();
-  auto container_inside = Container::createContainer();
+  auto container = Container::createTopLevelContainer();
+  auto container_inside = Container::createTopLevelContainer();
   container->addContainer(container_inside);
   EXPECT_EQ(container, container_inside->getStorehause());
   container->removeContainer(container_inside);
@@ -121,7 +121,7 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWher
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)
 {
-  auto cont = Container::createContainer();
+  auto cont = Container::createTopLevelContainer();
   c->addContainer(cont);
   EXPECT_EQ(1U, c->getContainers().size());
   c->removeContainer(cont);
@@ -130,8 +130,8 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBe
 
 TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndSecondShouldHave)
 {
-  auto container_second = Container::createContainer();
-  auto container_inside = Container::createContainer();
+  auto container_second = Container::createTopLevelContainer();
+  auto container_inside = Container::createTopLevelContainer();
 
   c->addContainer(container_inside);
   ASSERT_EQ(1U, c->getContainers().size());
@@ -145,7 +145,7 @@ TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndS
 
 TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
 {
-  auto container_second = Container::createContainer();
+  auto container_second = Container::createTopLevelContainer();
   auto item = std::make_unique<ItemMock>();
   c->addItem(std::move(item));
 

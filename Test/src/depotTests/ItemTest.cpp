@@ -132,7 +132,7 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
 {
   using depot::Container;
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
-  auto container = Container::createContainer();
+  auto container = Container::createTopLevelContainer();
   item.setStorehause(container);
   EXPECT_EQ(container, item.getStorehause());
   item.setStorehause(nullptr);

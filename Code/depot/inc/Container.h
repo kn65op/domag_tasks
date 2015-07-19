@@ -71,7 +71,7 @@ public:
     return getInferiorEntities();
   }
 
-  static std::shared_ptr<Container> createContainer()
+  static std::shared_ptr<Container> createTopLevelContainer()
   {
     return createTopLevelEntity();
   }
