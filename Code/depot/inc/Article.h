@@ -1,6 +1,5 @@
 #pragma once
 
-#include <TLogger.h>
 #include <string>
 #include <memory>
 #include <map>
@@ -70,8 +69,7 @@ public:
   ;
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass<
-    Article>
+class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass< Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -81,7 +79,6 @@ public:
   using ArticleWeakPtr = std::weak_ptr<Article>;
   using AllArticles = std::map<std::string, ArticleWeakPtr>;
 
-//#for Hierar
   using NoPrecedentException = IArticle::NoPrecedentArticle;
   using CircularDependencyException = IArticle::CannotMakeDependent;
   using NoInferiorException = IArticle::NoExistDependentArticle;

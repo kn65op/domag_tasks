@@ -146,7 +146,6 @@ private:
 
   EntityWeakPtr precedent;
   InferiorEntitiesContainer inferior_entities;
-
 };
 
 }
