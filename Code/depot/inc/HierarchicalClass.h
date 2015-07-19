@@ -143,6 +143,7 @@ protected:
 
 private:
   static EntitiesContainer top_level_entities;
+
   EntityWeakPtr precedent;
   InferiorEntitiesContainer inferior_entities;
 
