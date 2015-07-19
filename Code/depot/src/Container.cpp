@@ -4,6 +4,7 @@
 
 using namespace depot;
 
+template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesContainer depot::HierarchicalClass<Entity>::top_level_entities;
 
 void Container::addItem(Item item)
 {
@@ -50,60 +51,7 @@ Container::Item Container::removeItem(const ItemReference to_remove)
   return removeItem(to_remove.get());
 }
 
-void Container::checkIfContainerCanBeAdded(ContainerInside container) const
-{
-  if (container.get() == this)
-  {
-    LOG << "Connot put container inside itself";
-    throw CannotInsertContainerIntoItself();
-  }
-  try
-  {
-    if (auto storehause_real = storehause.lock())
-    {
-      storehause_real->checkIfContainerCanBeAdded(container);
-    }
-  }
-  catch(const CannotInsertContainerIntoItself&)
-  {
-    LOG << "Making ciruclar dependency";
-    throw CannotInsertContainerIntoItself("Trying to add container that is in upper hierarchy");
-  }
-}
-
-void Container::addContainer(ContainerInside container)
-{
-  LOG << "add container";
-  checkIfContainerCanBeAdded(container);
-  containers.push_back(container);
-  container->storehause = shared_from_this();
-}
-
-Container::ContainerInside Container::removeContainer(ContainerInside container)
-{
-  LOG << "Remove container";
-  auto container_position = containers.end();
-  if ((container_position = std::find(containers.begin(), containers.end(), container)) != containers.end())
-  {
-    auto ret = *container_position;
-    containers.erase(container_position);
-    ret->storehause.reset();
-    return ret;
-  }
-  LOG << "not found container";
-  throw NoSuchElement();
-}
-
-const Container::Containers& Container::getContainers() const
-{
-  return containers;
-}
-
 std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
-  if (auto storehause_real = storehause.lock())
-  {
-    return storehause_real;
-  }
-  throw LiesNowhere();
+  return getPrecedentEntity();
 }

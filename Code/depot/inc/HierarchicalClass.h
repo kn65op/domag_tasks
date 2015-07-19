@@ -82,7 +82,7 @@ protected:
     throw typename Entity::CircularDependencyException(original_exception.what());
   }
 
-  InferiorEntitiesContainer& getInferiorEntities()
+  InferiorEntitiesContainer& getInferiorEntities() //TODO: make const
   {
     return inferior_entities;
   }
@@ -100,7 +100,7 @@ protected:
     return *removed_entity;
   }
 
-  EntitySharedPtr getPrecedentEntity()
+  EntitySharedPtr getPrecedentEntity() const
   {
     if (auto precedent_real = precedent.lock())
     {

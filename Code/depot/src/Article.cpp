@@ -75,7 +75,7 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
   return removeInferiorEntity(article);
 }
 
-Article::ArticlePtr Article::getPrecedentArticle()
+Article::ArticlePtr Article::getPrecedentArticle() const
 {
   return getPrecedentEntity();
 }

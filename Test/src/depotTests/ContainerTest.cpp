@@ -9,6 +9,11 @@ using depot::ut::ItemMock;
 struct ContainerTest : public Test
 {
   std::shared_ptr<Container> c = Container::createContainer();
+
+  void TearDown() override
+  {
+    Container::clearTopLevelContainers();
+  }
 };
 
 TEST_F(ContainerTest, CanAddItemToContainer)

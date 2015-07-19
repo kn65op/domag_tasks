@@ -93,7 +93,7 @@ public:
   void addDependentArticle(DependentArticle article);
   Articles& getArticles();
   DependentArticle removeDependentArticle(DependentArticle article);
-  ArticlePtr getPrecedentArticle();
+  ArticlePtr getPrecedentArticle() const;
   static void doCreationChecks(const std::string& name, const std::string &)
   {
     checkPassedName(name);

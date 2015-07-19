@@ -27,6 +27,13 @@ public:
     {}
   };
 
+  struct InvalidContainer : public std::logic_error
+  {
+    InvalidContainer(const std::string& msg = "pointer is not container") :
+      std::logic_error(msg)
+    {}
+  };
+
   Container(const Container &) = delete;
   Container* operator=(const Container&) = delete;
 
@@ -37,29 +44,62 @@ public:
   using ContainerInside = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside> ;
 
-  static std::shared_ptr<Container> createContainer()
-  {
-    return std::shared_ptr<Container>(new Container());
-  }
+  using NoPrecedentException = LiesNowhere;
+  using CircularDependencyException = CannotInsertContainerIntoItself;
+  using NoInferiorException = AbstractContainer::NoSuchElement;
+
   virtual ~Container() {}
 
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
   Item removeItem(const ItemReference to_remove);
-  void addContainer(ContainerInside container);
-  ContainerInside removeContainer(ContainerInside container);
   const Items & getItems() const;
-  const Containers& getContainers() const;
   const SelectedItems getNonConsumedItems();
+
+  void addContainer(ContainerInside container)
+  {
+    addInferiorEntity(container);
+  }
+
+  ContainerInside removeContainer(ContainerInside container)
+  {
+    return removeInferiorEntity(container);
+  }
+
+  Containers& getContainers()
+  {
+    return getInferiorEntities();
+  }
+
+  static std::shared_ptr<Container> createContainer()
+  {
+    return createTopLevelEntity();
+  }
+
+  static std::shared_ptr<Container> makeSharedPtr(HierarchicalClass<Container>* container_candidate)
+  {
+    auto container = dynamic_cast<Container*>(container_candidate);
+    if (container)
+    {
+      return container->shared_from_this();
+    }
+    throw InvalidContainer();
+  }
+
+  static void doCreationChecks()
+  {
+  }
+
+  static void clearTopLevelContainers()
+  {
+    clearTopLevelEntites();
+  }
 private:
+  friend class HierarchicalClass<Container> ;
   Container() = default;
 
   std::string name;
   Items items;
-  Containers containers;
-  std::weak_ptr<Container> storehause;
-
-  void checkIfContainerCanBeAdded(ContainerInside container) const;
 
   std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
