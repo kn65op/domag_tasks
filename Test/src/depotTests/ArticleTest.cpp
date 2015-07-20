@@ -26,18 +26,18 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
   EXPECT_EQ(beer_string, beer->getName());
 
   std::string wheat_beer_string{"Wheat beer"};
-  auto wheat_beer = Article::createDependentArticle(beer, wheat_beer_string);
+  auto wheat_beer = beer->createDependentArticle(wheat_beer_string);
   EXPECT_EQ(wheat_beer_string, wheat_beer->getName());
 }
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleShouldBeCreatedWithEmptyName)
 {
   EXPECT_NO_THROW(Article::createTopLevelArticle(""));
-  EXPECT_NO_THROW(Article::createDependentArticle(article, ""));
+  EXPECT_NO_THROW(article->createDependentArticle(""));
 
   const std::string unit{"l"};
   EXPECT_NO_THROW(Article::createTopLevelArticle("", unit));
-  EXPECT_NO_THROW(Article::createDependentArticle(article, "", unit));
+  EXPECT_NO_THROW(article->createDependentArticle("", unit));
 }
 
 TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNameAndUnit)
@@ -48,7 +48,7 @@ TEST_F(ArticleTest, TopLevelAndDependentArticleCreatedWithNameShouldHaveProperNa
   EXPECT_EQ(unit, beer->getUnit());
 
   const std::string wheat_beer_string{"Wheat beer"};
-  auto wheat_beer = Article::createDependentArticle(beer, wheat_beer_string, unit);
+  auto wheat_beer = beer->createDependentArticle(wheat_beer_string, unit);
   EXPECT_EQ(unit, wheat_beer->getUnit());
 }
 
@@ -98,8 +98,8 @@ TEST_F(ArticleTest, ShouldNotBeAbleToAddYourselfAsDependentArticle)
 
 TEST_F(ArticleTest, ShouldNotBeAbleToMakeCircularDependency)
 {
-  auto article_middle = Article::createDependentArticle(article);
-  auto article_bottom = Article::createDependentArticle(article_middle);
+  auto article_middle = article->createDependentArticle();
+  auto article_bottom = article_middle->createDependentArticle();
   EXPECT_THROW(article_bottom->addDependentArticle(article), Article::CannotMakeDependent);
   EXPECT_THROW(article_bottom->addDependentArticle(article_middle), Article::CannotMakeDependent);
 }
@@ -116,7 +116,7 @@ TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
 
 TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveValidPrecedentAndAfterRemovalItShouldHaveNone)
 {
-  auto article_inside = Article::createDependentArticle(article);
+  auto article_inside = article->createDependentArticle();
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
   article->removeDependentArticle(article_inside);
   EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);

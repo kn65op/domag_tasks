@@ -36,13 +36,13 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
   const auto dependent_name = "dependent"s;
   const auto dependent_unit = "dependent unit"s;
-  const auto dependent_article = depot::Article::createDependentArticle(article, dependent_name, dependent_unit);
+  const auto dependent_article = article->createDependentArticle(dependent_name, dependent_unit);
   const auto dependent_second_name = "dependent_second"s;
   const auto dependent_second_unit = "dependent unit_second"s;
-  const auto dependent_article_second = depot::Article::createDependentArticle(article, dependent_second_name, dependent_second_unit);
+  const auto dependent_article_second = article->createDependentArticle(dependent_second_name, dependent_second_unit);
   const auto dependent_dependent_name = "dependent_dependent"s;
   const auto dependent_dependent_unit = "dependent_dependent unit"s;
-  const auto dependent_dependent_articlearticle= depot::Article::createDependentArticle(dependent_article, dependent_dependent_name, dependent_dependent_unit);
+  const auto dependent_dependent_articlearticle= dependent_article->createDependentArticle(dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
 
   expected_output += "Articles:\n";

@@ -84,7 +84,7 @@ public:
   using NoInferiorException = IArticle::NoExistDependentArticle;
 
   ~Article();
-  static ArticlePtr createDependentArticle(ArticlePtr precedent, const std::string& name = "", const std::string& unit = "");
+  ArticlePtr createDependentArticle(const std::string& name = "", const std::string& unit = "");
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
