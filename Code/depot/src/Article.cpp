@@ -82,5 +82,5 @@ Article::ArticlePtr Article::getPrecedentArticle() const
 
 Article::ArticlePtr Article::createDependentArticle(const std::string &n, const std::string &u)
 {
-  return createDependentEntity(shared_from_this(), n, u);
+  return createDependentEntity(n, u);
 }

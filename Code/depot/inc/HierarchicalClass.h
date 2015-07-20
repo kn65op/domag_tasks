@@ -42,11 +42,11 @@ public:
   }
 
 protected:
-  template<typename ...Args> static EntitySharedPtr createDependentEntity(EntitySharedPtr precedent, Args ... args)
+  template<typename ...Args> EntitySharedPtr createDependentEntity(Args ... args)
   {
     Entity::doCreationChecks(args...);
     EntitySharedPtr new_entity {new Entity(args...)};
-    precedent->addInferiorEntity(new_entity);
+    addInferiorEntity(new_entity);
     return new_entity;
   }
 
