@@ -17,16 +17,12 @@ void DepotSerializer::serializeAllArticles(std::ostream& out)
   const auto top_level_articles = depot::Article::getTopLevelArticles();
   for (const auto & article : top_level_articles)
   {
-    for (auto & node : serializeArticle(article))
+    for (auto & node : serializeEntity(article))
     {
       all_articles_node["Articles"].push_back(std::move(node));
     }
   }
   out << all_articles_node;
-}
-
-auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> YamlNodes
-{
 }
 
 YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)

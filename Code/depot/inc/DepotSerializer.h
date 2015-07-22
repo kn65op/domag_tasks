@@ -22,10 +22,10 @@ private:
   template <typename Entity> YamlNodes serializeEntity(const std::shared_ptr<Entity>& entity)
   {
     YamlNodes nodes;
-    nodes.push_back(std::move(serializeEntityData(article)));
-    for (const auto & dependent_entity : getDependentEntities(article))
+    nodes.push_back(std::move(serializeEntityData(entity)));
+    for (const auto & dependent_entity : getDependentEntities(entity))
     {
-      for (auto & node : serializeArticle(dependent_entity))
+      for (auto & node : serializeEntity(dependent_entity))
       {
         nodes.push_back(std::move(node));
       }
