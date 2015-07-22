@@ -18,6 +18,18 @@ public:
 private:
   using YamlNodes = std::vector<YAML::Node>;
   void serializeAllArticles(std::ostream& out);
+  void storeArticlesId();
+  void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
+  YAML::Node serializeOwnData(const Article::ArticlePtr & article);
+
+  auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
+  {
+    return article->getArticles();
+  }
+  int getDependetEntityId(const Article::ArticlePtr& article)
+  {
+    return articles[article];
+  }
 
   template <typename Entity> YamlNodes serializeEntity(const std::shared_ptr<Entity>& entity)
   {
@@ -32,20 +44,6 @@ private:
     }
     return nodes;
   }
-
-  void storeArticlesId();
-  void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
-  YAML::Node serializeOwnData(const Article::ArticlePtr & article);
-  auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
-  {
-    return article->getArticles();
-  }
-  int getDependetEntityId(const Article::ArticlePtr& article)
-  {
-    return articles[article];
-  }
-
-
   template<typename Entity> YAML::Node serializeEntityData(const std::shared_ptr<Entity>& entity)
   {
     auto node = serializeOwnData(entity);
