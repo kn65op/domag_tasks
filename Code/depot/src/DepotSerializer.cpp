@@ -27,16 +27,6 @@ void DepotSerializer::serializeAllArticles(std::ostream& out)
 
 auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> YamlNodes
 {
-  YamlNodes nodes;
-  nodes.push_back(std::move(serializeEntityData(article)));
-  for (const auto & dependent_entity : getDependentEntities(article))
-  {
-    for (auto & node : serializeArticle(dependent_entity))
-    {
-      nodes.push_back(std::move(node));
-    }
-  }
-  return nodes;
 }
 
 YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
