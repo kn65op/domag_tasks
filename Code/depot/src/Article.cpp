@@ -12,11 +12,6 @@ Article::~Article()
   LOG << "Removing: " << name.getContent();
 }
 
-Article::Article()
-{
-  LOG << "Unnamed article created: " << name.getContent();
-}
-
 Article::Article(const std::string& n, const std::string &u) :
     name{n},
     unit{u}
@@ -64,7 +59,7 @@ void Article::addDependentArticle(DependentArticle article)
   addInferiorEntity(article);
 }
 
-Article::Articles& Article::getArticles()
+const Article::Articles& Article::getArticles() const
 {
   return getInferiorEntities();
 }

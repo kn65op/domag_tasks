@@ -91,7 +91,7 @@ public:
   std::string getUnit() const override;
   void setUnit(const std::string& u) override;
   void addDependentArticle(DependentArticle article);
-  Articles& getArticles();
+  const Articles& getArticles() const;
   DependentArticle removeDependentArticle(DependentArticle article);
   ArticlePtr getPrecedentArticle() const;
   static void doCreationChecks(const std::string& name, const std::string &)
@@ -137,8 +137,7 @@ private:
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;
   std::string unit;
 
-  Article();
-  Article(const std::string &name, const std::string &unit = "");
+  Article(const std::string &name, const std::string &unit);
 
   static void checkPassedName(const std::string& name);
 };
