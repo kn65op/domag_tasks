@@ -34,17 +34,6 @@ YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
   return article_node;
 }
 
-/*
-auto DepotSerializer::serializeArticleData(const Article::ArticlePtr& article) -> YAML::Node
-{
-  auto article_node = serializeOwnData(article);
-  for (const auto & dependent_article : article->getArticles())
-  {
-    article_node["dependent_articles"].push_back(articles[dependent_article]);
-  }
-  return article_node;
-}*/
-
 void DepotSerializer::storeArticlesId()
 {
   const auto top_level_articles = depot::Article::getTopLevelArticles();
