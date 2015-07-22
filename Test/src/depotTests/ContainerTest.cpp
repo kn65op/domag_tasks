@@ -16,6 +16,13 @@ struct ContainerTest : public Test
   }
 };
 
+TEST_F(ContainerTest, CanRemoveTopLevelContainer)
+{
+  ASSERT_EQ(1U, Container::getTopLevelContainers().size());
+  Container::removeTopLevelContainer(c);
+  EXPECT_EQ(0U, Container::getTopLevelContainers().size());
+}
+
 TEST_F(ContainerTest, CanAddItemToContainer)
 {
   c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
@@ -121,11 +128,18 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWher
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)
 {
-  auto cont = Container::createTopLevelContainer();
-  c->addContainer(cont);
+  auto cont = c->createDependentContainer();
   EXPECT_EQ(1U, c->getContainers().size());
   c->removeContainer(cont);
   EXPECT_EQ(0U, c->getContainers().size());
+}
+
+TEST_F(ContainerTest, ContainerShouldNotCreateCircularDpendecies)
+{
+  auto container_inside = c->createDependentContainer();
+  auto container_bottom = container_inside->createDependentContainer();
+  EXPECT_THROW(container_inside->addContainer(c), Container::CannotInsertContainerIntoItself);
+  EXPECT_THROW(container_bottom->addContainer(c), Container::CannotInsertContainerIntoItself);
 }
 
 TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndSecondShouldHave)

@@ -82,7 +82,7 @@ protected:
     throw typename Entity::CircularDependencyException(original_exception.what());
   }
 
-  InferiorEntitiesContainer& getInferiorEntities() //TODO: make const
+  const InferiorEntitiesContainer& getInferiorEntities() const
   {
     return inferior_entities;
   }

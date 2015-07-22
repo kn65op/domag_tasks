@@ -10,28 +10,32 @@
 namespace depot
 {
 
-class Container : public std::enable_shared_from_this<Container>, public AbstractContainer, public Storable, public HierarchicalClass<Container>
+class Container : public std::enable_shared_from_this<Container>, public AbstractContainer, public Storable, public HierarchicalClass<
+    Container>
 {
 public:
   struct LiesNowhere : public std::logic_error
   {
     LiesNowhere(const std::string& msg = "Container is not inside other container") :
-      std::logic_error(msg)
-    {}
+        std::logic_error(msg)
+    {
+    }
   };
 
   struct CannotInsertContainerIntoItself : public std::logic_error
   {
     CannotInsertContainerIntoItself(const std::string& msg = "Container cannot  be inside itself") :
-      std::logic_error(msg)
-    {}
+        std::logic_error(msg)
+    {
+    }
   };
 
   struct InvalidContainer : public std::logic_error
   {
     InvalidContainer(const std::string& msg = "pointer is not container") :
-      std::logic_error(msg)
-    {}
+        std::logic_error(msg)
+    {
+    }
   };
 
   Container(const Container &) = delete;
@@ -42,13 +46,15 @@ public:
   using ItemReference = depot::IItem::Reference;
   using SelectedItems = std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
-  using Containers = std::vector<ContainerInside> ;
+  using Containers = std::vector<ContainerInside>;
 
   using NoPrecedentException = LiesNowhere;
   using CircularDependencyException = CannotInsertContainerIntoItself;
   using NoInferiorException = AbstractContainer::NoSuchElement;
 
-  virtual ~Container() {}
+  virtual ~Container()
+  {
+  }
 
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
@@ -66,7 +72,7 @@ public:
     return removeInferiorEntity(container);
   }
 
-  Containers& getContainers()
+  const Containers& getContainers() const
   {
     return getInferiorEntities();
   }
@@ -74,6 +80,16 @@ public:
   static std::shared_ptr<Container> createTopLevelContainer()
   {
     return createTopLevelEntity();
+  }
+
+  static void removeTopLevelContainer(std::shared_ptr<Container> container)
+  {
+    removeTopLevelEntity(container);
+  }
+
+  static const Containers& getTopLevelContainers()
+  {
+    return getTopLevelEntities();
   }
 
   static std::shared_ptr<Container> makeSharedPtr(HierarchicalClass<Container>* container_candidate)
@@ -86,19 +102,23 @@ public:
     throw InvalidContainer();
   }
 
-  static void doCreationChecks()
-  {
-  }
-
   static void clearTopLevelContainers()
   {
     clearTopLevelEntites();
   }
 
-//  static void create
+  std::shared_ptr<Container> createDependentContainer()
+  {
+    return createDependentEntity();
+  }
+
 private:
   friend class HierarchicalClass<Container> ;
   Container() = default;
+  static void doCreationChecks()
+  {
+  }
+
 
   std::string name;
   Items items;
