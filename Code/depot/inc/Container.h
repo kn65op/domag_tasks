@@ -77,9 +77,9 @@ public:
     return getInferiorEntities();
   }
 
-  static std::shared_ptr<Container> createTopLevelContainer()
+  static std::shared_ptr<Container> createTopLevelContainer(const std::string& name = "Unnamed container")
   {
-    return createTopLevelEntity();
+    return createTopLevelEntity(name);
   }
 
   static void removeTopLevelContainer(std::shared_ptr<Container> container)
@@ -107,15 +107,19 @@ public:
     clearTopLevelEntites();
   }
 
-  std::shared_ptr<Container> createDependentContainer()
+  std::shared_ptr<Container> createDependentContainer(const std::string &name = "Unnamed container")
   {
-    return createDependentEntity();
+    return createDependentEntity(name);
   }
 
 private:
   friend class HierarchicalClass<Container> ;
-  Container() = default;
-  static void doCreationChecks()
+  Container(const std::string& name_arg) :
+    name{name_arg}
+  {
+
+  }
+  static void doCreationChecks(const std::string&)
   {
   }
 
