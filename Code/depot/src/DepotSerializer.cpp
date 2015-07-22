@@ -39,12 +39,18 @@ auto DepotSerializer::serializeArticle(const Article::ArticlePtr &article) -> Ya
   return nodes;
 }
 
-auto DepotSerializer::serializeArticleData(const Article::ArticlePtr& article) -> YAML::Node
+YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
 {
   YAML::Node article_node;
   article_node["id"] = articles[article];
   article_node["name"] = article->getName();
   article_node["unit"] = article->getUnit();
+  return article_node;
+}
+
+auto DepotSerializer::serializeArticleData(const Article::ArticlePtr& article) -> YAML::Node
+{
+  auto article_node = serializeOwnData(article);
   for (const auto & dependent_article : article->getArticles())
   {
     article_node["dependent_articles"].push_back(articles[dependent_article]);

@@ -52,14 +52,20 @@ protected:
 
   void addInferiorEntity(EntitySharedPtr entity)
   {
-    checkIfNotMakingCircularDependency(entity);
+    try
+    {
+      checkIfNotMakingCircularDependency(entity);
+    }
+    catch (const CircularDependencyException& original_exception)
+    {
+      throw typename Entity::CircularDependencyException(original_exception.what());
+    }
     inferior_entities.push_back(entity);
     entity->precedent = Entity::makeSharedPtr(this);
     removeTopLevelEntity(entity);
   }
 
   void checkIfNotMakingCircularDependency(EntitySharedPtr entity)
-  try
   {
     if (entity.get() == this)
     {
@@ -76,10 +82,6 @@ protected:
     {
       throw CircularDependencyException("Trying to make entity circular dependent");
     }
-  }
-  catch (const CircularDependencyException& original_exception)
-  {
-    throw typename Entity::CircularDependencyException(original_exception.what());
   }
 
   const InferiorEntitiesContainer& getInferiorEntities() const
