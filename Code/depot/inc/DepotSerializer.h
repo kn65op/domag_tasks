@@ -22,7 +22,7 @@ private:
   void storeArticlesId();
   void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
   YAML::Node serializeOwnData(const Article::ArticlePtr & article);
-  auto getDependentEntities(const Article::ArticlePtr& article) -> typeof(article->getArticles())
+  auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
   {
     return article->getArticles();
   }
@@ -35,11 +35,11 @@ private:
   template<typename Entity> YAML::Node serializeEntityData(const std::shared_ptr<Entity>& entity)
   {
     auto node = serializeOwnData(entity);
-    for (const auto & dependent_entity : getDependentEntities(entity)->getArticles())
+    for (const auto & dependent_entity : getDependentEntities(entity))
     {
-      article_node["dependent_articles"].push_back(getDependetEntityId(dependent_entity));
+      node["dependent_articles"].push_back(getDependetEntityId(dependent_entity));
     }
-    return article_node;
+    return node;
   }
 
   std::map<Article::ArticlePtr, int> articles;
