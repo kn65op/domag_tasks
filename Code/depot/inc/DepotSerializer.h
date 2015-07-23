@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include "Article.h"
 #include "yaml-cpp/yaml.h"
 #include <TLogger.h>
@@ -14,10 +15,22 @@ namespace serialize
 class DepotSerializer
 {
 public:
-  void serialize(std::ostream& out);
+  struct InvalidVersion : std::logic_error
+  {
+    InvalidVersion() : std::logic_error("Unknown Version of file")
+    {
+    }
+
+    InvalidVersion(int version) : std::logic_error("Input version is not supported: " + std::to_string(version))
+    {
+    }
+  };
+  void serialize(std::ostream& output);
+  void deserialize(std::istream& input);
 
 private:
   using YamlNodes = std::vector<YAML::Node>;
+  void storeVersion(std::ostream& output);
   void serializeAllArticles(std::ostream& out);
   void storeArticlesId();
   void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
@@ -62,7 +75,11 @@ private:
     return node;
   }
 
+  void loadAndCheckVersion(const YAML::Node &main_node);
+
   std::map<Article::ArticlePtr, int> articles;
+  std::string version_field = "Version";
+  const int version_suported = 1;
 };
 
 }

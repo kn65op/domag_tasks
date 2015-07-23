@@ -6,9 +6,37 @@ using namespace depot::serialize;
 
 void DepotSerializer::serialize(std::ostream& out)
 {
-  out << "Version: 1\n";
+  storeVersion(out);
   storeArticlesId();
   serializeAllArticles(out);
+}
+
+void DepotSerializer::storeVersion(std::ostream& out)
+{
+  YAML::Node version_node;
+  version_node[version_field] = version_suported;
+  out << version_node;
+}
+
+void DepotSerializer::loadAndCheckVersion(const YAML::Node& main_node)
+{
+  if (!main_node[version_field])
+  {
+    throw InvalidVersion();
+  }
+  const auto version = main_node[version_field].as<int>();
+  if (version != version_suported)
+  {
+    throw InvalidVersion(version);
+  }
+}
+
+
+void DepotSerializer::deserialize(std::istream& input)
+{
+  auto database = YAML::Load(input);
+  loadAndCheckVersion(database);
+//  deserializeAllArticles(datab);
 }
 
 void DepotSerializer::serializeAllArticles(std::ostream& out)
