@@ -27,10 +27,15 @@ void DepotSerializer::serializeAllArticles(std::ostream& out)
 
 YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
 {
+  LOG << "serialize article data: " << article->getName();
   YAML::Node article_node;
+  LOG << "serialize article data: " << article_node;
   article_node["id"] = articles[article];
+  LOG << "serialize article data: " << article_node;
   article_node["name"] = article->getName();
+  LOG << "serialize article data: " << article_node;
   article_node["unit"] = article->getUnit();
+  LOG << "serialize article data: " << article_node;
   return article_node;
 }
 
@@ -45,6 +50,7 @@ void DepotSerializer::storeArticlesId()
 
 void DepotSerializer::storeArticleAndItsDependentsId(const Article::ArticlePtr & article)
 {
+  LOG << "store article id: " << article->getName() << " = " << articles.size() + 1;
   articles[article] = articles.size();
   for (const auto & dependent_article : article->getArticles())
   {

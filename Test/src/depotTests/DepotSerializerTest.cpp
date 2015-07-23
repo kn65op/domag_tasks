@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "../../../Code/depot/inc/DepotSerializer.h"
 #include "../../../Code/depot/inc/Article.h"
+#include "../../../Code/depot/inc/Container.h"
 #include <sstream>
 
 using namespace ::testing;
@@ -14,6 +15,7 @@ struct DepotSerializerTest : public Test
   void TearDown() override
   {
     depot::Article::clearTopLevelArticles();
+    depot::Container::clearTopLevelContainers();
   }
 };
 
@@ -72,6 +74,17 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
 TEST_F(DepotSerializerTest, SholdWriteAllContainers)
 {
   std::ostringstream output;
+
+  const auto container_name = "Container1"s;
+  const auto container = depot::Container::createTopLevelContainer(container_name);
+  const auto second_container_name = "Container2"s;
+  const auto second_container = depot::Container::createTopLevelContainer(second_container_name);
+  const auto dependent_name = "dependent"s;
+  const auto dependent_container = container->createDependentContainer(dependent_name);
+  const auto dependent_second_name = "dependent_second"s;
+  const auto dependent_container_second = container->createDependentContainer(dependent_second_name);
+  const auto dependent_dependent_name = "dependent_dependent"s;
+  const auto dependent_dependent_containercontainer= dependent_container->createDependentContainer(dependent_dependent_name);
 
   serializer.serialize(output);
 

@@ -6,6 +6,7 @@
 #include "AbstractContainer.h"
 #include "Storable.h"
 #include "Item.h"
+#include <TLogger.h>
 
 namespace depot
 {
@@ -54,6 +55,7 @@ public:
 
   virtual ~Container()
   {
+    LOG << "Delete Container: " << name;
   }
 
   void addItem(std::unique_ptr<IItem> item);
@@ -117,7 +119,7 @@ private:
   Container(const std::string& name_arg) :
     name{name_arg}
   {
-
+    LOG << "Create Container: " << name;
   }
   static void doCreationChecks(const std::string&)
   {

@@ -137,6 +137,7 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
   EXPECT_EQ(container, item.getStorehause());
   item.setStorehause(nullptr);
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
+  Container::clearTopLevelContainers();
 }
 
 TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)
