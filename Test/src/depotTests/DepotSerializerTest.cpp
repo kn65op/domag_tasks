@@ -4,6 +4,8 @@
 #include "../../../Code/depot/inc/Container.h"
 #include <sstream>
 
+
+#include <iostream>
 using namespace ::testing;
 using namespace std::literals;
 
@@ -23,6 +25,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAndReadVersionNumberWhenThereIsNoData)
 {
   std::stringstream stream;
   serializer.serialize(stream);
+  std::cout << stream.str() << "\n";
   serializer.deserialize(stream);
   EXPECT_EQ(0, depot::Article::getTopLevelArticles().size());
   EXPECT_EQ(0, depot::Container::getTopLevelContainers().size());
@@ -63,6 +66,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   const auto dependent_dependent_unit = "dependent_dependent unit"s;
   const auto dependent_dependent_articlearticle= dependent_article->createDependentArticle(dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
+  std::cout << output.str() << "\n";
 
   depot::Article::clearTopLevelArticles();
   serializer.deserialize(output);

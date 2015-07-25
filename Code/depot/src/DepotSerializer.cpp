@@ -1,6 +1,7 @@
 #include "../inc/DepotSerializer.h"
 #include "../inc/Article.h"
 #include "yaml-cpp/yaml.h"
+#include "iostream"
 
 using namespace depot::serialize;
 
@@ -15,7 +16,7 @@ void DepotSerializer::storeVersion(std::ostream& out)
 {
   YAML::Node version_node;
   version_node[version_field] = version_suported;
-  out << version_node;
+  out << version_node << "\n";
 }
 
 void DepotSerializer::loadAndCheckVersion(const YAML::Node& main_node)
@@ -36,21 +37,28 @@ void DepotSerializer::deserialize(std::istream& input)
 {
   auto database = YAML::Load(input);
   loadAndCheckVersion(database);
-  deserializeAllArticles(database);
+  checkAndDeserializeAllArticles(database);
 }
 
 void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
 {
-  const YAML::Node articles = database["Articles"];
+  const auto articles = database["Articles"];
   if (articles)
   {
-    deserializeAllArticles(database["Articles"]);
+    deserializeAllArticles(articles);
   }
 }
 
 void DepotSerializer::deserializeAllArticles(const YAML::Node& articles)
 {
+  std::map<int, YAML::Node> arts;
+  for (const auto &article : articles)
 
+  {
+    std::cout << article["id"].as<int>();
+    arts.emplace(article["id"].as<int>(), article);
+//    arts[article["id"].as<int>()] = article;
+  }
 }
 
 void DepotSerializer::serializeAllArticles(std::ostream& out)
