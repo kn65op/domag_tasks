@@ -57,7 +57,6 @@ void DepotSerializer::deserializeAllArticles(const YAML::Node& articles)
   {
     std::cout << article["id"].as<int>();
     arts.emplace(article["id"].as<int>(), article);
-//    arts[article["id"].as<int>()] = article;
   }
 }
 
