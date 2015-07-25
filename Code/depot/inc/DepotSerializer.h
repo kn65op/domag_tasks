@@ -76,6 +76,8 @@ private:
   }
 
   void loadAndCheckVersion(const YAML::Node &main_node);
+  void checkAndDeserializeAllArticles(const YAML::Node &database);
+  void deserializeAllArticles(const YAML::Node &articles);
 
   std::map<Article::ArticlePtr, int> articles;
   std::string version_field = "Version";

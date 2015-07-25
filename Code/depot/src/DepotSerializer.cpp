@@ -36,7 +36,21 @@ void DepotSerializer::deserialize(std::istream& input)
 {
   auto database = YAML::Load(input);
   loadAndCheckVersion(database);
-//  deserializeAllArticles(datab);
+  deserializeAllArticles(database);
+}
+
+void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
+{
+  const YAML::Node articles = database["Articles"];
+  if (articles)
+  {
+    deserializeAllArticles(database["Articles"]);
+  }
+}
+
+void DepotSerializer::deserializeAllArticles(const YAML::Node& articles)
+{
+
 }
 
 void DepotSerializer::serializeAllArticles(std::ostream& out)
