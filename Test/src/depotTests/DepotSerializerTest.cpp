@@ -64,6 +64,10 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   const auto dependent_dependent_articlearticle= dependent_article->createDependentArticle(dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
 
+  depot::Article::clearTopLevelArticles();
+  serializer.deserialize(output);
+  EXPECT_EQ(2U, depot::Article::getTopLevelArticles().size());
+
   /*
   expected_output += "Articles:\n";
   expected_output += "  - id: 1\n";
