@@ -68,7 +68,6 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   serializer.deserialize(output);
   EXPECT_EQ(2U, depot::Article::getTopLevelArticles().size());
   //TODO: add more checks
-
 }
 
 TEST_F(DepotSerializerTest, SholdWriteAllContainers)
