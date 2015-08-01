@@ -45,18 +45,43 @@ void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
   const auto articles = database["Articles"];
   if (articles)
   {
-    deserializeAllArticles(articles);
+    createArticles(deserializeAllArticles(articles));
   }
 }
 
-void DepotSerializer::deserializeAllArticles(const YAML::Node& articles)
+auto DepotSerializer::deserializeAllArticles(const YAML::Node& articles) -> std::map<int, YAML::Node>
 {
   std::map<int, YAML::Node> arts;
   for (const auto &article : articles)
 
   {
-    std::cout << article["id"].as<int>();
     arts.emplace(article["id"].as<int>(), article);
+  }
+  return arts;
+}
+
+void DepotSerializer::createArticles(std::map<int, YAML::Node> &&articles)
+{
+  while (!articles.empty())
+  {
+    const auto &article_node = articles.begin()->second;
+    auto actual_article = Article::createTopLevelArticle(article_node["name"].as<std::string>(), article_node["unit"].as<std::string>());
+    createDependentArticles(actual_article, article_node, articles);
+    articles.erase(articles.begin());
+  }
+}
+
+void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
+{
+  if (article_node["dependent_articles"])
+  {
+    for (const auto & dependent_article_id : article_node["dependent_articles"])
+    {
+      const auto & dependent_article_node = all_articles.at(dependent_article_id.as<int>());
+      auto dependent_article = article->createDependentArticle(dependent_article_node["name"].as< std::string>(), dependent_article_node["unit"].as<std::string>());
+      createDependentArticles(dependent_article, dependent_article_node, all_articles);
+      all_articles.erase(dependent_article_id.as<int>());
+    }
   }
 }
 
@@ -79,7 +104,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
   LOG << "serialize article data: " << article->getName();
   YAML::Node article_node;
   LOG << "serialize article data: " << article_node;
-  article_node["id"] = articles[article];
+  article_node["id"] = serializationArticles[article];
   LOG << "serialize article data: " << article_node;
   article_node["name"] = article->getName();
   LOG << "serialize article data: " << article_node;
@@ -99,8 +124,8 @@ void DepotSerializer::storeArticlesId()
 
 void DepotSerializer::storeArticleAndItsDependentsId(const Article::ArticlePtr & article)
 {
-  LOG << "store article id: " << article->getName() << " = " << articles.size() + 1;
-  articles[article] = articles.size();
+  LOG << "store article id: " << article->getName() << " = " << serializationArticles.size() + 1;
+  serializationArticles[article] = serializationArticles.size();
   for (const auto & dependent_article : article->getArticles())
   {
     storeArticleAndItsDependentsId(dependent_article);

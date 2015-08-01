@@ -44,7 +44,7 @@ private:
   int getDependetEntityId(const Article::ArticlePtr& article)
   {
     LOG << "Getting article id for : " << article->getName();
-    return articles[article];
+    return serializationArticles[article];
   }
 
   template <typename Entity> YamlNodes serializeEntity(const std::shared_ptr<Entity>& entity)
@@ -77,9 +77,11 @@ private:
 
   void loadAndCheckVersion(const YAML::Node &main_node);
   void checkAndDeserializeAllArticles(const YAML::Node &database);
-  void deserializeAllArticles(const YAML::Node &articles);
+  std::map<int, YAML::Node> deserializeAllArticles(const YAML::Node &articles);
+  void createArticles(std::map<int, YAML::Node> &&articles);
+  void createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
 
-  std::map<Article::ArticlePtr, int> articles;
+  std::map<Article::ArticlePtr, int> serializationArticles;
   std::string version_field = "Version";
   const int version_suported = 1;
 };

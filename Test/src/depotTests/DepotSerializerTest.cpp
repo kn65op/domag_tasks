@@ -4,8 +4,6 @@
 #include "../../../Code/depot/inc/Container.h"
 #include <sstream>
 
-
-#include <iostream>
 using namespace ::testing;
 using namespace std::literals;
 
@@ -25,7 +23,6 @@ TEST_F(DepotSerializerTest, ShouldWriteAndReadVersionNumberWhenThereIsNoData)
 {
   std::stringstream stream;
   serializer.serialize(stream);
-  std::cout << stream.str() << "\n";
   serializer.deserialize(stream);
   EXPECT_EQ(0, depot::Article::getTopLevelArticles().size());
   EXPECT_EQ(0, depot::Container::getTopLevelContainers().size());
@@ -66,36 +63,12 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   const auto dependent_dependent_unit = "dependent_dependent unit"s;
   const auto dependent_dependent_articlearticle= dependent_article->createDependentArticle(dependent_dependent_name, dependent_dependent_unit);
   serializer.serialize(output);
-  std::cout << output.str() << "\n";
 
   depot::Article::clearTopLevelArticles();
   serializer.deserialize(output);
   EXPECT_EQ(2U, depot::Article::getTopLevelArticles().size());
+  //TODO: add more checks
 
-  /*
-  expected_output += "Articles:\n";
-  expected_output += "  - id: 1\n";
-  expected_output += "    name: " + article_name + "\n";
-  expected_output += "    unit: " + article_unit + "\n";
-  expected_output += "    dependent_articles:\n";
-  expected_output += "      - 2\n";
-  expected_output += "      - 4\n";
-  expected_output += "  - id: 2\n";
-  expected_output += "    name: " + dependent_name + "\n";
-  expected_output += "    unit: " + dependent_unit + "\n";
-  expected_output += "    dependent_articles:\n";
-  expected_output += "      - 3\n";
-  expected_output += "  - id: 3\n";
-  expected_output += "    name: " + dependent_dependent_name + "\n";
-  expected_output += "    unit: " + dependent_dependent_unit + "\n";
-  expected_output += "  - id: 4\n";
-  expected_output += "    name: " + dependent_second_name + "\n";
-  expected_output += "    unit: " + dependent_second_unit + "\n";
-  expected_output += "  - id: 5\n";
-  expected_output += "    name: " + second_article_name + "\n";
-  expected_output += "    unit: " + second_article_unit;
-  */
-//  EXPECT_EQ(expected_output, output.str());
 }
 
 TEST_F(DepotSerializerTest, SholdWriteAllContainers)
