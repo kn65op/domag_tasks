@@ -94,11 +94,10 @@ private:
 
   void loadAndCheckVersion(const YAML::Node &main_node);
   void checkAndDeserializeAllArticles(const YAML::Node &database);
-  std::map<int, YAML::Node> deserializeAllArticles(const YAML::Node &articles);
+  std::map<int, YAML::Node> deserializeEntitiesById(const YAML::Node &articles);
   void createArticles(std::map<int, YAML::Node> &&articles);
   void createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
   void checkAndDeserializeAllContainers(const YAML::Node &database);
-  std::map<int, YAML::Node> deserializeAllContainers(const YAML::Node &containers);
   void createContainers(std::map<int, YAML::Node> &&containers);
   void createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
 

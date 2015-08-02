@@ -48,7 +48,7 @@ void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
   const auto articles = database["Articles"];
   if (articles)
   {
-    createArticles(deserializeAllArticles(articles));
+    createArticles(deserializeEntitiesById(articles));
   }
 }
 
@@ -57,28 +57,18 @@ void DepotSerializer::checkAndDeserializeAllContainers(const YAML::Node& databas
   const auto containers = database["Containers"];
   if (containers)
   {
-    createContainers(deserializeAllContainers(containers));
+    createContainers(deserializeEntitiesById(containers));
   }
 }
 
-auto DepotSerializer::deserializeAllArticles(const YAML::Node& articles) -> std::map<int, YAML::Node>
+auto DepotSerializer::deserializeEntitiesById(const YAML::Node& all_nodes) -> std::map<int, YAML::Node>
 {
-  std::map<int, YAML::Node> arts;
-  for (const auto &article : articles)
+  std::map<int, YAML::Node> nodes;
+  for (const auto &node : all_nodes)
   {
-    arts.emplace(article["id"].as<int>(), article);
+    nodes.emplace(node["id"].as<int>(), node);
   }
-  return arts;
-}
-
-auto DepotSerializer::deserializeAllContainers(const YAML::Node& containers) -> std::map<int, YAML::Node>
-{
-  std::map<int, YAML::Node> arts;
-  for (const auto &container : containers)
-  {
-    arts.emplace(container["id"].as<int>(), container);
-  }
-  return arts;
+  return nodes;
 }
 
 void DepotSerializer::createArticles(std::map<int, YAML::Node> &&articles)
