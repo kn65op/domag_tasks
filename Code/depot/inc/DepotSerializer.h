@@ -33,12 +33,18 @@ private:
   using YamlNodes = std::vector<YAML::Node>;
   void storeVersion(std::ostream& output);
   template <typename AllEntitiesType> void serializeAllEntities(std::ostream& out, const AllEntitiesType & all_entities, const std::string& node_name);
-  void storeArticlesId();
-  void storeArticleAndItsDependentsId(const Article::ArticlePtr & article);
-  void storeContainersId();
-  void storeContainerAndItsDependentsId(const Container::ContainerPtr & container);
+  void storeEntityAndItsDependentsId(const Article::ArticlePtr & article);
+  void storeEntityAndItsDependentsId(const Container::ContainerPtr & container);
   YAML::Node serializeOwnData(const Article::ArticlePtr & article);
   YAML::Node serializeOwnData(const Container::ContainerPtr &container);
+
+  template <typename TopLevelEntities> void storeEntitiesId(const TopLevelEntities & top_level_entities)
+  {
+    for (const auto & entity : top_level_entities)
+    {
+      storeEntityAndItsDependentsId(entity);
+    }
+  }
 
   auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
   {

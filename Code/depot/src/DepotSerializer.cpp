@@ -11,8 +11,6 @@ void DepotSerializer::serialize(std::ostream& out)
   serializeAllEntities(out, Article::getTopLevelArticles(), "Articles");
   storeContainersId();
   serializeAllEntities(out, Container::getTopLevelContainers(), "Containers");
- // serializeAllArticles(out);
-  //serializeAllContainers(out);
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
@@ -134,35 +132,6 @@ template <typename AllEntitiesType> void DepotSerializer::serializeAllEntities(s
   out << all_entities_node;
 }
 
-/*void DepotSerializer::serializeAllArticles(std::ostream& out)
-{
-  YAML::Node all_articles_node;
-  const auto top_level_articles = depot::Article::getTopLevelArticles();
-  for (const auto & article : top_level_articles)
-  {
-    for (auto & node : serializeEntity(article))
-    {
-      all_articles_node["Articles"].push_back(std::move(node));
-    }
-  }
-  out << all_articles_node;
-}
-
-void DepotSerializer::serializeAllContainers(std::ostream& out)
-{
-  YAML::Node all_containers_node;
-  const auto top_level_containers = depot::Container::getTopLevelContainers();
-  for (const auto & container : top_level_containers)
-  {
-    for (auto & node : serializeEntity(article))
-    {
-      all_containers_node["Containers"].push_back(std::move(node));
-    }
-  }
-  out << all_containers_node;
-}
-*/
-
 YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
 {
   LOG << "serialize article data: " << article->getName();
@@ -181,16 +150,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerPtr &cont
   return container_node;
 }
 
-void DepotSerializer::storeArticlesId()
-{
-  const auto top_level_articles = depot::Article::getTopLevelArticles();
-  for (const auto & article : top_level_articles)
-  {
-    storeArticleAndItsDependentsId(article);
-  }
-}
-
-void DepotSerializer::storeArticleAndItsDependentsId(const Article::ArticlePtr & article)
+void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & article)
 {
   LOG << "store article id: " << article->getName() << " = " << serializationArticles.size() + 1;
   serializationArticles[article] = serializationArticles.size();
@@ -200,16 +160,7 @@ void DepotSerializer::storeArticleAndItsDependentsId(const Article::ArticlePtr &
   }
 }
 
-void DepotSerializer::storeContainersId()
-{
-  const auto top_level_containers = depot::Container::getTopLevelContainers();
-  for (const auto & container : top_level_containers)
-  {
-    storeContainerAndItsDependentsId(container);
-  }
-}
-
-void DepotSerializer::storeContainerAndItsDependentsId(const Container::ContainerPtr & container)
+void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPtr & container)
 {
   LOG << "store container id: " << container->getName() << " = " << serializationContainers.size() + 1;
   serializationContainers[container] = serializationContainers.size();
