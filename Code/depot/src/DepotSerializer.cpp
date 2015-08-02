@@ -7,9 +7,9 @@ using namespace depot::serialize;
 void DepotSerializer::serialize(std::ostream& out)
 {
   storeVersion(out);
-  storeArticlesId();
+  storeEntitiesId(Article::getTopLevelArticles());
   serializeAllEntities(out, Article::getTopLevelArticles(), "Articles");
-  storeContainersId();
+  storeEntitiesId(Container::getTopLevelContainers());
   serializeAllEntities(out, Container::getTopLevelContainers(), "Containers");
 }
 
@@ -156,7 +156,7 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & 
   serializationArticles[article] = serializationArticles.size();
   for (const auto & dependent_article : article->getArticles())
   {
-    storeArticleAndItsDependentsId(dependent_article);
+    storeEntityAndItsDependentsId(dependent_article);
   }
 }
 
@@ -166,6 +166,6 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPt
   serializationContainers[container] = serializationContainers.size();
   for (const auto & dependent_container : container->getContainers())
   {
-    storeContainerAndItsDependentsId(dependent_container);
+    storeEntityAndItsDependentsId(dependent_container);
   }
 }
