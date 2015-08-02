@@ -55,3 +55,8 @@ std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
   return getPrecedentEntity();
 }
+
+std::string Container::getName() const
+{
+  return name;
+}

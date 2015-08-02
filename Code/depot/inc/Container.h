@@ -47,6 +47,7 @@ public:
   using ItemReference = depot::IItem::Reference;
   using SelectedItems = std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
+  using ContainerPtr = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside>;
 
   using NoPrecedentException = LiesNowhere;
@@ -63,6 +64,7 @@ public:
   Item removeItem(const ItemReference to_remove);
   const Items & getItems() const;
   const SelectedItems getNonConsumedItems();
+  std::string getName() const;
 
   void addContainer(ContainerInside container)
   {
@@ -121,15 +123,16 @@ private:
   {
     LOG << "Create Container: " << name;
   }
+
   static void doCreationChecks(const std::string&)
   {
+    LOG << "For now no checks done";
   }
 
+  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 
   std::string name;
   Items items;
-
-  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
 }

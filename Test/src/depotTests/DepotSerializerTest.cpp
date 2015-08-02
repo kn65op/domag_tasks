@@ -72,7 +72,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
 
 TEST_F(DepotSerializerTest, SholdWriteAllContainers)
 {
-  std::ostringstream output;
+  std::stringstream output;
 
   const auto container_name = "Container1"s;
   const auto container = depot::Container::createTopLevelContainer(container_name);
@@ -86,7 +86,7 @@ TEST_F(DepotSerializerTest, SholdWriteAllContainers)
   const auto dependent_dependent_containercontainer= dependent_container->createDependentContainer(dependent_dependent_name);
 
   serializer.serialize(output);
-
-  expected_output += "Containers:\n";
-//  EXPECT_EQ(expected_output, output.str());
+  depot::Container::clearTopLevelContainers();
+  serializer.deserialize(output);
+  EXPECT_EQ(2U, depot::Container::getTopLevelContainers().size());
 }
