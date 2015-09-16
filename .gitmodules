@@ -6,4 +6,4 @@
 	url = https://github.com/kn65op/TLogger.git
 [submodule "libraries/yaml-cpp"]
 	path = libraries/yaml-cpp
-	url = git@github.com:kn65op/yaml-cpp.git
+	url = https://github.com/kn65op/yaml-cpp.git
