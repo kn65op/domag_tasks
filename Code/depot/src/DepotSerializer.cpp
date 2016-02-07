@@ -1,4 +1,4 @@
-#include "../inc/DepotSerializer.h"
+#include "DepotSerializer.h"
 #include "yaml-cpp/yaml.h"
 #include "iostream"
 

@@ -1,4 +1,4 @@
-#include "../inc/Article.h"
+#include "Article.h"
 
 #include <TLogger.h>
 #include <algorithm>

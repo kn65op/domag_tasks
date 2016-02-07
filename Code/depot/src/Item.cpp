@@ -1,6 +1,6 @@
-#include "depot/inc/Item.h"
+#include "Item.h"
+#include "Article.h"
 #include <TLogger.h>
-#include "../inc/Article.h"
 
 using depot::Item;
 using depot::ConsumeHistory;
