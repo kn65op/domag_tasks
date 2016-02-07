@@ -12,7 +12,7 @@ struct DepotSerializerTest : public Test
   depot::serialize::DepotSerializer serializer;
   std::string expected_output{"Version: 1\n"};
 
-  void ~DepotSerializerTest()
+  ~DepotSerializerTest()
   {
     depot::Article::clearTopLevelArticles();
     depot::Container::clearTopLevelContainers();
