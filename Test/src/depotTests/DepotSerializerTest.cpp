@@ -90,3 +90,42 @@ TEST_F(DepotSerializerTest, SholdWriteAllContainers)
   serializer.deserialize(output);
   EXPECT_EQ(2U, depot::Container::getTopLevelContainers().size());
 }
+
+TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticlesAndAllLevelContainers)
+{
+  std::stringstream output;
+
+  const auto article_name = "Art1"s;
+  const auto article_unit = "Unit"s;
+  const auto article = depot::Article::createTopLevelArticle(article_name, article_unit);
+  const auto second_article_name = "Art2"s;
+  const auto second_article_unit = "Unit"s;
+  const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
+  const auto dependent_name = "dependent"s;
+  const auto dependent_unit = "dependent unit"s;
+  const auto dependent_article = article->createDependentArticle(dependent_name, dependent_unit);
+  const auto dependent_second_name = "dependent_second"s;
+  const auto dependent_second_unit = "dependent unit_second"s;
+  const auto dependent_article_second = article->createDependentArticle(dependent_second_name, dependent_second_unit);
+  const auto dependent_dependent_name = "dependent_dependent"s;
+  const auto dependent_dependent_unit = "dependent_dependent unit"s;
+  const auto dependent_dependent_articlearticle= dependent_article->createDependentArticle(dependent_dependent_name, dependent_dependent_unit);
+
+  const auto container_name = "Container1"s;
+  const auto container = depot::Container::createTopLevelContainer(container_name);
+  const auto second_container_name = "Container2"s;
+  const auto second_container = depot::Container::createTopLevelContainer(second_container_name);
+  const auto dependent_container_name = "dependent"s;
+  const auto dependent_container = container->createDependentContainer(dependent_container_name);
+  const auto dependent_second_container_name = "dependent_second"s;
+  const auto dependent_container_second = container->createDependentContainer(dependent_second_container_name);
+  const auto dependent_dependent_container_name = "dependent_dependent"s;
+  const auto dependent_dependent_containercontainer= dependent_container->createDependentContainer(dependent_dependent_container_name);
+  serializer.serialize(output);
+
+  depot::Article::clearTopLevelArticles();
+  depot::Container::clearTopLevelContainers();
+  serializer.deserialize(output);
+  EXPECT_EQ(2U, depot::Article::getTopLevelArticles().size());
+  EXPECT_EQ(2U, depot::Container::getTopLevelContainers().size());
+}

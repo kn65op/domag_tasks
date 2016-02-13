@@ -130,6 +130,7 @@ template <typename AllEntitiesType> void DepotSerializer::serializeAllEntities(s
     }
   }
   out << all_entities_node;
+  out << "\n";
 }
 
 YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
