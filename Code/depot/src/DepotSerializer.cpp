@@ -8,10 +8,10 @@ void DepotSerializer::serialize(std::ostream& out)
 {
   storeVersion(out);
   const auto &topLevelArticles = Article::getTopLevelArticles();
-  storeEntities(out, topLevelArticles, "Articles");
+  storeEntities(out, topLevelArticles, articlesName);
 
   const auto &topLevelContainers = Container::getTopLevelContainers();
-  storeEntities(out, topLevelContainers, "Containers");
+  storeEntities(out, topLevelContainers, containersName);
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
@@ -44,7 +44,7 @@ void DepotSerializer::deserialize(std::istream& input)
 
 void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
 {
-  const auto articles = database["Articles"];
+  const auto articles = database[articlesName];
   if (articles)
   {
     createArticles(deserializeEntitiesById(articles));
@@ -53,7 +53,7 @@ void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
 
 void DepotSerializer::checkAndDeserializeAllContainers(const YAML::Node& database)
 {
-  const auto containers = database["Containers"];
+  const auto containers = database[containersName];
   if (containers)
   {
     createContainers(deserializeEntitiesById(containers));
