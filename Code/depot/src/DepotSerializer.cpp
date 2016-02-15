@@ -7,10 +7,13 @@ using namespace depot::serialize;
 void DepotSerializer::serialize(std::ostream& out)
 {
   storeVersion(out);
-  storeEntitiesId(Article::getTopLevelArticles());
-  serializeAllEntities(out, Article::getTopLevelArticles(), "Articles");
-  storeEntitiesId(Container::getTopLevelContainers());
-  serializeAllEntities(out, Container::getTopLevelContainers(), "Containers");
+  const auto &topLevelArticles = Article::getTopLevelArticles();
+  storeEntitiesId(topLevelArticles);
+  serializeAllEntities(out, topLevelArticles, "Articles");
+
+  const auto &topLevelContainers = Container::getTopLevelContainers();
+  storeEntitiesId(topLevelContainers);
+  serializeAllEntities(out, topLevelContainers, "Containers");
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
