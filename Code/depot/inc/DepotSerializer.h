@@ -85,6 +85,7 @@ private:
     }
     return nodes;
   }
+
   template<typename Entity> YAML::Node serializeEntityData(const std::shared_ptr<Entity>& entity)
   {
     LOG << "serialize entity data";
@@ -96,6 +97,12 @@ private:
     }
     LOG << "serialize entity data: " << node;
     return node;
+  }
+
+  template<typename TopLevelEntities> void storeEntities(std::ostream& out, const TopLevelEntities & entities, const std::string& entitesName)
+  {
+    storeEntitiesId(entities);
+    serializeAllEntities(out, entities, entitesName);
   }
 
   void loadAndCheckVersion(const YAML::Node &main_node);

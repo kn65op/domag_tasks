@@ -8,12 +8,10 @@ void DepotSerializer::serialize(std::ostream& out)
 {
   storeVersion(out);
   const auto &topLevelArticles = Article::getTopLevelArticles();
-  storeEntitiesId(topLevelArticles);
-  serializeAllEntities(out, topLevelArticles, "Articles");
+  storeEntities(out, topLevelArticles, "Articles");
 
   const auto &topLevelContainers = Container::getTopLevelContainers();
-  storeEntitiesId(topLevelContainers);
-  serializeAllEntities(out, topLevelContainers, "Containers");
+  storeEntities(out, topLevelContainers, "Containers");
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
