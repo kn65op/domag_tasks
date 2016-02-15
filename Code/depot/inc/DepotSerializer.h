@@ -118,6 +118,8 @@ private:
   std::map<Container::ContainerPtr, int> serializationContainers;
   std::string version_field = "Version";
   const int version_suported = 1;
+  const std::string articlesName = "Articles";
+  const std:;string containersName = "Containers";
 };
 
 }
