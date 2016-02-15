@@ -46,7 +46,7 @@ TEST_F(ContainerTest, GetItemsShouldReturnAllItemsAfterSomeAdded)
   c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
   c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
 
-  EXPECT_EQ(c->getItems().size(), 4);
+  EXPECT_EQ(4u, c->getItems().size());
 }
 
 TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
@@ -68,7 +68,7 @@ TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
   c->addItem(std::move(item4));
   c->addItem(std::move(item5));
 
-  EXPECT_EQ(c->getNonConsumedItems().size(), 3);
+  EXPECT_EQ(3u, c->getNonConsumedItems().size());
 }
 
 TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
@@ -81,13 +81,13 @@ TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
   c->addItem(std::move(item1));
   c->addItem(std::move(item2));
 
-  ASSERT_EQ(c->getItems().size(), 2);
+  ASSERT_EQ(2u, c->getItems().size());
 
   auto quntity_expected = c->getNonConsumedItems()[0].get()->getQuantity();
   auto removed_item = c->removeItem(c->getNonConsumedItems()[0]);
   EXPECT_EQ(quntity_expected, removed_item->getQuantity());
 
-  EXPECT_EQ(c->getItems().size(), 1);
+  EXPECT_EQ(1u, c->getItems().size());
 }
 
 TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
@@ -95,11 +95,11 @@ TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
   c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
   c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
 
-  ASSERT_EQ(c->getItems().size(), 2);
+  ASSERT_EQ(2u, c->getItems().size());
 
   c->removeItem(c->getItems()[1]);
 
-  EXPECT_EQ(c->getItems().size(), 1);
+  EXPECT_EQ(1u, c->getItems().size());
 }
 
 TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
