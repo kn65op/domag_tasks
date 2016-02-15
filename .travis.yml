@@ -29,7 +29,7 @@ script:
   - uname -a
   - pwd
   - ls -al ../cmake-3.2.3-Linux-x86_64/bin/cmake
-  - ../cmake-3.2.3-Linux-x86_64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=$BOOST_ROOT -DGMOCK_DIR=../gmock-1.7.0 .. 
+  - ../cmake-3.2.3-Linux-x86_64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=$BOOST_ROOT -DGMOCK_DIR=../gmock-1.7.0 ../ 
   - cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=$BOOST_ROOT -DGMOCK_DIR=../gmock-1.7.0 .. 
   - make -j `nproc`
   - Test/Tester
