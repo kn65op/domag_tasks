@@ -10,7 +10,7 @@
 namespace depot
 {
 
-class IItem
+class IItem : public Storable
 {
 public:
   using Ptr = std::unique_ptr<IItem>;
@@ -33,6 +33,7 @@ public:
   virtual boost::gregorian::date getBuyDate() const = 0;
   virtual ConsumeHistory::List getConsumeHistory() const = 0;
   virtual std::shared_ptr<IArticle> getThing() const = 0;
+  virtual void setStorehause(std::shared_ptr<AbstractContainer>) = 0;
 
   struct NoQuantityToConsume
   {
@@ -51,13 +52,13 @@ public:
   };
 };
 
-class Item : public IItem, public Storable
+class Item : public IItem
 {
 public:
   using Storehause = std::shared_ptr<AbstractContainer>;
   using Article = std::shared_ptr<IArticle>;
 
-  Item(std::shared_ptr<IArticle> thing_of);
+  explicit Item(std::shared_ptr<IArticle> thing_of);
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
   double getQuantity() const override;
@@ -66,12 +67,12 @@ public:
   boost::gregorian::date getBuyDate() const override;
   ConsumeHistory::List getConsumeHistory() const override;
   std::shared_ptr<IArticle> getThing() const override;
-  void setStorehause(Storehause store);
+  void setStorehause(Storehause store) override;
   void changeArticle(Article art);
 
 private:
   std::shared_ptr<IArticle> thing;
-  bool buyed = false;
+  bool bought = false;
   double quantity = 0;
   double price_per_unit = 0;
   Date buy_date;

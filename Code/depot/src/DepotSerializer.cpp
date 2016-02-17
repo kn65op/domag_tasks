@@ -12,6 +12,8 @@ void DepotSerializer::serialize(std::ostream& out)
 
   const auto &topLevelContainers = Container::getTopLevelContainers();
   storeEntities(out, topLevelContainers, containersName);
+
+  storeItems(out, topLevelContainers);
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
@@ -170,4 +172,27 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPt
   {
     storeEntityAndItsDependentsId(dependent_container);
   }
+}
+
+void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers)
+{
+  LOG << "--------------------------------------------------------------------------";
+  YAML::Node containerItemsNode;
+  for (const auto & container :containers)
+  {
+    for (const auto & item : container->getItems())
+    {
+      containerItemsNode["Items"].push_back(storeItem(item));
+    }
+  }
+  out << containerItemsNode << "\n";
+}
+
+YAML::Node DepotSerializer::storeItem(const Container::Item & item)
+{
+  YAML::Node itemNode;
+  LOG << item.get();
+  const auto storehause = item->getStorehause();
+  itemNode["containerId"] = serializationContainers[item->getStorehause()];
+  return itemNode;
 }

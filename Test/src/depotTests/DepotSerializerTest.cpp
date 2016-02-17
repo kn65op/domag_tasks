@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
-#include "../../../Code/depot/inc/DepotSerializer.h"
-#include "../../../Code/depot/inc/Article.h"
-#include "../../../Code/depot/inc/Container.h"
+#include "DepotSerializer.h"
+#include "Article.h"
+#include "Item.h"
+#include "Container.h"
 #include <sstream>
 
 using namespace ::testing;
@@ -10,11 +11,11 @@ using namespace std::literals;
 struct DepotSerializerTest : public Test
 {
   depot::serialize::DepotSerializer serializer;
-  std::string expected_output{"Version: 1\n"};
+  const std::string article_name = "Art1"s;
+  const std::string container_name = "Container1"s;
 
   void createTestSuiteArticles()
   {
-    constexpr auto article_name = "Art1";
     constexpr auto article_unit = "Unit";
     const auto article = depot::Article::createTopLevelArticle(article_name, article_unit);
     constexpr auto second_article_name = "Art2";
@@ -38,7 +39,6 @@ struct DepotSerializerTest : public Test
 
   void createTestSuiteContainers()
   {
-    constexpr auto container_name = "Container1";
     const auto container = depot::Container::createTopLevelContainer(container_name);
     constexpr auto second_container_name = "Container2";
     const auto second_container = depot::Container::createTopLevelContainer(second_container_name);
@@ -48,6 +48,33 @@ struct DepotSerializerTest : public Test
     container->createDependentContainer(dependent_second_name);
     constexpr auto dependent_dependent_name = "dependent_dependent";
     dependent_container->createDependentContainer(dependent_dependent_name);
+  }
+
+  void addItemsToContainers()
+  {
+    const auto articles = depot::Article::getTopLevelArticles();
+    auto art = *std::find_if(articles.begin(), articles.end(), [this](const auto article)
+    {
+     return article->getName() == article_name;
+    });
+    auto item = std::make_unique<depot::Item>(art);
+
+    const auto containers = depot::Container::getTopLevelContainers();
+    auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
+    {
+     return container->getName() == container_name;
+    });
+    cont->addItem(std::move(item));
+  }
+
+  void expectItemInContainer()
+  {
+    const auto containers = depot::Container::getTopLevelContainers();
+    auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
+    {
+     return container->getName() == container_name;
+    });
+    EXPECT_FALSE(cont->getItems().empty());
   }
 
   void expectReadTestSuiteContainers()
@@ -127,4 +154,22 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticlesAndAllLevelContainers)
   serializer.deserialize(output);
   expectReadTestSuiteArticles();
   expectReadTestSuiteContainers();
+}
+
+TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
+{
+  createTestSuiteArticles();
+  createTestSuiteContainers();
+  addItemsToContainers();
+
+  std::stringstream output;
+  EXPECT_NO_THROW(serializer.serialize(output));
+
+  std::cout << output.str() << "\n";
+  clearDb();
+
+  serializer.deserialize(output);
+  expectReadTestSuiteArticles();
+  expectReadTestSuiteContainers();
+  expectItemInContainer();
 }

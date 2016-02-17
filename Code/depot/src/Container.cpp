@@ -9,6 +9,7 @@ template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesCon
 void Container::addItem(Item item)
 {
   LOG << "Add item";
+  item->setStorehause(shared_from_this());
   items.push_back(std::move(item));
 }
 

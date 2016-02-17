@@ -17,12 +17,12 @@ Item::Item(std::shared_ptr<IArticle> thing_of) :
 
 void Item::buy(double amount, double price, Date bdate)
 {
-  if (buyed)
+  if (bought)
   {
     LOG << "Item already buyed";
     throw ItemAlreadyBuyed();
   }
-  buyed = true;
+  bought = true;
   buy_date = bdate;
   quantity = amount;
   price_per_unit = price / quantity;
@@ -70,6 +70,7 @@ std::shared_ptr<AbstractContainer> Item::getStorehauseImpl() const
   {
     return storehause;
   }
+  LOG << "Item has no storehause";
   throw NoStorehause();
 }
 
