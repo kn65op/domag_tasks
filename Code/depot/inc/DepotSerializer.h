@@ -108,6 +108,7 @@ private:
 
   void loadAndCheckVersion(const YAML::Node &main_node);
   void checkAndDeserializeAllArticles(const YAML::Node &database);
+  void checkAndDeserializeAllItems(const YAML::Node &database);
   std::map<int, YAML::Node> deserializeEntitiesById(const YAML::Node &articles);
   void createArticles(std::map<int, YAML::Node> &&articles);
   void createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
@@ -123,6 +124,7 @@ private:
   const int version_suported = 1;
   const std::string articlesName = "Articles";
   const std::string containersName = "Containers";
+  const std::string itemsName = "Items";
 };
 
 }

@@ -42,6 +42,7 @@ void DepotSerializer::deserialize(std::istream& input)
   loadAndCheckVersion(database);
   checkAndDeserializeAllArticles(database);
   checkAndDeserializeAllContainers(database);
+  checkAndDeserializeAllItems(database);
 }
 
 void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
@@ -182,7 +183,7 @@ void DepotSerializer::storeItems(std::ostream & out, const Container::Containers
   {
     for (const auto & item : container->getItems())
     {
-      containerItemsNode["Items"].push_back(storeItem(item));
+      containerItemsNode[itemsName].push_back(storeItem(item));
     }
   }
   out << containerItemsNode << "\n";
@@ -195,4 +196,14 @@ YAML::Node DepotSerializer::storeItem(const Container::Item & item)
   const auto storehause = item->getStorehause();
   itemNode["containerId"] = serializationContainers[item->getStorehause()];
   return itemNode;
+}
+
+void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
+{
+  const auto items = database[itemsName];
+  if (items)
+  {
+    auto item = std::make_unique<Item>(Article::getTopLevelArticles().front());
+    Container::getTopLevelContainers().front()->addItem(std::move(item));
+  }
 }
