@@ -123,7 +123,3 @@ TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveV
   Article::removeTopLevelArticle(article_inside);
 }
 
-TEST_F(ArticleTest, StoreShouldStoreAllArticles)
-{
-
-}
