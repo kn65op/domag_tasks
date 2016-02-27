@@ -6,11 +6,6 @@ using namespace ::testing;
 using depot::Container;
 using depot::ut::ItemMock;
 
-MATCHER_P(MatchContainerPtr, expectedContainer, "")
-{
-  return expectedContainer == arg;
-}
-
 struct ContainerTest : public Test
 {
   std::shared_ptr<Container> c = Container::createTopLevelContainer();
