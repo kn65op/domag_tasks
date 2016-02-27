@@ -10,7 +10,7 @@ struct ContainerTest : public Test
 {
   std::shared_ptr<Container> c = Container::createTopLevelContainer();
 
-  void TearDown() override
+  ~ContainerTest()
   {
     Container::clearTopLevelContainers();
   }

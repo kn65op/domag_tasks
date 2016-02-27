@@ -90,8 +90,7 @@ struct DepotSerializerTest : public Test
 
   ~DepotSerializerTest()
   {
-    depot::Article::clearTopLevelArticles();
-    depot::Container::clearTopLevelContainers();
+    clearDb();
   }
 };
 
@@ -165,7 +164,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
 
-  //std::cout << output.str() << "\n";
+  std::cout << output.str() << "\n";
   clearDb();
 
   serializer.deserialize(output);
