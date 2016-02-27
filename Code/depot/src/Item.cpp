@@ -6,11 +6,6 @@ using depot::Item;
 using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
-Item::~Item()
-{
-  LOG << "Item removed\n";
-}
-
 Item::Item(std::weak_ptr<IArticle> thing_of) :
     thing{thing_of}
 {

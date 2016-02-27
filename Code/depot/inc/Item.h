@@ -57,8 +57,6 @@ public:
   using Storehause = std::weak_ptr<AbstractContainer>;
   using Article = std::weak_ptr<IArticle>;
 
-  ~Item() override;
-
   explicit Item(std::weak_ptr<IArticle> thing_of);
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
