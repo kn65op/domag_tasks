@@ -63,7 +63,7 @@ TEST_F(ContainerTest, GetItemsShouldReturnOneItemAfterOneAdded)
 {
   expectAddItemToContainer();
 
-  const Container::Items &items = c->getItems();
+  const auto items = c->getItems();
 
   EXPECT_EQ(1U, items.size());
 }
@@ -116,7 +116,8 @@ TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
 
 TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
 {
-  EXPECT_THROW(c->removeItem(std::unique_ptr<ItemMock>(new ItemMock())), Container::NoSuchElement);
+  StrictMock<ItemMock> item;
+  EXPECT_THROW(c->removeItem(&item), Container::NoSuchElement);
 }
 
 TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstainer)

@@ -81,4 +81,9 @@ private:
   std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
+inline bool operator==(IItem::Ptr &lhs, const IItem * rhs)
+{
+  return lhs.get() == rhs;
+}
+
 }

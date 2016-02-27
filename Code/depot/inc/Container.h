@@ -48,9 +48,10 @@ public:
   }
 
   using Item = depot::IItem::Ptr;
+  using ItemPtr = depot::IItem*;
   using Items = std::vector<Item>;
   using ItemReference = depot::IItem::Reference;
-  using SelectedItems = std::vector<ItemReference>;
+  using SelectedItems = std::vector<depot::IItem*>;//std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
   using ContainerPtr = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside>;
@@ -60,10 +61,10 @@ public:
   using NoInferiorException = AbstractContainer::NoSuchElement;
 
   void addItem(std::unique_ptr<IItem> item);
-  Item removeItem(const Item & to_remove);
+  Item removeItem(const ItemPtr to_remove);
   Item removeItem(const ItemReference to_remove);
-  const Items & getItems() const;
-  const SelectedItems getNonConsumedItems();
+  const SelectedItems getItems() const;
+  const SelectedItems getNonConsumedItems() const;
   std::string getName() const;
 
   void addContainer(ContainerInside container)

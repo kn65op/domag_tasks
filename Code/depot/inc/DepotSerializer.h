@@ -116,7 +116,7 @@ private:
   void createContainers(std::map<int, YAML::Node> &&containers);
   void createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
   void storeItems(std::ostream & out, const Container::Containers & containers);
-  YAML::Node storeItem(const Container::Item & item);
+  YAML::Node storeItem(const depot::IItem * item);
 
   std::map<Article::ArticlePtr, int> serializationArticles;
   std::map<AbstractContainer, int> serializationContainers;

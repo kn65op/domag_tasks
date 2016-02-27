@@ -13,12 +13,18 @@ void Container::addItem(Item item)
   items.push_back(std::move(item));
 }
 
-const Container::Items& Container::getItems() const
+const Container::SelectedItems Container::getItems() const
 {
-  return items;
+  LOG << "selecting all items";
+  Container::SelectedItems non_consumed;
+  for (auto & item : items)
+  {
+    non_consumed.push_back(item.get());
+  }
+  return non_consumed;
 }
 
-const Container::SelectedItems Container::getNonConsumedItems()
+const Container::SelectedItems Container::getNonConsumedItems() const
 {
   LOG << "selecting non consumed items";
   Container::SelectedItems non_consumed;
@@ -26,13 +32,13 @@ const Container::SelectedItems Container::getNonConsumedItems()
   {
     if (item->getQuantity() > 0)
     {
-      non_consumed.push_back(std::ref(item));
+      non_consumed.push_back(item.get());
     }
   }
   return non_consumed;
 }
 
-Container::Item Container::removeItem(const Item & to_remove)
+Container::Item Container::removeItem(const ItemPtr to_remove)
 {
   LOG << "removing item";
   auto it = items.end();
