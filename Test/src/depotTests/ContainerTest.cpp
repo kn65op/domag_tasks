@@ -6,6 +6,11 @@ using namespace ::testing;
 using depot::Container;
 using depot::ut::ItemMock;
 
+MATCHER_P(MatchContainerPtr, expectedContainer, "")
+{
+  return expectedContainer == arg;
+}
+
 struct ContainerTest : public Test
 {
   std::shared_ptr<Container> c = Container::createTopLevelContainer();
@@ -13,6 +18,37 @@ struct ContainerTest : public Test
   ~ContainerTest()
   {
     Container::clearTopLevelContainers();
+  }
+
+  void expectMoveItemToContainer(ItemMock * item)
+  {
+    EXPECT_CALL(*item, setStorehause(_)).Times(1);
+  }
+
+  ItemMock* expectAddItemToContainer(std::unique_ptr<ItemMock> &&item)
+  {
+    auto mock = item.get();
+    expectMoveItemToContainer(mock);
+    c->addItem(std::move(item));
+    return mock;
+  }
+
+  auto makeStrictItemMock() -> decltype(std::make_unique<StrictMock<ItemMock>>())
+  {
+    return std::make_unique<StrictMock<ItemMock>>();
+  }
+
+  ItemMock* expectAddItemToContainer()
+  {
+    auto item = makeStrictItemMock();
+    return expectAddItemToContainer(std::move(item));
+  }
+
+  ItemMock* expectAddItemWithQuantityToContainer(int quanity, int times = 1)
+  {
+    auto item = makeStrictItemMock();
+    EXPECT_CALL(*item, getQuantity()).Times(times).WillRepeatedly(Return(quanity));
+    return expectAddItemToContainer(std::move(item));
   }
 };
 
@@ -25,14 +61,12 @@ TEST_F(ContainerTest, CanRemoveTopLevelContainer)
 
 TEST_F(ContainerTest, CanAddItemToContainer)
 {
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  expectAddItemToContainer();
 }
 
 TEST_F(ContainerTest, GetItemsShouldReturnOneItemAfterOneAdded)
 {
-  std::unique_ptr<ItemMock> item(new ItemMock());
-
-  c->addItem(std::move(item));
+  expectAddItemToContainer();
 
   const Container::Items &items = c->getItems();
 
@@ -41,49 +75,32 @@ TEST_F(ContainerTest, GetItemsShouldReturnOneItemAfterOneAdded)
 
 TEST_F(ContainerTest, GetItemsShouldReturnAllItemsAfterSomeAdded)
 {
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  expectAddItemToContainer();
+  expectAddItemToContainer();
+  expectAddItemToContainer();
+  expectAddItemToContainer();
 
   EXPECT_EQ(4u, c->getItems().size());
 }
 
 TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
 {
-  auto item1 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item1, getQuantity()).WillOnce(Return(0));
-  auto item2 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item2, getQuantity()).WillOnce(Return(1));
-  auto item3 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item3, getQuantity()).WillOnce(Return(0));
-  auto item4 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item4, getQuantity()).WillOnce(Return(5));
-  auto item5 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item5, getQuantity()).WillOnce(Return(5));
-
-  c->addItem(std::move(item1));
-  c->addItem(std::move(item2));
-  c->addItem(std::move(item3));
-  c->addItem(std::move(item4));
-  c->addItem(std::move(item5));
+  expectAddItemWithQuantityToContainer(1);
+  expectAddItemWithQuantityToContainer(0);
+  expectAddItemWithQuantityToContainer(5);
+  expectAddItemWithQuantityToContainer(5);
 
   EXPECT_EQ(3u, c->getNonConsumedItems().size());
 }
 
 TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
 {
-  auto item1 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item1, getQuantity()).WillRepeatedly(Return(0));
-  auto item2 = std::make_unique<ItemMock>();
-  EXPECT_CALL(*item2, getQuantity()).WillRepeatedly(Return(1));
-
-  c->addItem(std::move(item1));
-  c->addItem(std::move(item2));
+  auto quntity_expected = 1;
+  expectAddItemWithQuantityToContainer(0);
+  expectAddItemWithQuantityToContainer(quntity_expected, 2);
 
   ASSERT_EQ(2u, c->getItems().size());
 
-  auto quntity_expected = c->getNonConsumedItems()[0].get()->getQuantity();
   auto removed_item = c->removeItem(c->getNonConsumedItems()[0]);
   EXPECT_EQ(quntity_expected, removed_item->getQuantity());
 
@@ -92,8 +109,8 @@ TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
 
 TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
 {
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
-  c->addItem(std::move(std::unique_ptr<ItemMock>(new ItemMock())));
+  expectAddItemToContainer();
+  expectAddItemToContainer();
 
   ASSERT_EQ(2u, c->getItems().size());
 
@@ -160,11 +177,12 @@ TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndS
 TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
 {
   auto container_second = Container::createTopLevelContainer();
-  auto item = std::make_unique<ItemMock>();
-  c->addItem(std::move(item));
+  auto itemMock = expectAddItemToContainer();
 
   ASSERT_EQ(1U, c->getItems().size());
   ASSERT_EQ(0U, container_second->getItems().size());
+
+  expectMoveItemToContainer(itemMock);
 
   container_second->addItem(c->removeItem(c->getItems()[0]));
 
