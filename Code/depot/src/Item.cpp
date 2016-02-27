@@ -6,10 +6,15 @@ using depot::Item;
 using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
-Item::Item(std::shared_ptr<IArticle> thing_of) :
+Item::~Item()
+{
+  LOG << "Item removed\n";
+}
+
+Item::Item(std::weak_ptr<IArticle> thing_of) :
     thing{thing_of}
 {
-  if (!thing)
+  if (thing.expired())
   {
     throw ArticleCannotBeEmpty();
   }
@@ -64,14 +69,14 @@ Item::Article Item::getThing() const
   return thing;
 }
 
-std::shared_ptr<AbstractContainer> Item::getStorehauseImpl() const
+std::weak_ptr<AbstractContainer> Item::getStorehauseImpl() const
 {
-  if (storehause)
+  if (storehause.expired())
   {
-    return storehause;
+    LOG << "Item has no storehause";
+    throw NoStorehause();
   }
-  LOG << "Item has no storehause";
-  throw NoStorehause();
+  return storehause;
 }
 
 void Item::setStorehause(Storehause store)
@@ -81,7 +86,7 @@ void Item::setStorehause(Storehause store)
 
 void Item::changeArticle(Article art)
 {
-  if (!art)
+  if (art.expired())
   {
     throw ArticleCannotBeEmpty{};
   }

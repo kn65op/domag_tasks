@@ -8,6 +8,8 @@ public:
   struct NoSuchElement
   {
   };
+
+  ~AbstractContainer() = default;
 };
 }
 

@@ -177,7 +177,6 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPt
 
 void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers)
 {
-  LOG << "--------------------------------------------------------------------------";
   YAML::Node containerItemsNode;
   for (const auto & container :containers)
   {
@@ -194,7 +193,7 @@ YAML::Node DepotSerializer::storeItem(const Container::Item & item)
   YAML::Node itemNode;
   LOG << item.get();
   const auto storehause = item->getStorehause();
-  itemNode["containerId"] = serializationContainers[item->getStorehause()];
+  itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
   return itemNode;
 }
 

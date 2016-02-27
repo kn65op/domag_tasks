@@ -52,7 +52,7 @@ Container::Item Container::removeItem(const ItemReference to_remove)
   return removeItem(to_remove.get());
 }
 
-std::shared_ptr<AbstractContainer> Container::getStorehauseImpl() const
+std::weak_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
   return getPrecedentEntity();
 }

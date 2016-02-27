@@ -42,6 +42,11 @@ public:
   Container(const Container &) = delete;
   Container* operator=(const Container&) = delete;
 
+  ~Container() override
+  {
+    LOG << "Delete Container: " << name;
+  }
+
   using Item = depot::IItem::Ptr;
   using Items = std::vector<Item>;
   using ItemReference = depot::IItem::Reference;
@@ -53,11 +58,6 @@ public:
   using NoPrecedentException = LiesNowhere;
   using CircularDependencyException = CannotInsertContainerIntoItself;
   using NoInferiorException = AbstractContainer::NoSuchElement;
-
-  virtual ~Container()
-  {
-    LOG << "Delete Container: " << name;
-  }
 
   void addItem(std::unique_ptr<IItem> item);
   Item removeItem(const Item & to_remove);
@@ -129,7 +129,7 @@ private:
     LOG << "For now no checks done";
   }
 
-  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
+  std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
 
   std::string name;
   Items items;

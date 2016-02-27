@@ -125,7 +125,7 @@ TEST_F(ItemTest, GetNameOfItemShouldReturnValidName)
 {
   std::string name{"name"};
   EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
-  EXPECT_EQ(name, item.getThing()->getName());
+  EXPECT_EQ(name, item.getThing().lock()->getName());
 }
 
 TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
@@ -134,27 +134,27 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
   auto container = Container::createTopLevelContainer();
   item.setStorehause(container);
-  EXPECT_EQ(container, item.getStorehause());
-  item.setStorehause(nullptr);
+  EXPECT_EQ(container, item.getStorehause().lock());
+  item.setStorehause(std::shared_ptr<depot::AbstractContainer>(nullptr));
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
   Container::clearTopLevelContainers();
 }
 
 TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)
 {
-  EXPECT_THROW(Item{nullptr}, Item::ArticleCannotBeEmpty);
-  EXPECT_THROW(item.changeArticle(nullptr), Item::ArticleCannotBeEmpty);
+  EXPECT_THROW(Item{std::shared_ptr<depot::IArticle>(nullptr)}, Item::ArticleCannotBeEmpty);
+  EXPECT_THROW(item.changeArticle(std::shared_ptr<depot::IArticle>(nullptr)), Item::ArticleCannotBeEmpty);
 }
 
 TEST_F(ItemTest, ShouldBeAbleToChangeArticle)
 {
   std::string name{"name"};
   EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
-  EXPECT_EQ(name, item.getThing()->getName());
+  EXPECT_EQ(name, item.getThing().lock()->getName());
 
   auto second_thing = std::make_shared<depot::ut::ArticleMock>();
   std::string second_name{"second name"};
   item.changeArticle(second_thing);
   EXPECT_CALL(*second_thing, getNameMock()).WillOnce(Return(second_name));
-  EXPECT_EQ(second_name, item.getThing()->getName());
+  EXPECT_EQ(second_name, item.getThing().lock()->getName());
 }

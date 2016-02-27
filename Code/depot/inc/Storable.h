@@ -10,13 +10,15 @@ namespace depot
 class Storable
 {
 public:
-  std::shared_ptr<AbstractContainer> getStorehause() const
+  std::weak_ptr<AbstractContainer> getStorehause() const
   {
     return getStorehauseImpl();
   }
 
+  virtual ~Storable() = default;
+
 private:
-  virtual std::shared_ptr<AbstractContainer> getStorehauseImpl() const = 0;
+  virtual std::weak_ptr<AbstractContainer> getStorehauseImpl() const = 0;
 };
 
 }

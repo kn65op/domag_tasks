@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "TLogger.h"
+
 namespace depot
 {
 
@@ -135,7 +137,10 @@ protected:
 
   static void clearTopLevelEntites()
   {
+    LOG << "clearing Entities";
+    LOG << "Count: " << top_level_entities.size();
     top_level_entities.clear();
+    LOG << "Count: " << top_level_entities.size();
   }
 
   static void addEntityToTopLevelEntities(EntitySharedPtr entity)

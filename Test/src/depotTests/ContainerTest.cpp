@@ -133,7 +133,7 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWher
   auto container = Container::createTopLevelContainer();
   auto container_inside = Container::createTopLevelContainer();
   container->addContainer(container_inside);
-  EXPECT_EQ(container, container_inside->getStorehause());
+  EXPECT_EQ(container, container_inside->getStorehause().lock());
   container->removeContainer(container_inside);
   EXPECT_THROW(container_inside->getStorehause(), Container::LiesNowhere);
 }

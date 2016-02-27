@@ -16,7 +16,6 @@ public:
   using Ptr = std::unique_ptr<IItem>;
   using Reference = std::reference_wrapper<Ptr>;
 
-  virtual ~IItem() {}
   IItem() = default;
   IItem(const IItem &) = delete;
   IItem(const IItem &&) = delete;
@@ -32,8 +31,8 @@ public:
   virtual void consume(double amount, Date date) = 0;
   virtual boost::gregorian::date getBuyDate() const = 0;
   virtual ConsumeHistory::List getConsumeHistory() const = 0;
-  virtual std::shared_ptr<IArticle> getThing() const = 0;
-  virtual void setStorehause(std::shared_ptr<AbstractContainer>) = 0;
+  virtual std::weak_ptr<IArticle> getThing() const = 0;
+  virtual void setStorehause(std::weak_ptr<AbstractContainer>) = 0;
 
   struct NoQuantityToConsume
   {
@@ -55,10 +54,12 @@ public:
 class Item : public IItem
 {
 public:
-  using Storehause = std::shared_ptr<AbstractContainer>;
-  using Article = std::shared_ptr<IArticle>;
+  using Storehause = std::weak_ptr<AbstractContainer>;
+  using Article = std::weak_ptr<IArticle>;
 
-  explicit Item(std::shared_ptr<IArticle> thing_of);
+  ~Item() override;
+
+  explicit Item(std::weak_ptr<IArticle> thing_of);
 
   void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
   double getQuantity() const override;
@@ -66,12 +67,12 @@ public:
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
   boost::gregorian::date getBuyDate() const override;
   ConsumeHistory::List getConsumeHistory() const override;
-  std::shared_ptr<IArticle> getThing() const override;
+  std::weak_ptr<IArticle> getThing() const override;
   void setStorehause(Storehause store) override;
   void changeArticle(Article art);
 
 private:
-  std::shared_ptr<IArticle> thing;
+  std::weak_ptr<IArticle> thing;
   bool bought = false;
   double quantity = 0;
   double price_per_unit = 0;
@@ -79,7 +80,7 @@ private:
   ConsumeHistory history;
   Storehause storehause;
 
-  std::shared_ptr<AbstractContainer> getStorehauseImpl() const override;
+  std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
 };
 
 }
