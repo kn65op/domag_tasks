@@ -15,17 +15,17 @@ struct ContainerTest : public Test
     Container::clearTopLevelContainers();
   }
 
-  void expectMoveItemBetweenContainers(ItemMock & item)
+  void expectMoveItemBetweenContainers(ItemMock& item)
   {
     EXPECT_CALL(item, setStorehause(_)).Times(2);
   }
 
-  void expectMoveItemToContainer(ItemMock * item)
+  void expectMoveItemToContainer(ItemMock& item)
   {
-    EXPECT_CALL(*item, setStorehause(_)).Times(1);
+    EXPECT_CALL(item, setStorehause(_)).Times(1);
   }
 
-  void expectRemoveItemFromContainer(ItemMock &item)
+  void expectRemoveItemFromContainer(ItemMock& item)
   {
     EXPECT_CALL(item, setStorehause(_)).Times(1);
   }
@@ -33,7 +33,7 @@ struct ContainerTest : public Test
   ItemMock* expectAddItemToContainer(std::unique_ptr<ItemMock> &&item)
   {
     auto mock = item.get();
-    expectMoveItemToContainer(mock);
+    expectMoveItemToContainer(*mock);
     c->addItem(std::move(item));
     return mock;
   }
