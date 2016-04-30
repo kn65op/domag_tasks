@@ -117,10 +117,11 @@ private:
   void createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
   void storeItems(std::ostream & out, const Container::Containers & containers);
   YAML::Node storeItem(const depot::IItem * item);
+  void cleanupSerialization();
 
-  std::map<Article::ArticlePtr, int> serializationArticles;
+  std::map<std::shared_ptr<IArticle>, int> serializationArticles;
   std::map<AbstractContainer, int> serializationContainers;
-  std::map<int, Article::ArticlePtr> deserializationArticles;
+  std::map<int, std::shared_ptr<IArticle>> deserializationArticles;
   std::map<int, Container*> deserializationContainers;
   std::string version_field = "Version";
   const int version_suported = 1;

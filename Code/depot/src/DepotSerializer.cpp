@@ -14,6 +14,8 @@ void DepotSerializer::serialize(std::ostream& out)
   storeEntities(out, topLevelContainers, containersName);
 
   storeItems(out, topLevelContainers);
+
+  cleanupSerialization();
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
@@ -79,6 +81,7 @@ void DepotSerializer::createArticles(std::map<int, YAML::Node> &&articles)
   {
     const auto &article_node = articles.begin()->second;
     auto actual_article = Article::createTopLevelArticle(article_node["name"].as<std::string>(), article_node["unit"].as<std::string>());
+    deserializationArticles[articles.begin()->first] = actual_article;
     createDependentArticles(actual_article, article_node, articles);
     articles.erase(articles.begin());
   }
@@ -102,8 +105,10 @@ void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, cons
   {
     for (const auto & dependent_article_id : article_node["dependents"])
     {
-      const auto & dependent_article_node = all_articles.at(dependent_article_id.as<int>());
+      const auto dependentArticleId = dependent_article_id.as<int>();
+      const auto & dependent_article_node = all_articles.at(dependentArticleId);
       auto dependent_article = article->createDependentArticle(dependent_article_node["name"].as< std::string>(), dependent_article_node["unit"].as<std::string>());
+      deserializationArticles[dependentArticleId] = dependent_article;
       createDependentArticles(dependent_article, dependent_article_node, all_articles);
       all_articles.erase(dependent_article_id.as<int>());
     }
@@ -196,6 +201,7 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
   itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
+  itemNode["articleId"] = serializationArticles[item->getThing().lock()];
   itemNode["boughtAmmount"] = item->getBoughtAmmount();
   itemNode["price"] = item->getBoughtAmmount() * item->getPricePerUnit();
   itemNode["boughtDate"] = boost::gregorian::to_iso_string(item->getBuyDate());
@@ -215,7 +221,8 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
 
   for (const auto itemNode : items)
   {
-    auto item = std::make_unique<Item>(Article::getTopLevelArticles().front());
+    const auto articleId = itemNode["articleId"].as<int>();
+    auto item = std::make_unique<Item>(deserializationArticles[articleId]);
     const auto ammount = itemNode["boughtAmmount"].as<double>();
     const auto price = itemNode["price"].as<double>();
     const auto bougth = boost::gregorian::from_undelimited_string(itemNode["boughtDate"].as<std::string>());
@@ -230,4 +237,10 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
     const auto containerId = itemNode["containerId"].as<int>();
     deserializationContainers[containerId]->addItem(std::move(item));
   }
+}
+
+void DepotSerializer::cleanupSerialization()
+{
+  serializationArticles.clear();
+  serializationContainers.clear();
 }

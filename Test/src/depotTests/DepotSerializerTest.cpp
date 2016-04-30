@@ -25,7 +25,7 @@ struct DepotSerializerTest : public Test
 
   void createTestSuiteArticles()
   {
-    constexpr auto second_article_name = "Art2";
+    constexpr auto second_article_name = "Art 2";
     constexpr auto second_article_unit = "Unit";
     const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
     constexpr auto article_unit = "Unit";
@@ -96,6 +96,7 @@ struct DepotSerializerTest : public Test
     EXPECT_DOUBLE_EQ(secondConsume, item->getConsumeHistory()[1].first);
     EXPECT_EQ(firstConsumeTime, item->getConsumeHistory()[0].second);
     EXPECT_EQ(secondConsumeTime, item->getConsumeHistory()[1].second);
+    EXPECT_EQ(article_name, item->getThing().lock()->getName());
   }
 
   void expectReadTestSuiteContainers()
