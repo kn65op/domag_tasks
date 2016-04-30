@@ -34,14 +34,19 @@ struct ItemTest : public Test
 
 TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
 {
-  item.buy(3);
-  EXPECT_EQ(item.getQuantity(), 3);
+  EXPECT_EQ(0, item.getQuantity());
+  EXPECT_EQ(0, item.getBoughtAmmount());
+
+  constexpr auto ammount = 3.38;
+  item.buy(ammount);
+  EXPECT_EQ(ammount, item.getQuantity());
+  EXPECT_EQ(ammount, item.getBoughtAmmount());
 }
 
 TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
 {
   item.buy(1);
-  ASSERT_THROW(item.buy(1), IItem::ItemAlreadyBuyed);
+  ASSERT_THROW(item.buy(1), IItem::ItemAlreadyBought);
 }
 
 TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
@@ -62,11 +67,17 @@ TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
   ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
 }
 
-TEST_F(ItemTest, AfterConsumptionQuantityShouldDecrease)
+TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmmountShouldNot)
 {
-  item.buy(1);
-  item.consume(0.5);
-  ASSERT_EQ(item.getQuantity(), 0.5);
+  constexpr auto ammount = 3.88;
+  constexpr auto consume = 0.5;
+  constexpr auto rest = 3.38;
+
+  item.buy(ammount);
+  item.consume(consume);
+
+  EXPECT_EQ(rest, item.getQuantity());
+  EXPECT_EQ(ammount, item.getBoughtAmmount());
 }
 
 TEST_F(ItemTest, BuyByDefaultShouldSetTodayAsBuyDate)

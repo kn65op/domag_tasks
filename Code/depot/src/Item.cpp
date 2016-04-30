@@ -20,12 +20,17 @@ void Item::buy(double amount, double price, Date bdate)
   if (bought)
   {
     LOG << "Item already buyed";
-    throw ItemAlreadyBuyed();
+    throw ItemAlreadyBought();
   }
   bought = true;
   buy_date = bdate;
-  quantity = amount;
+  initialQuantity = quantity = amount;
   price_per_unit = price / quantity;
+}
+
+double Item::getBoughtAmmount() const
+{
+  return initialQuantity;
 }
 
 double Item::getQuantity() const

@@ -13,7 +13,9 @@ struct DepotSerializerTest : public Test
   depot::serialize::DepotSerializer serializer;
   const std::string article_name = "Art1"s;
   const std::string container_name = "Container1"s;
-  const int itemQuantity{5};
+  const double itemQuantity{5.88};
+  const double itemPrice{123.43};
+  const double itemPricePerUnit{itemPrice / itemQuantity};
 
   void createTestSuiteArticles()
   {
@@ -59,6 +61,7 @@ struct DepotSerializerTest : public Test
      return article->getName() == article_name;
     });
     auto item = std::make_unique<depot::Item>(art);
+    item->buy(itemQuantity, itemPrice);
 
     const auto containers = depot::Container::getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
@@ -73,12 +76,12 @@ struct DepotSerializerTest : public Test
     const auto containers = depot::Container::getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
     {
-      std::cout << container->getItems().size() << "\n";
       return container->getName() == container_name;
     });
     ASSERT_FALSE(cont->getItems().empty());
     auto item = cont->getItems().front();
     EXPECT_EQ(itemQuantity, item->getQuantity());
+    //EXPECT_EQ(itemPrice, item->getPricePerUnit());
   }
 
   void expectReadTestSuiteContainers()
@@ -168,7 +171,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
 
-  //std::cout << output.str() << "\n";
+  std::cout << output.str() << "\n";
   clearDb();
 
   serializer.deserialize(output);

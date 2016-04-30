@@ -196,6 +196,7 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
   itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
+  itemNode["boughtAmmount"] = item->getBoughtAmmount();
   return itemNode;
 }
 
@@ -206,6 +207,8 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
   for (const auto itemNode : items)
   {
     auto item = std::make_unique<Item>(Article::getTopLevelArticles().front());
+    const auto ammount = itemNode["boughtAmmount"].as<double>();
+    item->buy(ammount);
     const auto containerId = itemNode["containerId"].as<int>();
     deserializationContainers[containerId]->addItem(std::move(item));
   }
