@@ -16,6 +16,7 @@ struct DepotSerializerTest : public Test
   const double itemQuantity{5.88};
   const double itemPrice{123.43};
   const double itemPricePerUnit{itemPrice / itemQuantity};
+  const boost::gregorian::date boughtDay = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(3);
 
   void createTestSuiteArticles()
   {
@@ -61,7 +62,7 @@ struct DepotSerializerTest : public Test
      return article->getName() == article_name;
     });
     auto item = std::make_unique<depot::Item>(art);
-    item->buy(itemQuantity, itemPrice);
+    item->buy(itemQuantity, itemPrice, boughtDay);
 
     const auto containers = depot::Container::getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
@@ -82,6 +83,7 @@ struct DepotSerializerTest : public Test
     auto item = cont->getItems().front();
     EXPECT_EQ(itemQuantity, item->getQuantity());
     EXPECT_EQ(itemPricePerUnit, item->getPricePerUnit());
+    EXPECT_EQ(boughtDay, item->getBuyDate());
   }
 
   void expectReadTestSuiteContainers()
