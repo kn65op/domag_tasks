@@ -11,8 +11,8 @@ using namespace std::literals;
 struct DepotSerializerTest : public Test
 {
   depot::serialize::DepotSerializer serializer;
-  const std::string article_name = "Art1"s;
-  const std::string container_name = "Container1"s;
+  const std::string article_name = "Z art with item";
+  const std::string container_name = "Z container with item";
   const double itemQuantity{5.88};
   const double itemPrice{123.43};
   const double itemPricePerUnit{itemPrice / itemQuantity};
@@ -20,11 +20,11 @@ struct DepotSerializerTest : public Test
 
   void createTestSuiteArticles()
   {
-    constexpr auto article_unit = "Unit";
-    const auto article = depot::Article::createTopLevelArticle(article_name, article_unit);
     constexpr auto second_article_name = "Art2";
     constexpr auto second_article_unit = "Unit";
     const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
+    constexpr auto article_unit = "Unit";
+    const auto article = depot::Article::createTopLevelArticle(article_name, article_unit);
     constexpr auto dependent_name = "dependent";
     constexpr auto dependent_unit = "dependent unit";
     const auto dependent_article = article->createDependentArticle(dependent_name, dependent_unit);
@@ -43,9 +43,9 @@ struct DepotSerializerTest : public Test
 
   void createTestSuiteContainers()
   {
-    const auto container = depot::Container::createTopLevelContainer(container_name);
     constexpr auto second_container_name = "Container2";
     const auto second_container = depot::Container::createTopLevelContainer(second_container_name);
+    const auto container = depot::Container::createTopLevelContainer(container_name);
     constexpr auto dependent_name = "dependent";
     const auto dependent_container = container->createDependentContainer(dependent_name);
     constexpr auto dependent_second_name = "dependent_second";
