@@ -4,8 +4,6 @@
 using namespace ::testing;
 using depot::ConsumeHistory;
 
-//TODO: needs    
-
 struct ConsumeHistoryTest : public Test
 {
   using date = boost::gregorian::date;

@@ -53,12 +53,6 @@ Container::Item Container::removeItem(const ItemPtr to_remove)
   throw NoSuchElement();
 }
 
-Container::Item Container::removeItem(const ItemReference to_remove)
-{
-  LOG << "removing item by reference";
-  return removeItem(to_remove.get());
-}
-
 std::weak_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
   return getPrecedentEntity();
