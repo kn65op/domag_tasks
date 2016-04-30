@@ -46,6 +46,7 @@ Container::Item Container::removeItem(const ItemPtr to_remove)
   {
     auto ret = std::move(*it);
     items.erase(it);
+    ret->setStorehause({});
     return ret;
   }
   LOG << "no item to remove";

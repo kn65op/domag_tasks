@@ -13,6 +13,7 @@ struct DepotSerializerTest : public Test
   depot::serialize::DepotSerializer serializer;
   const std::string article_name = "Art1"s;
   const std::string container_name = "Container1"s;
+  const int itemQuantity{5};
 
   void createTestSuiteArticles()
   {
@@ -75,6 +76,8 @@ struct DepotSerializerTest : public Test
      return container->getName() == container_name;
     });
     EXPECT_FALSE(cont->getItems().empty());
+    //auto &item = cont->getItems().front();
+    //EXPECT_EQ(itemQuantity, item->getQuantity());
   }
 
   void expectReadTestSuiteContainers()

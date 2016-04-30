@@ -15,9 +15,19 @@ struct ContainerTest : public Test
     Container::clearTopLevelContainers();
   }
 
+  void expectMoveItemBetweenContainers(ItemMock & item)
+  {
+    EXPECT_CALL(item, setStorehause(_)).Times(2);
+  }
+
   void expectMoveItemToContainer(ItemMock * item)
   {
     EXPECT_CALL(*item, setStorehause(_)).Times(1);
+  }
+
+  void expectRemoveItemFromContainer(ItemMock &item)
+  {
+    EXPECT_CALL(item, setStorehause(_)).Times(1);
   }
 
   ItemMock* expectAddItemToContainer(std::unique_ptr<ItemMock> &&item)
@@ -90,14 +100,15 @@ TEST_F(ContainerTest, GetNotConsumedShouldReturnOnlyNotConsumedItems)
 
 TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
 {
-  auto quntity_expected = 1;
+  auto qantity_expected = 1;
   expectAddItemWithQuantityToContainer(0);
-  expectAddItemWithQuantityToContainer(quntity_expected, 2);
+  auto item = expectAddItemWithQuantityToContainer(qantity_expected, 2);
 
   ASSERT_EQ(2u, c->getItems().size());
 
+  expectRemoveItemFromContainer(*item);
   auto removed_item = c->removeItem(c->getNonConsumedItems()[0]);
-  EXPECT_EQ(quntity_expected, removed_item->getQuantity());
+  EXPECT_EQ(qantity_expected, removed_item->getQuantity());
 
   EXPECT_EQ(1u, c->getItems().size());
 }
@@ -105,10 +116,11 @@ TEST_F(ContainerTest, RemoveItemShouldWorkForConsumedItems)
 TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
 {
   expectAddItemToContainer();
-  expectAddItemToContainer();
+  auto item = expectAddItemToContainer();
 
   ASSERT_EQ(2u, c->getItems().size());
 
+  expectRemoveItemFromContainer(*item);
   c->removeItem(c->getItems()[1]);
 
   EXPECT_EQ(1u, c->getItems().size());
@@ -124,6 +136,7 @@ TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstaine
 {
   EXPECT_THROW(c->removeContainer(Container::createTopLevelContainer()), Container::NoSuchElement);
 }
+
 TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
 {
   EXPECT_THROW(c->getStorehause(), Container::LiesNowhere);
@@ -178,7 +191,7 @@ TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
   ASSERT_EQ(1U, c->getItems().size());
   ASSERT_EQ(0U, container_second->getItems().size());
 
-  expectMoveItemToContainer(itemMock);
+  expectMoveItemBetweenContainers(*itemMock);
 
   container_second->addItem(c->removeItem(c->getItems()[0]));
 
