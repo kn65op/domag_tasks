@@ -45,6 +45,7 @@ void DepotSerializer::deserialize(std::istream& input)
   checkAndDeserializeAllArticles(database);
   checkAndDeserializeAllContainers(database);
   checkAndDeserializeAllItems(database);
+  cleanupDeserialization();
 }
 
 void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
@@ -241,6 +242,14 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
 
 void DepotSerializer::cleanupSerialization()
 {
+  LOG << "Clean after serialization";
   serializationArticles.clear();
   serializationContainers.clear();
+}
+
+void DepotSerializer::cleanupDeserialization()
+{
+  LOG << "Clean after deserialization";
+  deserializationArticles.clear();
+  deserializationContainers.clear();
 }

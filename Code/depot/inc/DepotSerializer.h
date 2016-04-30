@@ -118,6 +118,7 @@ private:
   void storeItems(std::ostream & out, const Container::Containers & containers);
   YAML::Node storeItem(const depot::IItem * item);
   void cleanupSerialization();
+  void cleanupDeserialization();
 
   std::map<std::shared_ptr<IArticle>, int> serializationArticles;
   std::map<AbstractContainer, int> serializationContainers;

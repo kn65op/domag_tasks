@@ -5,6 +5,8 @@
 #include "Container.h"
 #include <sstream>
 
+#include "TLogger.h"
+
 using namespace ::testing;
 using namespace std::literals;
 
@@ -186,10 +188,39 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
 
-  std::cout << output.str() << "\n";
+  LOG << output.str();
   clearDb();
 
   serializer.deserialize(output);
+  expectReadTestSuiteArticles();
+  expectReadTestSuiteContainers();
+  expectItemInContainer();
+}
+
+TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticlesAndReadTwice)
+{
+  createTestSuiteArticles();
+  createTestSuiteContainers();
+  addItemsToContainers();
+
+  std::stringstream output;
+  EXPECT_NO_THROW(serializer.serialize(output));
+  std::string fileContent = output.str();
+
+  LOG << output.str();
+
+  clearDb();
+
+
+  serializer.deserialize(output);
+  expectReadTestSuiteArticles();
+  expectReadTestSuiteContainers();
+  expectItemInContainer();
+
+  clearDb();
+
+  std::stringstream outputForSecondRead(fileContent);
+  serializer.deserialize(outputForSecondRead);
   expectReadTestSuiteArticles();
   expectReadTestSuiteContainers();
   expectItemInContainer();
