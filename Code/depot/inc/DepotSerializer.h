@@ -49,25 +49,21 @@ private:
 
   auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
   {
-    LOG << "Getting articles for article: " << article->getName();
     return article->getArticles();
   }
 
   auto getDependentEntities(const Container::ContainerPtr& container) -> decltype(container->getContainers())
   {
-    LOG << "Getting articles for article: " << container->getName();
     return container->getContainers();
   }
 
   int getDependetEntityId(const Article::ArticlePtr& article)
   {
-    LOG << "Getting article id for : " << article->getName();
     return serializationArticles[article];
   }
 
   int getDependetEntityId(const Container::ContainerPtr& container)
   {
-    LOG << "Getting article id for : " << container->getName();
     return serializationContainers[container];
   }
 
@@ -80,7 +76,6 @@ private:
     {
       for (auto & node : serializeEntity(dependent_entity))
       {
-        LOG << "serialize entity: " << node;
         nodes.push_back(std::move(node));
       }
     }
@@ -96,7 +91,6 @@ private:
     {
       node["dependents"].push_back(getDependetEntityId(dependent_entity));
     }
-    LOG << "serialize entity data: " << node;
     return node;
   }
 

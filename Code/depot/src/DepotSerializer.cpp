@@ -6,6 +6,7 @@ using namespace depot::serialize;
 
 void DepotSerializer::serialize(std::ostream& out)
 {
+  LOG << "Serialize started";
   storeVersion(out);
   const auto &topLevelArticles = Article::getTopLevelArticles();
   storeEntities(out, topLevelArticles, articlesName);
@@ -16,6 +17,7 @@ void DepotSerializer::serialize(std::ostream& out)
   storeItems(out, topLevelContainers);
 
   cleanupSerialization();
+  LOG << "Serialize finished";
 }
 
 void DepotSerializer::storeVersion(std::ostream& out)
@@ -40,12 +42,14 @@ void DepotSerializer::loadAndCheckVersion(const YAML::Node& main_node)
 
 void DepotSerializer::deserialize(std::istream& input)
 {
+  LOG << "Deserialize started";
   auto database = YAML::Load(input);
   loadAndCheckVersion(database);
   checkAndDeserializeAllArticles(database);
   checkAndDeserializeAllContainers(database);
   checkAndDeserializeAllItems(database);
   cleanupDeserialization();
+  LOG << "Deserialize finished";
 }
 
 void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
@@ -53,6 +57,7 @@ void DepotSerializer::checkAndDeserializeAllArticles(const YAML::Node& database)
   const auto articles = database[articlesName];
   if (articles)
   {
+    LOG << "Reading articles";
     createArticles(deserializeEntitiesById(articles));
   }
 }
@@ -62,6 +67,7 @@ void DepotSerializer::checkAndDeserializeAllContainers(const YAML::Node& databas
   const auto containers = database[containersName];
   if (containers)
   {
+    LOG << "Reading containers";
     createContainers(deserializeEntitiesById(containers));
   }
 }
@@ -220,6 +226,7 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
 {
   const auto items = database[itemsName];
 
+  LOG << "Reading items";
   for (const auto itemNode : items)
   {
     const auto articleId = itemNode["articleId"].as<int>();
@@ -237,6 +244,7 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
     }
     const auto containerId = itemNode["containerId"].as<int>();
     deserializationContainers[containerId]->addItem(std::move(item));
+    LOG << "Read item from container id: " <<  containerId << " and article id: " << articleId;
   }
 }
 
