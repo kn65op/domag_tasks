@@ -215,7 +215,5 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
     item->buy(ammount, price, bougth);
     const auto containerId = itemNode["containerId"].as<int>();
     deserializationContainers[containerId]->addItem(std::move(item));
-    Container::getTopLevelContainers().front()->addItem(std::move(item));
-    //deserializationContainers[containerId]->addItem(std::move(item));
   }
 }
