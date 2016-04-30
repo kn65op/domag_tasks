@@ -81,7 +81,7 @@ struct DepotSerializerTest : public Test
     ASSERT_FALSE(cont->getItems().empty());
     auto item = cont->getItems().front();
     EXPECT_EQ(itemQuantity, item->getQuantity());
-    //EXPECT_EQ(itemPrice, item->getPricePerUnit());
+    EXPECT_EQ(itemPrice, item->getPricePerUnit());
   }
 
   void expectReadTestSuiteContainers()
