@@ -33,7 +33,7 @@ public:
   virtual const ConsumeHistory::List& getConsumeHistory() const = 0;
   virtual std::weak_ptr<IArticle> getThing() const = 0;
   virtual void setStorehause(std::weak_ptr<AbstractContainer>) = 0;
-  virtual double getBoughtAmmount() const = 0;
+  virtual double getBoughtAmount() const = 0;
 
   struct NoQuantityToConsume
   {
@@ -65,7 +65,7 @@ public:
   double getPricePerUnit() const override;
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
   boost::gregorian::date getBuyDate() const override;
-  double getBoughtAmmount() const override;
+  double getBoughtAmount() const override;
   const ConsumeHistory::List& getConsumeHistory() const override;
   std::weak_ptr<IArticle> getThing() const override;
   void setStorehause(Storehause store) override;

@@ -88,7 +88,7 @@ struct DepotSerializerTest : public Test
     });
     ASSERT_FALSE(cont->getItems().empty());
     auto item = cont->getItems().front();
-    EXPECT_DOUBLE_EQ(itemQuantity, item->getBoughtAmmount());
+    EXPECT_DOUBLE_EQ(itemQuantity, item->getBoughtAmount());
     EXPECT_DOUBLE_EQ(amountAfterConsumption, item->getQuantity());
     EXPECT_DOUBLE_EQ(itemPricePerUnit, item->getPricePerUnit());
     EXPECT_EQ(boughtDay, item->getBuyDate());

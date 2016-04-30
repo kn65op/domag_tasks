@@ -28,7 +28,7 @@ void Item::buy(double amount, double price, Date bdate)
   price_per_unit = price / quantity;
 }
 
-double Item::getBoughtAmmount() const
+double Item::getBoughtAmount() const
 {
   return initialQuantity;
 }

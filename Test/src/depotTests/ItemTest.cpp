@@ -9,7 +9,6 @@ using depot::Item;
 using depot::IItem;
 
 //TODO: best before
-//TODO: buy and consume
 
 struct ItemTest : public Test
 {
@@ -35,12 +34,12 @@ struct ItemTest : public Test
 TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
 {
   EXPECT_EQ(0, item.getQuantity());
-  EXPECT_EQ(0, item.getBoughtAmmount());
+  EXPECT_EQ(0, item.getBoughtAmount());
 
-  constexpr auto ammount = 3.38;
-  item.buy(ammount);
-  EXPECT_EQ(ammount, item.getQuantity());
-  EXPECT_EQ(ammount, item.getBoughtAmmount());
+  constexpr auto amount = 3.38;
+  item.buy(amount);
+  EXPECT_EQ(amount, item.getQuantity());
+  EXPECT_EQ(amount, item.getBoughtAmount());
 }
 
 TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
@@ -67,17 +66,17 @@ TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
   ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
 }
 
-TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmmountShouldNot)
+TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmountShouldNot)
 {
-  constexpr auto ammount = 3.88;
+  constexpr auto amount = 3.88;
   constexpr auto consume = 0.5;
   constexpr auto rest = 3.38;
 
-  item.buy(ammount);
+  item.buy(amount);
   item.consume(consume);
 
   EXPECT_EQ(rest, item.getQuantity());
-  EXPECT_EQ(ammount, item.getBoughtAmmount());
+  EXPECT_EQ(amount, item.getBoughtAmount());
 }
 
 TEST_F(ItemTest, BuyByDefaultShouldSetTodayAsBuyDate)
