@@ -120,6 +120,8 @@ private:
 
   std::map<Article::ArticlePtr, int> serializationArticles;
   std::map<AbstractContainer, int> serializationContainers;
+  std::map<int, Article::ArticlePtr> deserializationArticles;
+  std::map<int, Container*> deserializationContainers;
   std::string version_field = "Version";
   const int version_suported = 1;
   const std::string articlesName = "Articles";

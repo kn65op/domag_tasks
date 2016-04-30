@@ -16,12 +16,12 @@ void Container::addItem(Item item)
 const Container::SelectedItems Container::getItems() const
 {
   LOG << "selecting all items";
-  Container::SelectedItems non_consumed;
+  Container::SelectedItems allItems;
   for (auto & item : items)
   {
-    non_consumed.push_back(item.get());
+    allItems.push_back(item.get());
   }
-  return non_consumed;
+  return allItems;
 }
 
 const Container::SelectedItems Container::getNonConsumedItems() const

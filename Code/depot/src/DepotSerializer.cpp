@@ -90,6 +90,7 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
   {
     const auto &container_node = containers.begin()->second;
     auto actual_container = Container::createTopLevelContainer(container_node["name"].as<std::string>());
+    deserializationContainers[containers.begin()->first] = actual_container.get();
     createDependentContainers(actual_container, container_node, containers);
     containers.erase(containers.begin());
   }
@@ -115,8 +116,10 @@ void DepotSerializer::createDependentContainers(Container::ContainerPtr &contain
   {
     for (const auto & dependent_container_id : container_node["dependents"])
     {
-      const auto & dependent_container_node = all_containers.at(dependent_container_id.as<int>());
+      const auto dependentContainerId = dependent_container_id.as<int>();
+      const auto & dependent_container_node = all_containers.at(dependentContainerId);
       auto dependent_container = container->createDependentContainer(dependent_container_node["name"].as< std::string>());
+      deserializationContainers[dependentContainerId] = dependent_container.get();
       createDependentContainers(dependent_container, dependent_container_node, all_containers);
       all_containers.erase(dependent_container_id.as<int>());
     }
@@ -191,7 +194,6 @@ void DepotSerializer::storeItems(std::ostream & out, const Container::Containers
 YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 {
   YAML::Node itemNode;
-  LOG << item;
   const auto storehause = item->getStorehause();
   itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
   return itemNode;
@@ -200,9 +202,11 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
 {
   const auto items = database[itemsName];
-  if (items)
+
+  for (const auto itemNode : items)
   {
     auto item = std::make_unique<Item>(Article::getTopLevelArticles().front());
-    Container::getTopLevelContainers().front()->addItem(std::move(item));
+    const auto containerId = itemNode["containerId"].as<int>();
+    deserializationContainers[containerId]->addItem(std::move(item));
   }
 }

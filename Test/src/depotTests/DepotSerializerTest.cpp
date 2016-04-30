@@ -73,11 +73,12 @@ struct DepotSerializerTest : public Test
     const auto containers = depot::Container::getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
     {
-     return container->getName() == container_name;
+      std::cout << container->getItems().size() << "\n";
+      return container->getName() == container_name;
     });
-    EXPECT_FALSE(cont->getItems().empty());
-    //auto &item = cont->getItems().front();
-    //EXPECT_EQ(itemQuantity, item->getQuantity());
+    ASSERT_FALSE(cont->getItems().empty());
+    auto item = cont->getItems().front();
+    EXPECT_EQ(itemQuantity, item->getQuantity());
   }
 
   void expectReadTestSuiteContainers()
@@ -167,7 +168,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
 
-  std::cout << output.str() << "\n";
+  //std::cout << output.str() << "\n";
   clearDb();
 
   serializer.deserialize(output);
