@@ -16,7 +16,12 @@ struct DepotSerializerTest : public Test
   const double itemQuantity{5.88};
   const double itemPrice{123.43};
   const double itemPricePerUnit{itemPrice / itemQuantity};
-  const boost::gregorian::date boughtDay = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(3);
+  const double firstConsume = 0.98;
+  const double secondConsume = 2.3;
+  const double amountAfterConsumption = 2.6;
+  const boost::gregorian::date boughtDay = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(7);
+  const boost::gregorian::date firstConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(5);
+  const boost::gregorian::date secondConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(1);
 
   void createTestSuiteArticles()
   {
@@ -63,6 +68,8 @@ struct DepotSerializerTest : public Test
     });
     auto item = std::make_unique<depot::Item>(art);
     item->buy(itemQuantity, itemPrice, boughtDay);
+    item->consume(firstConsume, firstConsumeTime);
+    item->consume(secondConsume, secondConsumeTime);
 
     const auto containers = depot::Container::getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
@@ -81,9 +88,14 @@ struct DepotSerializerTest : public Test
     });
     ASSERT_FALSE(cont->getItems().empty());
     auto item = cont->getItems().front();
-    EXPECT_EQ(itemQuantity, item->getQuantity());
-    EXPECT_EQ(itemPricePerUnit, item->getPricePerUnit());
+    EXPECT_DOUBLE_EQ(itemQuantity, item->getBoughtAmmount());
+    EXPECT_DOUBLE_EQ(amountAfterConsumption, item->getQuantity());
+    EXPECT_DOUBLE_EQ(itemPricePerUnit, item->getPricePerUnit());
     EXPECT_EQ(boughtDay, item->getBuyDate());
+    EXPECT_DOUBLE_EQ(firstConsume, item->getConsumeHistory()[0].first);
+    EXPECT_DOUBLE_EQ(secondConsume, item->getConsumeHistory()[1].first);
+    EXPECT_EQ(firstConsumeTime, item->getConsumeHistory()[0].second);
+    EXPECT_EQ(secondConsumeTime, item->getConsumeHistory()[1].second);
   }
 
   void expectReadTestSuiteContainers()

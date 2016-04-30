@@ -17,7 +17,7 @@ class ItemMock : public IItem
   MOCK_CONST_METHOD0(getPricePerUnit, double());
   MOCK_METHOD2(consume, void(double amount, Date date));
   MOCK_CONST_METHOD0(getBuyDate, boost::gregorian::date());
-  MOCK_CONST_METHOD0(getConsumeHistory, ConsumeHistory::List());
+  MOCK_CONST_METHOD0(getConsumeHistory, const ConsumeHistory::List&());
   MOCK_CONST_METHOD0(getThing, std::weak_ptr<IArticle>());
   MOCK_CONST_METHOD0(getStorehauseImpl, std::weak_ptr<AbstractContainer>());
   MOCK_METHOD1(setStorehause, void(std::weak_ptr<AbstractContainer>));
