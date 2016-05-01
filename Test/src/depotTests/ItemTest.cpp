@@ -37,21 +37,21 @@ TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
   EXPECT_EQ(0, item.getBoughtAmount());
 
   constexpr auto amount = 3.38;
-  item.buy(amount);
+  item.buy({amount});
   EXPECT_EQ(amount, item.getQuantity());
   EXPECT_EQ(amount, item.getBoughtAmount());
 }
 
 TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
 {
-  item.buy(1);
-  ASSERT_THROW(item.buy(1), IItem::ItemAlreadyBought);
+  item.buy({1.0});
+  ASSERT_THROW(item.buy({1.0}), IItem::ItemAlreadyBought);
 }
 
 TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
 {
-  item.buy(3, 6.30);
-  ASSERT_EQ(item.getQuantity(), 3);
+  item.buy({3.0, 6.30});
+  ASSERT_EQ(item.getQuantity(), 3.0);
   EXPECT_EQ(item.getPricePerUnit(), 2.10);
 }
 
@@ -62,7 +62,7 @@ TEST_F(ItemTest, ShouldNotBeAbleToConsumeWhenThereIsNoItem)
 
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
 {
-  item.buy(1);
+  item.buy({1.0});
   ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
 }
 
@@ -72,7 +72,7 @@ TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmountShouldNot)
   constexpr auto consume = 0.5;
   constexpr auto rest = 3.38;
 
-  item.buy(amount);
+  item.buy({amount});
   item.consume(consume);
 
   EXPECT_EQ(rest, item.getQuantity());
@@ -81,20 +81,20 @@ TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmountShouldNot)
 
 TEST_F(ItemTest, BuyByDefaultShouldSetTodayAsBuyDate)
 {
-  item.buy(1);
+  item.buy({1.0});
   ASSERT_EQ(item.getBuyDate(), boost::gregorian::day_clock::local_day());
 }
 
 TEST_F(ItemTest, BuyShouldSetSpecifiedBuyDate)
 {
   std::string date = "2013-01-01";
-  item.buy(1, 0, boost::gregorian::from_simple_string(date));
+  item.buy({1.0, 0.0, boost::gregorian::from_simple_string(date)});
   ASSERT_EQ(item.getBuyDate(), boost::gregorian::from_simple_string(date));
 }
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
 {
-  item.buy(1);
+  item.buy({1.0});
   item.consume(0.1);
   item.consume(0.5);
   item.consume(0.4);
@@ -113,7 +113,7 @@ TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistoryWithDates)
 {
-  item.buy(1);
+  item.buy({1.0});
   std::string sdate = "2013-01-01";
   item.consume(0.1, boost::gregorian::from_simple_string(sdate));
   item.consume(0.5);

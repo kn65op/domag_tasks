@@ -15,7 +15,7 @@ Item::Item(std::weak_ptr<IArticle> thing_of) :
   }
 }
 
-void Item::buy(double amount, double price, Date bdate)
+void Item::buy(const PurcaseDetails &details)
 {
   if (bought)
   {
@@ -23,9 +23,9 @@ void Item::buy(double amount, double price, Date bdate)
     throw ItemAlreadyBought();
   }
   bought = true;
-  buy_date = bdate;
-  initialQuantity = quantity = amount;
-  price_per_unit = price / quantity;
+  buy_date = details.date;
+  initialQuantity = quantity = details.amount;
+  price_per_unit = details.price / details.amount;
 }
 
 double Item::getBoughtAmount() const

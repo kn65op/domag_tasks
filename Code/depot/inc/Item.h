@@ -10,6 +10,28 @@
 namespace depot
 {
 
+struct PurcaseDetails
+{
+  using Date = boost::gregorian::date;
+
+  PurcaseDetails(double amount) : PurcaseDetails(amount, 0.0)
+  { }
+
+  PurcaseDetails(double amount, double price) : PurcaseDetails(amount, price, boost::gregorian::day_clock::local_day())
+  {}
+
+  PurcaseDetails(double amount, double price, Date date) :
+    amount(amount),
+    price(price),
+    date(date)
+  {
+  }
+
+  double amount;
+  double price;
+  Date date;
+};
+
 class IItem : public Storable
 {
 public:
@@ -23,9 +45,9 @@ public:
   IItem & operator=(const IItem &) = delete;
   IItem & operator=(const IItem &&) = delete;
 
-  using Date = boost::gregorian::date;
+  using Date = PurcaseDetails::Date;
 
-  virtual void buy(double amount, double price, Date bdate) = 0;
+  virtual void buy(const PurcaseDetails &) = 0;
   virtual double getQuantity() const = 0;
   virtual double getPricePerUnit() const = 0;
   virtual void consume(double amount, Date date) = 0;
@@ -60,7 +82,7 @@ public:
 
   explicit Item(std::weak_ptr<IArticle> thing_of);
 
-  void buy(double amount, double price = 0, Date bdate = boost::gregorian::day_clock::local_day()) override;
+  void buy(const PurcaseDetails &) override;
   double getQuantity() const override;
   double getPricePerUnit() const override;
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
