@@ -26,8 +26,6 @@ struct PurcaseDetails
     date(date)
   {
   }
-private:
-  friend class Item;
 
   double amount;
   double price;
