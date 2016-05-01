@@ -1,8 +1,9 @@
 #pragma once
 
-#include "ConsumeHistory.h"
 #include <memory>
 #include <boost/date_time/gregorian/gregorian.hpp>
+
+#include "ConsumeHistory.h"
 #include "Article.h"
 #include "Storable.h"
 #include "AbstractContainer.h"
@@ -67,6 +68,10 @@ public:
   struct ArticleCannotBeEmpty
   {
   };
+
+  struct AmountCannotBeZero
+  {
+  };
 };
 
 class Item : public IItem
@@ -97,7 +102,7 @@ private:
   Storehause storehause;
 
   std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
-  void buy(const PurcaseDetails &);
+  void savePurcaseDetails(const PurcaseDetails &);
 };
 
 inline bool operator==(IItem::Ptr &lhs, const IItem * rhs)

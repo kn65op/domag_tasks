@@ -35,12 +35,6 @@ TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
   EXPECT_EQ(item.getPricePerUnit(), 2.10);
 }
 
-TEST_F(ItemTest, ShouldNotBeAbleToConsumeWhenThereIsNoItem)
-{
-  Item item(thing, {0.0});
-  ASSERT_THROW(item.consume(0.01), IItem::NoQuantityToConsume);
-}
-
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
 {
   ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
@@ -146,4 +140,11 @@ TEST_F(ItemTest, ShouldBeAbleToChangeArticle)
   item.changeArticle(second_thing);
   EXPECT_CALL(*second_thing, getNameMock()).WillOnce(Return(second_name));
   EXPECT_EQ(second_name, item.getThing().lock()->getName());
+}
+
+
+TEST_F(ItemTest, ItemShouldNotBeCreatedWithZeroAmount)
+{
+  constexpr double amount = 0.0;
+  EXPECT_THROW(Item item(thing, {amount}), Item::AmountCannotBeZero);
 }

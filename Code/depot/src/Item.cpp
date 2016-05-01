@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "Article.h"
+
 #include <TLogger.h>
 
 using depot::Item;
@@ -13,11 +14,15 @@ Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details) :
   {
     throw ArticleCannotBeEmpty();
   }
-  buy(details);
+  savePurcaseDetails(details);
 }
 
-void Item::buy(const PurcaseDetails &details)
+void Item::savePurcaseDetails(const PurcaseDetails &details)
 {
+  if (details.amount == 0.0)
+  {
+    throw AmountCannotBeZero{};
+  }
   buy_date = details.date;
   initialQuantity = quantity = details.amount;
   price_per_unit = details.price / details.amount;
