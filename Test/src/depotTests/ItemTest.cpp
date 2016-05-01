@@ -17,11 +17,6 @@ struct ItemTest : public Test
   std::shared_ptr<depot::ut::ArticleMock> thing = std::make_shared<depot::ut::ArticleMock>();
   const double initialAmount{1.0};
   Item item{thing, {initialAmount}};
-
-//  ItemTest() :
-//    item{thing}
-//  {}
-
 };
 
 TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
