@@ -68,8 +68,7 @@ struct DepotSerializerTest : public Test
     {
      return article->getName() == article_name;
     });
-    auto item = std::make_unique<depot::Item>(art);
-    item->buy({itemQuantity, itemPrice, boughtDay});
+    auto item = std::make_unique<depot::Item>(art, depot::PurcaseDetails{itemQuantity, itemPrice, boughtDay});
     item->consume(firstConsume, firstConsumeTime);
     item->consume(secondConsume, secondConsumeTime);
 

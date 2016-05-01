@@ -15,54 +15,39 @@ struct ItemTest : public Test
   using Date = boost::gregorian::date;
 
   std::shared_ptr<depot::ut::ArticleMock> thing = std::make_shared<depot::ut::ArticleMock>();
-  Item item;
+  const double initialAmount{1.0};
+  Item item{thing, {initialAmount}};
 
-  ItemTest() :
-    item{thing}
-  {}
-
-  void SetUp()
-  {
-  }
-
-  void TearDown()
-  {
-  }
+//  ItemTest() :
+//    item{thing}
+//  {}
 
 };
 
 TEST_F(ItemTest, ItemCanBeBuyedWithoutPrice)
 {
-  EXPECT_EQ(0, item.getQuantity());
-  EXPECT_EQ(0, item.getBoughtAmount());
-
   constexpr auto amount = 3.38;
-  item.buy({amount});
+
+  Item item(thing, {amount});
   EXPECT_EQ(amount, item.getQuantity());
   EXPECT_EQ(amount, item.getBoughtAmount());
 }
 
-TEST_F(ItemTest, ItemShouldBeBuyedOnlyOnce)
-{
-  item.buy({1.0});
-  ASSERT_THROW(item.buy({1.0}), IItem::ItemAlreadyBought);
-}
-
 TEST_F(ItemTest, ItemBuyedWithPriceShouldKnowPricePerUnit)
 {
-  item.buy({3.0, 6.30});
+  Item item(thing, {3.0, 6.30});
   ASSERT_EQ(item.getQuantity(), 3.0);
   EXPECT_EQ(item.getPricePerUnit(), 2.10);
 }
 
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeWhenThereIsNoItem)
 {
+  Item item(thing, {0.0});
   ASSERT_THROW(item.consume(0.01), IItem::NoQuantityToConsume);
 }
 
 TEST_F(ItemTest, ShouldNotBeAbleToConsumeMoreThenIsAvailable)
 {
-  item.buy({1.0});
   ASSERT_THROW(item.consume(1.01), IItem::NoQuantityToConsume);
 }
 
@@ -72,7 +57,7 @@ TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmountShouldNot)
   constexpr auto consume = 0.5;
   constexpr auto rest = 3.38;
 
-  item.buy({amount});
+  Item item(thing, {amount});
   item.consume(consume);
 
   EXPECT_EQ(rest, item.getQuantity());
@@ -81,20 +66,19 @@ TEST_F(ItemTest, AfterConsumptionQuantityShouldDecreaseAndBoughtAmountShouldNot)
 
 TEST_F(ItemTest, BuyByDefaultShouldSetTodayAsBuyDate)
 {
-  item.buy({1.0});
   ASSERT_EQ(item.getBuyDate(), boost::gregorian::day_clock::local_day());
 }
 
 TEST_F(ItemTest, BuyShouldSetSpecifiedBuyDate)
 {
-  std::string date = "2013-01-01";
-  item.buy({1.0, 0.0, boost::gregorian::from_simple_string(date)});
+  const std::string date = "2013-01-01";
+
+  Item item(thing, {1.0, 0.0, boost::gregorian::from_simple_string(date)});
   ASSERT_EQ(item.getBuyDate(), boost::gregorian::from_simple_string(date));
 }
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
 {
-  item.buy({1.0});
   item.consume(0.1);
   item.consume(0.5);
   item.consume(0.4);
@@ -113,7 +97,6 @@ TEST_F(ItemTest, ConsumeShouldStoreItsHistory)
 
 TEST_F(ItemTest, ConsumeShouldStoreItsHistoryWithDates)
 {
-  item.buy({1.0});
   std::string sdate = "2013-01-01";
   item.consume(0.1, boost::gregorian::from_simple_string(sdate));
   item.consume(0.5);
@@ -152,7 +135,8 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
 
 TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)
 {
-  EXPECT_THROW(Item{std::shared_ptr<depot::IArticle>(nullptr)}, Item::ArticleCannotBeEmpty);
+  EXPECT_THROW(Item(std::shared_ptr<depot::IArticle>(nullptr), {1.0}), Item::ArticleCannotBeEmpty);
+
   EXPECT_THROW(item.changeArticle(std::shared_ptr<depot::IArticle>(nullptr)), Item::ArticleCannotBeEmpty);
 }
 

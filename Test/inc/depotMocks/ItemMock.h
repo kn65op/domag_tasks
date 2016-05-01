@@ -11,7 +11,6 @@ namespace ut
 class ItemMock : public IItem
 {
  public:
-  MOCK_METHOD1(buy, void(const PurcaseDetails &));
   MOCK_CONST_METHOD0(getQuantity, double());
   MOCK_CONST_METHOD0(getBoughtAmount, double());
   MOCK_CONST_METHOD0(getPricePerUnit, double());

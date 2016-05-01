@@ -230,11 +230,10 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
   for (const auto itemNode : items)
   {
     const auto articleId = itemNode["articleId"].as<int>();
-    auto item = std::make_unique<Item>(deserializationArticles[articleId]);
     const auto amount = itemNode["boughtAmount"].as<double>();
     const auto price = itemNode["price"].as<double>();
     const auto bougth = boost::gregorian::from_undelimited_string(itemNode["boughtDate"].as<std::string>());
-    item->buy({amount, price, bougth});
+    auto item = std::make_unique<Item>(deserializationArticles[articleId], PurcaseDetails{amount, price, bougth});
     const auto consumes = itemNode["consumes"];
     for (const auto consume : consumes)
     {

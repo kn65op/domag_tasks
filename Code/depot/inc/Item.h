@@ -26,6 +26,8 @@ struct PurcaseDetails
     date(date)
   {
   }
+private:
+  friend class Item;
 
   double amount;
   double price;
@@ -47,7 +49,6 @@ public:
 
   using Date = PurcaseDetails::Date;
 
-  virtual void buy(const PurcaseDetails &) = 0;
   virtual double getQuantity() const = 0;
   virtual double getPricePerUnit() const = 0;
   virtual void consume(double amount, Date date) = 0;
@@ -58,10 +59,6 @@ public:
   virtual double getBoughtAmount() const = 0;
 
   struct NoQuantityToConsume
-  {
-  };
-
-  struct ItemAlreadyBought
   {
   };
 
@@ -80,9 +77,8 @@ public:
   using Storehause = std::weak_ptr<AbstractContainer>;
   using Article = std::weak_ptr<IArticle>;
 
-  explicit Item(std::weak_ptr<IArticle> thing_of);
+  Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails &);
 
-  void buy(const PurcaseDetails &) override;
   double getQuantity() const override;
   double getPricePerUnit() const override;
   void consume(double amount, Date date = boost::gregorian::day_clock::local_day()) override;
@@ -95,7 +91,6 @@ public:
 
 private:
   std::weak_ptr<IArticle> thing;
-  bool bought = false;
   double quantity = 0;
   double initialQuantity = 0;
   double price_per_unit = 0;
@@ -104,6 +99,7 @@ private:
   Storehause storehause;
 
   std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
+  void buy(const PurcaseDetails &);
 };
 
 inline bool operator==(IItem::Ptr &lhs, const IItem * rhs)

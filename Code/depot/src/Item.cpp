@@ -6,23 +6,18 @@ using depot::Item;
 using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
-Item::Item(std::weak_ptr<IArticle> thing_of) :
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details) :
     thing{thing_of}
 {
   if (thing.expired())
   {
     throw ArticleCannotBeEmpty();
   }
+  buy(details);
 }
 
 void Item::buy(const PurcaseDetails &details)
 {
-  if (bought)
-  {
-    LOG << "Item already buyed";
-    throw ItemAlreadyBought();
-  }
-  bought = true;
   buy_date = details.date;
   initialQuantity = quantity = details.amount;
   price_per_unit = details.price / details.amount;
