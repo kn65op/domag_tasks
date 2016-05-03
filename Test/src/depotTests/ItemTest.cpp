@@ -148,3 +148,9 @@ TEST_F(ItemTest, ItemShouldNotBeCreatedWithZeroAmount)
   constexpr double amount = 0.0;
   EXPECT_THROW(Item item(thing, {amount}), Item::AmountCannotBeZero);
 }
+
+TEST_F(ItemTest, ItemShouldBeCreatedWithNearZeroAmount)
+{
+  constexpr double amount = 0.00000000000000001;
+  EXPECT_NO_THROW(Item item(thing, {amount}));
+}
