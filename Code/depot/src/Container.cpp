@@ -38,7 +38,7 @@ const Container::SelectedItems Container::getNonConsumedItems() const
   return non_consumed;
 }
 
-Container::Item Container::removeItem(const ItemPtr to_remove)
+Container::Item Container::removeItem(const IItem* to_remove)
 {
   LOG << "removing item";
   auto it = items.end();

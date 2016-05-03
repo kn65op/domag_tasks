@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "AbstractContainer.h"
-
 namespace depot
 {
+
+class AbstractContainer;
 
 class Storable
 {

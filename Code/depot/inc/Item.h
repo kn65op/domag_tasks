@@ -6,10 +6,11 @@
 #include "ConsumeHistory.h"
 #include "Article.h"
 #include "Storable.h"
-#include "AbstractContainer.h"
 
 namespace depot
 {
+
+class AbstractContainer;
 
 struct PurcaseDetails
 {
@@ -37,7 +38,6 @@ class IItem : public Storable
 {
 public:
   using Ptr = std::unique_ptr<IItem>;
-  using Reference = std::reference_wrapper<Ptr>;
 
   IItem() = default;
   IItem(const IItem &) = delete;

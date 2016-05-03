@@ -1,11 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <functional>
 #include "HierarchicalClass.h"
 #include "AbstractContainer.h"
 #include "Storable.h"
-#include "Item.h"
 #include <TLogger.h>
 
 namespace depot
@@ -50,7 +48,6 @@ public:
   using Item = depot::IItem::Ptr;
   using ItemPtr = depot::IItem*;
   using Items = std::vector<Item>;
-  using SelectedItems = std::vector<depot::IItem*>;//std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
   using ContainerPtr = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside>;
@@ -59,11 +56,11 @@ public:
   using CircularDependencyException = CannotInsertContainerIntoItself;
   using NoInferiorException = AbstractContainer::NoSuchElement;
 
-  void addItem(std::unique_ptr<IItem> item);
-  Item removeItem(const ItemPtr to_remove);
-  const SelectedItems getItems() const;
-  const SelectedItems getNonConsumedItems() const;
-  std::string getName() const;
+  void addItem(std::unique_ptr<IItem> item) override;
+  IItem::Ptr removeItem(const IItem* to_remove) override;
+  const SelectedItems getItems() const override;
+  const SelectedItems getNonConsumedItems() const override;
+  std::string getName() const override;
 
   void addContainer(ContainerInside container)
   {
