@@ -2,14 +2,14 @@
 
 #include <functional>
 #include "HierarchicalClass.h"
-#include "AbstractContainer.h"
+#include "ItemsContainer.h"
 #include "Storable.h"
 #include <TLogger.h>
 
 namespace depot
 {
 
-class Container : public std::enable_shared_from_this<Container>, public AbstractContainer,
+class Container : public std::enable_shared_from_this<Container>, public ItemsContainer,
                   public Storable, public HierarchicalClass< Container>
 {
 public:
@@ -47,7 +47,6 @@ public:
 
   using Item = depot::IItem::Ptr;
   using ItemPtr = depot::IItem*;
-  using Items = std::vector<Item>;
   using ContainerInside = std::shared_ptr<Container>;
   using ContainerPtr = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside>;
@@ -56,10 +55,6 @@ public:
   using CircularDependencyException = CannotInsertContainerIntoItself;
   using NoInferiorException = AbstractContainer::NoSuchElement;
 
-  void addItem(std::unique_ptr<IItem> item) override;
-  IItem::Ptr removeItem(const IItem* to_remove) override;
-  const SelectedItems getItems() const override;
-  const SelectedItems getNonConsumedItems() const override;
   std::string getName() const override;
 
   void addContainer(ContainerInside container)
@@ -126,9 +121,9 @@ private:
   }
 
   std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
+  std::shared_ptr<AbstractContainer> getSharedPointer() override;
 
   std::string name;
-  Items items;
 };
 
 }
