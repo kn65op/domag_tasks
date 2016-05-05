@@ -48,7 +48,7 @@ public:
   class InvalidArticle : public std::logic_error
   {
   public:
-    InvalidArticle(const std::string& msg = "Invalid pointer was passed to make shared") :
+    InvalidArticle(const std::string& msg = "Invalid pointer (not Article) was passed to make shared") :
         std::logic_error(msg)
     {
     }
