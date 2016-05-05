@@ -61,7 +61,7 @@ protected:
       throw typename Entity::CircularDependencyException(original_exception.what());
     }
     inferior_entities.push_back(entity);
-    entity->precedent = Entity::makeSharedPtr(this);
+    entity->precedent = makeSharedPointer();
     removeTopLevelEntity(entity);
   }
 
@@ -142,6 +142,8 @@ protected:
   {
     top_level_entities.push_back(entity);
   }
+
+  virtual EntitySharedPtr makeSharedPointer() = 0;
 
 private:
   static EntitiesContainer top_level_entities;

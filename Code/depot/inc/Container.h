@@ -10,7 +10,7 @@ namespace depot
 {
 
 class Container : public std::enable_shared_from_this<Container>, public ItemsContainer,
-                  public Storable, public HierarchicalClass< Container>
+                  public Storable, HierarchicalClass< Container>
 {
 public:
   struct LiesNowhere : public std::logic_error
@@ -87,16 +87,6 @@ public:
     return getTopLevelEntities();
   }
 
-  static std::shared_ptr<Container> makeSharedPtr(HierarchicalClass<Container>* container_candidate)
-  {
-    auto container = dynamic_cast<Container*>(container_candidate);
-    if (container)
-    {
-      return container->shared_from_this();
-    }
-    throw InvalidContainer();
-  }
-
   static void clearTopLevelContainers()
   {
     clearTopLevelEntites();
@@ -105,6 +95,11 @@ public:
   std::shared_ptr<Container> createDependentContainer(const std::string &name = "Unnamed container")
   {
     return createDependentEntity(name);
+  }
+
+  std::shared_ptr<Container> makeSharedPointer()
+  {
+    return shared_from_this();
   }
 
 private:
