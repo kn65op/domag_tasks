@@ -2,7 +2,6 @@
 
 #include "AbstractContainer.h"
 
-
 namespace depot
 {
 
