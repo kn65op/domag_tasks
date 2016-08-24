@@ -11,6 +11,7 @@ using ContainerHierarchy = HierarchicalClass<Container>;
 void HomeContainerCatalog::clearTopLevelContainers()
 {
   LOG << "Clearing top level containers";
+  ContainerHierarchy::clearTopLevelEntites();
 }
 
 const HomeContainerCatalog::Containers& HomeContainerCatalog::getTopLevelContainers() const
