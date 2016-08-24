@@ -3,6 +3,7 @@
 #include "Article.h"
 #include "Item.h"
 #include "Container.h"
+#include "depot/inc/HomeContainerCatalog.h"
 #include <sstream>
 
 #include "TLogger.h"
@@ -12,6 +13,7 @@ using namespace std::literals;
 
 struct DepotSerializerTest : public Test
 {
+  depot::HomeContainerCatalog catalog;
   depot::serialize::DepotSerializer serializer;
   const std::string article_name = "Z art with item";
   const std::string container_name = "Z container with item";
@@ -51,8 +53,8 @@ struct DepotSerializerTest : public Test
   void createTestSuiteContainers()
   {
     constexpr auto second_container_name = "Container2";
-    const auto second_container = depot::Container::createTopLevelContainer(second_container_name);
-    const auto container = depot::Container::createTopLevelContainer(container_name);
+    const auto second_container = catalog.createTopLevelContainer(second_container_name);
+    const auto container = catalog.createTopLevelContainer(container_name);
     constexpr auto dependent_name = "dependent";
     const auto dependent_container = container->createDependentContainer(dependent_name);
     constexpr auto dependent_second_name = "dependent_second";
@@ -72,7 +74,7 @@ struct DepotSerializerTest : public Test
     item->consume(firstConsume, firstConsumeTime);
     item->consume(secondConsume, secondConsumeTime);
 
-    const auto containers = depot::Container::getTopLevelContainers();
+    const auto containers = catalog.getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
     {
      return container->getName() == container_name;
@@ -82,7 +84,7 @@ struct DepotSerializerTest : public Test
 
   void expectItemInContainer()
   {
-    const auto containers = depot::Container::getTopLevelContainers();
+    const auto containers = catalog.getTopLevelContainers();
     auto cont = *std::find_if(containers.begin(), containers.end(), [this](const auto container)
     {
       return container->getName() == container_name;
@@ -102,13 +104,13 @@ struct DepotSerializerTest : public Test
 
   void expectReadTestSuiteContainers()
   {
-    EXPECT_EQ(2U, depot::Container::getTopLevelContainers().size());
+    EXPECT_EQ(2U, catalog.getTopLevelContainers().size());
   }
 
   void clearDb()
   {
     depot::Article::clearTopLevelArticles();
-    depot::Container::clearTopLevelContainers();
+    catalog.clearTopLevelContainers();
   }
 
   ~DepotSerializerTest()
@@ -123,7 +125,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAndReadVersionNumberWhenThereIsNoData)
   serializer.serialize(stream);
   serializer.deserialize(stream);
   EXPECT_EQ(0, depot::Article::getTopLevelArticles().size());
-  EXPECT_EQ(0, depot::Container::getTopLevelContainers().size());
+  EXPECT_EQ(0, catalog.getTopLevelContainers().size());
 }
 
 TEST_F(DepotSerializerTest, ShouldNotReadWhenThereIsNoVersion)

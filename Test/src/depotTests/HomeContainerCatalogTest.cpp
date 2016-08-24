@@ -21,7 +21,7 @@ TEST_F(HomeContainerCatalogTest, CanCreateAndRemoveTopLevenContainer)
 TEST_F(HomeContainerCatalogTest, AfterCleaningTopLevelEntities)
 {
   EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
-catalog.createTopLevelContainer();
+  catalog.createTopLevelContainer();
   ASSERT_EQ(1U, catalog.getTopLevelContainers().size());
   catalog.clearTopLevelContainers();
   EXPECT_EQ(0U, catalog.getTopLevelContainers().size());

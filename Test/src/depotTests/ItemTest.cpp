@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "depot/inc/Item.h"
 
+#include "depot/inc/HomeContainerCatalog.h"
 #include "../../inc/depotMocks/ArticleMock.h"
 #include "depot/inc/Container.h"
 
@@ -121,14 +122,14 @@ TEST_F(ItemTest, GetNameOfItemShouldReturnValidName)
 
 TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
 {
-  using depot::Container;
+  depot::HomeContainerCatalog catalog;
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
-  auto container = Container::createTopLevelContainer();
+  auto container = catalog.createTopLevelContainer();
   item.setStorehause(container);
   EXPECT_EQ(container, item.getStorehause().lock());
   item.setStorehause(std::shared_ptr<depot::AbstractContainer>(nullptr));
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
-  Container::clearTopLevelContainers();
+  catalog.clearTopLevelContainers();
 }
 
 TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)

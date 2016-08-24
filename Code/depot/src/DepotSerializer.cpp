@@ -1,5 +1,6 @@
 #include "DepotSerializer.h"
 #include "yaml-cpp/yaml.h"
+#include "depot/inc/HomeContainerCatalog.h"
 #include "iostream"
 
 using namespace depot::serialize;
@@ -7,11 +8,12 @@ using namespace depot::serialize;
 void DepotSerializer::serialize(std::ostream& out)
 {
   LOG << "Serialize started";
+  HomeContainerCatalog catalog;
   storeVersion(out);
   const auto &topLevelArticles = Article::getTopLevelArticles();
   storeEntities(out, topLevelArticles, articlesName);
 
-  const auto &topLevelContainers = Container::getTopLevelContainers();
+  const auto &topLevelContainers = catalog.getTopLevelContainers();
   storeEntities(out, topLevelContainers, containersName);
 
   storeItems(out, topLevelContainers);
@@ -98,8 +100,9 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
 {
   while (!containers.empty())
   {
+    HomeContainerCatalog catalog;
     const auto &container_node = containers.begin()->second;
-    auto actual_container = Container::createTopLevelContainer(container_node["name"].as<std::string>());
+    auto actual_container = catalog.createTopLevelContainer(container_node["name"].as<std::string>());
     deserializationContainers[containers.begin()->first] = actual_container.get();
     createDependentContainers(actual_container, container_node, containers);
     containers.erase(containers.begin());

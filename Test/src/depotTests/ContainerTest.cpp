@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "depot/inc/Container.h"
+#include "depot/inc/HomeContainerCatalog.h"
 #include "ItemMock.h"
 
 using namespace ::testing;
@@ -8,11 +9,17 @@ using depot::ut::ItemMock;
 
 struct ContainerTest : public Test
 {
-  std::shared_ptr<Container> c = Container::createTopLevelContainer();
+  depot::HomeContainerCatalog catalog;
+  std::shared_ptr<Container> c = createContainer();
 
   ~ContainerTest()
   {
-    Container::clearTopLevelContainers();
+    catalog.clearTopLevelContainers();
+  }
+
+  std::shared_ptr<Container> createContainer()
+  {
+    return catalog.createTopLevelContainer();
   }
 
   void expectMoveItemBetweenContainers(ItemMock& item)
@@ -56,13 +63,6 @@ struct ContainerTest : public Test
     return expectAddItemToContainer(std::move(item));
   }
 };
-
-TEST_F(ContainerTest, CanRemoveTopLevelContainer)
-{
-  ASSERT_EQ(1U, Container::getTopLevelContainers().size());
-  Container::removeTopLevelContainer(c);
-  EXPECT_EQ(0U, Container::getTopLevelContainers().size());
-}
 
 TEST_F(ContainerTest, CanAddItemToContainer)
 {
@@ -134,7 +134,7 @@ TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
 
 TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstainer)
 {
-  EXPECT_THROW(c->removeContainer(Container::createTopLevelContainer()), Container::NoSuchElement);
+  EXPECT_THROW(c->removeContainer(createContainer()), Container::NoSuchElement);
 }
 
 TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
@@ -144,8 +144,8 @@ TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLiesAndAfterRemovalItShouldHaveNone)
 {
-  auto container = Container::createTopLevelContainer();
-  auto container_inside = Container::createTopLevelContainer();
+  auto container = createContainer();
+  auto container_inside = createContainer();
   container->addContainer(container_inside);
   EXPECT_EQ(container, container_inside->getStorehause().lock());
   container->removeContainer(container_inside);
@@ -170,8 +170,8 @@ TEST_F(ContainerTest, ContainerShouldNotCreateCircularDpendecies)
 
 TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndSecondShouldHave)
 {
-  auto container_second = Container::createTopLevelContainer();
-  auto container_inside = Container::createTopLevelContainer();
+  auto container_second = createContainer();
+  auto container_inside = createContainer();
 
   c->addContainer(container_inside);
   ASSERT_EQ(1U, c->getContainers().size());
@@ -185,7 +185,7 @@ TEST_F(ContainerTest, AfterMoveContainerToOtherContainerFirstShouldNotHaveItAndS
 
 TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
 {
-  auto container_second = Container::createTopLevelContainer();
+  auto container_second = createContainer();
   auto itemMock = expectAddItemToContainer();
 
   ASSERT_EQ(1U, c->getItems().size());
