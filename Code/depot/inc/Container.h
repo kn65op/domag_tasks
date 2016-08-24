@@ -72,21 +72,25 @@ public:
     return getInferiorEntities();
   }
 
+  //TODO: move to Catalog
   static std::shared_ptr<Container> createTopLevelContainer(const std::string& name = "Unnamed container")
   {
     return createTopLevelEntity(name);
   }
 
+  //TODO: move to Catalog
   static void removeTopLevelContainer(std::shared_ptr<Container> container)
   {
     removeTopLevelEntity(container);
   }
 
+  //TODO: move to Catalog
   static const Containers& getTopLevelContainers()
   {
     return getTopLevelEntities();
   }
 
+  //TODO: move to Catalog
   static void clearTopLevelContainers()
   {
     clearTopLevelEntites();
