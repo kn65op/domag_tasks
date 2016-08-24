@@ -4,10 +4,9 @@
 #include <string>
 #include <vector>
 
-class Container;
-
 namespace depot
 {
+class Container;
 
 class ContainerCatalog
 {

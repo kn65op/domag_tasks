@@ -9,7 +9,11 @@ struct HomeContainerCatalogTest : public Test
   depot::HomeContainerCatalog catalog;
 };
 
-TEST_F(HomeContainerCatalogTest, D)
+TEST_F(HomeContainerCatalogTest, CanCreateAndRemoveTopLevenContainer)
 {
-  ASSERT_TRUE(true);
+  EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
+  const auto c = catalog.createTopLevelContainer();
+  ASSERT_EQ(1U, catalog.getTopLevelContainers().size());
+  catalog.removeTopLevelContainer(c);
+  EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
 }
