@@ -23,6 +23,7 @@ void Item::savePurcaseDetails(const PurcaseDetails &details)
   {
     throw AmountCannotBeZero{};
   }
+  LOG << "Create: " << thing.lock()->getName() << " in amount " << details.amount;
   buy_date = details.date;
   initialQuantity = quantity = details.amount;
   price_per_unit = details.price / details.amount;
@@ -47,7 +48,7 @@ void Item::consume(double amount, Date date)
 {
   if (amount > quantity)
   {
-    LOG << "There is no amount available to consume";
+    LOG << "Trying to consume " << amount << " when there is only " << quantity << " available";
     throw NoQuantityToConsume();
   }
   quantity -= amount;

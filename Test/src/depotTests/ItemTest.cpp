@@ -10,11 +10,22 @@ using depot::IItem;
 
 //TODO: best before
 
-struct ItemTest : public Test
+struct ItemConstructorExpectations
+{
+protected:
+  ItemConstructorExpectations()
+  {
+    EXPECT_CALL(*thing, getNameMock()).Times(AnyNumber()).WillRepeatedly(Return(articleName));
+  }
+
+  const std::string articleName{"MockArticle"};
+  std::shared_ptr<depot::ut::ArticleMock> thing = std::make_shared<depot::ut::ArticleMock>();
+};
+
+struct ItemTest : public Test, protected ItemConstructorExpectations
 {
   using Date = boost::gregorian::date;
 
-  std::shared_ptr<depot::ut::ArticleMock> thing = std::make_shared<depot::ut::ArticleMock>();
   const double initialAmount{1.0};
   Item item{thing, {initialAmount}};
 };
@@ -105,9 +116,7 @@ TEST_F(ItemTest, ConsumeShouldStoreItsHistoryWithDates)
 
 TEST_F(ItemTest, GetNameOfItemShouldReturnValidName)
 {
-  std::string name{"name"};
-  EXPECT_CALL(*thing, getNameMock()).WillOnce(Return(name));
-  EXPECT_EQ(name, item.getThing().lock()->getName());
+  EXPECT_EQ(articleName, item.getThing().lock()->getName());
 }
 
 TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
@@ -153,4 +162,14 @@ TEST_F(ItemTest, ItemShouldBeCreatedWithNearZeroAmount)
 {
   constexpr double amount = 0.00000000000000001;
   EXPECT_NO_THROW(Item item(thing, {amount}));
+}
+
+TEST_F(ItemTest, ItemShouldBeConsumedWhenThereIsNoAmount)
+{
+  constexpr double amount = 2.0;
+  Item item{thing, {amount}};
+  item.consume(amount);
+
+  constexpr double almostNoAmount = 0.00000000000000001;
+  ASSERT_THROW(item.consume(almostNoAmount), IItem::NoQuantityToConsume);
 }
