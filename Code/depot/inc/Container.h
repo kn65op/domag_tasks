@@ -107,7 +107,7 @@ public:
   }
 
 private:
-  friend class HierarchicalClass<Container> ;
+  //friend class HierarchicalClass<Container>;
   Container(const std::string& name_arg) :
     name{name_arg}
   {
