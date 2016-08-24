@@ -37,8 +37,33 @@ public:
   using EntitiesContainer = std::vector<EntitySharedPtr>;
   using InferiorEntitiesContainer = std::vector<EntitySharedPtr>;
 
-  virtual ~HierarchicalClass()
+  virtual ~HierarchicalClass() = default;
+
+  template<typename ...Args> static EntitySharedPtr createTopLevelEntity(Args ... args)
   {
+    Entity::doCreationChecks(args...);
+    EntitySharedPtr new_entity {new Entity(args...)};
+    addEntityToTopLevelEntities(new_entity);
+    return new_entity;
+  }
+
+  static void removeTopLevelEntity(EntitySharedPtr entity)
+  {
+    auto entity_position = std::find(top_level_entities.begin(), top_level_entities.end(), entity);
+    if (entity_position != top_level_entities.end())
+    {
+      top_level_entities.erase(entity_position);
+    }
+  }
+
+  static const EntitiesContainer& getTopLevelEntities()
+  {
+    return top_level_entities;
+  }
+
+  static void clearTopLevelEntites()
+  {
+    top_level_entities.clear();
   }
 
 protected:
@@ -111,33 +136,8 @@ protected:
     throw typename Entity::NoPrecedentException();
   }
 
-  template<typename ...Args> static EntitySharedPtr createTopLevelEntity(Args ... args)
-  {
-    Entity::doCreationChecks(args...);
-    EntitySharedPtr new_entity {new Entity(args...)};
-    addEntityToTopLevelEntities(new_entity);
-    return new_entity;
-  }
 
-  static void removeTopLevelEntity(EntitySharedPtr entity)
-  {
-    auto entity_position = std::find(top_level_entities.begin(), top_level_entities.end(), entity);
-    if (entity_position != top_level_entities.end())
-    {
-      top_level_entities.erase(entity_position);
-    }
-  }
-
-  static const EntitiesContainer& getTopLevelEntities()
-  {
-    return top_level_entities;
-  }
-
-  static void clearTopLevelEntites()
-  {
-    top_level_entities.clear();
-  }
-
+  //private
   static void addEntityToTopLevelEntities(EntitySharedPtr entity)
   {
     top_level_entities.push_back(entity);
