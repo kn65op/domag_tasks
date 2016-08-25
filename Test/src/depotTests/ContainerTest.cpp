@@ -128,7 +128,8 @@ TEST_F(ContainerTest, ContainerShouldHaveValidSizeAfterRemoveOneItem)
 
 TEST_F(ContainerTest, RemoveItemShouldThrowWhenRemovingNonExistingItem)
 {
-  StrictMock<ItemMock> item;
+  //StrictMock<ItemMock> item;
+  ItemMock item;
   EXPECT_THROW(c->removeItem(&item), Container::NoSuchElement);
 }
 

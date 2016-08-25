@@ -119,7 +119,7 @@ public:
     clearTopLevelEntites();
   }
 
-  std::shared_ptr<Article> makeSharedPointer()
+  std::shared_ptr<Article> makeSharedPointer() override
   {
     return shared_from_this();
   }

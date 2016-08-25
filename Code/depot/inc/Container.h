@@ -77,7 +77,7 @@ public:
     return createDependentEntity(name);
   }
 
-  std::shared_ptr<Container> makeSharedPointer()
+  std::shared_ptr<Container> makeSharedPointer() override
   {
     return shared_from_this();
   }
