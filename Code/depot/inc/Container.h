@@ -10,7 +10,7 @@ namespace depot
 {
 
 class Container : public std::enable_shared_from_this<Container>, public ItemsContainer,
-                  public Storable, HierarchicalClass< Container>
+                  public Storable, HierarchicalClass<Container>
 {
 public:
   struct LiesNowhere : public std::logic_error
