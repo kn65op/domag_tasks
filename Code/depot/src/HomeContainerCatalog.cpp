@@ -15,6 +15,7 @@ void HomeContainerCatalog::clearAllContainers()
 {
   LOG << "Clearing top level containers";
   ContainerHierarchy::clearTopLevelEntites();
+  LOG << "Clearing consumed items";
   consumedItems = std::make_shared<depot::ConsumedItems>();
 }
 
