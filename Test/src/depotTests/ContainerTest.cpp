@@ -14,7 +14,7 @@ struct ContainerTest : public Test
 
   ~ContainerTest()
   {
-    catalog.clearTopLevelContainers();
+    catalog.clearAllContainers();
   }
 
   std::shared_ptr<Container> createContainer()

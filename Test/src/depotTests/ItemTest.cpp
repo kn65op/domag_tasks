@@ -129,7 +129,7 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
   EXPECT_EQ(container, item.getStorehause().lock());
   item.setStorehause(std::shared_ptr<depot::AbstractContainer>(nullptr));
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
-  catalog.clearTopLevelContainers();
+  catalog.clearAllContainers();
 }
 
 TEST_F(ItemTest, ShouldNotAcceptEmptyArticle)

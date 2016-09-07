@@ -16,20 +16,27 @@ struct DepotSerializerTest : public Test
   depot::HomeContainerCatalog catalog;
   depot::serialize::DepotSerializer serializer;
   const std::string article_name = "Z art with item";
+  const std::string second_article_name = "secondArticle name";
   const std::string container_name = "Z container with item";
   const double itemQuantity{5.88};
   const double itemPrice{123.43};
   const double itemPricePerUnit{itemPrice / itemQuantity};
+  const double secondItemQuantity{10.11};
+  const double secondItemPrice{13.43};
+  const double secondItemPricePerUnit{secondItemPrice / secondItemQuantity};
   const double firstConsume = 0.98;
   const double secondConsume = 2.3;
+  const double thirdConsume = 3.3;
   const double amountAfterConsumption = 2.6;
+  const double secondAmountAfterConsumption = 5.83;
   const boost::gregorian::date boughtDay = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(7);
+  const boost::gregorian::date secondBoughtDay = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(27);
   const boost::gregorian::date firstConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(5);
   const boost::gregorian::date secondConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(1);
+  const boost::gregorian::date thirdConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(4);
 
   void createTestSuiteArticles()
   {
-    constexpr auto second_article_name = "Art 2";
     constexpr auto second_article_unit = "Unit";
     const auto second_article = depot::Article::createTopLevelArticle(second_article_name, second_article_unit);
     constexpr auto article_unit = "Unit";
@@ -102,6 +109,38 @@ struct DepotSerializerTest : public Test
     EXPECT_EQ(article_name, item->getThing().lock()->getName());
   }
 
+  void addItemsToConsumedItems()
+  {
+    const auto articles = depot::Article::getTopLevelArticles();
+    auto art = *std::find_if(articles.begin(), articles.end(), [this](const auto article)
+    {
+     return article->getName() == second_article_name;
+    });
+    auto item = std::make_unique<depot::Item>(art, depot::PurcaseDetails{secondItemQuantity, secondItemPrice, secondBoughtDay});
+    item->consume(firstConsume, firstConsumeTime);
+    item->consume(thirdConsume, thirdConsumeTime);
+
+    auto &consumedItems = catalog.getContainerForConsumedItems();
+    consumedItems.addItem(std::move(item));
+  }
+
+  void expectItemInConsumedItems()
+  {
+    auto& consumedItems = catalog.getContainerForConsumedItems();
+    const auto& items = consumedItems.getItems();
+    ASSERT_FALSE(items.empty());
+    const auto& item = items.front();
+    EXPECT_DOUBLE_EQ(secondItemQuantity, item->getBoughtAmount());
+    EXPECT_DOUBLE_EQ(secondAmountAfterConsumption, item->getQuantity());
+    EXPECT_DOUBLE_EQ(secondItemPricePerUnit, item->getPricePerUnit());
+    EXPECT_EQ(secondBoughtDay, item->getBuyDate());
+    EXPECT_DOUBLE_EQ(firstConsume, item->getConsumeHistory()[0].first);
+    EXPECT_DOUBLE_EQ(thirdConsume, item->getConsumeHistory()[1].first);
+    EXPECT_EQ(firstConsumeTime, item->getConsumeHistory()[0].second);
+    EXPECT_EQ(thirdConsumeTime, item->getConsumeHistory()[1].second);
+    EXPECT_EQ(second_article_name, item->getThing().lock()->getName());
+  }
+
   void expectReadTestSuiteContainers()
   {
     EXPECT_EQ(2U, catalog.getTopLevelContainers().size());
@@ -110,7 +149,7 @@ struct DepotSerializerTest : public Test
   void clearDb()
   {
     depot::Article::clearTopLevelArticles();
-    catalog.clearTopLevelContainers();
+    catalog.clearAllContainers();
   }
 
   ~DepotSerializerTest()
@@ -185,6 +224,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   createTestSuiteArticles();
   createTestSuiteContainers();
   addItemsToContainers();
+  addItemsToConsumedItems();
 
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
@@ -196,6 +236,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticles)
   expectReadTestSuiteArticles();
   expectReadTestSuiteContainers();
   expectItemInContainer();
+  expectItemInConsumedItems();
 }
 
 TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticlesAndReadTwice)
@@ -203,6 +244,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticlesAndReadTwi
   createTestSuiteArticles();
   createTestSuiteContainers();
   addItemsToContainers();
+  addItemsToConsumedItems();
 
   std::stringstream output;
   EXPECT_NO_THROW(serializer.serialize(output));
@@ -211,7 +253,6 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticlesAndReadTwi
   LOG << output.str();
 
   clearDb();
-
 
   serializer.deserialize(output);
   expectReadTestSuiteArticles();
@@ -225,4 +266,5 @@ TEST_F(DepotSerializerTest, ShouldWriteAllItemsInContainersAndArticlesAndReadTwi
   expectReadTestSuiteArticles();
   expectReadTestSuiteContainers();
   expectItemInContainer();
+  expectItemInConsumedItems();
 }

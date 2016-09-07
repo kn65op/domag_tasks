@@ -6,7 +6,7 @@ using depot::ItemsContainer;
 
 void ItemsContainer::addItem(std::unique_ptr<IItem> item)
 {
-  LOG << "Add item";
+  LOG << "Add item to: " << getName();
   item->setStorehause(getSharedPointer());
   items.push_back(std::move(item));
 }

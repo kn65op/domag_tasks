@@ -16,7 +16,9 @@ void DepotSerializer::serialize(std::ostream& out)
   const auto &topLevelContainers = catalog.getTopLevelContainers();
   storeEntities(out, topLevelContainers, containersName);
 
-  storeItems(out, topLevelContainers);
+  storeTrashContainer(catalog.getContainerForConsumedItems());
+
+  storeItems(out, topLevelContainers, catalog.getContainerForConsumedItems());
 
   cleanupSerialization();
   LOG << "Serialize finished";
@@ -107,6 +109,9 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
     createDependentContainers(actual_container, container_node, containers);
     containers.erase(containers.begin());
   }
+  LOG << "Get address of trash in position: " << deserializationContainers.size();
+  HomeContainerCatalog catalog;
+  deserializationContainers[deserializationContainers.size() + 1] = &catalog.getContainerForConsumedItems();
 }
 
 void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
@@ -168,7 +173,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
 YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerPtr &container)
 {
   YAML::Node container_node;
-  container_node["id"] = serializationContainers[container];
+  container_node["id"] = serializationContainers[container.get()];
   container_node["name"] = container->getName();
   return container_node;
 }
@@ -186,14 +191,14 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & 
 void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPtr & container)
 {
   LOG << "store container id: " << container->getName() << " = " << serializationContainers.size() + 1;
-  serializationContainers[container] = serializationContainers.size();
+  serializationContainers[container.get()] = serializationContainers.size(); //TODO: split getting size from assign
   for (const auto & dependent_container : container->getContainers())
   {
     storeEntityAndItsDependentsId(dependent_container);
   }
 }
 
-void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers)
+void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers, const ItemsContainer& trash)
 {
   YAML::Node containerItemsNode;
   for (const auto & container :containers)
@@ -203,6 +208,10 @@ void DepotSerializer::storeItems(std::ostream & out, const Container::Containers
       containerItemsNode[itemsName].push_back(storeItem(item));
     }
   }
+  for (const auto & item : trash.getItems())
+  {
+    containerItemsNode[itemsName].push_back(storeItem(item));
+  }
   out << containerItemsNode << "\n";
 }
 
@@ -210,7 +219,7 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 {
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
-  itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
+  itemNode["containerId"] = serializationContainers[item->getStorehause().lock().get()];
   itemNode["articleId"] = serializationArticles[item->getThing().lock()];
   itemNode["boughtAmount"] = item->getBoughtAmount();
   itemNode["price"] = item->getBoughtAmount() * item->getPricePerUnit();
@@ -223,6 +232,13 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
     itemNode["consumes"].push_back(consumeNode);
   }
   return itemNode;
+}
+
+
+void DepotSerializer::storeTrashContainer(const ItemsContainer &trash)
+{
+  LOG << "store trash id="  << serializationContainers.size() + 1;
+  serializationContainers[&trash] = serializationContainers.size();
 }
 
 void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)

@@ -23,6 +23,6 @@ TEST_F(HomeContainerCatalogTest, AfterCleaningTopLevelEntities)
   EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
   catalog.createTopLevelContainer();
   ASSERT_EQ(1U, catalog.getTopLevelContainers().size());
-  catalog.clearTopLevelContainers();
+  catalog.clearAllContainers();
   EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
 }
