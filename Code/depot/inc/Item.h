@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/optional.hpp>
 
 #include "ConsumeHistory.h"
 #include "Article.h"
@@ -47,11 +48,14 @@ public:
   IItem & operator=(const IItem &&) = delete;
 
   using Date = PurcaseDetails::Date;
+  using OptionalDate = boost::optional<Date>;
 
   virtual double getQuantity() const = 0;
   virtual double getPricePerUnit() const = 0;
   virtual void consume(double amount, Date date) = 0;
-  virtual boost::gregorian::date getBuyDate() const = 0;
+  virtual Date getBuyDate() const = 0;
+  virtual OptionalDate getBestBefore() const = 0;
+  virtual void setBestBefore(const OptionalDate&) = 0;
   virtual const ConsumeHistory::List& getConsumeHistory() const = 0;
   virtual std::weak_ptr<IArticle> getThing() const = 0;
   virtual void setStorehause(std::weak_ptr<AbstractContainer>) = 0;
@@ -81,6 +85,7 @@ public:
   using Article = std::weak_ptr<IArticle>;
 
   Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails &);
+  Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails &, const Date &);
 
   double getQuantity() const override;
   double getPricePerUnit() const override;
@@ -91,13 +96,18 @@ public:
   std::weak_ptr<IArticle> getThing() const override;
   void setStorehause(Storehause store) override;
   void changeArticle(Article art);
+  OptionalDate getBestBefore() const override;
+  void setBestBefore(const OptionalDate &) override;
 
 private:
+  Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails &, const OptionalDate &);
+
   std::weak_ptr<IArticle> thing;
   double quantity = 0;
   double initialQuantity = 0;
   double price_per_unit = 0;
   Date buy_date;
+  OptionalDate bestBefore;
   ConsumeHistory history;
   Storehause storehause;
 

@@ -8,7 +8,18 @@ using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
 Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details) :
-    thing{thing_of}
+  Item{thing_of, details, boost::none}
+{
+}
+
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details, const Date& best_before) :
+    Item{thing_of, details, OptionalDate{best_before}}
+{
+}
+
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details, const OptionalDate& best_before) :
+  thing{thing_of},
+  bestBefore{best_before}
 {
   if (thing.expired())
   {
@@ -92,4 +103,14 @@ void Item::changeArticle(Article art)
     throw ArticleCannotBeEmpty{};
   }
   thing = art;
+}
+
+Item::OptionalDate Item::getBestBefore() const
+{
+  return bestBefore;
+}
+
+void Item::setBestBefore(const OptionalDate& best_before)
+{
+  bestBefore = best_before;
 }

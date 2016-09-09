@@ -9,8 +9,6 @@ using namespace ::testing;
 using depot::Item;
 using depot::IItem;
 
-//TODO: best before
-
 struct ItemConstructorExpectations
 {
 protected:
@@ -173,4 +171,26 @@ TEST_F(ItemTest, ItemShouldBeConsumedWhenThereIsNoAmount)
 
   constexpr double almostNoAmount = 0.00000000000000001;
   ASSERT_THROW(item.consume(almostNoAmount), IItem::NoQuantityToConsume);
+}
+
+TEST_F(ItemTest, ItemCreatedWihoutBestBefore_ShouldReturnNoDate)
+{
+  EXPECT_FALSE(item.getBestBefore());
+}
+
+TEST_F(ItemTest, ItemCreatedWihBestBefore_ShouldReturnThatDate)
+{
+  Date bestBefore = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(7);
+  Item item{thing, {initialAmount}, bestBefore};
+  EXPECT_EQ(bestBefore, item.getBestBefore());
+}
+
+TEST_F(ItemTest, ItemWihtChangedBestBefore_ShouldReturnNewValue)
+{
+  EXPECT_FALSE(item.getBestBefore());
+  Date bestBefore = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(7);
+  item.setBestBefore(bestBefore);
+  EXPECT_EQ(bestBefore, item.getBestBefore());
+  item.setBestBefore(boost::none);
+  EXPECT_FALSE(item.getBestBefore());
 }

@@ -29,7 +29,7 @@ add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
 FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
 #compiler options
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+set(CMAKE_CXX_FLAGS "-std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
  
