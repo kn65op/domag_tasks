@@ -57,15 +57,18 @@ link_directories(${TLOGGER_LIBRARIES_DIR})
 
 #includes
 include_directories(${SRC_DIR})
-include_directories(${SRC_DIR}/depot/inc/)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
 
-#files
-file(GLOB MAIN_FILES ${SRC_DIR}/Main/src/*.cpp)
+#depot
 file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
+include_directories(${SRC_DIR}/depot/inc/)
+
+#main
+file(GLOB MAIN_FILES ${SRC_DIR}/Main/src/*.cpp)
+include_directories(${SRC_DIR}/Main/inc/)
 
 #executables
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
