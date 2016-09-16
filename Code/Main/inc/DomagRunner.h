@@ -11,6 +11,7 @@ class DomagRunner
 {
 public:
   DomagRunner();
+  ~DomagRunner();
 
 private:
   const std::string databaseFileName = "database.domag";

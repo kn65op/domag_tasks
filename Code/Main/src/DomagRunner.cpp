@@ -25,5 +25,14 @@ DomagRunner::DomagRunner()
   LOG << "Domag initalized";
 }
 
+DomagRunner::~DomagRunner()
+{
+  LOG << "Finishing domag";
+  depot::serialize::DepotSerializer serializer;
+  std::ofstream database{databaseFileName};
+  serializer.serialize(database);
+  LOG << "Domag finished";
+}
+
 }
 }
