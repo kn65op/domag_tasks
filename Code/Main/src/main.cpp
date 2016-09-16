@@ -4,7 +4,7 @@
 
 std::string getLogFileName()
 {
-  return "domag.log";
+  return "domag";
 }
 
 int main()
