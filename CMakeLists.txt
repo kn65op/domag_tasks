@@ -85,7 +85,8 @@ else (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
 set(EXE_FILE ${PROJECT_NAME})
-add_executable(${EXE_FILE} ${MAIN_FILES})
+add_executable(${EXE_FILE} ${MAIN_FILES}
+		           ${DEPOT_FILES})
 
 #libraries
 TARGET_LINK_LIBRARIES(${EXE_FILE}
