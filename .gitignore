@@ -20,6 +20,8 @@ install_manifest.txt
 *.cmake
 
 Test/Exe
-Debug
-Release
+Debug*
+Release*
 Testing
+warning*
+
