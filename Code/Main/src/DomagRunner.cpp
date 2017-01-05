@@ -63,6 +63,7 @@ void DomagRunner::run()
     {
       containersPresenter->present(depot::HomeContainerCatalog{});
     }
+    std::cout << "\n";
   }
 }
 
