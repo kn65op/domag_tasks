@@ -1,7 +1,8 @@
 #include <string>
 
-#include "../inc/DomagRunner.h"
+#include "DomagRunner.h"
 #include "TLogger.h"
+#include "cui/ConsoleContainersPresenter.hpp"
 
 std::string getLogFileName()
 {
@@ -10,9 +11,12 @@ std::string getLogFileName()
 
 int main()
 {
-  TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE, TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
+  TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
+                               TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 
   LOG << "main";
 
-  depot::main::DomagRunner runner;
+  depot::main::DomagRunner runner{std::make_unique<cui::ConsoleContainersPresenter>()};
+  runner.run();
+  return 0;
 }
