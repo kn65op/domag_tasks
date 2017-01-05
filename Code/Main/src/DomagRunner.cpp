@@ -43,6 +43,8 @@ DomagRunner::~DomagRunner()
   depot::serialize::DepotSerializer serializer;
   std::ofstream database{databaseFileName};
   serializer.serialize(database);
+  LOG << "Database stored to file";
+  HomeContainerCatalog{}.clearAllContainers();
   LOG << "Domag finished";
 }
 
