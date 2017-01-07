@@ -71,7 +71,7 @@ void DomagRunner::printMenu()
 {
   LOG << "Print menu";
   std::cout << "Menu:\n";
-  std::cout << "1: :\n";
+  std::cout << "1:\tShow Containers\n";
   std::cout << "0:\tExit\n";
 }
 
