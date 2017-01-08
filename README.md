@@ -6,3 +6,18 @@ Status:
 
 
 [![Static analysis](https://scan.coverity.com/projects/5369/badge.svg)](https://scan.coverity.com/projects/5369)
+
+
+Used libraries
+=====
+External
+----
+boost (1.46)
+
+Included in project via git submodule
+---
+yaml-cpp
+
+TLogger
+
+THelper
