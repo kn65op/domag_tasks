@@ -55,12 +55,21 @@ set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --quiet
 
 link_directories(${TLOGGER_LIBRARIES_DIR})
 
+set(CLI_LIBRARY clicpp ncurses )
+set(CLI_LIBRARY_DIR libraries/cli/cli-2.8/cpp/build/make/Linuxg++/Release)
+link_directories(${CLI_LIBRARY_DIR})
+
+set(CLI_INCLUDE_DIR libraries/cli/cli-2.8/cpp/include)
+set(GENERATED_CLI_INCLUDE_DIR Debug)
+
 #includes
 include_directories(${SRC_DIR})
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
+include_directories(${CLI_INCLUDE_DIR})
+include_directories(${GENERATED_CLI_INCLUDE_DIR})
 
 #depot
 file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
@@ -92,7 +101,8 @@ add_executable(${EXE_FILE} ${MAIN_FILES}
 TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${Boost_LIBRARIES}
 		      ${TLOGGER_LIBRARIES}
-		      ${YAML_CPP_LIBRARIES})
+		      ${YAML_CPP_LIBRARIES}
+		      ${CLI_LIBRARY})
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
 			  
