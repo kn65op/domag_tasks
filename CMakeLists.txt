@@ -28,6 +28,15 @@ set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
 FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
+include(ExternalProject)
+
+ExternalProject_Add(cli
+	            SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/${LIBRARIES_DIR}/cli-toolkit/build/make"
+		    CONFIGURE_COMMAND ""
+		    BUILD_IN_SOURCE 1
+		    BUILD_COMMAND make cpp
+		    INSTALL_COMMAND "")
+
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
@@ -56,10 +65,10 @@ set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --quiet
 link_directories(${TLOGGER_LIBRARIES_DIR})
 
 set(CLI_LIBRARY clicpp ncurses )
-set(CLI_LIBRARY_DIR libraries/cli/cli-2.8/cpp/build/make/Linuxg++/Release)
+set(CLI_LIBRARY_DIR libraries/cli-toolkit/cpp/build/make/Linuxg++/Release)
 link_directories(${CLI_LIBRARY_DIR})
 
-set(CLI_INCLUDE_DIR libraries/cli/cli-2.8/cpp/include)
+set(CLI_INCLUDE_DIR libraries/cli-toolkit/cpp/include)
 set(GENERATED_CLI_INCLUDE_DIR Debug)
 
 #includes
@@ -105,4 +114,5 @@ TARGET_LINK_LIBRARIES(${EXE_FILE}
 		      ${CLI_LIBRARY})
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
+add_dependencies(${EXE_FILE} cli)
 			  
