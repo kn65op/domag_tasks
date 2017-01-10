@@ -7,3 +7,6 @@
 [submodule "libraries/yaml-cpp"]
 	path = libraries/yaml-cpp
 	url = https://github.com/kn65op/yaml-cpp.git
+[submodule "libraries/cli-toolkit"]
+	path = libraries/cli-toolkit
+	url = https://github.com/kn65op/cli-toolkit.git
