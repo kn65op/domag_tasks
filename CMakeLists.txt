@@ -35,7 +35,14 @@ ExternalProject_Add(cli
 		    CONFIGURE_COMMAND ""
 		    BUILD_IN_SOURCE 1
 		    BUILD_COMMAND make cpp
-		    INSTALL_COMMAND "")
+		    INSTALL_COMMAND ""
+		    )
+
+ExternalProject_Add_Step(cli forceBuild
+	COMMAND ${CMAKE_COMMAND} -E echo "Force configure of myProject"
+	DEPENDEES update
+	DEPENDERS configure
+	ALWAYS 1)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
@@ -117,4 +124,5 @@ TARGET_LINK_LIBRARIES(${EXE_FILE}
 		      )
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
+add_dependencies(${EXE_FILE} cli)
 			  
