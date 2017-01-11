@@ -3,8 +3,6 @@ cmake_minimum_required (VERSION 3.2.3)
 #variables
 set(SRC_DIR "Code")
 set(MAIN_SRC_DIR "${SRC_DIR}/Main")
-set(DEBUG_BIN_DIR "Debug")
-set(RELEASE_BIN_DIR "Release")
 set(LIBRARIES_DIR "libraries")
 set(LIBRARIES_BIN_DIR "libraries")
 
@@ -103,7 +101,6 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 	endif ("${NO_COVERAGE}" STREQUAL "true")
 
 	add_subdirectory(Test)
-	set(EXE_FILE ${DEBUG_BIN_DIR}/${PROJECT_NAME})
 elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 else (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 	message(FATAL_ERROR "Invalid build type. Set by -DCMAKE_BUILD_TYPE=Debug|Release")
