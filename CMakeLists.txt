@@ -68,8 +68,6 @@ set(CLI_LIBRARY clicpp ncurses )
 set(CLI_LIBRARY_DIR libraries/cli-toolkit/cpp/build/make/Linuxg++/Release)
 link_directories(${CLI_LIBRARY_DIR})
 
-set(CLI_INCLUDE_DIR libraries/cli-toolkit/cpp/include)
-set(GENERATED_CLI_INCLUDE_DIR Debug)
 set(LIBDOMAGCLI_INCLUDE_DIR Code/libdomagcli/include)
 
 #includes
@@ -78,8 +76,6 @@ include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
-include_directories(${CLI_INCLUDE_DIR})
-include_directories(${GENERATED_CLI_INCLUDE_DIR})
 include_directories(${LIBDOMAGCLI_INCLUDE_DIR})
 
 add_subdirectory(${SRC_DIR})
