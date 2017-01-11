@@ -19,17 +19,9 @@ TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 }
 */
 
-#include "cli/common.h"
-#include "cli/console.h"
-#include "domagCli.h"
+#include "libdomagcli/CliStarter.hpp"
 
 int main(void)
 {
-  domag cli_EmptyCli;
-  cli::Shell cli_Shell(cli_EmptyCli);
-  cli::ResourceString welcome_message;
-  welcome_message.SetString(cli::ResourceString::LANG_EN, "Eloszka\n");
-  cli_Shell.SetWelcomeMessage(welcome_message);
-  cli::Console cli_Console(false);
-  cli_Shell.Run(cli_Console);
+  startCli();
 }

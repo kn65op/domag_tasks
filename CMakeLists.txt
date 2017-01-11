@@ -70,6 +70,7 @@ link_directories(${CLI_LIBRARY_DIR})
 
 set(CLI_INCLUDE_DIR libraries/cli-toolkit/cpp/include)
 set(GENERATED_CLI_INCLUDE_DIR Debug)
+set(LIBDOMAGCLI_INCLUDE_DIR Code/libdomagcli/include)
 
 #includes
 include_directories(${SRC_DIR})
@@ -79,6 +80,9 @@ include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${CLI_INCLUDE_DIR})
 include_directories(${GENERATED_CLI_INCLUDE_DIR})
+include_directories(${LIBDOMAGCLI_INCLUDE_DIR})
+
+add_subdirectory(${SRC_DIR})
 
 #depot
 file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
@@ -106,12 +110,15 @@ set(EXE_FILE ${PROJECT_NAME})
 add_executable(${EXE_FILE} ${MAIN_FILES}
 		           ${DEPOT_FILES})
 
+set(LIBDOMAGCLI_LIB domagcli)
 #libraries
 TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${Boost_LIBRARIES}
 		      ${TLOGGER_LIBRARIES}
 		      ${YAML_CPP_LIBRARIES}
-		      ${CLI_LIBRARY})
+		      ${LIBDOMAGCLI_LIB}
+		      ${CLI_LIBRARY}
+		      )
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
 add_dependencies(${EXE_FILE} cli)
