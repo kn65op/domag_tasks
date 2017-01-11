@@ -1,14 +1,25 @@
-set(DOMAGCLI_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
+# Variables
+set(CLI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libraries/cli-toolkit/cpp/include)
 set(DOMAGCLI_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include/libdomagcli)
+set(DOMAGCLI_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
+set(GENERATED_CLI_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR})
+set(GENERATED_CLI_FILE ${GENERATED_CLI_INCLUDE_DIR}/domagCli.h)
 
-set(GENERATED_CLI_INCLUDE_DIR ${CMAKE_HOME_DIRECTORY}/Debug)
-set(CLI_INCLUDE_DIR ${CMAKE_HOME_DIRECTORY}/libraries/cli-toolkit/cpp/include)
+#Code generation
+add_custom_command(
+	OUTPUT ${GENERATED_CLI_FILE}
+	COMMAND python ${CMAKE_SOURCE_DIR}/libraries/cli/cli-2.8/tools/cli2cpp.py ${CMAKE_SOURCE_DIR}/Resources/cli/domag.xml > ${GENERATED_CLI_FILE}
+	)
 
+# Includes 
 include_directories(${GENERATED_CLI_INCLUDE_DIR})
 include_directories(${DOMAGCLI_INCLUDE_DIR})
 include_directories(${CLI_INCLUDE_DIR})
 
+# Library
 add_library(domagcli STATIC
-	${DOMAGCLI_SOURCE_DIR}/CliStarter.cpp)
+	${DOMAGCLI_SOURCE_DIR}/CliStarter.cpp
+	${GENERATED_CLI_FILE}
+	)
 
 
