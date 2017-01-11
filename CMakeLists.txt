@@ -121,5 +121,4 @@ TARGET_LINK_LIBRARIES(${EXE_FILE}
 		      )
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
-add_dependencies(${EXE_FILE} cli)
 			  
