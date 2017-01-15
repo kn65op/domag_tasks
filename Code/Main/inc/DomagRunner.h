@@ -1,6 +1,12 @@
 #pragma once
 
+#include <memory>
 #include <string>
+
+namespace ui
+{
+class ContainersPresenter;
+}
 
 namespace depot
 {
@@ -11,11 +17,17 @@ class DomagRunner
 {
 public:
   DomagRunner();
+  DomagRunner(std::unique_ptr<ui::ContainersPresenter>);
   ~DomagRunner();
 
-private:
-  const std::string databaseFileName = "database.domag";
-};
+  void run();
 
+private:
+  void printMenu();
+  int getOption();
+
+  const std::string databaseFileName = "database.domag";
+  std::unique_ptr<ui::ContainersPresenter> containersPresenter;
+};
 }
 }

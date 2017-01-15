@@ -1,6 +1,9 @@
-/*#include <string>
+#include <string>
 
 #include "../inc/DomagRunner.h"
+
+#include "libdomagcli/CliStarter.hpp"
+
 #include "TLogger.h"
 
 std::string getLogFileName()
@@ -11,17 +14,11 @@ std::string getLogFileName()
 int main()
 {
   TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
-TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
+                               TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 
-  LOG << "main";
-
+  LOG << "Start runner";
   depot::main::DomagRunner runner;
-}
-*/
 
-#include "libdomagcli/CliStarter.hpp"
-
-int main(void)
-{
+  LOG << "Starting CLI";
   startCli();
 }
