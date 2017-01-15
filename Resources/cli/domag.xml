@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <cli xmlns="http://alexis.royer.free.fr/CLI" name="domag">
+<cpp option="include">#include "CliCallback.hpp"</cpp>
+<keyword string="show">
+  <keyword string="all">
+    <keyword string="containers">
+      <endl>
+        <cpp><out/> &lt;&lt; domagcli::CliCallback::showAllContainers() &lt;&lt; cli::endl;</cpp>
+      </endl>
+    </keyword>
+  </keyword>
+</keyword>
 </cli>

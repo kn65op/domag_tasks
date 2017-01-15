@@ -22,6 +22,7 @@ include_directories(${CLI_INCLUDE_DIR})
 # Library
 add_library(domagcli STATIC
 	${DOMAGCLI_SOURCE_DIR}/CliStarter.cpp
+	${DOMAGCLI_SOURCE_DIR}/CliCallback.cpp
 	${GENERATED_CLI_FILE}
 	)
 
