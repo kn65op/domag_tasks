@@ -5,7 +5,7 @@
   <keyword string="all">
     <keyword string="containers">
       <endl>
-        <cpp><out/> &lt;&lt; domagcli::CliCallback::showAllContainers() &lt;&lt; cli::endl;</cpp>
+        <cpp>domagcli::CliCallback::noArgCommand(<out/>, cli::endl, domagcli::CliCallback::showAllContainers);</cpp>
       </endl>
     </keyword>
   </keyword>

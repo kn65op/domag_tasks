@@ -2,7 +2,7 @@
 
 namespace domagcli
 {
-std::string CliCallback::showAllContainers()
+std::string CliCallback::getAllContainers()
 {
   return "All containers";
 }
