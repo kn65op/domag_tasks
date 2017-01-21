@@ -16,10 +16,12 @@ public:
 
   static std::string showAllContainers()
   {
-    return getAllContainers();
+    return callback.getAllContainers();
   }
 
 private:
   static std::string getAllContainers();
+
+  static CliCallback callback;
 };
 }
