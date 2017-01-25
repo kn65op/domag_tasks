@@ -3,6 +3,11 @@
 #include <memory>
 #include <string>
 
+namespace ui
+{
+class Presenters;
+}
+
 namespace domagcli
 {
 
@@ -24,11 +29,14 @@ public:
 
   static std::string showAllContainers();
 
-  static void initializeCallback();
+  static void initializeCallback(std::unique_ptr<ui::Presenters>);
 
 private:
-  static std::string getAllContainers();
-
   static std::unique_ptr<CliCallback> callback;
+
+  std::string getAllContainers();
+
+  CliCallback(std::unique_ptr<ui::Presenters>);
+  std::unique_ptr<ui::Presenters> presenters;
 };
 }

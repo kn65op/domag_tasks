@@ -13,6 +13,6 @@ class ContainersPresenter
 public:
   virtual ~ContainersPresenter() = default;
 
-  virtual void present(const depot::ContainerCatalog &) = 0;
+  virtual std::string present(const depot::ContainerCatalog &) = 0;
 };
 }

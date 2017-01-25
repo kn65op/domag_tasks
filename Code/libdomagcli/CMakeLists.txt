@@ -18,6 +18,7 @@ add_custom_command(
 include_directories(${GENERATED_CLI_INCLUDE_DIR})
 include_directories(${DOMAGCLI_INCLUDE_DIR})
 include_directories(${CLI_INCLUDE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/Code/depot/inc)
 
 # Library
 add_library(domagcli STATIC

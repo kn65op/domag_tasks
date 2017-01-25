@@ -1,9 +1,13 @@
+#include <memory>
 #include <string>
 
 #include "../inc/DomagRunner.h"
 
 #include "libdomagcli/CliCallback.hpp"
 #include "libdomagcli/CliStarter.hpp"
+
+#include "presenters/ConsoleContainersPresenter.hpp"
+#include "presenters/Presenters.hpp"
 
 #include "TLogger.h"
 
@@ -20,7 +24,9 @@ int main()
   LOG << "Start runner";
   depot::main::DomagRunner runner;
 
-  domagcli::CliCallback::initializeCallback();
+  auto presenters = std::make_unique<ui::Presenters>(std::make_unique<cui::ConsoleContainersPresenter>());
+
+  domagcli::CliCallback::initializeCallback(std::move(presenters));
 
   LOG << "Starting CLI";
   startCli();

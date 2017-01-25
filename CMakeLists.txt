@@ -87,6 +87,7 @@ include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${LIBDOMAGCLI_INCLUDE_DIR})
 
 include_directories(Code/ui/include)
+include_directories(Code/cui/include)
 
 add_subdirectory(${SRC_DIR})
 
