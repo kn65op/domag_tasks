@@ -8,7 +8,7 @@
 
 #include "HomeContainerCatalog.h"
 
-#include "ui/ContainersPresenter.hpp"
+#include "presenters/ContainersPresenter.hpp"
 
 namespace depot
 {

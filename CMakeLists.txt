@@ -16,15 +16,17 @@ set(TLogger_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/TLogger")
 set(THelper_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/THelper")
 set(BUILD_TESTS "false")
 
-add_subdirectory(${LIBRARIES_DIR}/TLogger)
 FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_DIR}/TLogger" CONFIG)
+add_subdirectory(${LIBRARIES_DIR}/TLogger)
 
-add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES_DIR}/THelper CONFIG)
+add_subdirectory(${LIBRARIES_DIR}/THelper)
 
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
+
 FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES_DIR}/yaml-cpp CONFIG)
+
 
 include(ExternalProject)
 
@@ -79,9 +81,12 @@ set(LIBDOMAGCLI_INCLUDE_DIR Code/libdomagcli/include)
 include_directories(${SRC_DIR})
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
+include_directories(${LIBUI_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${LIBDOMAGCLI_INCLUDE_DIR})
+
+include_directories(Code/ui/include)
 
 add_subdirectory(${SRC_DIR})
 
