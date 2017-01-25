@@ -2,6 +2,7 @@
 
 #include "../inc/DomagRunner.h"
 
+#include "libdomagcli/CliCallback.hpp"
 #include "libdomagcli/CliStarter.hpp"
 
 #include "TLogger.h"
@@ -18,6 +19,8 @@ int main()
 
   LOG << "Start runner";
   depot::main::DomagRunner runner;
+
+  domagcli::CliCallback::initializeCallback();
 
   LOG << "Starting CLI";
   startCli();
