@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 namespace domagcli
@@ -11,17 +12,23 @@ public:
   template <typename OutputStream, typename EndlFunction, typename OutputCommand>
   static void noArgCommand(OutputStream &out, const EndlFunction &endl, OutputCommand command)
   {
-    out << command() << endl;
+    if (callback)
+    {
+      out << command() << endl;
+    }
+    else
+    {
+      out << "Error: not initialized, please contact author" << endl;
+    }
   }
 
-  static std::string showAllContainers()
-  {
-    return callback.getAllContainers();
-  }
+  static std::string showAllContainers();
+
+  static void initializeCallback();
 
 private:
   static std::string getAllContainers();
 
-  static CliCallback callback;
+  static std::unique_ptr<CliCallback> callback;
 };
 }
