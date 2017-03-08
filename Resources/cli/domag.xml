@@ -2,8 +2,11 @@
 <cli xmlns="http://alexis.royer.free.fr/CLI" name="domag">
 <cpp option="include">#include "CliCallback.hpp"</cpp>
 <keyword string="show">
+  <help lang="en">Show data</help>
   <keyword string="all">
+    <help lang="en">Show all</help>
     <keyword string="containers">
+      <help lang="en">Show all containers</help>
       <endl>
         <cpp>domagcli::CliCallback::noArgCommand(<out/>, cli::endl, domagcli::CliCallback::showAllContainers);</cpp>
       </endl>
