@@ -14,8 +14,8 @@ namespace domagcli
 class CliCallback
 {
 public:
-  template <typename OutputStream, typename EndlFunction, typename OutputCommand>
-  static void noArgCommand(OutputStream &out, const EndlFunction &endl, OutputCommand command)
+  template <typename OutputStream, typename Endl, typename OutputCommand>
+  static void noArgCommand(OutputStream &out, const Endl &endl, OutputCommand command)
   {
     if (callback)
     {

@@ -15,15 +15,17 @@ class ConsoleContainersPresenter : public ui::ContainersPresenter
 public:
   std::string present(const depot::ContainerCatalog &catalog)
   {
-    return printTableLine("Container", "Inside") + printSeparator() +
-           presentContainers(catalog.getTopLevelContainers(), {});
+    auto Id = 1;
+    return printTableLine("Id", "Container", "Inside") + printSeparator() +
+           presentContainers(Id, catalog.getTopLevelContainers(), {});
   }
 
 private:
-  std::string printTableLine(const std::string &firstCol, const std::string &secondCol)
+  std::string printTableLine(const std::string &i, const std::string &firstCol, const std::string &secondCol)
   {
     std::stringstream out;
-    out << std::setw(40) << std::left << firstCol << "|" << secondCol << "\n";
+    constexpr auto separater = '|';
+    out << std::setw(4) << i << separater << std::setw(40) << std::left << firstCol << separater << secondCol << "\n";
     return out.str();
   }
 
@@ -36,13 +38,14 @@ private:
     return out.str();
   }
 
-  std::string presentContainers(const depot::ContainerCatalog::Containers &containers, const std::string &inName)
+  std::string
+  presentContainers(int &id, const depot::ContainerCatalog::Containers &containers, const std::string &inName)
   {
     std::string ret;
     for (const auto &container : containers)
     {
-      ret += printTableLine(container->getName(), inName) +
-             presentContainers(container->getContainers(), inName + ":" + container->getName());
+      ret += printTableLine(std::to_string(id++), container->getName(), inName);
+      ret += presentContainers(id, container->getContainers(), inName + ":" + container->getName());
     }
     return ret;
   }
