@@ -2,7 +2,9 @@
 
 #include "TLogger.h"
 
+#include "Article.h"
 #include "DepotSerializer.h"
+#include "HomeContainerCatalog.h"
 
 namespace depot
 {
@@ -27,12 +29,15 @@ DomagRunner::DomagRunner()
 
 DomagRunner::~DomagRunner()
 {
-  LOG << "Finishing domag";
+  LOG << "Serialize db";
   depot::serialize::DepotSerializer serializer;
   std::ofstream database{databaseFileName};
   serializer.serialize(database);
-  LOG << "Domag finished";
+  LOG << "Database serialized";
+  ::depot::HomeContainerCatalog catalog;
+  catalog.clearAllContainers();
+  depot::Article::clearTopLevelArticles();
+  LOG << "Database cleared";
 }
-
 }
 }

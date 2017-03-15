@@ -1,0 +1,71 @@
+Version: 1
+Articles:
+  - id: 1
+    unit: Unit
+    name: secondArticle name
+  - dependents:
+      - 3
+      - 5
+    unit: Unit
+    name: Z art with item
+    id: 2
+  - unit: dependent unit
+    dependents:
+      - 4
+    name: dependent_second
+    id: 3
+  - id: 4
+    unit: dependent_dependent unit
+    name: dependent_dependent
+  - name: Third article with item
+    unit: dependent unit_second
+    id: 5
+Containers:
+  - id: 1
+    name: Container2
+  - id: 2
+    dependents:
+      - 3
+      - 5
+    name: Z container with item
+  - dependents:
+      - 4
+    name: dependent
+    id: 3
+  - id: 4
+    name: dependent_dependent
+  - name: Second container with item
+    id: 5
+Items:
+  - boughtDate: 20170228
+    containerId: 2
+    boughtAmount: 5.88
+    price: 123.43
+    articleId: 2
+    bestBefore: 20170314
+    consumes:
+      - amount: 0.98
+        date: 20170302
+      - date: 20170306
+        amount: 2.3
+  - articleId: 5
+    boughtDate: 20170228
+    containerId: 5
+    boughtAmount: 128.7
+    consumes:
+      - date: 20170303
+        amount: 25.7
+      - amount: 25.3
+        date: 20170306
+    price: 100
+  - boughtAmount: 10.11
+    bestBefore: 20170523
+    boughtDate: 20170208
+    consumes:
+      - date: 20170302
+        amount: 0.98
+      - amount: 3.3
+        date: 20170303
+    price: 13.43
+    containerId: 6
+    articleId: 1

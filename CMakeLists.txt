@@ -12,7 +12,10 @@ set(LIBRARIES_BIN_DIR "libraries")
 project (domag)
 
 #external libs
-FIND_PACKAGE( Boost 1.46 COMPONENTS date_time REQUIRED )
+FIND_PACKAGE( Boost 1.60 COMPONENTS date_time REQUIRED )
+find_package(PkgConfig)
+
+pkg_check_modules(GTKMM gtkmm-3.0)
 
 set(TLogger_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/TLogger")
 set(THelper_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/THelper")
@@ -55,12 +58,15 @@ set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --quiet
 
 link_directories(${TLOGGER_LIBRARIES_DIR})
 
-#includes
-include_directories(${SRC_DIR})
+#global includes
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
+add_subdirectory(${SRC_DIR})
+
 include_directories(${YAML_CPP_INCLUDE_DIR})
+include_directories(${SRC_DIR})
+include_directories(${SRC_DIR}/gui/include)
 
 #depot
 file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
@@ -92,7 +98,8 @@ add_executable(${EXE_FILE} ${MAIN_FILES}
 TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${Boost_LIBRARIES}
 		      ${TLOGGER_LIBRARIES}
-		      ${YAML_CPP_LIBRARIES})
+		      ${YAML_CPP_LIBRARIES}
+		      gui)
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
 			  
