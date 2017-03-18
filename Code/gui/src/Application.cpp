@@ -10,6 +10,6 @@ Application::Application()
 {
   auto app = Gtk::Application::create("org.domag");
   auto window = MainWindow{}.getWindow();
-  app->run(window);
+  app->run(*window);
 }
 }

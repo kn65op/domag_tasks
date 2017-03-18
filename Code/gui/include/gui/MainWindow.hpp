@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "gtkmm/window.h"
 
 namespace gui
@@ -8,6 +10,6 @@ namespace gui
 class MainWindow
 {
 public:
-  Gtk::Window getWindow();
+  std::unique_ptr<Gtk::Window> getWindow();
 };
 }
