@@ -1,5 +1,7 @@
 #include "gui/MainWindow.hpp"
 
+#include "GladeMainWindow.hpp"
+
 #include <iostream>
 
 #include "gtkmm.h"
@@ -10,7 +12,7 @@ std::unique_ptr<Gtk::Window> MainWindow::getWindow()
 {
   try
   {
-    auto builder = Gtk::Builder::create_from_file("MainWindow.glade");
+    auto builder = Gtk::Builder::create_from_string(gladeXml);
     Gtk::Widget *windowP;
     builder->get_widget("main_window", windowP);
     return std::unique_ptr<Gtk::Window>{dynamic_cast<Gtk::Window *>(windowP)};
