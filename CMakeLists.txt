@@ -35,7 +35,7 @@ FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 set(CMAKE_CXX_FLAGS "-std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
- 
+
 if ("${NO_COVERAGE}" STREQUAL "true")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 else ("${NO_COVERAGE}" STREQUAL "true")
