@@ -11,12 +11,13 @@ namespace ut
 class ItemMock : public IItem
 {
  public:
-  MOCK_METHOD3(buy, void(double amount, double price, Date bdate));
   MOCK_CONST_METHOD0(getQuantity, double());
   MOCK_CONST_METHOD0(getBoughtAmount, double());
   MOCK_CONST_METHOD0(getPricePerUnit, double());
   MOCK_METHOD2(consume, void(double amount, Date date));
-  MOCK_CONST_METHOD0(getBuyDate, boost::gregorian::date());
+  MOCK_CONST_METHOD0(getBuyDate, Date());
+  MOCK_CONST_METHOD0(getBestBefore, OptionalDate());
+  MOCK_METHOD1(setBestBefore, void(const OptionalDate&));
   MOCK_CONST_METHOD0(getConsumeHistory, const ConsumeHistory::List&());
   MOCK_CONST_METHOD0(getThing, std::weak_ptr<IArticle>());
   MOCK_CONST_METHOD0(getStorehauseImpl, std::weak_ptr<AbstractContainer>());

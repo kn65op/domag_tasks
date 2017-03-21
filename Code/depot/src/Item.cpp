@@ -1,31 +1,43 @@
 #include "Item.h"
 #include "Article.h"
+
 #include <TLogger.h>
 
 using depot::Item;
 using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
-Item::Item(std::weak_ptr<IArticle> thing_of) :
-    thing{thing_of}
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details) :
+  Item{thing_of, details, boost::none}
+{
+}
+
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details, const Date& best_before) :
+    Item{thing_of, details, OptionalDate{best_before}}
+{
+}
+
+Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details, const OptionalDate& best_before) :
+  thing{thing_of},
+  bestBefore{best_before}
 {
   if (thing.expired())
   {
     throw ArticleCannotBeEmpty();
   }
+  savePurcaseDetails(details);
 }
 
-void Item::buy(double amount, double price, Date bdate)
+void Item::savePurcaseDetails(const PurcaseDetails &details)
 {
-  if (bought)
+  if (details.amount == 0.0)
   {
-    LOG << "Item already buyed";
-    throw ItemAlreadyBought();
+    throw AmountCannotBeZero{};
   }
-  bought = true;
-  buy_date = bdate;
-  initialQuantity = quantity = amount;
-  price_per_unit = price / quantity;
+  LOG << "Create: " << thing.lock()->getName() << " in amount " << details.amount;
+  buy_date = details.date;
+  initialQuantity = quantity = details.amount;
+  price_per_unit = details.price / details.amount;
 }
 
 double Item::getBoughtAmount() const
@@ -47,7 +59,7 @@ void Item::consume(double amount, Date date)
 {
   if (amount > quantity)
   {
-    LOG << "There is no amount available to consume";
+    LOG << "Trying to consume " << amount << " when there is only " << quantity << " available";
     throw NoQuantityToConsume();
   }
   quantity -= amount;
@@ -91,4 +103,14 @@ void Item::changeArticle(Article art)
     throw ArticleCannotBeEmpty{};
   }
   thing = art;
+}
+
+Item::OptionalDate Item::getBestBefore() const
+{
+  return bestBefore;
+}
+
+void Item::setBestBefore(const OptionalDate& best_before)
+{
+  bestBefore = best_before;
 }

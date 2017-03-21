@@ -48,7 +48,7 @@ public:
   class InvalidArticle : public std::logic_error
   {
   public:
-    InvalidArticle(const std::string& msg = "Invalid pointer was passed to make shared") :
+    InvalidArticle(const std::string& msg = "Invalid pointer (not Article) was passed to make shared") :
         std::logic_error(msg)
     {
     }
@@ -69,7 +69,7 @@ public:
   ;
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>, public HierarchicalClass< Article>
+class Article : public IArticle, public std::enable_shared_from_this<Article>, HierarchicalClass< Article>
 {
 public:
   using DependentArticle = std::shared_ptr<Article>;
@@ -119,14 +119,9 @@ public:
     clearTopLevelEntites();
   }
 
-  static ArticlePtr makeSharedPtr(HierarchicalClass<Article>* article_candidate)
+  std::shared_ptr<Article> makeSharedPointer() override
   {
-    auto article = dynamic_cast<Article*>(article_candidate);
-    if (article)
-    {
-      return article->shared_from_this();
-    }
-    throw InvalidArticle();
+    return shared_from_this();
   }
 
 private:

@@ -29,7 +29,7 @@ add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
 FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
 #compiler options
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+set(CMAKE_CXX_FLAGS "-std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
  
@@ -57,15 +57,18 @@ link_directories(${TLOGGER_LIBRARIES_DIR})
 
 #includes
 include_directories(${SRC_DIR})
-include_directories(${SRC_DIR}/depot/inc/)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIR})
 
-#files
-file(GLOB MAIN_FILES ${SRC_DIR}/Main/src/*.cpp)
+#depot
 file(GLOB DEPOT_FILES ${SRC_DIR}/depot/src/*.cpp)
+include_directories(${SRC_DIR}/depot/inc/)
+
+#main
+file(GLOB MAIN_FILES ${SRC_DIR}/Main/src/*.cpp)
+include_directories(${SRC_DIR}/Main/inc/)
 
 #executables
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -82,7 +85,8 @@ else (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
 set(EXE_FILE ${PROJECT_NAME})
-add_executable(${EXE_FILE} ${MAIN_FILES})
+add_executable(${EXE_FILE} ${MAIN_FILES}
+		           ${DEPOT_FILES})
 
 #libraries
 TARGET_LINK_LIBRARIES(${EXE_FILE}

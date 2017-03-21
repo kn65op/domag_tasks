@@ -1,18 +1,16 @@
 #pragma once
 
-#include <memory>
 #include <functional>
 #include "HierarchicalClass.h"
-#include "AbstractContainer.h"
+#include "ItemsContainer.h"
 #include "Storable.h"
-#include "Item.h"
 #include <TLogger.h>
 
 namespace depot
 {
 
-class Container : public std::enable_shared_from_this<Container>, public AbstractContainer,
-                  public Storable, public HierarchicalClass< Container>
+class Container : public std::enable_shared_from_this<Container>, public ItemsContainer,
+                  public Storable, HierarchicalClass<Container>
 {
 public:
   struct LiesNowhere : public std::logic_error
@@ -49,8 +47,6 @@ public:
 
   using Item = depot::IItem::Ptr;
   using ItemPtr = depot::IItem*;
-  using Items = std::vector<Item>;
-  using SelectedItems = std::vector<depot::IItem*>;//std::vector<ItemReference>;
   using ContainerInside = std::shared_ptr<Container>;
   using ContainerPtr = std::shared_ptr<Container>;
   using Containers = std::vector<ContainerInside>;
@@ -59,11 +55,7 @@ public:
   using CircularDependencyException = CannotInsertContainerIntoItself;
   using NoInferiorException = AbstractContainer::NoSuchElement;
 
-  void addItem(std::unique_ptr<IItem> item);
-  Item removeItem(const ItemPtr to_remove);
-  const SelectedItems getItems() const;
-  const SelectedItems getNonConsumedItems() const;
-  std::string getName() const;
+  std::string getName() const override;
 
   void addContainer(ContainerInside container)
   {
@@ -80,43 +72,18 @@ public:
     return getInferiorEntities();
   }
 
-  static std::shared_ptr<Container> createTopLevelContainer(const std::string& name = "Unnamed container")
-  {
-    return createTopLevelEntity(name);
-  }
-
-  static void removeTopLevelContainer(std::shared_ptr<Container> container)
-  {
-    removeTopLevelEntity(container);
-  }
-
-  static const Containers& getTopLevelContainers()
-  {
-    return getTopLevelEntities();
-  }
-
-  static std::shared_ptr<Container> makeSharedPtr(HierarchicalClass<Container>* container_candidate)
-  {
-    auto container = dynamic_cast<Container*>(container_candidate);
-    if (container)
-    {
-      return container->shared_from_this();
-    }
-    throw InvalidContainer();
-  }
-
-  static void clearTopLevelContainers()
-  {
-    clearTopLevelEntites();
-  }
-
   std::shared_ptr<Container> createDependentContainer(const std::string &name = "Unnamed container")
   {
     return createDependentEntity(name);
   }
 
+  std::shared_ptr<Container> makeSharedPointer() override
+  {
+    return shared_from_this();
+  }
+
 private:
-  friend class HierarchicalClass<Container> ;
+  friend class HierarchicalClass<Container>;
   Container(const std::string& name_arg) :
     name{name_arg}
   {
@@ -129,9 +96,9 @@ private:
   }
 
   std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
+  std::shared_ptr<AbstractContainer> getSharedPointer() override;
 
   std::string name;
-  Items items;
 };
 
 }

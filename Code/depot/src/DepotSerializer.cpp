@@ -1,5 +1,6 @@
 #include "DepotSerializer.h"
 #include "yaml-cpp/yaml.h"
+#include "depot/inc/HomeContainerCatalog.h"
 #include "iostream"
 
 using namespace depot::serialize;
@@ -7,14 +8,17 @@ using namespace depot::serialize;
 void DepotSerializer::serialize(std::ostream& out)
 {
   LOG << "Serialize started";
+  HomeContainerCatalog catalog;
   storeVersion(out);
   const auto &topLevelArticles = Article::getTopLevelArticles();
   storeEntities(out, topLevelArticles, articlesName);
 
-  const auto &topLevelContainers = Container::getTopLevelContainers();
+  const auto &topLevelContainers = catalog.getTopLevelContainers();
   storeEntities(out, topLevelContainers, containersName);
 
-  storeItems(out, topLevelContainers);
+  storeTrashContainer(catalog.getContainerForConsumedItems());
+
+  storeItems(out, topLevelContainers, catalog.getContainerForConsumedItems());
 
   cleanupSerialization();
   LOG << "Serialize finished";
@@ -98,12 +102,16 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
 {
   while (!containers.empty())
   {
+    HomeContainerCatalog catalog;
     const auto &container_node = containers.begin()->second;
-    auto actual_container = Container::createTopLevelContainer(container_node["name"].as<std::string>());
+    auto actual_container = catalog.createTopLevelContainer(container_node["name"].as<std::string>());
     deserializationContainers[containers.begin()->first] = actual_container.get();
     createDependentContainers(actual_container, container_node, containers);
     containers.erase(containers.begin());
   }
+  LOG << "Get address of trash in position: " << deserializationContainers.size();
+  HomeContainerCatalog catalog;
+  deserializationContainers[deserializationContainers.size() + 1] = &catalog.getContainerForConsumedItems();
 }
 
 void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
@@ -165,7 +173,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
 YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerPtr &container)
 {
   YAML::Node container_node;
-  container_node["id"] = serializationContainers[container];
+  container_node["id"] = serializationContainers[container.get()];
   container_node["name"] = container->getName();
   return container_node;
 }
@@ -183,35 +191,59 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & 
 void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPtr & container)
 {
   LOG << "store container id: " << container->getName() << " = " << serializationContainers.size() + 1;
-  serializationContainers[container] = serializationContainers.size();
+  serializationContainers[container.get()] = serializationContainers.size(); //TODO: split getting size from assign
   for (const auto & dependent_container : container->getContainers())
   {
     storeEntityAndItsDependentsId(dependent_container);
   }
 }
 
-void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers)
+void DepotSerializer::storeItems(std::ostream & out, const Container::Containers & containers, const ItemsContainer& trash)
 {
   YAML::Node containerItemsNode;
   for (const auto & container :containers)
   {
-    for (const auto & item : container->getItems())
+    const auto& itemsFromContainer = getNodesForItemsInContainerAndSubcontainers(*container);
+    for (const auto & item : itemsFromContainer)
     {
-      containerItemsNode[itemsName].push_back(storeItem(item));
+      containerItemsNode[itemsName].push_back(item);
     }
   }
+  for (const auto & item : trash.getItems())
+  {
+    containerItemsNode[itemsName].push_back(storeItem(item));
+  }
   out << containerItemsNode << "\n";
+}
+
+std::vector<YAML::Node> DepotSerializer::getNodesForItemsInContainerAndSubcontainers(const Container& container)
+{
+  std::vector<YAML::Node> itemsInContainer;
+  for (const auto & item : container.getItems())
+  {
+    itemsInContainer.push_back(storeItem(item));
+  }
+  for (const auto & containerInside :container.getContainers())
+  {
+    const auto& itemsFromContainer = getNodesForItemsInContainerAndSubcontainers(*containerInside);
+    for (const auto & item : itemsFromContainer)
+    {
+      itemsInContainer.push_back(item);
+    }
+  }
+  return itemsInContainer;
 }
 
 YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 {
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
-  itemNode["containerId"] = serializationContainers[item->getStorehause().lock()];
+  itemNode["containerId"] = serializationContainers[item->getStorehause().lock().get()];
   itemNode["articleId"] = serializationArticles[item->getThing().lock()];
   itemNode["boughtAmount"] = item->getBoughtAmount();
   itemNode["price"] = item->getBoughtAmount() * item->getPricePerUnit();
   itemNode["boughtDate"] = boost::gregorian::to_iso_string(item->getBuyDate());
+  LOG << "Storing item with container id: " << itemNode["containerId"] << " and article id: " << itemNode["articleId"];
   for (const auto & consume : item->getConsumeHistory())
   {
     YAML::Node consumeNode;
@@ -219,7 +251,19 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
     consumeNode["date"] = boost::gregorian::to_iso_string(consume.second);
     itemNode["consumes"].push_back(consumeNode);
   }
+  const auto bestBefore = item->getBestBefore();
+  if (bestBefore)
+  {
+    itemNode["bestBefore"] = boost::gregorian::to_iso_string(*item->getBestBefore());
+  }
   return itemNode;
+}
+
+
+void DepotSerializer::storeTrashContainer(const ItemsContainer &trash)
+{
+  LOG << "store trash id="  << serializationContainers.size() + 1;
+  serializationContainers[&trash] = serializationContainers.size();
 }
 
 void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
@@ -230,11 +274,12 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
   for (const auto itemNode : items)
   {
     const auto articleId = itemNode["articleId"].as<int>();
-    auto item = std::make_unique<Item>(deserializationArticles[articleId]);
     const auto amount = itemNode["boughtAmount"].as<double>();
     const auto price = itemNode["price"].as<double>();
     const auto bougth = boost::gregorian::from_undelimited_string(itemNode["boughtDate"].as<std::string>());
-    item->buy(amount, price, bougth);
+    auto item = itemNode["bestBefore"] ?
+        std::make_unique<Item>(deserializationArticles[articleId], PurcaseDetails{amount, price, bougth}, boost::gregorian::from_undelimited_string(itemNode["bestBefore"].as<std::string>())) :
+        std::make_unique<Item>(deserializationArticles[articleId], PurcaseDetails{amount, price, bougth});
     const auto consumes = itemNode["consumes"];
     for (const auto consume : consumes)
     {

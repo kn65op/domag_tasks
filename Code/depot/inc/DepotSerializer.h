@@ -30,7 +30,7 @@ public:
   void deserialize(std::istream& input);
 
 private:
-  using AbstractContainer = std::shared_ptr<depot::AbstractContainer>;
+  using AbstractContainer = depot::AbstractContainer;
   using YamlNodes = std::vector<YAML::Node>;
   void storeVersion(std::ostream& output);
   template <typename AllEntitiesType> void serializeAllEntities(std::ostream& out, const AllEntitiesType & all_entities, const std::string& node_name);
@@ -64,7 +64,7 @@ private:
 
   int getDependetEntityId(const Container::ContainerPtr& container)
   {
-    return serializationContainers[container];
+    return serializationContainers[container.get()];
   }
 
   template <typename Entity> YamlNodes serializeEntity(const std::shared_ptr<Entity>& entity)
@@ -109,19 +109,22 @@ private:
   void checkAndDeserializeAllContainers(const YAML::Node &database);
   void createContainers(std::map<int, YAML::Node> &&containers);
   void createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
-  void storeItems(std::ostream & out, const Container::Containers & containers);
+  void storeItems(std::ostream & out, const Container::Containers & containers, const ItemsContainer &);
+  std::vector<YAML::Node> getNodesForItemsInContainerAndSubcontainers(const Container&);
   YAML::Node storeItem(const depot::IItem * item);
   void cleanupSerialization();
   void cleanupDeserialization();
+  void storeTrashContainer(const ItemsContainer &);
 
   std::map<std::shared_ptr<IArticle>, int> serializationArticles;
-  std::map<AbstractContainer, int> serializationContainers;
+  std::map<const AbstractContainer*, int> serializationContainers;
   std::map<int, std::shared_ptr<IArticle>> deserializationArticles;
-  std::map<int, Container*> deserializationContainers;
+  std::map<int, AbstractContainer*> deserializationContainers;
   std::string version_field = "Version";
   const int version_suported = 1;
   const std::string articlesName = "Articles";
   const std::string containersName = "Containers";
+  const std::string consumedContainerName = "consumed";
   const std::string itemsName = "Items";
 };
 
