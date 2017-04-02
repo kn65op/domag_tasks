@@ -24,11 +24,11 @@ FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
 add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
 
+#YAML-cpp
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
 set(YAML_CPP_LIBRARIES yaml-cpp)
 set(YAML_CPP_INCLUDE_DIR ${LIBRARIES_DIR}/yaml-cpp/include)
-#FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
