@@ -27,15 +27,17 @@ FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
 add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
 
+#YAML-cpp
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
-#add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
-FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
+add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
+set(YAML_CPP_LIBRARIES yaml-cpp)
+set(YAML_CPP_INCLUDE_DIR ${LIBRARIES_DIR}/yaml-cpp/include)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
-
+ 
 if ("${NO_COVERAGE}" STREQUAL "true")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 else ("${NO_COVERAGE}" STREQUAL "true")
@@ -102,4 +104,4 @@ TARGET_LINK_LIBRARIES(${EXE_FILE}
 		      gui)
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
-			  
+
