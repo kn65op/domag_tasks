@@ -24,9 +24,11 @@ FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
 add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
 
+#YAML-cpp
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
 add_subdirectory(${LIBRARIES_DIR}/yaml-cpp)
-FIND_PACKAGE( yaml-cpp  REQUIRED PATHS ${LIBRARIES}/yaml-cpp CONFIG)
+set(YAML_CPP_LIBRARIES yaml-cpp)
+set(YAML_CPP_INCLUDE_DIR ${LIBRARIES_DIR}/yaml-cpp/include)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
@@ -91,8 +93,8 @@ add_executable(${EXE_FILE} ${MAIN_FILES}
 #libraries
 TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${Boost_LIBRARIES}
-		      ${TLOGGER_LIBRARIES}
-		      ${YAML_CPP_LIBRARIES})
+                      ${TLOGGER_LIBRARIES}
+                      ${YAML_CPP_LIBRARIES})
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
-			  
+
