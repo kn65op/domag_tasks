@@ -97,4 +97,4 @@ TARGET_LINK_LIBRARIES(${EXE_FILE}
                       ${YAML_CPP_LIBRARIES})
 
 add_dependencies(${EXE_FILE} ${TLOGGER_TARGET})
-			  
+
