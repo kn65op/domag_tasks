@@ -8,14 +8,20 @@ namespace gui
 class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 {
 public:
-    ContainerColumnModel()
+    ContainerColumnModel(Gtk::TreeView & view) :
+        tree{view}
     {
-        add(m_col_text);
-        add(m_col_number);
+        add(id);
+        add(name);
+        add(inside);
     }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_text;
-    Gtk::TreeModelColumn<int> m_col_number;
+    Gtk::TreeModelColumn<int> id;
+    Gtk::TreeModelColumn<Glib::ustring> name;
+    Gtk::TreeModelColumn<Glib::ustring> inside;
+
+private:
+    Gtk::TreeView & tree;
 };
 
 }
