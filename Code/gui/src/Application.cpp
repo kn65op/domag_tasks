@@ -1,27 +1,15 @@
 #include "gui/Application.hpp"
 #include "gui/MainWindow.hpp"
+#include "gui/ContainerColumnModel.hpp"
 
 #include "gtkmm.h"
 
 namespace gui
 {
 
-class ModelColumns : public Gtk::TreeModelColumnRecord
-{
-public:
-  ModelColumns()
-  {
-    add(m_col_text);
-    add(m_col_number);
-  }
-
-  Gtk::TreeModelColumn<Glib::ustring> m_col_text;
-  Gtk::TreeModelColumn<int> m_col_number;
-};
-
 void prepareView(Gtk::TreeView* view)
 {
-  ModelColumns m_Columns;
+  ContainerColumnModel m_Columns;
   auto refListStore = Gtk::TreeStore::create(m_Columns);
   view->set_model(refListStore);
   view->append_column("Messages", m_Columns.m_col_text);
