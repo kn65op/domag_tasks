@@ -10,19 +10,31 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 public:
     ContainerColumnModel(Gtk::TreeView& view) : tree{view}
     {
-        add(id);
-        add(name);
-        add(inside);
+        add(modelId);
+        add(modelName);
+        add(modelInside);
         treeStore = Gtk::TreeStore::create(*this);
+        tree.set_model(treeStore);
+        tree.append_column("Messages", modelName);
+        tree.append_column("id", modelId);
     }
 
-    Gtk::TreeModelColumn<int> id;
-    Gtk::TreeModelColumn<Glib::ustring> name;
-    Gtk::TreeModelColumn<Glib::ustring> inside;
-    Glib::RefPtr< Gtk::TreeStore > treeStore;
+    Gtk::TreeModelColumn<int> modelId;
+    Gtk::TreeModelColumn<Glib::ustring> modelName;
+    Gtk::TreeModelColumn<Glib::ustring> modelInside;
+
+    void addRow(const std::string & name)
+    {
+        static int i = 1;
+        auto iter = treeStore->append();
+        auto row = *iter;
+        row[modelId] = i;
+        row[modelName] = name;
+    }
 
 private:
     Gtk::TreeView & tree;
+    Glib::RefPtr< Gtk::TreeStore > treeStore;
 };
 
 }
