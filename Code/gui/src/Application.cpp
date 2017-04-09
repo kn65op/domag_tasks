@@ -10,7 +10,7 @@ namespace gui
 void prepareView(Gtk::TreeView* view)
 {
     ContainerColumnModel m_Columns{*view};
-    auto refListStore = Gtk::TreeStore::create(m_Columns);
+    auto refListStore = m_Columns.treeStore;
     view->set_model(refListStore);
     view->append_column("Messages", m_Columns.name);
     view->append_column("id", m_Columns.id);
