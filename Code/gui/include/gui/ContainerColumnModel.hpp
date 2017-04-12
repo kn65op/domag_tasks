@@ -19,10 +19,6 @@ public:
         tree.append_column("Messages", modelName);
     }
 
-    Gtk::TreeModelColumn<int> modelId;
-    Gtk::TreeModelColumn<Glib::ustring> modelName;
-    Gtk::TreeModelColumn<Glib::ustring> modelInside;
-
     void addRow(const std::string & name)
     {
         static int i = 1;
@@ -34,6 +30,10 @@ public:
 private:
     Gtk::TreeView & tree;
     Glib::RefPtr< Gtk::TreeStore > treeStore;
+    Gtk::TreeModelColumn<int> modelId;
+    Gtk::TreeModelColumn<Glib::ustring> modelName;
+    Gtk::TreeModelColumn<Glib::ustring> modelInside;
+
 };
 
 }
