@@ -1,5 +1,9 @@
 #pragma once
 
+#include <map>
+
+#include <iostream>
+
 #include "gtkmm.h"
 
 namespace gui
@@ -7,7 +11,7 @@ namespace gui
 
 class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 {
-public:
+  public:
     ContainerColumnModel(Gtk::TreeView& view) : tree{view}
     {
         add(modelId);
@@ -19,21 +23,39 @@ public:
         tree.append_column("Messages", modelName);
     }
 
-    void addRow(const std::string & name)
+    int addRow(const std::string& name)
     {
-        static int i = 1;
-        auto row = *treeStore->append();
-        row[modelId] = i++;
+        const int id = ++i;
+        auto rowIt = *treeStore->append();
+        auto row = *rowIt;
+        row[modelId] = id;
         row[modelName] = name;
+        // std::cout << "Store" << id << " : " << &row << "\n";
+        rows.emplace(id, rowIt);
+        return id;
     }
 
-private:
-    Gtk::TreeView & tree;
-    Glib::RefPtr< Gtk::TreeStore > treeStore;
+    int addRow(int parentId, const std::string& name)
+    {
+        auto parentRow = rows[parentId];
+        const int id = ++i;
+        auto rowIt = *treeStore->append(parentRow->children());
+        auto row = *rowIt;
+        std::cout << parentId << ": " << parentRow << "\n";
+        row[modelId] = id;
+        row[modelName] = name;
+        // std::cout << "Store" << id << " : " << &row << "\n";
+        rows.emplace(id, rowIt);
+        return id;
+    }
+
+  private:
+    int i = 0;
+    Gtk::TreeView& tree;
+    Glib::RefPtr<Gtk::TreeStore> treeStore;
     Gtk::TreeModelColumn<int> modelId;
     Gtk::TreeModelColumn<Glib::ustring> modelName;
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
-
+    std::map<int, Gtk::TreeStore::iterator> rows;
 };
-
 }
