@@ -1,6 +1,6 @@
 #include "gui/Application.hpp"
-#include "gui/MainWindow.hpp"
 #include "gui/ContainerColumnModel.hpp"
+#include "gui/MainWindow.hpp"
 
 #include "gtkmm.h"
 

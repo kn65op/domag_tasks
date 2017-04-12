@@ -2,8 +2,6 @@
 
 #include <map>
 
-#include <iostream>
-
 #include "gtkmm.h"
 
 namespace gui
@@ -30,7 +28,6 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
         auto row = *rowIt;
         row[modelId] = id;
         row[modelName] = name;
-        // std::cout << "Store" << id << " : " << &row << "\n";
         rows.emplace(id, rowIt);
         return id;
     }
@@ -41,10 +38,8 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
         const int id = ++i;
         auto rowIt = *treeStore->append(parentRow->children());
         auto row = *rowIt;
-        std::cout << parentId << ": " << parentRow << "\n";
         row[modelId] = id;
         row[modelName] = name;
-        // std::cout << "Store" << id << " : " << &row << "\n";
         rows.emplace(id, rowIt);
         return id;
     }
