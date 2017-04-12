@@ -15,8 +15,8 @@ public:
         add(modelInside);
         treeStore = Gtk::TreeStore::create(*this);
         tree.set_model(treeStore);
-        tree.append_column("Messages", modelName);
         tree.append_column("id", modelId);
+        tree.append_column("Messages", modelName);
     }
 
     Gtk::TreeModelColumn<int> modelId;
@@ -26,9 +26,8 @@ public:
     void addRow(const std::string & name)
     {
         static int i = 1;
-        auto iter = treeStore->append();
-        auto row = *iter;
-        row[modelId] = i;
+        auto row = *treeStore->append();
+        row[modelId] = i++;
         row[modelName] = name;
     }
 
