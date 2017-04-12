@@ -16,13 +16,6 @@ void prepareView(Gtk::TreeView* view)
     const auto idToSecondChild = m_Columns.addRow(idToAddChild, "Child one");
     m_Columns.addRow(idToSecondChild, "Child in child");
     m_Columns.addRow(idToAddChild, "Child two");
-
-    /*
-    auto iter_child = refListStore->append(row.children());
-    auto row_child = *iter_child;
-    row_child[m_Columns.id] = 4;
-    row_child[m_Columns.name] = "ZZZ";
-    */
 }
 
 Application::Application()
