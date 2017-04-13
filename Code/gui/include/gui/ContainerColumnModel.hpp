@@ -26,8 +26,7 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
         const int id = ++i;
         auto rowIt = *treeStore->append();
         auto row = *rowIt;
-        row[modelId] = id;
-        row[modelName] = name;
+        fillRow(row, id, name);
         rows.emplace(id, rowIt);
         return id;
     }
@@ -38,10 +37,15 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
         const int id = ++i;
         auto rowIt = *treeStore->append(parentRow->children());
         auto row = *rowIt;
-        row[modelId] = id;
-        row[modelName] = name;
+        fillRow(row, id, name);
         rows.emplace(id, rowIt);
         return id;
+    }
+
+    void fillRow(Gtk::TreeRow &row, int id, const std::string &name)
+    {
+        row[modelId] = id;
+        row[modelName] = name;
     }
 
   private:
