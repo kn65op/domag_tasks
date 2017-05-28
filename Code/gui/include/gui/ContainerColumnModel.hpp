@@ -10,35 +10,10 @@ namespace gui
 class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 {
   public:
-    ContainerColumnModel(Gtk::TreeView& view) : tree{view}
-    {
-        add(modelId);
-        add(modelName);
-        add(modelInside);
-        treeStore = Gtk::TreeStore::create(*this);
-        tree.set_model(treeStore);
-        tree.append_column("id", modelId);
-        tree.append_column("Messages", modelName);
-    }
+    ContainerColumnModel(Gtk::TreeView& view);
 
-    int addRow(const std::string& name)
-    {
-        const int id = calculateId();
-        auto rowIt = *treeStore->append();
-        fillRow(rowIt, id, name);
-        rows.emplace(id, rowIt);
-        return id;
-    }
-
-    int addRow(int parentId, const std::string& name)
-    {
-        const int id = calculateId();
-        auto parentRow = rows[parentId];
-        auto rowIt = *treeStore->append(parentRow->children());
-        fillRow(rowIt, id, name);
-        rows.emplace(id, rowIt);
-        return id;
-    }
+    int addRow(const std::string& name);
+    int addRow(int parentId, const std::string& name);
 
   private:
     int i = 0;
@@ -49,16 +24,7 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
     std::map<int, Gtk::TreeStore::iterator> rows;
 
-    void fillRow(Gtk::TreeStore::iterator& rowIt, int id, const std::string& name)
-    {
-        auto row = *rowIt;
-        row[modelId] = id;
-        row[modelName] = name;
-    }
-
-    int calculateId()
-    {
-        return ++i;
-    }
+    void fillRow(Gtk::TreeStore::iterator& rowIt, int id, const std::string& name);
+    int calculateId();
 };
 }
