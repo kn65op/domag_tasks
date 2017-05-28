@@ -24,7 +24,7 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
     std::map<int, Gtk::TreeStore::iterator> rows;
 
-    void fillRow(Gtk::TreeStore::iterator& rowIt, int id, const std::string& name);
+    void fillRow(Gtk::TreeStore::iterator& rowIt, const std::string& name);
     int calculateId();
 };
 }
