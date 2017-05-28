@@ -34,12 +34,6 @@ void prepareView(Gtk::TreeView* view)
     ContainerColumnModel columns{*view};
     const auto& containers = catalog.getTopLevelContainers();
     addContainers(containers, columns);
-    // const auto idToAddChild = m_Columns.addRow("");
-    // m_Columns.addRow("QQ");
-
-    // const auto idToSecondChild = m_Columns.addRow(idToAddChild, "Child one");
-    // m_Columns.addRow(idToSecondChild, "Child in child");
-    // m_Columns.addRow(idToAddChild, "Child two");
 }
 
 Application::Application()
