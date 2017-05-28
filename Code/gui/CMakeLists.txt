@@ -2,6 +2,7 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 include_directories(include)
+include_directories(${DEPOT_INCLUDE})
 
 set(GUI_SOURCE_DIR src)
 
