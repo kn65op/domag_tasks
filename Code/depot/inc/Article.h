@@ -21,6 +21,7 @@ public:
     {
     }
   };
+
   class NoExistDependentArticle : public std::logic_error
   {
   public:
@@ -29,6 +30,7 @@ public:
     {
     }
   };
+
   class NoPrecedentArticle : public std::logic_error
   {
   public:
@@ -37,14 +39,13 @@ public:
     {
     }
   };
+
   class CannotMakeDependent : public std::logic_error
   {
   public:
-    CannotMakeDependent(const std::string& msg) :
-        std::logic_error(msg)
-    {
-    }
+      using std::logic_error::logic_error;
   };
+
   class InvalidArticle : public std::logic_error
   {
   public:
@@ -63,10 +64,7 @@ public:
   IArticle(const IArticle&) = delete;
   IArticle& operator=(const IArticle&) = delete;
 
-  virtual ~IArticle()
-  {
-  }
-  ;
+  virtual ~IArticle() = default;
 };
 
 class Article : public IArticle, public std::enable_shared_from_this<Article>, HierarchicalClass< Article>

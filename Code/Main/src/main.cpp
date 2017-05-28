@@ -14,7 +14,7 @@ int main()
   TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
                                TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 
-  LOG << "main";
+  LOG << "Start application";
 
   depot::main::DomagRunner runner;
 
