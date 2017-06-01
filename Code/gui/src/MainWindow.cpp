@@ -69,4 +69,18 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
         throw 1;
     }
 }
+
+std::unique_ptr<Gtk::Dialog> MainWindow::getNewContainerDialog()
+{
+    Gtk::Widget* addNewContainerDialog;
+    builder->get_widget("Add container dialog", addNewContainerDialog);
+    auto dialog = dynamic_cast<Gtk::Dialog*>(addNewContainerDialog);
+    if (dialog)
+    {
+        return std::unique_ptr<Gtk::Dialog>{dialog};
+    }
+    else
+    {throw 7;}
+}
+
 }

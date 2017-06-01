@@ -11,5 +11,6 @@ class Application
 
   private:
     void newContainer();
+    void openNewContainerDialog();
 };
 }

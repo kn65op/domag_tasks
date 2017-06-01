@@ -13,6 +13,7 @@ namespace gui
 {
 
 std::unique_ptr<MainWindow> mainWindow;
+std::unique_ptr<Gtk::Window> mainWindowGtk;
 
 void addContainers(const Container::Containers& containers, ContainerColumnModel& model, int id)
 {
@@ -41,6 +42,13 @@ void prepareView(Gtk::TreeView* view)
     addContainers(containers, columns);
 }
 
+void Application::openNewContainerDialog()
+{
+    static const auto dialog = mainWindow->getNewContainerDialog();
+    dialog->set_transient_for(*mainWindowGtk);
+    dialog->run();
+}
+
 void Application::newContainer()
 {
     depot::HomeContainerCatalog catalog;
@@ -52,11 +60,11 @@ Application::Application()
 {
     mainWindow = std::make_unique<MainWindow>();
     auto app = Gtk::Application::create("org.domag");
-    auto window = mainWindow->getWindow();
+    mainWindowGtk = mainWindow->getWindow();
     prepareView(mainWindow->getContainersTreeView());
     auto addContainerMenuItem = mainWindow->getAddTopLevelContainerMenuItem();
-    addContainerMenuItem->signal_activate().connect(sigc::mem_fun(*this, &Application::newContainer));
+    addContainerMenuItem->signal_activate().connect(sigc::mem_fun(*this, &Application::openNewContainerDialog));
 
-    app->run(*window);
+    app->run(*mainWindowGtk);
 }
 }
