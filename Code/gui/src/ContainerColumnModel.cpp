@@ -42,4 +42,10 @@ int ContainerColumnModel::calculateId()
 {
     return ++i;
 }
+
+void ContainerColumnModel::clear()
+{
+    treeStore->clear();
+}
+
 }

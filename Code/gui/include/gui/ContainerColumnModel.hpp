@@ -14,6 +14,7 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 
     int addRow(const std::string& name);
     int addRow(int parentId, const std::string& name);
+    void clear();
 
   private:
     int i = 0;
