@@ -4,8 +4,6 @@
 
 namespace gui
 {
-class MainWindow;
-
 class Application
 {
   public:
