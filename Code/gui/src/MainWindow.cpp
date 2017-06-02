@@ -80,7 +80,38 @@ std::unique_ptr<Gtk::Dialog> MainWindow::getNewContainerDialog()
         return std::unique_ptr<Gtk::Dialog>{dialog};
     }
     else
-    {throw 7;}
+    {
+        throw 7;
+    }
 }
 
+std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonOk()
+{
+    Gtk::Widget* addNewContainerDialog;
+    builder->get_widget("Add container dialog button add", addNewContainerDialog);
+    auto dialog = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
+    if (dialog)
+    {
+        return std::unique_ptr<Gtk::Button>{dialog};
+    }
+    else
+    {
+        throw 8;
+    }
+}
+
+std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel() 
+{
+    Gtk::Widget* addNewContainerDialog;
+    builder->get_widget("Add container dialog button cancel", addNewContainerDialog);
+    auto dialog = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
+    if (dialog)
+    {
+        return std::unique_ptr<Gtk::Button>{dialog};
+    }
+    else
+    {
+        throw 9;
+    }
+}
 }

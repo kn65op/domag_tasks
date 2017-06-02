@@ -14,6 +14,8 @@ class MainWindow
     Gtk::TreeView* getContainersTreeView();
     Gtk::MenuItem* getAddTopLevelContainerMenuItem();
     std::unique_ptr<Gtk::Dialog> getNewContainerDialog();
+    std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
+    std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
 
   private:
     Glib::RefPtr<Gtk::Builder> builder;

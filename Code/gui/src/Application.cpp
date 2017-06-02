@@ -42,9 +42,29 @@ void prepareView(Gtk::TreeView* view)
     addContainers(containers, columns);
 }
 
+void newContainer()
+{
+    depot::HomeContainerCatalog catalog;
+    catalog.createTopLevelContainer();
+    prepareView(mainWindow->getContainersTreeView());
+}
+
+std::unique_ptr<Gtk::Dialog> prepareDialog(MainWindow& window)
+{
+    auto dialog = window.getNewContainerDialog();
+    static auto buttonOk = window.getNewContainerDialogButtonOk();
+    static auto buttonCancel = window.getNewContainerDialogButtonCancel();
+    buttonOk->signal_clicked().connect([&]() {
+        newContainer();
+        dialog->hide();
+    });
+    buttonCancel->signal_clicked().connect([&]() { dialog->hide(); });
+    return dialog;
+}
+
 void Application::openNewContainerDialog()
 {
-    static const auto dialog = mainWindow->getNewContainerDialog();
+    static const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
 }
@@ -56,7 +76,7 @@ void Application::newContainer()
     prepareView(mainWindow->getContainersTreeView());
 }
 
-Application::Application() 
+Application::Application()
 {
     mainWindow = std::make_unique<MainWindow>();
     auto app = Gtk::Application::create("org.domag");
