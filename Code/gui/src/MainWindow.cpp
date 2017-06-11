@@ -72,13 +72,13 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
     }
 }
 
-std::unique_ptr<Gtk::Dialog> MainWindow::getNewContainerDialog()
+std::unique_ptr<widget::NewContainerDialog> MainWindow::getNewContainerDialog()
 {
     widget::NewContainerDialog* addNewContainerDialog{nullptr};
     builder->get_widget_derived("Add container dialog", addNewContainerDialog);
     if (addNewContainerDialog)
     {
-        return std::unique_ptr<Gtk::Dialog>{addNewContainerDialog};
+        return std::unique_ptr<widget::NewContainerDialog>{addNewContainerDialog};
     }
     else
     {
@@ -101,7 +101,7 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonOk()
     }
 }
 
-std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel() 
+std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
 {
     Gtk::Widget* addNewContainerDialog;
     builder->get_widget("Add container dialog button cancel", addNewContainerDialog);
@@ -115,4 +115,5 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
         throw 9;
     }
 }
+
 }

@@ -38,7 +38,20 @@ std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonCancel()
         throw 9;
     }
 }
-//Add container dialog name entry
 
+std::unique_ptr<Gtk::Entry> Builder::getNewContainerDialogNameEntry()
+{
+    Gtk::Widget* nameEntry;
+    builder->get_widget("Add container dialog name entry", nameEntry);
+    auto entry = dynamic_cast<Gtk::Entry*>(nameEntry);
+    if (entry)
+    {
+        return std::unique_ptr<Gtk::Entry>{entry};
+    }
+    else
+    {
+        throw 9;
+    }
+}
 
 }

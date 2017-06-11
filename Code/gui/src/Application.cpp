@@ -4,6 +4,7 @@
 #include "depot/inc/HomeContainerCatalog.h"
 #include "gui/ContainerColumnModel.hpp"
 #include "gui/MainWindow.hpp"
+#include "gui/NewContainerDialog.hpp"
 
 #include "gtkmm.h"
 

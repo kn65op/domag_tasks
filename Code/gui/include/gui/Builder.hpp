@@ -12,6 +12,7 @@ public:
 
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
+    std::unique_ptr<Gtk::Entry> getNewContainerDialogNameEntry();
 private:
     Glib::RefPtr<Gtk::Builder> builder;
 };

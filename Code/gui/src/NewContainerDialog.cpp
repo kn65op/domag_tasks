@@ -15,12 +15,12 @@ void newContainer()
 
 NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<Gtk::Builder>& builderIn)
     : Gtk::Dialog{baseObject}, builder{builderIn}, okButton{builder.getNewContainerDialogButtonOk()},
-      cancelButton{builder.getNewContainerDialogButtonCancel()}
+      cancelButton{builder.getNewContainerDialogButtonCancel()}, nameEntry{builder.getNewContainerDialogNameEntry()}
 {
     okButton->signal_clicked().connect([&]() {
-            newContainer();
-            this->hide();
-        });
+        newContainer();
+        this->hide();
+    });
     cancelButton->signal_clicked().connect([&]() { this->hide(); });
 }
 }

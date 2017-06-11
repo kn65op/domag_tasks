@@ -18,6 +18,7 @@ private:
     Builder builder;
     std::unique_ptr<Gtk::Button> okButton;
     std::unique_ptr<Gtk::Button> cancelButton;
+    std::unique_ptr<Gtk::Entry> nameEntry;
 };
 }
 }
