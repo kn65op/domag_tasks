@@ -2,6 +2,8 @@
 
 #include "GladeMainWindow.hpp"
 
+#include "gui/NewContainerDialog.hpp"
+
 #include <iostream>
 
 #include "gtkmm.h"
@@ -72,12 +74,11 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
 
 std::unique_ptr<Gtk::Dialog> MainWindow::getNewContainerDialog()
 {
-    Gtk::Widget* addNewContainerDialog;
-    builder->get_widget("Add container dialog", addNewContainerDialog);
-    auto dialog = dynamic_cast<Gtk::Dialog*>(addNewContainerDialog);
-    if (dialog)
+    widget::NewContainerDialog* addNewContainerDialog{nullptr};
+    builder->get_widget_derived("Add container dialog", addNewContainerDialog);
+    if (addNewContainerDialog)
     {
-        return std::unique_ptr<Gtk::Dialog>{dialog};
+        return std::unique_ptr<Gtk::Dialog>{addNewContainerDialog};
     }
     else
     {

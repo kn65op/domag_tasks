@@ -52,13 +52,13 @@ void newContainer()
 std::unique_ptr<Gtk::Dialog> prepareDialog(MainWindow& window)
 {
     auto dialog = window.getNewContainerDialog();
-    static auto buttonOk = window.getNewContainerDialogButtonOk();
-    static auto buttonCancel = window.getNewContainerDialogButtonCancel();
-    buttonOk->signal_clicked().connect([&]() {
-        newContainer();
-        dialog->hide();
-    });
-    buttonCancel->signal_clicked().connect([&]() { dialog->hide(); });
+    //static auto buttonOk = window.getNewContainerDialogButtonOk();
+    //static auto buttonCancel = window.getNewContainerDialogButtonCancel();
+    //buttonOk->signal_clicked().connect([&]() {
+    //newContainer();
+    //dialog->hide();
+    //});
+    //buttonCancel->signal_clicked().connect([&]() { dialog->hide(); });
     return dialog;
 }
 
