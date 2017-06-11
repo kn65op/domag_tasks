@@ -43,7 +43,7 @@ void prepareView(Gtk::TreeView* view)
     addContainers(containers, columns);
 }
 
-std::unique_ptr<Gtk::Dialog> prepareDialog(MainWindow& window)
+std::unique_ptr<widget::NewContainerDialog> prepareDialog(MainWindow& window)
 {
     return window.getNewContainerDialog();
 }
@@ -51,6 +51,7 @@ std::unique_ptr<Gtk::Dialog> prepareDialog(MainWindow& window)
 void Application::openNewContainerDialog()
 {
     static const auto dialog = prepareDialog(*mainWindow);
+    dialog->prepareToShow();
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
     prepareView(mainWindow->getContainersTreeView());

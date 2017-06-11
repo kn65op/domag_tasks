@@ -12,8 +12,10 @@ namespace widget
 {
 class NewContainerDialog : public Gtk::Dialog
 {
-  public:
+public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
+    void prepareToShow();
+
 private:
     Builder builder;
     std::unique_ptr<Gtk::Button> okButton;
