@@ -52,6 +52,7 @@ void Application::openNewContainerDialog()
     static const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
+    prepareView(mainWindow->getContainersTreeView());
 }
 
 Application::Application()

@@ -11,7 +11,6 @@ void newContainer()
 {
     depot::HomeContainerCatalog catalog;
     catalog.createTopLevelContainer();
-    //prepareView(mainWindow->getContainersTreeView());
 }
 
 NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<Gtk::Builder>& builderIn)
