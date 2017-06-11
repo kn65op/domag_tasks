@@ -14,9 +14,10 @@ class NewContainerDialog : public Gtk::Dialog
 {
 public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
-    void prepareToShow();
 
 private:
+    void cleanAndHide();
+
     Builder builder;
     std::unique_ptr<Gtk::Button> okButton;
     std::unique_ptr<Gtk::Button> cancelButton;

@@ -51,7 +51,6 @@ std::unique_ptr<widget::NewContainerDialog> prepareDialog(MainWindow& window)
 void Application::openNewContainerDialog()
 {
     static const auto dialog = prepareDialog(*mainWindow);
-    dialog->prepareToShow();
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
     prepareView(mainWindow->getContainersTreeView());

@@ -19,13 +19,14 @@ NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<
 {
     okButton->signal_clicked().connect([&]() {
         newContainer(nameEntry->get_buffer()->get_text());
-        this->hide();
+        cleanAndHide();
     });
-    cancelButton->signal_clicked().connect([&]() { this->hide(); });
+    cancelButton->signal_clicked().connect([&]() { cleanAndHide(); });
 }
 
-void NewContainerDialog::prepareToShow()
+void NewContainerDialog::cleanAndHide()
 {
+    hide();
     auto buffer = nameEntry->get_buffer();
     buffer->set_text({});
 }
