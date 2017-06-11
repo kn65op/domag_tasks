@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "gtkmm-3.0/gtkmm.h"
 
 namespace gui
