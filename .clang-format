@@ -9,7 +9,7 @@ AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: false
-BinPackParameters: false
+BinPackParameters: true
 BreakBeforeBinaryOperators: false
 BreakBeforeBraces: Allman
 BreakBeforeTernaryOperators: true
