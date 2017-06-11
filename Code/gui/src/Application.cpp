@@ -42,24 +42,9 @@ void prepareView(Gtk::TreeView* view)
     addContainers(containers, columns);
 }
 
-void newContainer()
-{
-    depot::HomeContainerCatalog catalog;
-    catalog.createTopLevelContainer();
-    prepareView(mainWindow->getContainersTreeView());
-}
-
 std::unique_ptr<Gtk::Dialog> prepareDialog(MainWindow& window)
 {
-    auto dialog = window.getNewContainerDialog();
-    //static auto buttonOk = window.getNewContainerDialogButtonOk();
-    //static auto buttonCancel = window.getNewContainerDialogButtonCancel();
-    //buttonOk->signal_clicked().connect([&]() {
-    //newContainer();
-    //dialog->hide();
-    //});
-    //buttonCancel->signal_clicked().connect([&]() { dialog->hide(); });
-    return dialog;
+    return window.getNewContainerDialog();
 }
 
 void Application::openNewContainerDialog()
@@ -67,13 +52,6 @@ void Application::openNewContainerDialog()
     static const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
-}
-
-void Application::newContainer()
-{
-    depot::HomeContainerCatalog catalog;
-    catalog.createTopLevelContainer();
-    prepareView(mainWindow->getContainersTreeView());
 }
 
 Application::Application()
