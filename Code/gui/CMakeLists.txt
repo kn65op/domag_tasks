@@ -24,6 +24,7 @@ add_library(gui
     ${GUI_SOURCE_DIR}/Application.cpp
     ${GUI_SOURCE_DIR}/MainWindow.cpp
     ${GUI_SOURCE_DIR}/ContainerColumnModel.cpp
+    ${GUI_SOURCE_DIR}/NewContainerDialog.cpp
     ${RESOURCE_FILE_IN_BUILD}
     )
 

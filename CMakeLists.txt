@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 3.2.3) 
 
+#global config
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 #variables
 set(SRC_DIR "Code")
 set(MAIN_SRC_DIR "${SRC_DIR}/Main")
