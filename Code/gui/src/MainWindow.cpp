@@ -116,4 +116,19 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
     }
 }
 
+std::unique_ptr<Gtk::Menu> MainWindow::getNewContainerPopupMenu()
+{
+    Gtk::Widget* addNewContainerMenu;
+    builder->get_widget("Add container popup menu", addNewContainerMenu);
+    auto menu = dynamic_cast<Gtk::Menu*>(addNewContainerMenu);
+    if (menu)
+    {
+        return std::unique_ptr<Gtk::Menu>{menu};
+    }
+    else
+    {
+        throw 9;
+    }
+}
+
 }

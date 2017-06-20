@@ -21,6 +21,7 @@ class MainWindow
     std::unique_ptr<widget::NewContainerDialog> getNewContainerDialog();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
+    std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
 
   private:
     Glib::RefPtr<Gtk::Builder> builder;

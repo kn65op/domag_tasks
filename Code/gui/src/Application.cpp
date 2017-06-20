@@ -37,15 +37,18 @@ void addContainers(const Container::Containers& containers, ContainerColumnModel
 void Application::prepareView()
 {
     auto view = mainWindow->getContainersTreeView();
-    auto openMenu = [&](){openNewContainerDialog();};
-    view->signal_button_press_event().connect([&](GdkEventButton*) {
-        openMenu();
+    auto openMenu = [&](const GdkEventButton* event) {
+        static auto menu = mainWindow->getNewContainerPopupMenu();
+        menu->popup(event->button, event->time);
+    };
+    view->signal_button_press_event().connect([&](const GdkEventButton* event) {
+        openMenu(event);
         return true;
     });
     view->signal_popup_menu().connect([&]() {
-            openMenu();
-            return true;
-        });
+        openMenu(std::make_unique<GdkEventButton>().get());
+        return true;
+    });
     depot::HomeContainerCatalog catalog;
     static ContainerColumnModel columns{*view};
     columns.clear();
