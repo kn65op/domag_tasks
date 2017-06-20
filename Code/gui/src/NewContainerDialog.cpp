@@ -30,5 +30,6 @@ void NewContainerDialog::cleanAndHide()
     auto buffer = nameEntry->get_buffer();
     buffer->set_text({});
 }
+
 }
 }

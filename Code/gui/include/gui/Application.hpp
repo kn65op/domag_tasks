@@ -10,6 +10,7 @@ class Application
     Application();
 
   private:
+    void prepareView();
     void newContainer();
     void openNewContainerDialog();
 };

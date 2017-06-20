@@ -34,8 +34,17 @@ void addContainers(const Container::Containers& containers, ContainerColumnModel
     }
 }
 
-void prepareView(Gtk::TreeView* view)
+void Application::prepareView()
 {
+    auto view = mainWindow->getContainersTreeView();
+    view->signal_button_press_event().connect([&](GdkEventButton*) {
+        openNewContainerDialog();
+        return true;
+    });
+    view->signal_popup_menu().connect([&]() {
+            openNewContainerDialog();
+            return true;
+        });
     depot::HomeContainerCatalog catalog;
     static ContainerColumnModel columns{*view};
     columns.clear();
@@ -53,7 +62,7 @@ void Application::openNewContainerDialog()
     static const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
-    prepareView(mainWindow->getContainersTreeView());
+    prepareView();
 }
 
 Application::Application()
@@ -61,7 +70,7 @@ Application::Application()
     mainWindow = std::make_unique<MainWindow>();
     auto app = Gtk::Application::create("org.domag");
     mainWindowGtk = mainWindow->getWindow();
-    prepareView(mainWindow->getContainersTreeView());
+    prepareView();
     auto addContainerMenuItem = mainWindow->getAddTopLevelContainerMenuItem();
     addContainerMenuItem->signal_activate().connect(sigc::mem_fun(*this, &Application::openNewContainerDialog));
 
