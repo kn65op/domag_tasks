@@ -46,6 +46,7 @@ int ContainerColumnModel::calculateId()
 void ContainerColumnModel::clear()
 {
     treeStore->clear();
+    rows.clear();
 }
 
 }
