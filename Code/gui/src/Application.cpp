@@ -37,12 +37,13 @@ void addContainers(const Container::Containers& containers, ContainerColumnModel
 void Application::prepareView()
 {
     auto view = mainWindow->getContainersTreeView();
+    auto openMenu = [&](){openNewContainerDialog();};
     view->signal_button_press_event().connect([&](GdkEventButton*) {
-        openNewContainerDialog();
+        openMenu();
         return true;
     });
     view->signal_popup_menu().connect([&]() {
-            openNewContainerDialog();
+            openMenu();
             return true;
         });
     depot::HomeContainerCatalog catalog;
