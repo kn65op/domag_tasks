@@ -22,7 +22,8 @@ class ContainersTreeView : public Gtk::TreeView
     ContainerColumnModel columns{*this};
     std::unique_ptr<Gtk::Menu> addNewContainerMenu;
 
-    void openNewContainerDialogMenu(GdkEvent* event = nullptr);
+    bool on_button_press_event(GdkEventButton *) override;
+    void openNewContainerDialogMenu(const GdkEvent* event = nullptr);
 };
 }
 }

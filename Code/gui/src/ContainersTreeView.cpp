@@ -29,20 +29,13 @@ void addContainers(const depot::Container::Containers& containers, ContainerColu
 ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::Builder>& builderIn)
     : Gtk::TreeView{base}, builder{builderIn}, addNewContainerMenu{builder.getNewContainerPopupMenu()}
 {
-    signal_button_press_event().connect_notify(
-        [&](GdkEventButton* event) {
-            openNewContainerDialogMenu(reinterpret_cast<GdkEvent*>(event));
-            std::cout << "buuton\n";
-        },
-        false);
     signal_popup_menu().connect([&]() {
         openNewContainerDialogMenu();
-        std::cout << "popup \n";
         return true;
     });
 }
 
-void ContainersTreeView::openNewContainerDialogMenu(GdkEvent* event)
+void ContainersTreeView::openNewContainerDialogMenu(const GdkEvent* event)
 {
     const auto& selected = this->get_selection()->get_selected();
     if (selected)
@@ -58,5 +51,13 @@ void ContainersTreeView::refresh()
     depot::HomeContainerCatalog catalog;
     addContainers(catalog.getTopLevelContainers(), columns);
 }
+
+bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
+{
+    const auto result = Gtk::TreeView::on_button_press_event(event);
+    openNewContainerDialogMenu(reinterpret_cast<GdkEvent*>(event));
+    return result;
+}
+
 }
 }
