@@ -40,7 +40,6 @@ void ContainersTreeView::openNewContainerDialogMenu(const GdkEvent* event)
     const auto& selected = this->get_selection()->get_selected();
     if (selected)
     {
-        std::cout << (*selected)[columns.modelName] << "\n";
         addNewContainerMenu->popup_at_pointer(event);
     }
 }
