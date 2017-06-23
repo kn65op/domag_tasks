@@ -51,4 +51,20 @@ std::unique_ptr<Gtk::Entry> Builder::getNewContainerDialogNameEntry()
         throw 9;
     }
 }
+
+std::unique_ptr<Gtk::Menu> Builder::getNewContainerPopupMenu()
+{
+    Gtk::Widget* addNewContainerMenu;
+    builder->get_widget("Add container popup menu", addNewContainerMenu);
+    auto menu = dynamic_cast<Gtk::Menu*>(addNewContainerMenu);
+    if (menu)
+    {
+        return std::unique_ptr<Gtk::Menu>{menu};
+    }
+    else
+    {
+        throw 9;
+    }
+}
+
 }

@@ -10,18 +10,18 @@ namespace gui
 namespace widget
 {
 class NewContainerDialog;
+class ContainersTreeView;
 }
 
 class MainWindow
 {
   public:
     std::unique_ptr<Gtk::Window> getWindow();
-    Gtk::TreeView* getContainersTreeView();
+    widget::ContainersTreeView* getContainersTreeView();
     Gtk::MenuItem* getAddTopLevelContainerMenuItem();
     std::unique_ptr<widget::NewContainerDialog> getNewContainerDialog();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
-    std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
 
   private:
     Glib::RefPtr<Gtk::Builder> builder;

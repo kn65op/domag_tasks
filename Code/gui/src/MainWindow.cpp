@@ -4,6 +4,7 @@
 
 #include "gui/ContainersTreeView.hpp"
 #include "gui/NewContainerDialog.hpp"
+#include "gui/ContainersTreeView.hpp"
 
 #include <iostream>
 
@@ -35,28 +36,19 @@ std::unique_ptr<Gtk::Window> MainWindow::getWindow()
     return nullptr;
 }
 
-Gtk::TreeView* MainWindow::getContainersTreeView()
+widget::ContainersTreeView* MainWindow::getContainersTreeView()
 {
-    static std::unique_ptr<Gtk::Widget> treeView{};
+    static std::unique_ptr<widget::ContainersTreeView> treeView{};
     if (treeView)
     {
-        auto tree = dynamic_cast<Gtk::TreeView*>(treeView.get());
-        return tree;
+        return treeView.get();
     }
     else
     {
         widget::ContainersTreeView* t;
         builder->get_widget_derived("container_tree_view", t);
         treeView.reset(t);
-        auto tree = dynamic_cast<Gtk::TreeView*>(treeView.get());
-        if (tree)
-        {
-            return tree;
-        }
-        else
-        {
-            throw 1;
-        }
+        return treeView.get();
     }
 }
 
@@ -119,18 +111,4 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
     }
 }
 
-std::unique_ptr<Gtk::Menu> MainWindow::getNewContainerPopupMenu()
-{
-    Gtk::Widget* addNewContainerMenu;
-    builder->get_widget("Add container popup menu", addNewContainerMenu);
-    auto menu = dynamic_cast<Gtk::Menu*>(addNewContainerMenu);
-    if (menu)
-    {
-        return std::unique_ptr<Gtk::Menu>{menu};
-    }
-    else
-    {
-        throw 9;
-    }
-}
 }
