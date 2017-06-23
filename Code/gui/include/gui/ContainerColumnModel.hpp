@@ -16,12 +16,13 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     int addRow(int parentId, const std::string& name);
     void clear();
 
+    Gtk::TreeModelColumn<Glib::ustring> modelName;
   private:
     int i = 0;
     Gtk::TreeView& tree;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
     Gtk::TreeModelColumn<int> modelId;
-    Gtk::TreeModelColumn<Glib::ustring> modelName;
+    //Gtk::TreeModelColumn<Glib::ustring> modelName;
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
     std::map<int, Gtk::TreeStore::iterator> rows;
 

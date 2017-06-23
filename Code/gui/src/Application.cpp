@@ -37,20 +37,41 @@ void addContainers(const Container::Containers& containers, ContainerColumnModel
 void Application::prepareView()
 {
     auto view = mainWindow->getContainersTreeView();
+    static ContainerColumnModel columns{*view};
     auto openMenu = [&](const GdkEventButton* event) {
         static auto menu = mainWindow->getNewContainerPopupMenu();
         menu->popup(event->button, event->time);
     };
-    view->signal_button_press_event().connect([&](const GdkEventButton* event) {
-        openMenu(event);
-        return true;
+    view->set_activate_on_single_click(true);
+    view->signal_row_activated().connect([&](const Gtk::TreeModel::Path&, Gtk::TreeViewColumn*) {
+        // openMenu(std::make_unique<GdkEventButton>().get());
+        std::cout << "activated\n";
+        // return true;
     });
-    view->signal_popup_menu().connect([&]() {
+    view->get_selection()->signal_changed().connect([&]() {
+        // openMenu(std::make_unique<GdkEventButton>().get());
+        std::cout << "Selection\n";
+        // return true;
+    });
+    view->signal_button_press_event().connect_notify(
+        [&,view](GdkEventButton* event) {
+            // const auto returnVal = view->on_button_press_event(event);
+            const auto &selected = view->get_selection()->get_selected();
+            if (selected)
+            {
+                std::cout << (*selected)[columns.modelName] << "\n";
+            }
+            openMenu(event);
+            // return false;
+            std::cout << "buuton\n";
+        },
+        false);
+    view->signal_popup_menu().connect([&,view]() {
+            view->get_selection();
         openMenu(std::make_unique<GdkEventButton>().get());
         return true;
     });
     depot::HomeContainerCatalog catalog;
-    static ContainerColumnModel columns{*view};
     columns.clear();
     const auto& containers = catalog.getTopLevelContainers();
     addContainers(containers, columns);
