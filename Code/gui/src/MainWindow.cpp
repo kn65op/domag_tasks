@@ -2,8 +2,8 @@
 
 #include "GladeMainWindow.hpp"
 
-#include "gui/NewContainerDialog.hpp"
 #include "gui/ContainersTreeView.hpp"
+#include "gui/NewContainerDialog.hpp"
 
 #include <iostream>
 
@@ -72,7 +72,8 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
     else
     {
         throw 1;
-    }}
+    }
+}
 
 std::unique_ptr<widget::NewContainerDialog> MainWindow::getNewContainerDialog()
 {
@@ -132,5 +133,4 @@ std::unique_ptr<Gtk::Menu> MainWindow::getNewContainerPopupMenu()
         throw 9;
     }
 }
-
 }

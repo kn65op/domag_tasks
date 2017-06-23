@@ -3,10 +3,8 @@
 namespace gui
 {
 
-Builder::Builder(Glib::RefPtr<Gtk::Builder> builderIn)
-    : builder{std::move(builderIn)}
+Builder::Builder(Glib::RefPtr<Gtk::Builder> builderIn) : builder{std::move(builderIn)}
 {
-    
 }
 
 std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonOk()
@@ -24,7 +22,7 @@ std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonOk()
     }
 }
 
-std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonCancel() 
+std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonCancel()
 {
     Gtk::Widget* addNewContainerDialog;
     builder->get_widget("Add container dialog button cancel", addNewContainerDialog);
@@ -53,5 +51,4 @@ std::unique_ptr<Gtk::Entry> Builder::getNewContainerDialogNameEntry()
         throw 9;
     }
 }
-
 }
