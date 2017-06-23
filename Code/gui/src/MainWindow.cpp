@@ -45,8 +45,8 @@ Gtk::TreeView* MainWindow::getContainersTreeView()
     }
     else
     {
-        Gtk::Widget *t;
-        builder->get_widget("container_tree_view", t);
+        widget::ContainersTreeView* t;
+        builder->get_widget_derived("container_tree_view", t);
         treeView.reset(t);
         auto tree = dynamic_cast<Gtk::TreeView*>(treeView.get());
         if (tree)
