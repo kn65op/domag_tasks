@@ -3,6 +3,7 @@
 #include "GladeMainWindow.hpp"
 
 #include "gui/NewContainerDialog.hpp"
+#include "gui/ContainersTreeView.hpp"
 
 #include <iostream>
 
@@ -36,16 +37,18 @@ std::unique_ptr<Gtk::Window> MainWindow::getWindow()
 
 Gtk::TreeView* MainWindow::getContainersTreeView()
 {
-    static Gtk::Widget* treeView{};
+    static std::unique_ptr<Gtk::Widget> treeView{};
     if (treeView)
     {
-        auto tree = dynamic_cast<Gtk::TreeView*>(treeView);
+        auto tree = dynamic_cast<Gtk::TreeView*>(treeView.get());
         return tree;
     }
     else
     {
-        builder->get_widget("container_tree_view", treeView);
-        auto tree = dynamic_cast<Gtk::TreeView*>(treeView);
+        Gtk::Widget *t;
+        builder->get_widget("container_tree_view", t);
+        treeView.reset(t);
+        auto tree = dynamic_cast<Gtk::TreeView*>(treeView.get());
         if (tree)
         {
             return tree;
@@ -69,8 +72,7 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
     else
     {
         throw 1;
-    }
-}
+    }}
 
 std::unique_ptr<widget::NewContainerDialog> MainWindow::getNewContainerDialog()
 {
