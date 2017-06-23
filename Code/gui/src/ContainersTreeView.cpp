@@ -55,9 +55,11 @@ void ContainersTreeView::refresh()
 bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
 {
     const auto result = Gtk::TreeView::on_button_press_event(event);
-    openNewContainerDialogMenu(reinterpret_cast<GdkEvent*>(event));
+    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    {
+        openNewContainerDialogMenu(reinterpret_cast<GdkEvent*>(event));
+    }
     return result;
 }
-
 }
 }
