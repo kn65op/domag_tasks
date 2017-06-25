@@ -85,18 +85,14 @@ file(GLOB MAIN_FILES ${SRC_DIR}/Main/src/*.cpp)
 include_directories(${SRC_DIR}/Main/inc/)
 
 #executables
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	if ("${NO_COVERAGE}" STREQUAL "true")
-	else ("${NO_COVERAGE}" STREQUAL "true")
-		add_definitions(--coverage)
-	endif ("${NO_COVERAGE}" STREQUAL "true")
 
-	add_subdirectory(Test)
-	set(EXE_FILE ${DEBUG_BIN_DIR}/${PROJECT_NAME})
-elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-else (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	message(FATAL_ERROR "Invalid build type. Set by -DCMAKE_BUILD_TYPE=Debug|Release")
-endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if ("${NO_COVERAGE}" STREQUAL "true")
+else ("${NO_COVERAGE}" STREQUAL "true")
+	add_definitions(--coverage)
+endif ("${NO_COVERAGE}" STREQUAL "true")
+
+add_subdirectory(Test)
+set(EXE_FILE ${PROJECT_NAME})
 
 set(EXE_FILE ${PROJECT_NAME})
 add_executable(${EXE_FILE} ${MAIN_FILES}
