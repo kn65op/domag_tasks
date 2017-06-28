@@ -22,13 +22,14 @@ pkg_check_modules(GTKMM gtkmm-3.0)
 
 set(TLogger_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/TLogger")
 set(THelper_DIR "${CMAKE_BINARY_DIR}/${LIBRARIES_BIN_DIR}/THelper")
-set(BUILD_TESTS "false")
 
+set(NO_TEST "true")
 add_subdirectory(${LIBRARIES_DIR}/TLogger)
 FIND_PACKAGE( TLogger REQUIRED PATHS "${LIBRARIES_BIN_DIR}/TLogger" CONFIG)
 
 add_subdirectory(${LIBRARIES_DIR}/THelper)
 FIND_PACKAGE( THelper REQUIRED PATHS ${LIBRARIES}/THelper CONFIG)
+set(NO_TEST "false")
 
 #YAML-cpp
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "No yaml build tools")
@@ -65,6 +66,7 @@ link_directories(${TLOGGER_LIBRARIES_DIR})
 
 #global includes
 include_directories(${Boost_INCLUDE_DIR})
+
 include_directories(${TLOGGER_INCLUDE_DIRS})
 include_directories(${THELPER_INCLUDE_DIRS})
 
