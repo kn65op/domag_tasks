@@ -91,11 +91,6 @@ include_directories(${SRC_DIR}/Main/inc/)
 
 #executables
 
-if ("${NO_COVERAGE}" STREQUAL "true")
-else ("${NO_COVERAGE}" STREQUAL "true")
-	add_definitions(--coverage)
-endif ("${NO_COVERAGE}" STREQUAL "true")
-
 add_subdirectory(Test)
 set(EXE_FILE ${PROJECT_NAME})
 
