@@ -21,6 +21,7 @@ class ContainersTreeView : public Gtk::TreeView
     Builder builder;
     ContainerColumnModel columns{*this};
     std::unique_ptr<Gtk::Menu> addNewContainerMenu;
+    std::unique_ptr<Gtk::MenuItem> addNewContainerMenuItem;
 
     bool on_button_press_event(GdkEventButton *) override;
     void openNewContainerDialogMenu(const GdkEvent* event = nullptr);

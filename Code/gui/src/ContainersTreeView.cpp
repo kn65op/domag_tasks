@@ -27,13 +27,14 @@ void addContainers(const depot::Container::Containers& containers, ContainerColu
 }
 
 ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::Builder>& builderIn)
-    : Gtk::TreeView{base}, builder{builderIn}, addNewContainerMenu{builder.getNewContainerPopupMenu()}
+    : Gtk::TreeView{base}, builder{builderIn}, addNewContainerMenu{builder.getNewContainerPopupMenu()},
+      addNewContainerMenuItem{builder.getNewContainerPopupMenuAddContainerItem()}
 {
     signal_popup_menu().connect([&]() {
         openNewContainerDialogMenu();
         return true;
     });
-    //addNewContainerMenu->signal_activate().connect([]() { std::cout << "ASDA\n"; });
+    addNewContainerMenuItem->signal_activate().connect([]() { std::cout << "ASDA\n"; });
 }
 
 void ContainersTreeView::openNewContainerDialogMenu(const GdkEvent* event)
