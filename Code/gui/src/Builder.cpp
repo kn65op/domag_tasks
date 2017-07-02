@@ -33,6 +33,11 @@ std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonCancel()
     return tryGetWidget<Gtk::Button>(builder, "Add container dialog button cancel");
 }
 
+std::unique_ptr<Gtk::Label> Builder::getNewContainerDialogParentLabel()
+{
+    return tryGetWidget<Gtk::Label>(builder, "Add container dialog parent label");
+}
+
 std::unique_ptr<Gtk::Entry> Builder::getNewContainerDialogNameEntry()
 {
     return tryGetWidget<Gtk::Entry>(builder, "Add container dialog name entry");
@@ -47,5 +52,4 @@ std::unique_ptr<Gtk::MenuItem> Builder::getNewContainerPopupMenuAddContainerItem
 {
     return tryGetWidget<Gtk::MenuItem>(builder, "Add container popup menu Add container button");
 }
-
 }

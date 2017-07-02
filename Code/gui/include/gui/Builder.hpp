@@ -14,6 +14,7 @@ class Builder
 
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
+    std::unique_ptr<Gtk::Label> getNewContainerDialogParentLabel();
     std::unique_ptr<Gtk::Entry> getNewContainerDialogNameEntry();
     std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
     std::unique_ptr<Gtk::MenuItem> getNewContainerPopupMenuAddContainerItem();
