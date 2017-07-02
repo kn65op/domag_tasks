@@ -9,15 +9,16 @@ namespace gui
 
 class Builder
 {
-public:
+  public:
     explicit Builder(Glib::RefPtr<Gtk::Builder>);
 
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
     std::unique_ptr<Gtk::Entry> getNewContainerDialogNameEntry();
     std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
-private:
+    std::unique_ptr<Gtk::MenuItem> getNewContainerPopupMenuAddContainerItem();
+
+  private:
     const Glib::RefPtr<Gtk::Builder> builder;
 };
-
 }

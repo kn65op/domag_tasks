@@ -42,4 +42,10 @@ std::unique_ptr<Gtk::Menu> Builder::getNewContainerPopupMenu()
 {
     return tryGetWidget<Gtk::Menu>(builder, "Add container popup menu");
 }
+
+std::unique_ptr<Gtk::MenuItem> Builder::getNewContainerPopupMenuAddContainerItem()
+{
+    return tryGetWidget<Gtk::MenuItem>(builder, "Add container popup menu Add container button");
+}
+
 }
