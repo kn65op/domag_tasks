@@ -17,7 +17,7 @@ public:
     std::unique_ptr<Gtk::Entry> getNewContainerDialogNameEntry();
     std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
 private:
-    Glib::RefPtr<Gtk::Builder> builder;
+    const Glib::RefPtr<Gtk::Builder> builder;
 };
 
 }

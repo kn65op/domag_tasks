@@ -8,7 +8,7 @@ Builder::Builder(Glib::RefPtr<Gtk::Builder> builderIn) : builder{std::move(build
 }
 
 template <typename Widget>
-std::unique_ptr<Widget> tryGetWidget(Glib::RefPtr<Gtk::Builder> builder, const std::string& widget_name)
+std::unique_ptr<Widget> tryGetWidget(const Glib::RefPtr<Gtk::Builder> builder, const std::string& widget_name)
 {
     Gtk::Widget* widget;
     builder->get_widget(widget_name, widget);
