@@ -33,6 +33,7 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
         openNewContainerDialogMenu();
         return true;
     });
+    //addNewContainerMenu->signal_activate().connect([]() { std::cout << "ASDA\n"; });
 }
 
 void ContainersTreeView::openNewContainerDialogMenu(const GdkEvent* event)
