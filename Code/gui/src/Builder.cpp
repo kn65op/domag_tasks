@@ -7,6 +7,22 @@ Builder::Builder(Glib::RefPtr<Gtk::Builder> builderIn) : builder{std::move(build
 {
 }
 
+template <typename Widget>
+std::unique_ptr<Widget> getWidget(Gtk::Builder builder, const std::string &widget_name)
+{
+    GtkWidget* widget;
+    builder.get_widget(widget_name, widget);
+    auto concreteWidget = dynamic_cast<Widget*>(widget);
+    if (concreteWidget)
+    {
+        return std::unique_ptr<Widget>{concreteWidget};
+    }
+    else
+    {
+        throw "No valid widget";
+    }
+}
+
 std::unique_ptr<Gtk::Button> Builder::getNewContainerDialogButtonOk()
 {
     Gtk::Widget* addNewContainerDialog;
