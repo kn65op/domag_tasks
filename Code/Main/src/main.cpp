@@ -16,7 +16,7 @@ int main()
 
   LOG << "Start application";
 
-  depot::main::DatabaseGuard runner;
+  depot::main::DatabaseGuard dbGuard;
 
   gui::Application domagApp;
 }
