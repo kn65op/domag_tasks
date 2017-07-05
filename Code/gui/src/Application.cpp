@@ -27,8 +27,8 @@ void Application::openNewContainerDialog()
 {
     const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
-    dialog->run();
     dialog->setParentContainer();
+    dialog->run();
     prepareView();
 }
 
