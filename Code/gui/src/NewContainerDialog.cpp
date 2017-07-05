@@ -1,5 +1,7 @@
 #include "gui/NewContainerDialog.hpp"
 
+#include <iostream>
+
 #include "depot/inc/HomeContainerCatalog.h"
 
 namespace gui
@@ -15,13 +17,20 @@ void newContainer(const std::string& name)
 
 NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<Gtk::Builder>& builderIn)
     : Gtk::Dialog{baseObject}, builder{builderIn}, okButton{builder.getNewContainerDialogButtonOk()},
-      cancelButton{builder.getNewContainerDialogButtonCancel()}, nameEntry{builder.getNewContainerDialogNameEntry()}
+      cancelButton{builder.getNewContainerDialogButtonCancel()}, nameEntry{builder.getNewContainerDialogNameEntry()},
+      parentLabel{builder.getNewContainerDialogParentLabel()}
 {
     okButton->signal_clicked().connect([&]() {
         newContainer(nameEntry->get_buffer()->get_text());
         cleanAndHide();
     });
     cancelButton->signal_clicked().connect([&]() { cleanAndHide(); });
+}
+
+void NewContainerDialog::setParentContainer()
+{
+    std::cout << "AS\n";
+    parentLabel->set_text("");
 }
 
 void NewContainerDialog::cleanAndHide()
