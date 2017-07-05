@@ -67,13 +67,19 @@ Gtk::MenuItem* MainWindow::getAddTopLevelContainerMenuItem()
     }
 }
 
-std::unique_ptr<widget::NewContainerDialog> MainWindow::getNewContainerDialog()
+widget::NewContainerDialog* MainWindow::getNewContainerDialog()
 {
+    static std::unique_ptr<widget::NewContainerDialog> newContainerDialog;
+    if (newContainerDialog)
+    {
+        return newContainerDialog.get();
+    }
     widget::NewContainerDialog* addNewContainerDialog{nullptr};
     builder->get_widget_derived("Add container dialog", addNewContainerDialog);
     if (addNewContainerDialog)
     {
-        return std::unique_ptr<widget::NewContainerDialog>{addNewContainerDialog};
+        newContainerDialog.reset(addNewContainerDialog);
+        return getNewContainerDialog();
     }
     else
     {
@@ -85,10 +91,10 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonOk()
 {
     Gtk::Widget* addNewContainerDialog;
     builder->get_widget("Add container dialog button add", addNewContainerDialog);
-    auto dialog = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
-    if (dialog)
+    auto button = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
+    if (button)
     {
-        return std::unique_ptr<Gtk::Button>{dialog};
+        return std::unique_ptr<Gtk::Button>{button};
     }
     else
     {
@@ -100,10 +106,10 @@ std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
 {
     Gtk::Widget* addNewContainerDialog;
     builder->get_widget("Add container dialog button cancel", addNewContainerDialog);
-    auto dialog = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
-    if (dialog)
+    auto button = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
+    if (button)
     {
-        return std::unique_ptr<Gtk::Button>{dialog};
+        return std::unique_ptr<Gtk::Button>{button};
     }
     else
     {

@@ -18,14 +18,14 @@ void Application::prepareView()
     view->refresh();
 }
 
-std::unique_ptr<widget::NewContainerDialog> prepareDialog(MainWindow& window)
+widget::NewContainerDialog* prepareDialog(MainWindow& window)
 {
     return window.getNewContainerDialog();
 }
 
 void Application::openNewContainerDialog()
 {
-    static const auto dialog = prepareDialog(*mainWindow);
+    const auto dialog = prepareDialog(*mainWindow);
     dialog->set_transient_for(*mainWindowGtk);
     dialog->run();
     prepareView();
