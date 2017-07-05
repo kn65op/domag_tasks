@@ -1,6 +1,6 @@
 #include <string>
 
-#include "../inc/DomagRunner.h"
+#include "../inc/DatabaseGuard.hpp"
 #include "TLogger.h"
 #include "gui/Application.hpp"
 
@@ -16,7 +16,7 @@ int main()
 
   LOG << "Start application";
 
-  depot::main::DomagRunner runner;
+  depot::main::DatabaseGuard runner;
 
   gui::Application domagApp;
 }

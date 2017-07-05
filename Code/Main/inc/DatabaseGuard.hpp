@@ -7,11 +7,11 @@ namespace depot
 namespace main
 {
 
-class DomagRunner
+class DatabaseGuard
 {
 public:
-  DomagRunner();
-  ~DomagRunner();
+  DatabaseGuard();
+  ~DatabaseGuard();
 
 private:
   const std::string databaseFileName = "database.domag";

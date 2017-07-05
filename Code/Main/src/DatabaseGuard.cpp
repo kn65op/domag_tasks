@@ -1,4 +1,4 @@
-#include "../inc/DomagRunner.h"
+#include "../inc/DatabaseGuard.hpp"
 
 #include "TLogger.h"
 
@@ -11,7 +11,7 @@ namespace depot
 namespace main
 {
 
-DomagRunner::DomagRunner()
+DatabaseGuard::DatabaseGuard()
 {
   LOG << "Initializing domag";
   depot::serialize::DepotSerializer serializer;
@@ -27,7 +27,7 @@ DomagRunner::DomagRunner()
   LOG << "Domag initalized";
 }
 
-DomagRunner::~DomagRunner()
+DatabaseGuard::~DatabaseGuard()
 {
   LOG << "Serialize db";
   depot::serialize::DepotSerializer serializer;
