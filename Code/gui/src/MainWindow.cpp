@@ -5,6 +5,7 @@
 #include "gui/ContainersTreeView.hpp"
 #include "gui/NewContainerDialog.hpp"
 #include "gui/ContainersTreeView.hpp"
+#include "gui/Builder.hpp"
 
 #include <iostream>
 
@@ -87,34 +88,9 @@ widget::NewContainerDialog* MainWindow::getNewContainerDialog()
     }
 }
 
-std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonOk()
+std::unique_ptr<Builder> MainWindow::createBuilder() const
 {
-    Gtk::Widget* addNewContainerDialog;
-    builder->get_widget("Add container dialog button add", addNewContainerDialog);
-    auto button = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
-    if (button)
-    {
-        return std::unique_ptr<Gtk::Button>{button};
-    }
-    else
-    {
-        throw 8;
-    }
-}
-
-std::unique_ptr<Gtk::Button> MainWindow::getNewContainerDialogButtonCancel()
-{
-    Gtk::Widget* addNewContainerDialog;
-    builder->get_widget("Add container dialog button cancel", addNewContainerDialog);
-    auto button = dynamic_cast<Gtk::Button*>(addNewContainerDialog);
-    if (button)
-    {
-        return std::unique_ptr<Gtk::Button>{button};
-    }
-    else
-    {
-        throw 9;
-    }
+    return std::make_unique<Builder>(builder);
 }
 
 }

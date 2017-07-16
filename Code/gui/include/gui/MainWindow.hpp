@@ -6,6 +6,7 @@
 
 namespace gui
 {
+class Builder;
 
 namespace widget
 {
@@ -20,8 +21,7 @@ class MainWindow
     widget::ContainersTreeView* getContainersTreeView();
     Gtk::MenuItem* getAddTopLevelContainerMenuItem();
     widget::NewContainerDialog* getNewContainerDialog();
-    std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
-    std::unique_ptr<Gtk::Button> getNewContainerDialogButtonCancel();
+    std::unique_ptr<Builder> createBuilder() const;
 
   private:
     Glib::RefPtr<Gtk::Builder> builder;
