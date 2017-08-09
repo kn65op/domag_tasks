@@ -17,7 +17,9 @@ class ContainersTreeView;
 class MainWindow
 {
   public:
-    std::unique_ptr<Gtk::Window> getWindow();
+    MainWindow();
+
+    Gtk::Window* getWindow();
     widget::ContainersTreeView* getContainersTreeView();
     Gtk::MenuItem* getAddTopLevelContainerMenuItem();
     widget::NewContainerDialog* getNewContainerDialog();
@@ -25,5 +27,6 @@ class MainWindow
 
   private:
     Glib::RefPtr<Gtk::Builder> builder;
+    std::unique_ptr<Gtk::Window> window;
 };
 }

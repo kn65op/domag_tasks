@@ -10,7 +10,7 @@ namespace gui
 {
 
 std::unique_ptr<MainWindow> mainWindow;
-std::unique_ptr<Gtk::Window> mainWindowGtk;
+Gtk::Window* mainWindowGtk;
 
 void Application::prepareView()
 {
@@ -26,7 +26,7 @@ widget::NewContainerDialog* prepareDialog(MainWindow& window)
 void Application::openNewContainerDialog()
 {
     const auto dialog = prepareDialog(*mainWindow);
-    dialog->set_transient_for(*mainWindowGtk);
+    //dialog->set_transient_for(*mainWindowGtk);
     dialog->setParentContainer();
     dialog->run();
     prepareView();
@@ -34,8 +34,8 @@ void Application::openNewContainerDialog()
 
 Application::Application()
 {
-    mainWindow = std::make_unique<MainWindow>();
     auto app = Gtk::Application::create("org.domag");
+    mainWindow = std::make_unique<MainWindow>();
     mainWindowGtk = mainWindow->getWindow();
     prepareView();
     auto addContainerMenuItem = mainWindow->getAddTopLevelContainerMenuItem();

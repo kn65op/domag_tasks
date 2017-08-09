@@ -39,7 +39,7 @@ set(YAML_CPP_INCLUDE_DIR ${LIBRARIES_DIR}/yaml-cpp/include)
 
 #compiler options
 set(CMAKE_CXX_FLAGS "-std=c++1z")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage -g")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
  
 if ("${NO_COVERAGE}" STREQUAL "true")
@@ -54,8 +54,10 @@ endif ("${NO_COVERAGE}" STREQUAL "true")
 set(NORMAL_WARNING_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
 set(EXTRA_WARNING_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra")
 
-set(CMAKE_CXX_FLAGS_DEBUG "${EXTRA_WARNING_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${EXTRA_WARNING_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
 
 #tests
 set(COVERAGE_COMMAND "gcov")

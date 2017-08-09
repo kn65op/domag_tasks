@@ -13,14 +13,14 @@
 
 namespace gui
 {
-std::unique_ptr<Gtk::Window> MainWindow::getWindow()
+MainWindow::MainWindow()
 {
     try
     {
         builder = Gtk::Builder::create_from_string(gladeXml);
         Gtk::Widget* windowP;
         builder->get_widget("main_window", windowP);
-        return std::unique_ptr<Gtk::Window>{dynamic_cast<Gtk::Window*>(windowP)};
+        window.reset(dynamic_cast<Gtk::Window*>(windowP));
     }
     catch (const Glib::FileError& ex)
     {
@@ -34,7 +34,11 @@ std::unique_ptr<Gtk::Window> MainWindow::getWindow()
     {
         std::cerr << "BuilderError: " << ex.what() << std::endl;
     }
-    return nullptr;
+}
+
+Gtk::Window* MainWindow::getWindow()
+{
+    return window.get();
 }
 
 widget::ContainersTreeView* MainWindow::getContainersTreeView()
@@ -80,6 +84,7 @@ widget::NewContainerDialog* MainWindow::getNewContainerDialog()
     if (addNewContainerDialog)
     {
         newContainerDialog.reset(addNewContainerDialog);
+        newContainerDialog->set_transient_for(*window);
         return getNewContainerDialog();
     }
     else
