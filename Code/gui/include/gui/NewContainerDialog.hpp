@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "gtkmm-3.0/gtkmm.h"
 
@@ -14,7 +15,7 @@ class NewContainerDialog : public Gtk::Dialog
 {
 public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
-    void setParentContainer();
+    void setParentContainer(const std::string& = "");
 
 private:
     void cleanAndHide();

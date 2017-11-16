@@ -27,10 +27,9 @@ NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<
     cancelButton->signal_clicked().connect([&]() { cleanAndHide(); });
 }
 
-void NewContainerDialog::setParentContainer()
+void NewContainerDialog::setParentContainer(const std::string& parent)
 {
-    std::cout << "AS\n";
-    parentLabel->set_text("");
+    parentLabel->set_text(parent);
 }
 
 void NewContainerDialog::cleanAndHide()
