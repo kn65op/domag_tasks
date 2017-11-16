@@ -6,10 +6,15 @@
 
 namespace gui
 {
+namespace widget
+{
+class NewContainerDialog;
+}
 
 class Builder
 {
   public:
+    Builder();
     explicit Builder(Glib::RefPtr<Gtk::Builder>);
 
     std::unique_ptr<Gtk::Button> getNewContainerDialogButtonOk();
@@ -18,6 +23,9 @@ class Builder
     std::unique_ptr<Gtk::Entry> getNewContainerDialogNameEntry();
     std::unique_ptr<Gtk::Menu> getNewContainerPopupMenu();
     std::unique_ptr<Gtk::MenuItem> getNewContainerPopupMenuAddContainerItem();
+    std::shared_ptr<Gtk::Window> getMainWindow();
+    std::unique_ptr<Gtk::MenuItem> getAddTopLevelContainerMenuItem();
+    std::shared_ptr<widget::NewContainerDialog> getNewContainerDialog();
 
   private:
     const Glib::RefPtr<Gtk::Builder> builder;
