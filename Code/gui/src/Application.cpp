@@ -1,6 +1,6 @@
 #include "gui/Application.hpp"
 
-#include "gui/MainWindow.hpp"
+#include "gui/Builder.hpp"
 #include "gui/NewContainerDialog.hpp"
 #include "gui/ContainersTreeView.hpp"
 
@@ -9,17 +9,17 @@
 namespace gui
 {
 
-std::unique_ptr<MainWindow> mainWindow;
+std::unique_ptr<Builder> builder;
 
 void Application::prepareView()
 {
-    auto view = mainWindow->getContainersTreeView();
+    auto view = builder->getContainersTreeView();
     view->refresh();
 }
 
 void Application::openNewContainerDialog()
 {
-    const auto dialog = mainWindow->getNewContainerDialog();
+    const auto dialog = builder->getNewContainerDialog();
     dialog->setParentContainer();
     dialog->run();
     prepareView();
@@ -28,11 +28,11 @@ void Application::openNewContainerDialog()
 Application::Application()
 {
     auto app = Gtk::Application::create("org.domag");
-    mainWindow = std::make_unique<MainWindow>();
+    builder = std::make_unique<Builder>();
     prepareView();
-    auto addContainerMenuItem = mainWindow->getAddTopLevelContainerMenuItem();
+    auto addContainerMenuItem = builder->getAddTopLevelContainerMenuItem();
     addContainerMenuItem->signal_activate().connect(sigc::mem_fun(*this, &Application::openNewContainerDialog));
 
-    app->run(*mainWindow->getWindow());
+    app->run(*builder->getMainWindow());
 }
 }

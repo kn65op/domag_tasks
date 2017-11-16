@@ -9,6 +9,7 @@ namespace gui
 namespace widget
 {
 class NewContainerDialog;
+class ContainersTreeView;
 }
 
 class Builder
@@ -26,6 +27,7 @@ class Builder
     std::shared_ptr<Gtk::Window> getMainWindow();
     std::unique_ptr<Gtk::MenuItem> getAddTopLevelContainerMenuItem();
     std::shared_ptr<widget::NewContainerDialog> getNewContainerDialog();
+    std::shared_ptr<widget::ContainersTreeView> getContainersTreeView();
 
   private:
     const Glib::RefPtr<Gtk::Builder> builder;

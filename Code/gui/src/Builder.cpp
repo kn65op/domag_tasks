@@ -91,7 +91,8 @@ std::unique_ptr<Gtk::MenuItem> Builder::getNewContainerPopupMenuAddContainerItem
 
 std::shared_ptr<Gtk::Window> Builder::getMainWindow()
 {
-    return tryGetSharedWidget<Gtk::Window>(builder, "main_window");
+    static auto mainWindow = tryGetSharedWidget<Gtk::Window>(builder, "main_window");
+    return mainWindow;
 }
 
 std::unique_ptr<Gtk::MenuItem> Builder::getAddTopLevelContainerMenuItem()
@@ -110,6 +111,7 @@ std::shared_ptr<widget::NewContainerDialog> Builder::getNewContainerDialog()
     builder->get_widget_derived("Add container dialog", addNewContainerDialog);
     if (addNewContainerDialog)
     {
+        LOG << "Initialize new container dialog";
         newContainerDialog.reset(addNewContainerDialog);
         newContainerDialog->set_transient_for(*getMainWindow());
         return getNewContainerDialog();
@@ -117,6 +119,22 @@ std::shared_ptr<widget::NewContainerDialog> Builder::getNewContainerDialog()
     else
     {
         throw 7;
+    }
+}
+
+std::shared_ptr<widget::ContainersTreeView> Builder::getContainersTreeView()
+{
+    static std::shared_ptr<widget::ContainersTreeView> treeView{};
+    if (treeView)
+    {
+        return treeView;
+    }
+    else
+    {
+        widget::ContainersTreeView* t;
+        builder->get_widget_derived("container_tree_view", t);
+        treeView.reset(t);
+        return treeView;
     }
 }
 
