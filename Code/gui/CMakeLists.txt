@@ -22,7 +22,6 @@ add_custom_command(
 
 add_library(gui 
     ${GUI_SOURCE_DIR}/Application.cpp
-    ${GUI_SOURCE_DIR}/MainWindow.cpp
     ${GUI_SOURCE_DIR}/ContainerColumnModel.cpp
     ${GUI_SOURCE_DIR}/NewContainerDialog.cpp
     ${GUI_SOURCE_DIR}/Builder.cpp
