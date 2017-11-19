@@ -15,7 +15,9 @@ class NewContainerDialog : public Gtk::Dialog
 {
 public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
+
     void setParentContainer(const std::string& = "");
+    void run();
 
 private:
     void cleanAndHide();

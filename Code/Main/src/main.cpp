@@ -11,7 +11,7 @@ std::string getLogFileName()
 
 int main()
 {
-  TLogger::LoggerFacade logger(TLogger::LoggerType::STDERR, TLogger::LogFileOnEntry::OVERRIDE,
+  TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
                                TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 
   LOG << "Start application";

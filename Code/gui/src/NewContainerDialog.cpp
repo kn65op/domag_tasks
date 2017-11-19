@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "gui/ContainersTreeView.hpp"
+
 #include "depot/inc/HomeContainerCatalog.h"
 
 namespace gui
@@ -37,6 +39,12 @@ void NewContainerDialog::cleanAndHide()
     hide();
     auto buffer = nameEntry->get_buffer();
     buffer->set_text({});
+}
+
+void NewContainerDialog::run()
+{
+    Gtk::Dialog::run();
+    builder.getContainersTreeView()->refresh();
 }
 
 }

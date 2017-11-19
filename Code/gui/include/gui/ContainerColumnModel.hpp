@@ -22,7 +22,6 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     Gtk::TreeView& tree;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
     Gtk::TreeModelColumn<int> modelId;
-    //Gtk::TreeModelColumn<Glib::ustring> modelName;
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
     std::map<int, Gtk::TreeStore::iterator> rows;
 

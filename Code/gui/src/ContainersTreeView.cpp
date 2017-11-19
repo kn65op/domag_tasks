@@ -1,7 +1,10 @@
 #include "gui/ContainersTreeView.hpp"
 
+#include "TLogger.h"
+
 #include "depot/inc/Container.h"
 #include "depot/inc/HomeContainerCatalog.h"
+#include "gui/NewContainerDialog.hpp"
 
 namespace gui
 {
@@ -34,7 +37,13 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
         openNewContainerDialogMenu();
         return true;
     });
-    addNewContainerMenuItem->signal_activate().connect([]() { std::cout << "ASDA\n"; });
+    addNewContainerMenuItem->signal_activate().connect([&]() {
+        const auto dialog = builder.getNewContainerDialog();
+        // dialog->setParentContainer(this->get_selection()->get_selected()->);
+        dialog->setParentContainer("Some");
+        dialog->run();
+        LOG << "Run finished";
+    });
 }
 
 void ContainersTreeView::openNewContainerDialogMenu(const GdkEvent* event)

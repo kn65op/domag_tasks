@@ -22,7 +22,6 @@ void Application::openNewContainerDialog()
     const auto dialog = builder->getNewContainerDialog();
     dialog->setParentContainer();
     dialog->run();
-    prepareView();
 }
 
 Application::Application()
