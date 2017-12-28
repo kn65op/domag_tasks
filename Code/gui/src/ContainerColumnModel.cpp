@@ -1,5 +1,7 @@
 #include "gui/ContainerColumnModel.hpp"
 
+#include "TLogger.h"
+
 namespace gui
 {
 
@@ -49,4 +51,9 @@ void ContainerColumnModel::clear()
     rows.clear();
 }
 
+std::string ContainerColumnModel::getName(const Gtk::TreeRow& row)
+{
+    LOG << row.get_value<Glib::ustring>(modelName);
+    return row.get_value<Glib::ustring>(modelName);
+}
 }

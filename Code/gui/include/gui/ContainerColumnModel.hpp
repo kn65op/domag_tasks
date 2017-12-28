@@ -15,14 +15,15 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     int addRow(const std::string& name);
     int addRow(int parentId, const std::string& name);
     void clear();
+    std::string getName(const Gtk::TreeRow&);
 
-    Gtk::TreeModelColumn<Glib::ustring> modelName;
   private:
     int i = 0;
     Gtk::TreeView& tree;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
     Gtk::TreeModelColumn<int> modelId;
     Gtk::TreeModelColumn<Glib::ustring> modelInside;
+    Gtk::TreeModelColumn<Glib::ustring> modelName;
     std::map<int, Gtk::TreeStore::iterator> rows;
 
     void fillRow(Gtk::TreeStore::iterator& rowIt, const std::string& name);

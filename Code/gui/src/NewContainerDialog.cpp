@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TLogger.h"
+
 #include "gui/ContainersTreeView.hpp"
 
 #include "depot/inc/HomeContainerCatalog.h"
@@ -43,6 +45,7 @@ void NewContainerDialog::cleanAndHide()
 
 void NewContainerDialog::run()
 {
+    LOG << "RUN";
     Gtk::Dialog::run();
     builder.getContainersTreeView()->refresh();
 }

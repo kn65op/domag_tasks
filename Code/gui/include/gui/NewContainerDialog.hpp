@@ -7,6 +7,11 @@
 
 #include "gui/Builder.hpp"
 
+namespace depot
+{
+class Container;
+}
+
 namespace gui
 {
 namespace widget
@@ -17,6 +22,7 @@ public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
 
     void setParentContainer(const std::string& = "");
+    void run(const Container*);
     void run();
 
 private:

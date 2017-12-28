@@ -4,7 +4,6 @@
 
 #include "GladeMainWindow.hpp"
 #include "gui/ContainersTreeView.hpp"
-#include "gui/ContainersTreeView.hpp"
 #include "gui/NewContainerDialog.hpp"
 
 namespace gui

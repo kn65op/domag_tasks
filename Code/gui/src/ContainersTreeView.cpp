@@ -39,8 +39,11 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
     });
     addNewContainerMenuItem->signal_activate().connect([&]() {
         const auto dialog = builder.getNewContainerDialog();
-        // dialog->setParentContainer(this->get_selection()->get_selected()->);
-        dialog->setParentContainer("Some");
+        LOG << this->get_selection()->count_selected_rows();
+        const auto& selected = this->get_selection()->get_selected();
+        const auto name = columns.getName(*selected);
+        LOG << "Container name: " << name;
+        dialog->setParentContainer(name);
         dialog->run();
         LOG << "Run finished";
     });
