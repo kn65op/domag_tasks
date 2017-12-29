@@ -38,7 +38,7 @@ set(YAML_CPP_LIBRARIES yaml-cpp)
 set(YAML_CPP_INCLUDE_DIR ${LIBRARIES_DIR}/yaml-cpp/include)
 
 #compiler options
-set(CMAKE_CXX_FLAGS "-std=c++1z")
+set(CMAKE_CXX_FLAGS "-std=c++17")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -fprofile-arcs -ftest-coverage -g")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG="-fprofile-arcs -ftest-coverage")
  
