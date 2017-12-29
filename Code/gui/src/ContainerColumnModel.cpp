@@ -53,7 +53,6 @@ void ContainerColumnModel::clear()
 
 std::string ContainerColumnModel::getName(const Gtk::TreeRow& row)
 {
-    LOG << row.get_value<Glib::ustring>(modelName);
     return row.get_value<Glib::ustring>(modelName);
 }
 }

@@ -49,8 +49,11 @@ void DepotSerializer::deserialize(std::istream& input)
   LOG << "Deserialize started";
   auto database = YAML::Load(input);
   loadAndCheckVersion(database);
+
+  HomeContainerCatalog catalog;
   checkAndDeserializeAllArticles(database);
   checkAndDeserializeAllContainers(database);
+  loadTrashContainer(catalog.getContainerForConsumedItems());
   checkAndDeserializeAllItems(database);
   cleanupDeserialization();
   LOG << "Deserialize finished";
@@ -109,9 +112,6 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
     createDependentContainers(actual_container, container_node, containers);
     containers.erase(containers.begin());
   }
-  LOG << "Get address of trash in position: " << deserializationContainers.size();
-  HomeContainerCatalog catalog;
-  deserializationContainers[deserializationContainers.size() + 1] = &catalog.getContainerForConsumedItems();
 }
 
 void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
@@ -190,8 +190,9 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & 
 
 void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPtr & container)
 {
-  LOG << "store container id: " << container->getName() << " = " << serializationContainers.size() + 1;
-  serializationContainers[container.get()] = serializationContainers.size(); //TODO: split getting size from assign
+  const auto nextId = serializationContainers.size();
+  serializationContainers[container.get()] = nextId; //TODO: split getting size from assign
+  LOG << "store container id: " << container->getName() << " = " << nextId;
   for (const auto & dependent_container : container->getContainers())
   {
     storeEntityAndItsDependentsId(dependent_container);
@@ -238,12 +239,14 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 {
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
-  itemNode["containerId"] = serializationContainers[item->getStorehause().lock().get()];
+  const auto containerId = serializationContainers[item->getStorehause().lock().get()];
+  LOG << item->getStorehause().lock().get();
+  itemNode["containerId"] = containerId;
   itemNode["articleId"] = serializationArticles[item->getThing().lock()];
   itemNode["boughtAmount"] = item->getBoughtAmount();
   itemNode["price"] = item->getBoughtAmount() * item->getPricePerUnit();
   itemNode["boughtDate"] = boost::gregorian::to_iso_string(item->getBuyDate());
-  LOG << "Storing item with container id: " << itemNode["containerId"] << " and article id: " << itemNode["articleId"];
+  LOG << "Storing item with container id: " << containerId << " and article id: " << itemNode["articleId"];
   for (const auto & consume : item->getConsumeHistory())
   {
     YAML::Node consumeNode;
@@ -262,15 +265,22 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 
 void DepotSerializer::storeTrashContainer(const ItemsContainer &trash)
 {
-  LOG << "store trash id="  << serializationContainers.size() + 1;
-  serializationContainers[&trash] = serializationContainers.size();
+    const auto trashId = serializationContainers.size();
+    LOG << "store trash id="  << trashId;
+    serializationContainers[&trash] = trashId;
+}
+
+void DepotSerializer::loadTrashContainer(AbstractContainer &trash)
+{
+    const auto trashId = deserializationContainers.size();
+    LOG << "Get address of trash in position: " << trashId;
+    deserializationContainers[trashId] = &trash;
 }
 
 void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
 {
   const auto items = database[itemsName];
 
-  LOG << "Reading items";
   for (const auto itemNode : items)
   {
     const auto articleId = itemNode["articleId"].as<int>();
@@ -291,6 +301,7 @@ void DepotSerializer::checkAndDeserializeAllItems(const YAML::Node& database)
     deserializationContainers[containerId]->addItem(std::move(item));
     LOG << "Read item from container id: " <<  containerId << " and article id: " << articleId;
   }
+  LOG << "Items read";
 }
 
 void DepotSerializer::cleanupSerialization()

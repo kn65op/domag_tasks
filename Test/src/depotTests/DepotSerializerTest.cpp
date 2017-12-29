@@ -197,6 +197,9 @@ TEST_F(DepotSerializerTest, ShouldWriteAndReadVersionNumberWhenThereIsNoData)
 {
   std::stringstream stream;
   serializer.serialize(stream);
+
+  LOG << stream.str();
+
   serializer.deserialize(stream);
   EXPECT_EQ(0, depot::Article::getTopLevelArticles().size());
   EXPECT_EQ(0, catalog.getTopLevelContainers().size());
@@ -223,6 +226,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticles)
   std::stringstream output;
   serializer.serialize(output);
 
+  LOG << output.str();
   clearDb();
   serializer.deserialize(output);
   expectReadTestSuiteArticles();
@@ -234,6 +238,7 @@ TEST_F(DepotSerializerTest, SholdWriteAllContainers)
   std::stringstream output;
   serializer.serialize(output);
 
+  LOG << output.str();
   clearDb();
   serializer.deserialize(output);
   expectReadTestSuiteContainers();
@@ -247,6 +252,7 @@ TEST_F(DepotSerializerTest, ShouldWriteAllLevelArticlesAndAllLevelContainers)
   std::stringstream output;
   serializer.serialize(output);
 
+  LOG << output.str();
   clearDb();
 
   serializer.deserialize(output);

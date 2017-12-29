@@ -115,6 +115,7 @@ private:
   void cleanupSerialization();
   void cleanupDeserialization();
   void storeTrashContainer(const ItemsContainer &);
+  void loadTrashContainer(AbstractContainer &);
 
   std::map<std::shared_ptr<IArticle>, int> serializationArticles;
   std::map<const AbstractContainer*, int> serializationContainers;
