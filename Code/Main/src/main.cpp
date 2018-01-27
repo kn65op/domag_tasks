@@ -6,17 +6,17 @@
 
 std::string getLogFileName()
 {
-  return "domag";
+    return "domag";
 }
 
 int main()
 {
-  TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
-                               TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
+    static TLogger::LoggerFacade logger(TLogger::LoggerType::FILE, TLogger::LogFileOnEntry::OVERRIDE,
+                                        TLogger::LogFileOnExit::DO_NOTHING, getLogFileName());
 
-  LOG << "Start application";
+    LOG << "Start application";
 
-  depot::main::DatabaseGuard dbGuard;
+    depot::main::DatabaseGuard dbGuard;
 
-  gui::Application domagApp;
+    gui::Application domagApp;
 }

@@ -10,6 +10,7 @@
 namespace depot
 {
 class Container;
+class AddContainerProcedure;
 }
 
 namespace gui
@@ -22,6 +23,7 @@ public:
     NewContainerDialog(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
 
     void setParentContainer(const std::string& = "");
+    void setProcedure(std::unique_ptr<depot::AddContainerProcedure> );
     void run(const Container*);
     void run();
 
@@ -33,6 +35,7 @@ private:
     std::unique_ptr<Gtk::Button> cancelButton;
     std::unique_ptr<Gtk::Entry> nameEntry;
     std::unique_ptr<Gtk::Label> parentLabel;
+    std::unique_ptr<depot::AddContainerProcedure> procedure;
 };
 }
 }

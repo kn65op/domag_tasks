@@ -130,7 +130,7 @@ void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, cons
   }
 }
 
-void DepotSerializer::createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers)
+void DepotSerializer::createDependentContainers(Container::BaseContainer container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers)
 {
   if (container_node["dependents"])
   {

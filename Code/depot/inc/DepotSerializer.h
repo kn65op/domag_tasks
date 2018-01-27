@@ -108,7 +108,7 @@ private:
   void createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
   void checkAndDeserializeAllContainers(const YAML::Node &database);
   void createContainers(std::map<int, YAML::Node> &&containers);
-  void createDependentContainers(Container::ContainerPtr &container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
+  void createDependentContainers(Container::BaseContainer container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
   void storeItems(std::ostream & out, const Container::Containers & containers, const ItemsContainer &);
   std::vector<YAML::Node> getNodesForItemsInContainerAndSubcontainers(const Container&);
   YAML::Node storeItem(const depot::IItem * item);

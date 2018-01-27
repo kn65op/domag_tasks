@@ -1,8 +1,11 @@
 #include "gui/Application.hpp"
 
 #include "gui/Builder.hpp"
-#include "gui/NewContainerDialog.hpp"
 #include "gui/ContainersTreeView.hpp"
+#include "gui/NewContainerDialog.hpp"
+
+#include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/AddNewContainerProcedure.hpp"
 
 #include "gtkmm.h"
 
@@ -21,6 +24,8 @@ void Application::openNewContainerDialog()
 {
     const auto dialog = builder->getNewContainerDialog();
     dialog->setParentContainer();
+    dialog->setProcedure(
+        std::make_unique<depot::AddTopLevelContainerProcedure>(std::make_shared<depot::HomeContainerCatalog>()));
     dialog->run();
 }
 

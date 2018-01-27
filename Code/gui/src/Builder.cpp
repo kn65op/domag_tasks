@@ -6,6 +6,8 @@
 #include "gui/ContainersTreeView.hpp"
 #include "gui/NewContainerDialog.hpp"
 
+#include "depot/inc/AddNewContainerProcedure.hpp"
+
 namespace gui
 {
 

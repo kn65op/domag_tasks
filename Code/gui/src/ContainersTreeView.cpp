@@ -4,6 +4,7 @@
 
 #include "depot/inc/Container.h"
 #include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/AddNewContainerProcedure.hpp"
 #include "gui/NewContainerDialog.hpp"
 
 namespace gui
@@ -11,21 +12,23 @@ namespace gui
 namespace widget
 {
 
-void addContainers(const depot::Container::Containers& containers, ContainerColumnModel& model, int id)
+void addContainers(depot::Container::Containers& containers, ContainerColumnModel& model, int id)
 {
-    for (const auto& container : containers)
+    for (auto& container : containers)
     {
-        const auto new_id = model.addRow(id, container->getName());
-        addContainers(container->getContainers(), model, new_id);
+        const auto new_id = model.addRow(id, container);
+        auto containers_inside = container->getContainers();
+        addContainers(containers_inside, model, new_id);
     }
 }
 
-void addContainers(const depot::Container::Containers& containers, ContainerColumnModel& model)
+void addContainers(depot::Container::Containers& containers, ContainerColumnModel& model)
 {
-    for (const auto& container : containers)
+    for (auto& container : containers)
     {
-        const auto id = model.addRow(container->getName());
-        addContainers(container->getContainers(), model, id);
+        const auto id = model.addRow(container);
+        auto containers_inside = container->getContainers();
+        addContainers(containers_inside, model, id);
     }
 }
 
@@ -44,6 +47,7 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
         const auto name = columns.getName(*selected);
         LOG << "Container name: " << name;
         dialog->setParentContainer(name);
+        dialog->setProcedure(std::make_unique<depot::AddDependentContainerProcedure>(columns.getContainer(*selected)));
         dialog->run();
         LOG << "Run finished";
     });
@@ -62,7 +66,8 @@ void ContainersTreeView::refresh()
 {
     columns.clear();
     depot::HomeContainerCatalog catalog;
-    addContainers(catalog.getTopLevelContainers(), columns);
+    auto containers = catalog.getTopLevelContainers();
+    addContainers(containers, columns);
 }
 
 bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
