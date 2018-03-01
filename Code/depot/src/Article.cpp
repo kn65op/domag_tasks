@@ -5,77 +5,76 @@
 
 using depot::Article;
 
-template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesContainer depot::HierarchicalClass<Entity>::top_level_entities;
+template <typename Entity, typename EntityInterface>
+typename depot::HierarchicalClass<Entity, EntityInterface>::EntitiesContainer
+    depot::HierarchicalClass<Entity, EntityInterface>::top_level_entities;
 
 Article::~Article()
 {
-  LOG << "Removing: " << name.getContent();
+    LOG << "Removing: " << name.getContent();
 }
 
-Article::Article(const std::string& n, const std::string &u) :
-    name{n},
-    unit{u}
+Article::Article(const std::string& n, const std::string& u) : name{n}, unit{u}
 {
-  LOG << "Article " << name.getContent() << "with unit: " << unit << " created";
+    LOG << "Article " << name.getContent() << "with unit: " << unit << " created";
 }
 
 void Article::checkPassedName(const std::string& n)
 {
-  if (n.empty())
-  {
-    LOG << "Set default category name";
-    THelper::String::UniqueStdCategorizedString<Article::UniqueStringCategory>::setDefaultName("Unnamed Article");
-  }
+    if (n.empty())
+    {
+        LOG << "Set default category name";
+        THelper::String::UniqueStdCategorizedString<Article::UniqueStringCategory>::setDefaultName("Unnamed Article");
+    }
 }
 
-std::string Article::getName()const noexcept
+std::string Article::getName() const noexcept
 {
-  return name;
+    return name;
 }
 
 void Article::setName(const std::string& n)
 {
-  if (n.empty())
-  {
-    throw NameEmptyException();
-  }
-  name = n;
+    if (n.empty())
+    {
+        throw NameEmptyException();
+    }
+    name = n;
 }
 
 void Article::setUnit(const std::string& u)
 {
-  unit = u;
+    unit = u;
 }
 
 std::string Article::getUnit() const
 {
-  return unit;
+    return unit;
 }
-
 
 void Article::addDependentArticle(DependentArticle article)
 {
-  LOG << "Add dependent article" << article->name.getContent();
-  addInferiorEntity(article);
+    LOG << "Add dependent article" << article->getName();
+    addInferiorEntity(article, this);
 }
 
 const Article::Articles& Article::getArticles() const
 {
-  return getInferiorEntities();
+    return getInferiorEntities();
 }
 
 Article::DependentArticle Article::removeDependentArticle(DependentArticle article)
 {
-  LOG << "Remove dependent article" << article->name.getContent();
-  return removeInferiorEntity(article);
+    LOG << "Remove dependent article" << article->getName();
+    return removeInferiorEntity(article);
 }
 
-Article::ArticlePtr Article::getPrecedentArticle() const
+Article::DependentArticle Article::getPrecedentArticle() const
 {
-  return getPrecedentEntity();
+    return getPrecedentEntity();
 }
 
-Article::ArticlePtr Article::createDependentArticle(const std::string &n, const std::string &u)
+Article::DependentArticle Article::createDependentArticle(const std::string& n, const std::string& u)
 {
-  return createDependentEntity(n, u);
+    return createDependentEntity(n, u);
 }

@@ -12,8 +12,7 @@ namespace depot
 class Container : public std::enable_shared_from_this<Container>,
                   public HierarchicalItemsContainer,
                   public Storable,
-                  HierarchicalClass<Container>,
-                  public ItemsContainer
+                  HierarchicalClass<Container, HierarchicalItemsContainer>
 {
   public:
     using ItemsContainer::addItem;
@@ -53,10 +52,8 @@ class Container : public std::enable_shared_from_this<Container>,
 
     using Item = depot::IItem::Ptr;
     using ItemPtr = depot::IItem*;
-    using ContainerInside = std::shared_ptr<Container>;
-    using BaseContainer = std::shared_ptr<HierarchicalItemsContainer>;
+    using BaseContainer = std::shared_ptr<HierarchicalContainer>;
     using ContainerPtr = std::shared_ptr<Container>;
-    using Containers = std::vector<ContainerInside>;
 
     using NoPrecedentException = LiesNowhere;
     using CircularDependencyException = CannotInsertContainerIntoItself;
@@ -64,9 +61,9 @@ class Container : public std::enable_shared_from_this<Container>,
 
     std::string getName() const override;
 
-    void addContainer(std::shared_ptr<HierarchicalItemsContainer> container) override
+    void addContainer(std::shared_ptr<HierarchicalContainer> container) override
     {
-        addInferiorEntity(std::dynamic_pointer_cast<Container>(container));
+        addInferiorEntity(std::dynamic_pointer_cast<Container>(container), this);
     }
 
     BaseContainer removeContainer(BaseContainer container) override
@@ -74,17 +71,17 @@ class Container : public std::enable_shared_from_this<Container>,
         return removeInferiorEntity(std::dynamic_pointer_cast<Container>(container));
     }
 
-    const Containers& getContainers() const
+    const Containers& getContainers() const override
     {
         return getInferiorEntities();
     }
 
-    std::shared_ptr<HierarchicalItemsContainer> createDependentContainer() override
+    std::shared_ptr<HierarchicalContainer> createDependentContainer() override
     {
         return createDependentContainerImpl("Unnamed container");
     }
 
-    std::shared_ptr<HierarchicalItemsContainer> createDependentContainer(const std::string& name) override
+    std::shared_ptr<HierarchicalContainer> createDependentContainer(const std::string& name) override
     {
         return createDependentContainerImpl(name);
     }
@@ -95,7 +92,7 @@ class Container : public std::enable_shared_from_this<Container>,
     }
 
   private:
-    friend class HierarchicalClass<Container>;
+    friend class HierarchicalClass<Container, HierarchicalItemsContainer>;
     Container(const std::string& name_arg) : name{name_arg}
     {
         LOG << "Create Container: " << name;
@@ -106,7 +103,7 @@ class Container : public std::enable_shared_from_this<Container>,
         LOG << "For now no checks done";
     }
 
-    std::shared_ptr<Container> createDependentContainerImpl(const std::string& name)
+    std::shared_ptr<HierarchicalItemsContainer> createDependentContainerImpl(const std::string& name)
     {
         return createDependentEntity(name);
     }

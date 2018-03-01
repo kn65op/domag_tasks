@@ -114,7 +114,7 @@ void DepotSerializer::createContainers(std::map<int, YAML::Node> &&containers)
   }
 }
 
-void DepotSerializer::createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
+void DepotSerializer::createDependentArticles(Article::DependentArticle &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles)
 {
   if (article_node["dependents"])
   {
@@ -160,7 +160,7 @@ template <typename AllEntitiesType> void DepotSerializer::serializeAllEntities(s
   out << "\n";
 }
 
-YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
+YAML::Node DepotSerializer::serializeOwnData(const Article::DependentArticle& article)
 {
   LOG << "serialize article data: " << article->getName();
   YAML::Node article_node;
@@ -170,7 +170,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Article::ArticlePtr& article)
   return article_node;
 }
 
-YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerPtr &container)
+YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerInside &container)
 {
   YAML::Node container_node;
   container_node["id"] = serializationContainers[container.get()];
@@ -178,7 +178,7 @@ YAML::Node DepotSerializer::serializeOwnData(const Container::ContainerPtr &cont
   return container_node;
 }
 
-void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & article)
+void DepotSerializer::storeEntityAndItsDependentsId(const Article::DependentArticle & article)
 {
   LOG << "store article id: " << article->getName() << " = " << serializationArticles.size() + 1;
   serializationArticles[article] = serializationArticles.size();
@@ -188,7 +188,7 @@ void DepotSerializer::storeEntityAndItsDependentsId(const Article::ArticlePtr & 
   }
 }
 
-void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerPtr & container)
+void DepotSerializer::storeEntityAndItsDependentsId(const Container::ContainerInside & container)
 {
   const auto nextId = serializationContainers.size();
   serializationContainers[container.get()] = nextId; //TODO: split getting size from assign
@@ -217,7 +217,7 @@ void DepotSerializer::storeItems(std::ostream & out, const Container::Containers
   out << containerItemsNode << "\n";
 }
 
-std::vector<YAML::Node> DepotSerializer::getNodesForItemsInContainerAndSubcontainers(const Container& container)
+std::vector<YAML::Node> DepotSerializer::getNodesForItemsInContainerAndSubcontainers(const HierarchicalItemsContainer& container)
 {
   std::vector<YAML::Node> itemsInContainer;
   for (const auto & item : container.getItems())

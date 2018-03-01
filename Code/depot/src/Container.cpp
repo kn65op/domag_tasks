@@ -1,23 +1,24 @@
 #include "Container.h"
-#include <algorithm>
 #include <TLogger.h>
+#include <algorithm>
 
 using namespace depot;
 
-template<typename Entity> typename depot::HierarchicalClass<Entity>::EntitiesContainer depot::HierarchicalClass<Entity>::top_level_entities;
-
+template <typename Entity, typename EntityInterface>
+typename depot::HierarchicalClass<Entity, EntityInterface>::EntitiesContainer
+    depot::HierarchicalClass<Entity, EntityInterface>::top_level_entities;
 
 std::weak_ptr<AbstractContainer> Container::getStorehauseImpl() const
 {
-  return getPrecedentEntity();
+    return getPrecedentEntity();
 }
 
 std::string Container::getName() const
 {
-  return name;
+    return name;
 }
 
 std::shared_ptr<AbstractContainer> Container::getSharedPointer()
 {
-  return shared_from_this();
+    return shared_from_this();
 }

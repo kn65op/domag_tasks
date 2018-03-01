@@ -34,10 +34,10 @@ private:
   using YamlNodes = std::vector<YAML::Node>;
   void storeVersion(std::ostream& output);
   template <typename AllEntitiesType> void serializeAllEntities(std::ostream& out, const AllEntitiesType & all_entities, const std::string& node_name);
-  void storeEntityAndItsDependentsId(const Article::ArticlePtr & article);
-  void storeEntityAndItsDependentsId(const Container::ContainerPtr & container);
-  YAML::Node serializeOwnData(const Article::ArticlePtr & article);
-  YAML::Node serializeOwnData(const Container::ContainerPtr &container);
+  void storeEntityAndItsDependentsId(const Article::DependentArticle & article);
+  void storeEntityAndItsDependentsId(const Container::ContainerInside & container);
+  YAML::Node serializeOwnData(const Article::DependentArticle & article);
+  YAML::Node serializeOwnData(const Container::ContainerInside &container);
 
   template <typename TopLevelEntities> void storeEntitiesId(const TopLevelEntities & top_level_entities)
   {
@@ -47,22 +47,22 @@ private:
     }
   }
 
-  auto getDependentEntities(const Article::ArticlePtr& article) -> decltype(article->getArticles())
+  auto getDependentEntities(const Article::DependentArticle& article) -> decltype(article->getArticles())
   {
     return article->getArticles();
   }
 
-  auto getDependentEntities(const Container::ContainerPtr& container) -> decltype(container->getContainers())
+  auto getDependentEntities(const Container::ContainerInside& container) -> decltype(container->getContainers())
   {
     return container->getContainers();
   }
 
-  int getDependetEntityId(const Article::ArticlePtr& article)
+  int getDependetEntityId(const Article::DependentArticle& article)
   {
     return serializationArticles[article];
   }
 
-  int getDependetEntityId(const Container::ContainerPtr& container)
+  int getDependetEntityId(const Container::ContainerInside& container)
   {
     return serializationContainers[container.get()];
   }
@@ -105,12 +105,12 @@ private:
   void checkAndDeserializeAllItems(const YAML::Node &database);
   std::map<int, YAML::Node> deserializeEntitiesById(const YAML::Node &articles);
   void createArticles(std::map<int, YAML::Node> &&articles);
-  void createDependentArticles(Article::ArticlePtr &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
+  void createDependentArticles(Article::DependentArticle &article, const YAML::Node &article_node, std::map<int, YAML::Node> &all_articles);
   void checkAndDeserializeAllContainers(const YAML::Node &database);
   void createContainers(std::map<int, YAML::Node> &&containers);
   void createDependentContainers(Container::BaseContainer container, const YAML::Node &container_node, std::map<int, YAML::Node> &all_containers);
   void storeItems(std::ostream & out, const Container::Containers & containers, const ItemsContainer &);
-  std::vector<YAML::Node> getNodesForItemsInContainerAndSubcontainers(const Container&);
+  std::vector<YAML::Node> getNodesForItemsInContainerAndSubcontainers(const HierarchicalItemsContainer&);
   YAML::Node storeItem(const depot::IItem * item);
   void cleanupSerialization();
   void cleanupDeserialization();

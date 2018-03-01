@@ -6,7 +6,7 @@ using depot::Article;
 
 struct ArticleTest: public Test
 {
-  Article::ArticlePtr article = Article::createTopLevelArticle();
+    Article::ArticlePtr article = std::dynamic_pointer_cast<Article>(Article::createTopLevelArticle());
 
   void TearDown()
   {

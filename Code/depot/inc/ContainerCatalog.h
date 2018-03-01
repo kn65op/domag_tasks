@@ -6,13 +6,13 @@
 
 namespace depot
 {
-class Container;
+class HierarchicalItemsContainer;
 class ItemsContainer;
 
 class ContainerCatalog
 {
 public:
-  using ContainerInside = std::shared_ptr<Container>;
+  using ContainerInside = std::shared_ptr<HierarchicalItemsContainer>;
   using Containers = std::vector<ContainerInside>;
 
   virtual ~ContainerCatalog() = default;

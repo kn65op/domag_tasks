@@ -6,7 +6,7 @@
 namespace depot
 {
 class ContainerCatalog;
-class HierarchicalItemsContainer;
+class HierarchicalContainer;
 
 class AddContainerProcedure
 {
@@ -29,11 +29,11 @@ class AddTopLevelContainerProcedure : public AddContainerProcedure
 class AddDependentContainerProcedure : public AddContainerProcedure
 {
   public:
-    AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalItemsContainer>);
+    AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalContainer>);
 
     void add(const std::string&) override;
 
   private:
-    std::shared_ptr<depot::HierarchicalItemsContainer> container;
+    std::shared_ptr<depot::HierarchicalContainer> container;
 };
 }

@@ -13,6 +13,9 @@ namespace depot
 class IArticle
 {
 public:
+    using DependentArticle = std::shared_ptr<IArticle>;
+    using Articles = std::vector<DependentArticle>;
+
   class NameEmptyException : public std::logic_error
   {
   public:
@@ -59,6 +62,10 @@ public:
   virtual void setName(const std::string& n) = 0;
   virtual std::string getUnit() const = 0;
   virtual void setUnit(const std::string& u) = 0;
+  virtual const Articles& getArticles() const = 0;
+  virtual DependentArticle createDependentArticle(const std::string& name = "", const std::string& unit = "") = 0;
+  virtual void addDependentArticle(DependentArticle article) = 0;
+  virtual DependentArticle getPrecedentArticle() const = 0;
 
   IArticle() = default;
   IArticle(const IArticle&) = delete;
@@ -67,11 +74,9 @@ public:
   virtual ~IArticle() = default;
 };
 
-class Article : public IArticle, public std::enable_shared_from_this<Article>, HierarchicalClass< Article>
+class Article : HierarchicalClass< Article, IArticle>, public IArticle, public std::enable_shared_from_this<Article>
 {
 public:
-  using DependentArticle = std::shared_ptr<Article>;
-  using Articles = std::vector<DependentArticle>;
   using ArticlePtr = std::shared_ptr<Article>;
   using PrecedentArticle = std::weak_ptr<Article>;
   using ArticleWeakPtr = std::weak_ptr<Article>;
@@ -82,16 +87,17 @@ public:
   using NoInferiorException = IArticle::NoExistDependentArticle;
 
   ~Article();
-  ArticlePtr createDependentArticle(const std::string& name = "", const std::string& unit = "");
+
+  DependentArticle createDependentArticle(const std::string& name = "", const std::string& unit = "") override;
 
   std::string getName() const noexcept override;
   void setName(const std::string& n) override;
   std::string getUnit() const override;
   void setUnit(const std::string& u) override;
-  void addDependentArticle(DependentArticle article);
-  const Articles& getArticles() const;
+  void addDependentArticle(DependentArticle article) override;
+  const Articles& getArticles() const override;
   DependentArticle removeDependentArticle(DependentArticle article);
-  ArticlePtr getPrecedentArticle() const;
+  DependentArticle getPrecedentArticle() const override;
   static void doCreationChecks(const std::string& name, const std::string &)
   {
     checkPassedName(name);
@@ -124,7 +130,7 @@ public:
 
 private:
   friend class TopLevelArticles;
-  friend class HierarchicalClass<Article> ;
+  friend class HierarchicalClass<Article, IArticle>;
   static const int UniqueStringCategory = 1;
 
   THelper::String::UniqueStdCategorizedString<UniqueStringCategory> name;

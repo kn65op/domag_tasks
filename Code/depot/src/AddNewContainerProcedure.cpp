@@ -15,7 +15,7 @@ void AddTopLevelContainerProcedure::add(const std::string& name)
     catalog->createTopLevelContainer(name);
 }
 
-AddDependentContainerProcedure::AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalItemsContainer> c)
+AddDependentContainerProcedure::AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalContainer> c)
     : container{std::move(c)}
 {
 }

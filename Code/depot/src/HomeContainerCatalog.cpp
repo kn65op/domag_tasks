@@ -7,7 +7,7 @@
 
 namespace depot
 {
-using ContainerHierarchy = HierarchicalClass<Container>;
+using ContainerHierarchy = HierarchicalClass<Container, HierarchicalItemsContainer>;
 
 std::shared_ptr<depot::ConsumedItems> HomeContainerCatalog::consumedItems = std::make_shared<depot::ConsumedItems>();
 

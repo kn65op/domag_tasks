@@ -19,7 +19,7 @@ struct ContainerTest : public Test
 
   std::shared_ptr<Container> createContainer()
   {
-    return catalog.createTopLevelContainer();
+      return std::dynamic_pointer_cast<Container>(catalog.createTopLevelContainer());
   }
 
   void expectMoveItemBetweenContainers(ItemMock& item)

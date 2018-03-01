@@ -44,7 +44,7 @@ struct DepotSerializerTest : public Test
   const boost::gregorian::date firstConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(5);
   const boost::gregorian::date secondConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(1);
   const boost::gregorian::date thirdConsumeTime = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(4);
-    depot::HierarchicalItemsContainer *containerForThirdItem;
+    depot::HierarchicalContainer *containerForThirdItem;
   std::shared_ptr<depot::IArticle> articleForThirdItem;
 
   void createTestSuiteArticles()
