@@ -1,5 +1,5 @@
 # BasedOnStyle:  LLVM
-AccessModifierOffset: -2 #h
+AccessModifierOffset: -4 #h
 AlignEscapedNewlinesLeft: false
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
