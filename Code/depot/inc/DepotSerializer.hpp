@@ -3,8 +3,8 @@
 #include <iostream>
 #include <map>
 #include <stdexcept>
-#include "Article.h"
-#include "Container.h"
+#include "Article.hpp"
+#include "Container.hpp"
 #include "yaml-cpp/yaml.h"
 #include <TLogger.h>
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "HierarchicalClass.h"
-#include "ItemsContainer.h"
-#include "Storable.h"
+#include "HierarchicalClass.hpp"
+#include "ItemsContainer.hpp"
+#include "Storable.hpp"
 #include <TLogger.h>
 #include <functional>
 

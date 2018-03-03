@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include "DepotSerializer.h"
-#include "Article.h"
-#include "Item.h"
-#include "Container.h"
-#include "depot/inc/HomeContainerCatalog.h"
+#include "DepotSerializer.hpp"
+#include "Article.hpp"
+#include "Item.hpp"
+#include "Container.hpp"
+#include "depot/inc/HomeContainerCatalog.hpp"
 #include <sstream>
 
 #include "TLogger.h"

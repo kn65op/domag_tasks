@@ -2,9 +2,9 @@
 
 #include "TLogger.h"
 
-#include "Article.h"
-#include "DepotSerializer.h"
-#include "HomeContainerCatalog.h"
+#include "Article.hpp"
+#include "DepotSerializer.hpp"
+#include "HomeContainerCatalog.hpp"
 
 namespace depot
 {

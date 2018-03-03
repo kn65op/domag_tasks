@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../../Code/depot/inc/Article.h"
+#include "Article.hpp"
 
 using namespace ::testing;
 using depot::Article;

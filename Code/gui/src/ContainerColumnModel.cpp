@@ -1,6 +1,6 @@
 #include "gui/ContainerColumnModel.hpp"
 
-#include "depot/inc/ItemsContainer.h"
+#include "depot/inc/ItemsContainer.hpp"
 
 #include "TLogger.h"
 

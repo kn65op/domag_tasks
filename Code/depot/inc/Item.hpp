@@ -4,9 +4,9 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/optional.hpp>
 
-#include "ConsumeHistory.h"
-#include "Article.h"
-#include "Storable.h"
+#include "ConsumeHistory.hpp"
+#include "Article.hpp"
+#include "Storable.hpp"
 
 namespace depot
 {

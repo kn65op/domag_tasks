@@ -1,7 +1,7 @@
-#include "HomeContainerCatalog.h"
+#include "HomeContainerCatalog.hpp"
 
-#include "Container.h"
-#include "ConsumedItems.h"
+#include "Container.hpp"
+#include "ConsumedItems.hpp"
 
 #include <TLogger.h>
 

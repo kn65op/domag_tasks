@@ -7,7 +7,7 @@
 #include "gui/ContainersTreeView.hpp"
 
 #include "depot/inc/AddNewContainerProcedure.hpp"
-#include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/HomeContainerCatalog.hpp"
 
 namespace gui
 {

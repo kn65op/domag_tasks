@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
-#include "depot/inc/Item.h"
+#include "depot/inc/Item.hpp"
 
-#include "depot/inc/HomeContainerCatalog.h"
-#include "../../inc/depotMocks/ArticleMock.h"
-#include "depot/inc/Container.h"
+#include "depot/inc/HomeContainerCatalog.hpp"
+#include "ArticleMock.hpp"
+#include "depot/inc/Container.hpp"
 
 using namespace ::testing;
 using depot::Item;

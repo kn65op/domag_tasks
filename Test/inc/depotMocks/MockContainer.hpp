@@ -2,7 +2,7 @@
 
 #include "gmock/gmock.h"
 
-#include "depot/inc/AbstractContainer.h"
+#include "depot/inc/AbstractContainer.hpp"
 
 class MockContainer : public virtual depot::AbstractContainer
 {

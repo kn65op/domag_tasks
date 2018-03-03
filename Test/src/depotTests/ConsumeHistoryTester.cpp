@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "depot/inc/ConsumeHistory.h"
+#include "depot/inc/ConsumeHistory.hpp"
 
 using namespace ::testing;
 using depot::ConsumeHistory;

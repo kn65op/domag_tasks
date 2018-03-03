@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 
 #include "MockContainer.hpp"
-#include "depot/inc/ItemsContainer.h"
+#include "depot/inc/ItemsContainer.hpp"
 
 class MockHierarchicalItemsContainer : public MockContainer, public virtual depot::HierarchicalContainer
 {

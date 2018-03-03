@@ -1,6 +1,6 @@
-#include "DepotSerializer.h"
+#include "DepotSerializer.hpp"
 #include "yaml-cpp/yaml.h"
-#include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/HomeContainerCatalog.hpp"
 #include "iostream"
 
 using namespace depot::serialize;

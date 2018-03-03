@@ -1,6 +1,6 @@
 #include "depot/inc/AddNewContainerProcedure.hpp"
-#include "depot/inc/Container.h"
-#include "depot/inc/ContainerCatalog.h"
+#include "depot/inc/Container.hpp"
+#include "depot/inc/ContainerCatalog.hpp"
 
 namespace depot
 {

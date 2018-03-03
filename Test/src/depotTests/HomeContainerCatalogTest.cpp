@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "HomeContainerCatalog.h"
+#include "HomeContainerCatalog.hpp"
 
 using namespace ::testing;
 

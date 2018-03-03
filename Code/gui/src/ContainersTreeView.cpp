@@ -2,8 +2,8 @@
 
 #include "TLogger.h"
 
-#include "depot/inc/Container.h"
-#include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/Container.hpp"
+#include "depot/inc/HomeContainerCatalog.hpp"
 #include "depot/inc/AddNewContainerProcedure.hpp"
 #include "gui/NewContainerDialog.hpp"
 

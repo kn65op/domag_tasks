@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Code/depot/inc/Article.h"
+#include "Article.hpp"
 #include "gmock/gmock.h"
 
 namespace depot

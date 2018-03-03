@@ -2,8 +2,8 @@
 
 #include "gmock/gmock.h"
 
-#include "depot/inc/ContainerCatalog.h"
-#include "depot/inc/ItemsContainer.h"
+#include "depot/inc/ContainerCatalog.hpp"
+#include "depot/inc/ItemsContainer.hpp"
 
 struct MockContainerCatalog : public depot::ContainerCatalog
 {

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "ContainerCatalog.h"
+#include "ContainerCatalog.hpp"
 
 namespace depot
 {

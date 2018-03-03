@@ -4,7 +4,7 @@
 #include <memory>
 #include <map>
 #include <vector>
-#include "HierarchicalClass.h"
+#include "HierarchicalClass.hpp"
 #include "THelper/String/UniqueString.hpp"
 
 namespace depot

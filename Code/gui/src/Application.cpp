@@ -4,7 +4,7 @@
 #include "gui/ContainersTreeView.hpp"
 #include "gui/NewContainerDialog.hpp"
 
-#include "depot/inc/HomeContainerCatalog.h"
+#include "depot/inc/HomeContainerCatalog.hpp"
 #include "depot/inc/AddNewContainerProcedure.hpp"
 
 #include "gtkmm.h"

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "ConsumedItems.h"
+#include "ConsumedItems.hpp"
 
 using namespace ::testing;
 
