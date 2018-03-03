@@ -12,7 +12,7 @@ Used libraries
 =====
 External
 ----
-boost (1.46)
+boost (1.60)
 
 Included in project via git submodule
 ---
