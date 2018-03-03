@@ -16,6 +16,7 @@ class ContainersTreeView : public Gtk::TreeView
     ContainersTreeView(BaseObjectType*, Glib::RefPtr<Gtk::Builder>&);
 
     void refresh();
+    void addTopLevelContainer(std::weak_ptr<depot::HierarchicalContainer>);
 
   private:
     Builder builder;

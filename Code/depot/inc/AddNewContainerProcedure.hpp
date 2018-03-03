@@ -12,7 +12,7 @@ class AddContainerProcedure
 {
   public:
     virtual ~AddContainerProcedure() noexcept = default;
-    virtual void add(const std::string& name) = 0;
+    virtual std::weak_ptr<HierarchicalContainer> add(const std::string& name) = 0;
 };
 
 class AddTopLevelContainerProcedure : public AddContainerProcedure
@@ -20,7 +20,7 @@ class AddTopLevelContainerProcedure : public AddContainerProcedure
   public:
     AddTopLevelContainerProcedure(std::shared_ptr<ContainerCatalog>);
 
-    void add(const std::string&) override;
+    std::weak_ptr<HierarchicalContainer> add(const std::string&) override;
 
   private:
     std::shared_ptr<ContainerCatalog> catalog;
@@ -31,7 +31,7 @@ class AddDependentContainerProcedure : public AddContainerProcedure
   public:
     AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalContainer>);
 
-    void add(const std::string&) override;
+    std::weak_ptr<HierarchicalContainer> add(const std::string&) override;
 
   private:
     std::shared_ptr<depot::HierarchicalContainer> container;

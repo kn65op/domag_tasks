@@ -7,6 +7,7 @@
 #include "gui/ContainersTreeView.hpp"
 
 #include "depot/inc/AddNewContainerProcedure.hpp"
+#include "depot/inc/ItemsContainer.hpp"
 #include "depot/inc/HomeContainerCatalog.hpp"
 
 namespace gui
@@ -28,7 +29,8 @@ NewContainerDialog::NewContainerDialog(BaseObjectType* baseObject, Glib::RefPtr<
     okButton->signal_clicked().connect([&]() {
         if (procedure)
         {
-            procedure->add(nameEntry->get_buffer()->get_text());
+            const auto name = nameEntry->get_buffer()->get_text();
+            newContainer = procedure->add(name);
         }
         else
         {
@@ -56,11 +58,11 @@ void NewContainerDialog::cleanAndHide()
     buffer->set_text({});
 }
 
-void NewContainerDialog::run()
+std::weak_ptr<depot::HierarchicalContainer> NewContainerDialog::run()
 {
     LOG << "RUN";
     Gtk::Dialog::run();
-    builder.getContainersTreeView()->refresh();
+    return newContainer;
 }
 }
 }

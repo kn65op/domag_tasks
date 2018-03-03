@@ -11,6 +11,7 @@ namespace depot
 {
 class Container;
 class AddContainerProcedure;
+class HierarchicalContainer;
 }
 
 namespace gui
@@ -25,7 +26,7 @@ public:
     void setParentContainer(const std::string& = "");
     void setProcedure(std::unique_ptr<depot::AddContainerProcedure> );
     void run(const Container*);
-    void run();
+    std::weak_ptr<depot::HierarchicalContainer> run();
 
 private:
     void cleanAndHide();
@@ -36,6 +37,7 @@ private:
     std::unique_ptr<Gtk::Entry> nameEntry;
     std::unique_ptr<Gtk::Label> parentLabel;
     std::unique_ptr<depot::AddContainerProcedure> procedure;
+    std::weak_ptr<depot::HierarchicalContainer> newContainer;
 };
 }
 }

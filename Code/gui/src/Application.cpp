@@ -26,7 +26,7 @@ void Application::openNewContainerDialog()
     dialog->setParentContainer();
     dialog->setProcedure(
         std::make_unique<depot::AddTopLevelContainerProcedure>(std::make_shared<depot::HomeContainerCatalog>()));
-    dialog->run();
+    builder->getContainersTreeView()->addTopLevelContainer(dialog->run());
 }
 
 Application::Application()

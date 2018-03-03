@@ -20,7 +20,8 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     int addRow(std::shared_ptr<depot::HierarchicalContainer>);
     int addRow(int parentId, std::shared_ptr<depot::HierarchicalContainer>);
     void clear();
-    std::string getName(const Gtk::TreeRow&);
+    std::string getName(const Gtk::TreeRow&) const;
+    int getId(const Gtk::TreeRow&) const;
     std::shared_ptr<depot::HierarchicalContainer> getContainer(const Gtk::TreeRow&);
 
   private:

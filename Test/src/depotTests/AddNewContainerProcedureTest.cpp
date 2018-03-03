@@ -18,7 +18,7 @@ TEST_F(AddTopLevelContainerProcedureTest, shouldAddNewTopLevelContainer)
     const std::string name{"asd"};
 
     EXPECT_CALL(*catalog, createTopLevelContainer(name)).WillOnce(Return(nullptr));
-    procedure.add(name);
+    EXPECT_THAT(procedure.add(name).lock(), Eq(nullptr));
 }
 
 struct AddDependentContainerProcedureTest : public Test
@@ -31,7 +31,7 @@ TEST_F(AddDependentContainerProcedureTest, shouldAddNewDependendContainer)
 {
     depot::AddDependentContainerProcedure procedure(container);
 
-    EXPECT_CALL(*container, createDependentContainer(name));
+    EXPECT_CALL(*container, createDependentContainer(name)).WillOnce(Return(nullptr));
 
-    procedure.add(name);
+    EXPECT_THAT(procedure.add(name).lock(), Eq(nullptr));
 }

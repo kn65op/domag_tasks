@@ -63,9 +63,14 @@ void ContainerColumnModel::clear()
     containers.clear();
 }
 
-std::string ContainerColumnModel::getName(const Gtk::TreeRow& row)
+std::string ContainerColumnModel::getName(const Gtk::TreeRow& row) const
 {
     return row.get_value<Glib::ustring>(modelName);
+}
+
+int ContainerColumnModel::getId(const Gtk::TreeRow& row) const
+{
+    return row.get_value<int>(modelId);
 }
 
 std::shared_ptr<depot::HierarchicalContainer> ContainerColumnModel::getContainer(const Gtk::TreeRow& row)

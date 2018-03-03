@@ -48,7 +48,7 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
         LOG << "Container name: " << name;
         dialog->setParentContainer(name);
         dialog->setProcedure(std::make_unique<depot::AddDependentContainerProcedure>(columns.getContainer(*selected)));
-        dialog->run();
+        columns.addRow(columns.getId(*selected), dialog->run().lock());
         LOG << "Run finished";
     });
 }
@@ -79,5 +79,11 @@ bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
     }
     return result;
 }
+
+void ContainersTreeView::addTopLevelContainer(std::weak_ptr<depot::HierarchicalContainer>container)
+{
+    columns.addRow(container.lock());
+}
+
 }
 }
