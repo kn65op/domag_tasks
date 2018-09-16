@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include "gmock/gmock.h"
+
 #include "DepotSerializer.hpp"
 #include "Article.hpp"
 #include "Item.hpp"
@@ -201,8 +203,8 @@ TEST_F(DepotSerializerTest, ShouldWriteAndReadVersionNumberWhenThereIsNoData)
   LOG << stream.str();
 
   serializer.deserialize(stream);
-  EXPECT_EQ(0, depot::Article::getTopLevelArticles().size());
-  EXPECT_EQ(0, catalog.getTopLevelContainers().size());
+  ASSERT_THAT(depot::Article::getTopLevelArticles().empty(), Eq(true));
+  ASSERT_THAT(catalog.getTopLevelContainers().empty(), Eq(true));
 }
 
 TEST_F(DepotSerializerTest, ShouldNotReadWhenThereIsNoVersion)
