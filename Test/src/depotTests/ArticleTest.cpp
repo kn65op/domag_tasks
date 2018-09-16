@@ -1,4 +1,6 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+
 #include "Article.hpp"
 
 using namespace ::testing;
@@ -89,6 +91,14 @@ TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalSho
   EXPECT_EQ(2U, Article::getTopLevelArticles().size());
   Article::removeTopLevelArticle(article_dependent);
   EXPECT_EQ(1U, Article::getTopLevelArticles().size());
+}
+
+TEST_F(ArticleTest, ShouldNotStoreOneArticleTwice)
+{
+    article->createDependentArticle();
+    auto second_article = Article::createTopLevelArticle();
+    second_article->addDependentArticle(article->getArticles().front());
+    ASSERT_THAT(article->getArticles(), IsEmpty());
 }
 
 TEST_F(ArticleTest, ShouldNotBeAbleToAddYourselfAsDependentArticle)

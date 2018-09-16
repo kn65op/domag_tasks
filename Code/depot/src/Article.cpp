@@ -16,7 +16,7 @@ Article::~Article()
 
 Article::Article(const std::string& n, const std::string& u) : name{n}, unit{u}
 {
-    LOG << "Article " << name.getContent() << "with unit: " << unit << " created";
+    LOG << "Article " << name.getContent() << " with unit: " << unit << " created";
 }
 
 void Article::checkPassedName(const std::string& n)

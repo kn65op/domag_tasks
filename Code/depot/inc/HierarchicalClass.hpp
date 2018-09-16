@@ -12,18 +12,17 @@ namespace depot
 
 template <typename Entity, typename EntityInterface = Entity> class HierarchicalClass
 {
-  public:
+public:
     struct NoPrecedentException : public std::logic_error
     {
-      public:
+    public:
         NoPrecedentException(const std::string& msg = "Cannot set empty name") : std::logic_error(msg)
         {
         }
     };
-
     struct CircularDependencyException : public std::logic_error
     {
-      public:
+    public:
         CircularDependencyException(const std::string& msg = "Cannot set empty name") : std::logic_error(msg)
         {
         }
@@ -31,10 +30,15 @@ template <typename Entity, typename EntityInterface = Entity> class Hierarchical
 
     struct NoInferiorException : public std::logic_error
     {
-      public:
+    public:
         NoInferiorException(const std::string& msg = "Cannot set empty name") : std::logic_error(msg)
         {
         }
+    };
+
+    struct NotFoundException : public std::logic_error
+    {
+        using std::logic_error::logic_error;
     };
 
     using RawEntitySharedPtr = std::shared_ptr<Entity>;
@@ -56,10 +60,14 @@ template <typename Entity, typename EntityInterface = Entity> class Hierarchical
 
     static void removeTopLevelEntity(EntitySharedPtr entity)
     {
-        auto entity_position = std::find(top_level_entities.begin(), top_level_entities.end(), entity);
+        auto entity_position = findTopLevelEntity(entity);
         if (entity_position != top_level_entities.end())
         {
             top_level_entities.erase(entity_position);
+        }
+        else
+        {
+            throw NotFoundException{"Entity not found for removal"};
         }
     }
 
@@ -70,10 +78,11 @@ template <typename Entity, typename EntityInterface = Entity> class Hierarchical
 
     static void clearTopLevelEntites()
     {
+        LOG << "Clear vector";
         top_level_entities.clear();
     }
 
-  protected:
+protected:
     template <typename... Args> EntitySharedPtr createDependentEntity(Args... args)
     {
         Entity::doCreationChecks(args...);
@@ -92,34 +101,13 @@ template <typename Entity, typename EntityInterface = Entity> class Hierarchical
         {
             throw typename Entity::CircularDependencyException(original_exception.what());
         }
-        addInferiorEntity(entity);
-    }
-
-    void addInferiorEntity(EntitySharedPtr entity)
-    {
-        inferior_entities.push_back(entity);
-        std::dynamic_pointer_cast<Entity>(entity)->precedent = makeSharedPointer();
+        LOG << "Remove from parent";
+        removeInferiorEntityFromPrecedentIfHaveOne(entity);
+        LOG << "Remove from top level";
         removeTopLevelEntity(entity);
-    }
-
-  void checkIfNotMakingCircularDependency(EntitySharedPtr entity, const Entity* this_object) const
-    {
-        if (entity.get() == dynamic_cast<const EntityInterface*>(this_object))
-        {
-            throw CircularDependencyException("Trying to make entity self inferior");
-        }
-        try
-        {
-            if (auto precedent_real = precedent.lock())
-            {
-                const auto precedent_real_casted = std::dynamic_pointer_cast<Entity>(precedent_real);
-                precedent_real_casted->checkIfNotMakingCircularDependency(entity, precedent_real_casted.get());
-            }
-        }
-        catch (const CircularDependencyException&)
-        {
-            throw CircularDependencyException("Trying to make entity circular dependent");
-        }
+        LOG << "Add to this";
+        addInferiorEntity(entity);
+        LOG << "Done";
     }
 
     const InferiorEntitiesContainer& getInferiorEntities() const
@@ -142,25 +130,98 @@ template <typename Entity, typename EntityInterface = Entity> class Hierarchical
 
     EntitySharedPtr getPrecedentEntity() const
     {
-        if (auto precedent_real = precedent.lock())
+        if (auto precedent_real = getPrecedentEntityIfExists())
         {
             return precedent_real;
         }
         throw typename Entity::NoPrecedentException();
     }
 
-    // private
+    virtual RawEntitySharedPtr makeSharedPointer() = 0;
+
+private:
+    EntitySharedPtr removeInferiorEntityFromPrecedentIfHaveOne(EntitySharedPtr entity)
+    {
+        auto entity_real = std::dynamic_pointer_cast<Entity>(entity);
+        if (auto precedent = entity_real->getPrecedentEntityIfExists())
+        {
+            const auto precedent_casted = std::dynamic_pointer_cast<Entity>(precedent);
+            precedent_casted->removeInferiorEntityIfExists(entity);
+        }
+        return entity;
+    }
+
+    EntitySharedPtr getPrecedentEntityIfExists() const
+    {
+        if (auto precedent_real = precedent.lock())
+        {
+            LOG << "Have precedent, return it";
+            return precedent_real;
+        }
+        return nullptr;
+    }
+    void addInferiorEntity(EntitySharedPtr entity)
+    {
+        inferior_entities.push_back(entity);
+        std::dynamic_pointer_cast<Entity>(entity)->precedent = makeSharedPointer();
+    }
+
+    EntitySharedPtr removeInferiorEntityIfExists(EntitySharedPtr entity)
+    {
+        const auto entity_position = std::find(inferior_entities.begin(), inferior_entities.end(), entity);
+        if (entity_position == inferior_entities.end())
+        {
+            return entity;
+        }
+        auto removed_entity = inferior_entities.erase(entity_position);
+        std::dynamic_pointer_cast<Entity>(*removed_entity)->precedent.reset();
+        addEntityToTopLevelEntities(*removed_entity);
+        return *removed_entity;
+    }
+
+    static typename EntitiesContainer::iterator findTopLevelEntity(EntitySharedPtr entity)
+    {
+        return std::find(top_level_entities.begin(), top_level_entities.end(), entity);
+    }
+
+    static void removeTopLevelEntityIfExists(EntitySharedPtr entity)
+    {
+        auto entity_position = findTopLevelEntity(entity);
+        if (entity_position != top_level_entities.end())
+        {
+            top_level_entities.erase(entity_position);
+        }
+    }
+
     static void addEntityToTopLevelEntities(EntitySharedPtr entity)
     {
+        LOG << "Add entity to top level";
         top_level_entities.push_back(entity);
     }
 
-    virtual RawEntitySharedPtr makeSharedPointer() = 0;
+    void checkIfNotMakingCircularDependency(EntitySharedPtr entity, const Entity* this_object) const
+    {
+        if (entity.get() == dynamic_cast<const EntityInterface*>(this_object))
+        {
+            throw CircularDependencyException("Trying to make entity self inferior");
+        }
+        try
+        {
+            if (auto precedent_real = precedent.lock())
+            {
+                const auto precedent_real_casted = std::dynamic_pointer_cast<Entity>(precedent_real);
+                precedent_real_casted->checkIfNotMakingCircularDependency(entity, precedent_real_casted.get());
+            }
+        }
+        catch (const CircularDependencyException&)
+        {
+            throw CircularDependencyException("Trying to make entity circular dependent");
+        }
+    }
 
-  private:
     static EntitiesContainer top_level_entities;
 
     EntityWeakPtr precedent;
     InferiorEntitiesContainer inferior_entities;
 };
-}
+} // namespace depot

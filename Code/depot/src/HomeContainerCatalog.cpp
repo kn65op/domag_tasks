@@ -33,8 +33,19 @@ HomeContainerCatalog::ContainerInside HomeContainerCatalog::createTopLevelContai
 
 void HomeContainerCatalog::removeTopLevelContainer(ContainerInside container)
 {
-  LOG << "Creating top level container: " << container->getName();
-  return ContainerHierarchy::removeTopLevelEntity(container);
+    if (!container)
+    {
+        throw ContainerNotFound{"Passed nullptr to remove"};
+    }
+    try
+    {
+        LOG << "Creating top level container: " << container->getName();
+        return ContainerHierarchy::removeTopLevelEntity(container);
+    }
+    catch (const ContainerHierarchy::NotFoundException &ex)
+    {
+        throw ContainerNotFound(ex.what());
+    }
 }
 
 depot::ItemsContainer& HomeContainerCatalog::getContainerForConsumedItems() const

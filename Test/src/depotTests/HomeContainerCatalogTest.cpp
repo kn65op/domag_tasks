@@ -26,3 +26,15 @@ TEST_F(HomeContainerCatalogTest, AfterCleaningTopLevelEntities)
   catalog.clearAllContainers();
   EXPECT_EQ(0U, catalog.getTopLevelContainers().size());
 }
+
+TEST_F(HomeContainerCatalogTest, ShouldThrowOnRemovalNullptr)
+{
+    EXPECT_THROW(catalog.removeTopLevelContainer(nullptr), depot::ContainerCatalog::ContainerNotFound);
+}
+
+TEST_F(HomeContainerCatalogTest, ShouldThrowOnRemovalNotExistingContainer)
+{
+    const auto c = catalog.createTopLevelContainer();
+    catalog.removeTopLevelContainer(c);
+    EXPECT_THROW(catalog.removeTopLevelContainer(c), depot::ContainerCatalog::ContainerNotFound);
+}
