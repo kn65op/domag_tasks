@@ -80,7 +80,7 @@ bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
     return result;
 }
 
-void ContainersTreeView::addTopLevelContainer(std::weak_ptr<depot::HierarchicalContainer>container)
+void ContainersTreeView::addTopLevelContainer(std::weak_ptr<depot::HierarchicalItemsContainer>container)
 {
     columns.addRow(container.lock());
 }

@@ -8,7 +8,7 @@ using depot::ConsumeHistory;
 using depot::AbstractContainer;
 
 Item::Item(std::weak_ptr<IArticle> thing_of, const PurcaseDetails & details) :
-  Item{thing_of, details, boost::none}
+  Item{thing_of, details, std::nullopt}
 {
 }
 
@@ -81,14 +81,14 @@ Item::Article Item::getThing() const
   return thing;
 }
 
-std::weak_ptr<AbstractContainer> Item::getStorehauseImpl() const
+std::optional<std::shared_ptr<AbstractContainer>> Item::getStorehauseImpl() const
 {
   if (storehause.expired())
   {
     LOG << "Item has no storehause";
     throw NoStorehause();
   }
-  return storehause;
+  return storehause.lock();
 }
 
 void Item::setStorehause(Storehause store)

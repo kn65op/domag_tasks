@@ -5,25 +5,15 @@
 #include "MockContainer.hpp"
 #include "depot/inc/ItemsContainer.hpp"
 
-class MockHierarchicalContainer : public virtual MockContainer, public virtual depot::HierarchicalContainer
-{
-public:
-    MOCK_METHOD0(createDependentContainer, std::shared_ptr<depot::HierarchicalContainer>());
-    MOCK_METHOD1(createDependentContainer, std::shared_ptr<depot::HierarchicalContainer>(const std::string&));
-    MOCK_METHOD1(addContainer, void(std::shared_ptr<depot::HierarchicalContainer>));
-    MOCK_METHOD1(removeContainer,
-                 std::shared_ptr<depot::HierarchicalContainer>(std::shared_ptr<depot::HierarchicalContainer>));
-};
-
 class MockHierarchicalItemsContainer : public virtual depot::HierarchicalItemsContainer
 {
 public:
     MOCK_CONST_METHOD0(getContainers, const Containers&());
-    MOCK_METHOD0(createDependentContainer, std::shared_ptr<depot::HierarchicalContainer>());
-    MOCK_METHOD1(createDependentContainer, std::shared_ptr<depot::HierarchicalContainer>(const std::string&));
-    MOCK_METHOD1(addContainer, void(std::shared_ptr<depot::HierarchicalContainer>));
+    MOCK_METHOD0(createDependentContainer, std::shared_ptr<depot::HierarchicalItemsContainer>());
+    MOCK_METHOD1(createDependentContainer, std::shared_ptr<depot::HierarchicalItemsContainer>(const std::string&));
+    MOCK_METHOD1(addContainer, void(std::shared_ptr<depot::HierarchicalItemsContainer>));
     MOCK_METHOD1(removeContainer,
-                 std::shared_ptr<depot::HierarchicalContainer>(std::shared_ptr<depot::HierarchicalContainer>));
+                 std::shared_ptr<depot::HierarchicalItemsContainer>(std::shared_ptr<depot::HierarchicalItemsContainer>));
     MOCK_METHOD1(addItem, void(depot::IItem*));
     void addItem(std::unique_ptr<depot::IItem> item) override
     {

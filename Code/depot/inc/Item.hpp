@@ -48,7 +48,7 @@ public:
   IItem & operator=(const IItem &&) = delete;
 
   using Date = PurcaseDetails::Date;
-  using OptionalDate = boost::optional<Date>;
+  using OptionalDate = std::optional<Date>;
 
   virtual double getQuantity() const = 0;
   virtual double getPricePerUnit() const = 0;
@@ -111,7 +111,7 @@ private:
   ConsumeHistory history;
   Storehause storehause;
 
-  std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
+  std::optional<std::shared_ptr<AbstractContainer>> getStorehauseImpl() const override;
   void savePurcaseDetails(const PurcaseDetails &);
 };
 

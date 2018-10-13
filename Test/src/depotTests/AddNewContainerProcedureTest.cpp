@@ -25,7 +25,7 @@ TEST_F(AddTopLevelContainerProcedureTest, shouldAddNewTopLevelContainer)
 
 struct AddDependentContainerProcedureTest : public Test
 {
-    std::shared_ptr<MockHierarchicalContainer> container = std::make_shared<MockHierarchicalContainer>();
+    std::shared_ptr<MockHierarchicalItemsContainer> container = std::make_shared<MockHierarchicalItemsContainer>();
     const std::string name{"aqwe"};
 };
 

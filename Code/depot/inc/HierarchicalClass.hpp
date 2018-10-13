@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include <optional>
+
 #include "TLogger.h"
 
 namespace depot
@@ -128,13 +130,14 @@ protected:
         return *removed_entity;
     }
 
-    EntitySharedPtr getPrecedentEntity() const
+    std::optional<EntitySharedPtr> getPrecedentEntity() const
     {
-        if (auto precedent_real = getPrecedentEntityIfExists())
+        if (auto precedent_real = precedent.lock())
         {
+            LOG << "Have precedent, return it";
             return precedent_real;
         }
-        throw typename Entity::NoPrecedentException();
+        return {};
     }
 
     virtual RawEntitySharedPtr makeSharedPointer() = 0;
@@ -143,23 +146,14 @@ private:
     EntitySharedPtr removeInferiorEntityFromPrecedentIfHaveOne(EntitySharedPtr entity)
     {
         auto entity_real = std::dynamic_pointer_cast<Entity>(entity);
-        if (auto precedent = entity_real->getPrecedentEntityIfExists())
+        if (auto precedent = entity_real->getPrecedentEntity())
         {
-            const auto precedent_casted = std::dynamic_pointer_cast<Entity>(precedent);
+            const auto precedent_casted = std::dynamic_pointer_cast<Entity>(*precedent);
             precedent_casted->removeInferiorEntityIfExists(entity);
         }
         return entity;
     }
 
-    EntitySharedPtr getPrecedentEntityIfExists() const
-    {
-        if (auto precedent_real = precedent.lock())
-        {
-            LOG << "Have precedent, return it";
-            return precedent_real;
-        }
-        return nullptr;
-    }
     void addInferiorEntity(EntitySharedPtr entity)
     {
         inferior_entities.push_back(entity);

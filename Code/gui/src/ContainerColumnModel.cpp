@@ -17,7 +17,7 @@ ContainerColumnModel::ContainerColumnModel(Gtk::TreeView& view) : tree{view}
     tree.append_column("Name", modelName);
 }
 
-int ContainerColumnModel::addRow(std::shared_ptr<depot::HierarchicalContainer> container)
+int ContainerColumnModel::addRow(std::shared_ptr<depot::HierarchicalItemsContainer> container)
 {
     const int id = calculateId();
     auto rowIt = *treeStore->append();
@@ -26,7 +26,7 @@ int ContainerColumnModel::addRow(std::shared_ptr<depot::HierarchicalContainer> c
     return id;
 }
 
-int ContainerColumnModel::addRow(int parentId, std::shared_ptr<depot::HierarchicalContainer> container)
+int ContainerColumnModel::addRow(int parentId, std::shared_ptr<depot::HierarchicalItemsContainer> container)
 {
     const int id = calculateId();
     auto parentRow = rows[parentId];
@@ -37,7 +37,7 @@ int ContainerColumnModel::addRow(int parentId, std::shared_ptr<depot::Hierarchic
 }
 
 void ContainerColumnModel::fillRow(Gtk::TreeStore::iterator& rowIt, int id,
-                                   const std::shared_ptr<depot::HierarchicalContainer> container)
+                                   const std::shared_ptr<depot::HierarchicalItemsContainer> container)
 {
     auto row = *rowIt;
     row[modelName] = container->getName();
@@ -45,7 +45,7 @@ void ContainerColumnModel::fillRow(Gtk::TreeStore::iterator& rowIt, int id,
 }
 
 void ContainerColumnModel::fillInternalData(Gtk::TreeStore::iterator& rowIt, const int id,
-                                            std::shared_ptr<depot::HierarchicalContainer> container)
+                                            std::shared_ptr<depot::HierarchicalItemsContainer> container)
 {
     rows.emplace(id, rowIt);
     containers[id] = container;
@@ -73,7 +73,7 @@ int ContainerColumnModel::getId(const Gtk::TreeRow& row) const
     return row.get_value<int>(modelId);
 }
 
-std::shared_ptr<depot::HierarchicalContainer> ContainerColumnModel::getContainer(const Gtk::TreeRow& row)
+std::shared_ptr<depot::HierarchicalItemsContainer> ContainerColumnModel::getContainer(const Gtk::TreeRow& row)
 {
     LOG << row.get_value<int>(modelId);
     try

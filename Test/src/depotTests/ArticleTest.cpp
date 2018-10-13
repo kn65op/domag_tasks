@@ -121,7 +121,7 @@ TEST_F(ArticleTest, ShouldThrowWhenTriedToRemoveNotDependentArticle)
 
 TEST_F(ArticleTest, NewArticleShouldNotHavePrecedentArticle)
 {
-  EXPECT_THROW(article->getPrecedentArticle(), Article::NoPrecedentArticle);
+  ASSERT_FALSE(article->getPrecedentArticle());
 }
 
 TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveValidPrecedentAndAfterRemovalItShouldHaveNone)
@@ -129,7 +129,7 @@ TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveV
   auto article_inside = article->createDependentArticle();
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
   article->removeDependentArticle(article_inside);
-  EXPECT_THROW(article_inside->getPrecedentArticle(), Article::NoPrecedentArticle);
+  ASSERT_FALSE(article_inside->getPrecedentArticle());
   Article::removeTopLevelArticle(article_inside);
 }
 

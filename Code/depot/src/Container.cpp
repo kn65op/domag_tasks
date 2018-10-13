@@ -8,9 +8,14 @@ template <typename Entity, typename EntityInterface>
 typename depot::HierarchicalClass<Entity, EntityInterface>::EntitiesContainer
     depot::HierarchicalClass<Entity, EntityInterface>::top_level_entities;
 
-std::weak_ptr<AbstractContainer> Container::getStorehauseImpl() const
+std::optional<std::shared_ptr<AbstractContainer>> Container::getStorehauseImpl() const
 {
-    return getPrecedentEntity();
+    const auto entity = getPrecedentEntity();
+    if (entity)
+    {
+        return *entity;
+    }
+    return {};
 }
 
 std::string Container::getName() const

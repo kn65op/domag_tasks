@@ -20,7 +20,7 @@ class ItemMock : public IItem
   MOCK_METHOD1(setBestBefore, void(const OptionalDate&));
   MOCK_CONST_METHOD0(getConsumeHistory, const ConsumeHistory::List&());
   MOCK_CONST_METHOD0(getThing, std::weak_ptr<IArticle>());
-  MOCK_CONST_METHOD0(getStorehauseImpl, std::weak_ptr<AbstractContainer>());
+  MOCK_CONST_METHOD0(getStorehauseImpl, std::optional<std::shared_ptr<AbstractContainer>>());
   MOCK_METHOD1(setStorehause, void(std::weak_ptr<AbstractContainer>));
 };
 

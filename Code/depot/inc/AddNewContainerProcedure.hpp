@@ -6,13 +6,13 @@
 namespace depot
 {
 class ContainerCatalog;
-class HierarchicalContainer;
+class HierarchicalItemsContainer;
 
 class AddContainerProcedure
 {
   public:
     virtual ~AddContainerProcedure() noexcept = default;
-    virtual std::weak_ptr<HierarchicalContainer> add(const std::string& name) = 0;
+    virtual std::weak_ptr<HierarchicalItemsContainer> add(const std::string& name) = 0;
 };
 
 class AddTopLevelContainerProcedure : public AddContainerProcedure
@@ -20,7 +20,7 @@ class AddTopLevelContainerProcedure : public AddContainerProcedure
   public:
     AddTopLevelContainerProcedure(std::shared_ptr<ContainerCatalog>);
 
-    std::weak_ptr<HierarchicalContainer> add(const std::string&) override;
+    std::weak_ptr<HierarchicalItemsContainer> add(const std::string&) override;
 
   private:
     std::shared_ptr<ContainerCatalog> catalog;
@@ -29,11 +29,11 @@ class AddTopLevelContainerProcedure : public AddContainerProcedure
 class AddDependentContainerProcedure : public AddContainerProcedure
 {
   public:
-    AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalContainer>);
+    AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalItemsContainer>);
 
-    std::weak_ptr<HierarchicalContainer> add(const std::string&) override;
+    std::weak_ptr<HierarchicalItemsContainer> add(const std::string&) override;
 
   private:
-    std::shared_ptr<depot::HierarchicalContainer> container;
+    std::shared_ptr<depot::HierarchicalItemsContainer> container;
 };
 }

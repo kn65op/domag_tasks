@@ -58,7 +58,7 @@ void NewContainerDialog::cleanAndHide()
     buffer->set_text({});
 }
 
-std::weak_ptr<depot::HierarchicalContainer> NewContainerDialog::run()
+std::weak_ptr<depot::HierarchicalItemsContainer> NewContainerDialog::run()
 {
     LOG << "RUN";
     Gtk::Dialog::run();

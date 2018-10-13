@@ -12,6 +12,7 @@ namespace depot
 class Container : public std::enable_shared_from_this<Container>,
                   public HierarchicalItemsContainer,
                   public Storable,
+                  private ItemsContainer,
                   HierarchicalClass<Container, HierarchicalItemsContainer>
 {
   public:
@@ -52,7 +53,7 @@ class Container : public std::enable_shared_from_this<Container>,
 
     using Item = depot::IItem::Ptr;
     using ItemPtr = depot::IItem*;
-    using BaseContainer = std::shared_ptr<HierarchicalContainer>;
+    using BaseContainer = std::shared_ptr<HierarchicalItemsContainer>;
     using ContainerPtr = std::shared_ptr<Container>;
 
     using NoPrecedentException = LiesNowhere;
@@ -61,7 +62,7 @@ class Container : public std::enable_shared_from_this<Container>,
 
     std::string getName() const override;
 
-    void addContainer(std::shared_ptr<HierarchicalContainer> container) override
+    void addContainer(std::shared_ptr<HierarchicalItemsContainer> container) override
     {
         addInferiorEntity(std::dynamic_pointer_cast<Container>(container), this);
     }
@@ -76,12 +77,12 @@ class Container : public std::enable_shared_from_this<Container>,
         return getInferiorEntities();
     }
 
-    std::shared_ptr<HierarchicalContainer> createDependentContainer() override
+    std::shared_ptr<HierarchicalItemsContainer> createDependentContainer() override
     {
         return createDependentContainerImpl("Unnamed container");
     }
 
-    std::shared_ptr<HierarchicalContainer> createDependentContainer(const std::string& name) override
+    std::shared_ptr<HierarchicalItemsContainer> createDependentContainer(const std::string& name) override
     {
         return createDependentContainerImpl(name);
     }
@@ -108,7 +109,7 @@ class Container : public std::enable_shared_from_this<Container>,
         return createDependentEntity(name);
     }
 
-    std::weak_ptr<AbstractContainer> getStorehauseImpl() const override;
+    std::optional<std::shared_ptr<AbstractContainer>> getStorehauseImpl() const override;
     std::shared_ptr<AbstractContainer> getSharedPointer() override;
 
     std::string name;

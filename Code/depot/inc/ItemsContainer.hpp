@@ -21,21 +21,16 @@ class ItemsContainer : virtual public AbstractContainer
     Items items;
 };
 
-class HierarchicalContainer : virtual public AbstractContainer
-{
-public:
-    virtual std::shared_ptr<HierarchicalContainer> createDependentContainer(const std::string&) = 0;
-    virtual std::shared_ptr<HierarchicalContainer> createDependentContainer() = 0;
-    virtual void addContainer(std::shared_ptr<HierarchicalContainer>) = 0;
-    virtual std::shared_ptr<HierarchicalContainer> removeContainer(std::shared_ptr<HierarchicalContainer>) = 0;
-};
-
-class HierarchicalItemsContainer  : public HierarchicalContainer, public ItemsContainer
+class HierarchicalItemsContainer : virtual public AbstractContainer
 {
 public:
     using ContainerInside = std::shared_ptr<HierarchicalItemsContainer >;
     using Containers = std::vector<ContainerInside>;
 
+    virtual std::shared_ptr<HierarchicalItemsContainer> createDependentContainer(const std::string&) = 0;
+    virtual std::shared_ptr<HierarchicalItemsContainer> createDependentContainer() = 0;
+    virtual void addContainer(std::shared_ptr<HierarchicalItemsContainer>) = 0;
+    virtual std::shared_ptr<HierarchicalItemsContainer> removeContainer(std::shared_ptr<HierarchicalItemsContainer>) = 0;
     virtual const Containers& getContainers() const = 0;
 };
 

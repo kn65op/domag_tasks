@@ -239,8 +239,8 @@ YAML::Node DepotSerializer::storeItem(const depot::IItem * item)
 {
   YAML::Node itemNode;
   const auto storehause = item->getStorehause();
-  const auto containerId = serializationContainers[item->getStorehause().lock().get()];
-  LOG << item->getStorehause().lock().get();
+  const auto containerId = serializationContainers[item->getStorehause().value().get()];
+  LOG << item->getStorehause().value();
   itemNode["containerId"] = containerId;
   itemNode["articleId"] = serializationArticles[item->getThing().lock()];
   itemNode["boughtAmount"] = item->getBoughtAmount();

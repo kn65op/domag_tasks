@@ -28,3 +28,8 @@ TEST_F(RemoveAnyContainerProcedureTest, shouldRemoveContainerWhenOnTopLevel)
 
     procedure.removeContainer(continerToRemove);
 }
+
+TEST_F(RemoveAnyContainerProcedureTest, shuoldRemoveContainerFr)
+{
+
+}

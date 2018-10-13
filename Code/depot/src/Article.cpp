@@ -69,9 +69,14 @@ Article::DependentArticle Article::removeDependentArticle(DependentArticle artic
     return removeInferiorEntity(article);
 }
 
-Article::DependentArticle Article::getPrecedentArticle() const
+std::optional<Article::DependentArticle> Article::getPrecedentArticle() const
 {
-    return getPrecedentEntity();
+    const auto entity = getPrecedentEntity();
+    if (entity)
+    {
+        return entity.value();
+    }
+    return {};
 }
 
 Article::DependentArticle Article::createDependentArticle(const std::string& n, const std::string& u)

@@ -10,17 +10,17 @@ AddTopLevelContainerProcedure::AddTopLevelContainerProcedure(std::shared_ptr<dep
 {
 }
 
-std::weak_ptr<HierarchicalContainer> AddTopLevelContainerProcedure::add(const std::string& name)
+std::weak_ptr<HierarchicalItemsContainer> AddTopLevelContainerProcedure::add(const std::string& name)
 {
     return catalog->createTopLevelContainer(name);
 }
 
-AddDependentContainerProcedure::AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalContainer> c)
+AddDependentContainerProcedure::AddDependentContainerProcedure(std::shared_ptr<depot::HierarchicalItemsContainer> c)
     : container{std::move(c)}
 {
 }
 
-std::weak_ptr<HierarchicalContainer> AddDependentContainerProcedure::add(const std::string& name)
+std::weak_ptr<HierarchicalItemsContainer> AddDependentContainerProcedure::add(const std::string& name)
 {
     return container->createDependentContainer(name);
 }

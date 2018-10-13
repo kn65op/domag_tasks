@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <optional>
+
 namespace depot
 {
 
@@ -10,15 +12,15 @@ class AbstractContainer;
 class Storable
 {
 public:
-  std::weak_ptr<AbstractContainer> getStorehause() const
-  {
-    return getStorehauseImpl();
-  }
+    std::optional<std::shared_ptr<AbstractContainer>> getStorehause() const
+    {
+        return getStorehauseImpl();
+    }
 
-  virtual ~Storable() = default;
+    virtual ~Storable() = default;
 
 private:
-  virtual std::weak_ptr<AbstractContainer> getStorehauseImpl() const = 0;
+    virtual std::optional<std::shared_ptr<AbstractContainer>> getStorehauseImpl() const = 0;
 };
 
-}
+} // namespace depot

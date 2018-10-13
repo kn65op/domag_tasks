@@ -140,7 +140,7 @@ TEST_F(ContainerTest, RemoveContainerShouldThrowWhenRemovingNonExistingConstaine
 
 TEST_F(ContainerTest, ShouldKnowThatItNotBelogsToOtherContainer)
 {
-  EXPECT_THROW(c->getStorehause(), Container::LiesNowhere);
+  ASSERT_FALSE(c->getStorehause());
 }
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWhereItLiesAndAfterRemovalItShouldHaveNone)
@@ -148,9 +148,9 @@ TEST_F(ContainerTest, AfterAddingOneContainerShouldContainerInsideShouldKnowWher
   auto container = createContainer();
   auto container_inside = createContainer();
   container->addContainer(container_inside);
-  EXPECT_EQ(container, container_inside->getStorehause().lock());
+  EXPECT_EQ(container, container_inside->getStorehause().value());
   container->removeContainer(container_inside);
-  EXPECT_THROW(container_inside->getStorehause(), Container::LiesNowhere);
+  ASSERT_FALSE(container_inside->getStorehause());
 }
 
 TEST_F(ContainerTest, AfterAddingOneContainerShouldReturnOneContainerAndShouldBeRemoveable)

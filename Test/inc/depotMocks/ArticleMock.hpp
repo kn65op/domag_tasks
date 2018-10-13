@@ -21,7 +21,7 @@ struct ArticleMock : public IArticle
     MOCK_CONST_METHOD0(getArticles, const Articles&());
     MOCK_METHOD2(createDependentArticle, DependentArticle(const std::string&, const std::string&));
     MOCK_METHOD1(addDependentArticle, void(DependentArticle));
-    MOCK_CONST_METHOD0(getPrecedentArticle, DependentArticle());
+    MOCK_CONST_METHOD0(getPrecedentArticle, std::optional<DependentArticle>());
 };
 }
 }

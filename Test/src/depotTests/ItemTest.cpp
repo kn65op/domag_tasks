@@ -124,7 +124,7 @@ TEST_F(ItemTest, AfterSetStorehauseShouldHaveItAndAfterRemovalShouldNotHave)
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
   auto container = catalog.createTopLevelContainer();
   item.setStorehause(container);
-  EXPECT_EQ(container, item.getStorehause().lock());
+  ASSERT_THAT(item.getStorehause().value(), Eq(container));
   item.setStorehause(std::shared_ptr<depot::AbstractContainer>(nullptr));
   EXPECT_THROW(item.getStorehause(), Item::NoStorehause);
   catalog.clearAllContainers();
@@ -191,6 +191,6 @@ TEST_F(ItemTest, ItemWihtChangedBestBefore_ShouldReturnNewValue)
   Date bestBefore = boost::gregorian::day_clock::local_day() - boost::gregorian::date_duration(7);
   item.setBestBefore(bestBefore);
   EXPECT_EQ(bestBefore, item.getBestBefore());
-  item.setBestBefore(boost::none);
+  item.setBestBefore(std::nullopt);
   EXPECT_FALSE(item.getBestBefore());
 }

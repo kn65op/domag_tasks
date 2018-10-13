@@ -65,7 +65,7 @@ public:
   virtual const Articles& getArticles() const = 0;
   virtual DependentArticle createDependentArticle(const std::string& name = "", const std::string& unit = "") = 0;
   virtual void addDependentArticle(DependentArticle article) = 0;
-  virtual DependentArticle getPrecedentArticle() const = 0;
+  virtual std::optional<DependentArticle> getPrecedentArticle() const = 0;
 
   IArticle() = default;
   IArticle(const IArticle&) = delete;
@@ -97,7 +97,7 @@ public:
   void addDependentArticle(DependentArticle article) override;
   const Articles& getArticles() const override;
   DependentArticle removeDependentArticle(DependentArticle article);
-  DependentArticle getPrecedentArticle() const override;
+  std::optional<DependentArticle> getPrecedentArticle() const override;
   static void doCreationChecks(const std::string& name, const std::string &)
   {
     checkPassedName(name);
