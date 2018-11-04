@@ -199,3 +199,15 @@ TEST_F(ContainerTest, ItemShouldBeMovedFromOneContainerToAnother)
   EXPECT_EQ(0U, c->getItems().size());
   EXPECT_EQ(1U, container_second->getItems().size());
 }
+
+TEST_F(ContainerTest, TopLevelContainerShouldReturnNullOptAsPrecedent)
+{
+  ASSERT_THAT(c->getPrecedent(), Eq(std::nullopt));
+}
+
+TEST_F(ContainerTest, GivenContainerFromContainer_ShouldReturnParentContainerAsPrecedent)
+{
+  auto container_inside = c->createDependentContainer();
+
+  ASSERT_THAT(container_inside->getPrecedent(), Eq(c));
+}

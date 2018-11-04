@@ -106,7 +106,7 @@ protected:
         LOG << "Remove from parent";
         removeInferiorEntityFromPrecedentIfHaveOne(entity);
         LOG << "Remove from top level";
-        removeTopLevelEntity(entity);
+        removeTopLevelEntityIfExists(entity);
         LOG << "Add to this";
         addInferiorEntity(entity);
         LOG << "Done";
@@ -126,7 +126,6 @@ protected:
         }
         auto removed_entity = inferior_entities.erase(entity_position);
         std::dynamic_pointer_cast<Entity>(*removed_entity)->precedent.reset();
-        addEntityToTopLevelEntities(*removed_entity);
         return *removed_entity;
     }
 

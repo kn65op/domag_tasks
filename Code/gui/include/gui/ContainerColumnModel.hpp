@@ -14,17 +14,19 @@ namespace gui
 
 class ContainerColumnModel : public Gtk::TreeModelColumnRecord
 {
-  public:
+public:
     ContainerColumnModel(Gtk::TreeView& view);
 
     int addRow(std::shared_ptr<depot::HierarchicalItemsContainer>);
     int addRow(int parentId, std::shared_ptr<depot::HierarchicalItemsContainer>);
+    int addRow(int parentId, std::shared_ptr<depot::HierarchicalItemsContainer>, bool);
+    void removeRow(int id);
     void clear();
     std::string getName(const Gtk::TreeRow&) const;
     int getId(const Gtk::TreeRow&) const;
     std::shared_ptr<depot::HierarchicalItemsContainer> getContainer(const Gtk::TreeRow&);
 
-  private:
+private:
     int i = 0;
     Gtk::TreeView& tree;
     Glib::RefPtr<Gtk::TreeStore> treeStore;
@@ -38,4 +40,4 @@ class ContainerColumnModel : public Gtk::TreeModelColumnRecord
     void fillInternalData(Gtk::TreeStore::iterator&, int, std::shared_ptr<depot::HierarchicalItemsContainer>);
     int calculateId();
 };
-}
+} // namespace gui

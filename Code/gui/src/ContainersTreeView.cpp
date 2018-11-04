@@ -2,9 +2,10 @@
 
 #include "TLogger.h"
 
+#include "depot/inc/AddNewContainerProcedure.hpp"
 #include "depot/inc/Container.hpp"
 #include "depot/inc/HomeContainerCatalog.hpp"
-#include "depot/inc/AddNewContainerProcedure.hpp"
+#include "depot/inc/RemoveContainerProcedure.hpp"
 #include "gui/NewContainerDialog.hpp"
 
 namespace gui
@@ -33,8 +34,9 @@ void addContainers(depot::Container::Containers& containers, ContainerColumnMode
 }
 
 ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::Builder>& builderIn)
-    : Gtk::TreeView{base}, builder{builderIn}, addNewContainerMenu{builder.getNewContainerPopupMenu()},
-      addNewContainerMenuItem{builder.getNewContainerPopupMenuAddContainerItem()}
+    : Gtk::TreeView{base}, builder{builderIn}, addNewContainerMenu{builder.getContainerPopupMenu()},
+      addNewContainerMenuItem{builder.getContainerPopupMenuAddContainerItem()},
+      removeContainerMenuItem{builder.getContainerPopupMenuRemoveContainerItem()}
 {
     signal_popup_menu().connect([&]() {
         openNewContainerDialogMenu();
@@ -48,7 +50,20 @@ ContainersTreeView::ContainersTreeView(BaseObjectType* base, Glib::RefPtr<Gtk::B
         LOG << "Container name: " << name;
         dialog->setParentContainer(name);
         dialog->setProcedure(std::make_unique<depot::AddDependentContainerProcedure>(columns.getContainer(*selected)));
-        columns.addRow(columns.getId(*selected), dialog->run().lock());
+        constexpr auto expand = true;
+        LOG << "Update view";
+        columns.addRow(columns.getId(*selected), dialog->run().lock(), expand);
+        LOG << "Run finished";
+    });
+    removeContainerMenuItem->signal_activate().connect([&]() {
+        const auto& selected = this->get_selection()->get_selected();
+        const auto name = columns.getName(*selected);
+        LOG << "Removing container: " << name;
+        auto catalog = std::make_shared<depot::HomeContainerCatalog>();
+        auto procedure = depot::RemoveAnyContainerProcedure(catalog);
+        procedure.removeContainer(columns.getContainer(*selected));
+        LOG << "Update view";
+        columns.removeRow(columns.getId(*selected));
         LOG << "Run finished";
     });
 }
@@ -80,10 +95,10 @@ bool ContainersTreeView::on_button_press_event(GdkEventButton* event)
     return result;
 }
 
-void ContainersTreeView::addTopLevelContainer(std::weak_ptr<depot::HierarchicalItemsContainer>container)
+void ContainersTreeView::addTopLevelContainer(std::weak_ptr<depot::HierarchicalItemsContainer> container)
 {
     columns.addRow(container.lock());
 }
 
-}
-}
+} // namespace widget
+} // namespace gui

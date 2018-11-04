@@ -15,11 +15,22 @@ void RemoveAnyContainerProcedure::removeContainer(std::shared_ptr<HierarchicalIt
 {
     try
     {
-        catalog->removeTopLevelContainer(container);
+        if(!container)
+        {
+            throw ContainerNotFound{"Not able to remove nullptr"};
+        }
+        if (auto parentContainer = container->getPrecedent())
+        {
+            parentContainer.value()->removeContainer(container);
+        }
+        else
+        {
+            catalog->removeTopLevelContainer(container);
+        }
     }
-    catch (const ContainerCatalog::ContainerNotFound &ex)
+    catch (const ContainerCatalog::ContainerNotFound& ex)
     {
         throw ContainerNotFound{ex.what()};
     }
 }
-}
+} // namespace depot

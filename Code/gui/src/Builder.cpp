@@ -80,14 +80,19 @@ std::unique_ptr<Gtk::Entry> Builder::getNewContainerDialogNameEntry()
     return tryGetUniqueWidget<Gtk::Entry>(builder, "Add container dialog name entry");
 }
 
-std::unique_ptr<Gtk::Menu> Builder::getNewContainerPopupMenu()
+std::unique_ptr<Gtk::Menu> Builder::getContainerPopupMenu()
 {
-    return tryGetUniqueWidget<Gtk::Menu>(builder, "Add container popup menu");
+    return tryGetUniqueWidget<Gtk::Menu>(builder, "Container popup menu");
 }
 
-std::unique_ptr<Gtk::MenuItem> Builder::getNewContainerPopupMenuAddContainerItem()
+std::unique_ptr<Gtk::MenuItem> Builder::getContainerPopupMenuAddContainerItem()
 {
-    return tryGetUniqueWidget<Gtk::MenuItem>(builder, "Add container popup menu Add container button");
+    return tryGetUniqueWidget<Gtk::MenuItem>(builder, "Container popup menu/Add container item");
+}
+
+std::unique_ptr<Gtk::MenuItem> Builder::getContainerPopupMenuRemoveContainerItem()
+{
+    return tryGetUniqueWidget<Gtk::MenuItem>(builder, "Container popup menu/Remove container item");
 }
 
 std::shared_ptr<Gtk::Window> Builder::getMainWindow()

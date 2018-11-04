@@ -27,3 +27,8 @@ std::shared_ptr<AbstractContainer> Container::getSharedPointer()
 {
     return shared_from_this();
 }
+
+std::optional<std::shared_ptr<HierarchicalItemsContainer>> Container::getPrecedent() const
+{
+    return getPrecedentEntity();
+}

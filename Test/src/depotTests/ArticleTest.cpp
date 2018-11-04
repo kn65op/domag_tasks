@@ -88,8 +88,6 @@ TEST_F(ArticleTest, AfterAdditionShouldHaveOneDependentArticleAndAfterRemovalSho
   EXPECT_EQ(1U, article->getArticles().size());
   article->removeDependentArticle(article_dependent);
   EXPECT_EQ(0U, article->getArticles().size());
-  EXPECT_EQ(2U, Article::getTopLevelArticles().size());
-  Article::removeTopLevelArticle(article_dependent);
   EXPECT_EQ(1U, Article::getTopLevelArticles().size());
 }
 
@@ -128,8 +126,7 @@ TEST_F(ArticleTest, AfterAddingDependentArticleShouldDependentArticleShouldHaveV
 {
   auto article_inside = article->createDependentArticle();
   EXPECT_EQ(article, article_inside->getPrecedentArticle());
-  article->removeDependentArticle(article_inside);
+  article_inside = article->removeDependentArticle(article_inside);
   ASSERT_FALSE(article_inside->getPrecedentArticle());
-  Article::removeTopLevelArticle(article_inside);
 }
 

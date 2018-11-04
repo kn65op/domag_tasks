@@ -28,11 +28,23 @@ int ContainerColumnModel::addRow(std::shared_ptr<depot::HierarchicalItemsContain
 
 int ContainerColumnModel::addRow(int parentId, std::shared_ptr<depot::HierarchicalItemsContainer> container)
 {
+    constexpr auto noExpand = false;
+    return addRow(parentId, container, noExpand);
+}
+
+int ContainerColumnModel::addRow(int parentId, std::shared_ptr<depot::HierarchicalItemsContainer> container,
+                                 bool expand)
+{
     const int id = calculateId();
     auto parentRow = rows[parentId];
     auto rowIt = *treeStore->append(parentRow->children());
     fillRow(rowIt, id, container);
     fillInternalData(rowIt, id, container);
+    if (expand)
+    {
+        constexpr auto noAll = false;
+        tree.expand_row(treeStore->get_path(parentRow), noAll);
+    }
     return id;
 }
 
@@ -58,6 +70,7 @@ int ContainerColumnModel::calculateId()
 
 void ContainerColumnModel::clear()
 {
+
     treeStore->clear();
     rows.clear();
     containers.clear();
@@ -80,10 +93,18 @@ std::shared_ptr<depot::HierarchicalItemsContainer> ContainerColumnModel::getCont
     {
         return containers.at(row.get_value<int>(modelId));
     }
-    catch(const std::exception&)
+    catch (const std::exception&)
     {
         LOG << "Unable to get container";
     }
     return nullptr;
 }
+
+void ContainerColumnModel::removeRow(int id)
+{
+    treeStore->erase(rows[id]);
+    rows.erase(id);
+    containers.erase(id);
 }
+
+} // namespace gui

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "AbstractContainer.hpp"
 
 namespace depot
@@ -32,6 +34,7 @@ public:
     virtual void addContainer(std::shared_ptr<HierarchicalItemsContainer>) = 0;
     virtual std::shared_ptr<HierarchicalItemsContainer> removeContainer(std::shared_ptr<HierarchicalItemsContainer>) = 0;
     virtual const Containers& getContainers() const = 0;
+    virtual std::optional<std::shared_ptr<HierarchicalItemsContainer>> getPrecedent() const = 0;
 };
 
 }

@@ -15,11 +15,11 @@ class Container : public std::enable_shared_from_this<Container>,
                   private ItemsContainer,
                   HierarchicalClass<Container, HierarchicalItemsContainer>
 {
-  public:
+public:
     using ItemsContainer::addItem;
-    using ItemsContainer::removeItem;
     using ItemsContainer::getItems;
     using ItemsContainer::getNonConsumedItems;
+    using ItemsContainer::removeItem;
 
     struct LiesNowhere : public std::logic_error
     {
@@ -92,7 +92,9 @@ class Container : public std::enable_shared_from_this<Container>,
         return shared_from_this();
     }
 
-  private:
+    std::optional<std::shared_ptr<HierarchicalItemsContainer>> getPrecedent() const override;
+
+private:
     friend class HierarchicalClass<Container, HierarchicalItemsContainer>;
     Container(const std::string& name_arg) : name{name_arg}
     {
@@ -114,4 +116,4 @@ class Container : public std::enable_shared_from_this<Container>,
 
     std::string name;
 };
-}
+} // namespace depot
