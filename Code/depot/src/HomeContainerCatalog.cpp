@@ -50,7 +50,7 @@ void HomeContainerCatalog::removeTopLevelContainer(ContainerInside container)
 
 depot::ItemsContainer& HomeContainerCatalog::getContainerForConsumedItems() const
 {
-  return *consumedItems;
+    return *consumedItems;
 }
 
 }
