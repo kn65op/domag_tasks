@@ -1,55 +1,64 @@
-language: cpp
-
 matrix:
-  include:
-    - compiler: gcc
+  allow_failures:
+    - language: cpp
+      compiler: gcc
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-7
+            - g++-8
             - libgtkmm-3.0-dev
+      script:
+        # We need this line to have g++4.8 available in apt
+        - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        - git clone https://github.com/google/googletest.git
+        - wget --output-document=cmake.tar.gz --no-check-certificate https://cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
+        - tar xzf cmake.tar.gz
+        - mkdir _build
+        - cd _build
+        # Install newer boost compatible with gcc 4.8.
+        - wget  --output-document=boost-trunk.tar.bz2 http://ufpr.dl.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2
+        - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost-trunk"
+        - export CMAKE_MODULE_PATH="$BOOST_ROOT"
+        - mkdir -p $BOOST_ROOT
+        - tar jxf boost-trunk.tar.bz2 --strip-components=1 -C $BOOST_ROOT
+        - (cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=date_time,filesystem,system,iostreams,regex,python,test)
+        - (cd $BOOST_ROOT; ./b2 threading=multi --prefix=$BOOST_ROOT -d0 install)
+        -  if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi
+        - uname -a
+        - pwd
+        - env CC=${C_COMPILER} CXX=${CXX_COMPILER} ../cmake-3.2.3-Linux-x86_64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=$BOOST_ROOT -DGMOCK_DIR=../googletest/googlemock ../  || cat /home/travis/build/kn65op/domag/_build/CMakeFiles/CMakeOutput.log /home/travis/build/kn65op/domag/_build/CMakeFiles/CMakeError.log
+        - make -j `nproc`
+        - Test/Tester
+      
       env:
-      - C_COMPILER=gcc-7
-      - CXX_COMPILER=g++-7
+        global:
+         - C_COMPILER=gcc-8
+         - CXX_COMPILER=g++-8
+         # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+         #   via the "travis encrypt" command using the project repo's public key
+         - secure: "q5tfxvdFtp7G4hQnunPhE4+tnF5115pLc4HsxUyHZCpgALahBatLu5KqS/3QibFEq+CTQbZYZXBPRQr2N2WWF0YFgjidUuvv377vZvePytweHDhyTxM4EA4KISWw78xdf+x8ZJQfG9gkyvPfVuNdAM4/Bx52eceQHKpXTOs1jHPLStz9+x+N9vomww0V6cmkGBFVMwpf3Vlq4r+3YS6lb0eP4L4FTiJGqS3mpZQlqoH3eOAEK/zNdXLy8Lkh3Dp0P6LxowS+ZWuWTlXQVT07+yACq7aM06ny8LesGijlgn0uenpVb49Iak2QgUzkj55GilD9eF07R1GX5vUSwvzZOC5r5TcAe1ZXSiV+QC9Pg7Plc5V/ghFX2J8d0HplikMovHW0SDZMXjnQGDWRy+mJmDH99Whl6D3d2XUMF6YpDHIcj43b6qBGbiO42aYhF1WTzM7p4XZUliam7wL5NxGHkLs9s4FCHf6km3wAzBXahmcfOg/z7G6UUTe+Q28YrYkFnDM5P31YN+PDirluDOy0YlLEvNysi7zgK5ZTVbuqhC6uZIOIJWw1nBc32hdfGeq0tWkFPitutThJw+/uGPPyCdR/iYGCtz3D0qhH+IpKculia1Bvamukn0pQKoKH3/2ggFPlpb76x8wN3M8WRvHBR6zBMxVAd8l1rG01EjiGrks="
+           
+      addons:
+        coverity_scan:
+          project:
+            name: "kn65op/domag"
+            description: "<Your project description here>"
+          notification_email: kn65op+github@gmail.com
+          build_command_prepend: cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0
+          build_command: make -j `nproc`
+          branch_pattern: coverity_scan
 
-script:
-  # We need this line to have g++4.8 available in apt
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - git clone https://github.com/google/googletest.git
-  - wget --output-document=cmake.tar.gz --no-check-certificate https://cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
-  - tar xzf cmake.tar.gz
-  - mkdir _build
-  - cd _build
-  # Install newer boost compatible with gcc 4.8.
-  - wget  --output-document=boost-trunk.tar.bz2 http://ufpr.dl.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2
-  - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost-trunk"
-  - export CMAKE_MODULE_PATH="$BOOST_ROOT"
-  - mkdir -p $BOOST_ROOT
-  - tar jxf boost-trunk.tar.bz2 --strip-components=1 -C $BOOST_ROOT
-  - (cd $BOOST_ROOT; ./bootstrap.sh --with-libraries=date_time,filesystem,system,iostreams,regex,python,test)
-  - (cd $BOOST_ROOT; ./b2 threading=multi --prefix=$BOOST_ROOT -d0 install)
-  -  if [ ${COVERITY_SCAN_BRANCH} == 1 ]; then exit ; fi
-  - uname -a
-  - pwd
-  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} ../cmake-3.2.3-Linux-x86_64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=$BOOST_ROOT -DGMOCK_DIR=../googletest/googlemock ../  || cat /home/travis/build/kn65op/domag/_build/CMakeFiles/CMakeOutput.log /home/travis/build/kn65op/domag/_build/CMakeFiles/CMakeError.log
-  - make -j `nproc`
-  - Test/Tester
-
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "q5tfxvdFtp7G4hQnunPhE4+tnF5115pLc4HsxUyHZCpgALahBatLu5KqS/3QibFEq+CTQbZYZXBPRQr2N2WWF0YFgjidUuvv377vZvePytweHDhyTxM4EA4KISWw78xdf+x8ZJQfG9gkyvPfVuNdAM4/Bx52eceQHKpXTOs1jHPLStz9+x+N9vomww0V6cmkGBFVMwpf3Vlq4r+3YS6lb0eP4L4FTiJGqS3mpZQlqoH3eOAEK/zNdXLy8Lkh3Dp0P6LxowS+ZWuWTlXQVT07+yACq7aM06ny8LesGijlgn0uenpVb49Iak2QgUzkj55GilD9eF07R1GX5vUSwvzZOC5r5TcAe1ZXSiV+QC9Pg7Plc5V/ghFX2J8d0HplikMovHW0SDZMXjnQGDWRy+mJmDH99Whl6D3d2XUMF6YpDHIcj43b6qBGbiO42aYhF1WTzM7p4XZUliam7wL5NxGHkLs9s4FCHf6km3wAzBXahmcfOg/z7G6UUTe+Q28YrYkFnDM5P31YN+PDirluDOy0YlLEvNysi7zgK5ZTVbuqhC6uZIOIJWw1nBc32hdfGeq0tWkFPitutThJw+/uGPPyCdR/iYGCtz3D0qhH+IpKculia1Bvamukn0pQKoKH3/2ggFPlpb76x8wN3M8WRvHBR6zBMxVAd8l1rG01EjiGrks="
-     
-
-addons:
-  coverity_scan:
-    project:
-      name: "kn65op/domag"
-      description: "<Your project description here>"
-    notification_email: kn65op+github@gmail.com
-    build_command_prepend: cmake .. -DCMAKE_BUILD_TYPE=Debug  -DGMOCK_DIR=../gmock-1.7.0
-    build_command: make -j `nproc`
-    branch_pattern: coverity_scan
+  include:
+    - language: android
+      jdk: oraclejdk8
+      android: 
+        components: 
+          - tools 
+          - android-28
+          - build-tools-28.0.3
+      before_script:
+        - cd android
+      script:
+        - ./gradlew build
