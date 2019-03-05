@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
+             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
              android:layout_height="wrap_content">
 
     <TableRow android:layout_height="match_parent" android:layout_width="0px">
@@ -9,11 +9,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:id="@+id/taskView"/>
+                android:id="@+id/taskView"
+                android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Headline6"/>
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/task_view_done"/>
+    </TableRow>
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:id="@+id/task_next_deadline"/>
+                android:id="@+id/task_next_deadline"
+                android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"/>
     </TableRow>
 </TableLayout>

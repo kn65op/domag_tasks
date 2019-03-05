@@ -3,11 +3,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_task">Add task</string>
     <!-- Strings related to add task -->
-    <string name="prompt_task_name">Name</string>
+    <string name="prompt_task_name">Summary</string>
     <string name="add_task_button">Add task</string>
     <string name="remove_tasks">Remove tasks</string>
     <string name="task_deadline">Deadline</string>
     <string name="day">Day</string>
     <string name="time">Time</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
+    <string name="task_completed">Completed</string>
 </resources>

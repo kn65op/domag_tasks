@@ -6,8 +6,9 @@ typealias Id = Int
 
 interface Task {
     var id: Id
-    val name: String
+    val summary: String
     val type: String
+    val done : Boolean
     val nextDeadline: ZonedDateTime
 
     fun serializeToString(): String

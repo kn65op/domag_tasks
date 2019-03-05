@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.domag.R
 import com.example.domag.tasks.Id
+import com.example.domag.tasks.SortedByDoneAndDateTasks
 import com.example.domag.tasks.Task
 import com.example.domag.tasks.TasksDeserializer
 import com.example.domag.utils.filesystem.FileIo
@@ -31,7 +32,7 @@ class DriveDataStorage(
     override fun store(task: Task) {
         val currentTasks = loadTasks()
         updateIdIfNeeded(task)
-        val tasks = currentTasks.dropWhile { it.id == task.id } + task
+        val tasks = currentTasks.tasks.dropWhile { it.id == task.id } + task
         val serializedTasks =
             tasks.fold(String()) { acc, currentTask -> acc + taskSeparator(task.type) + currentTask.serializeToString() }
         val dataToStore = version + serializedTasks
@@ -64,7 +65,7 @@ class DriveDataStorage(
         throw UnableToStoreTask("Unable to store tasks: ${e.message}")
     }
 
-    override fun loadTasks(): List<Task> {
+    override fun loadTasks(): SortedByDoneAndDateTasks {
         val dataFromFile = readFromFile()
         val fileData = dataFromFile.split(taskSeparatorText)
         val versionSize = 1
@@ -72,12 +73,12 @@ class DriveDataStorage(
         try {
             val tasks = tasksData.flatMap { listOf(taskDeserializer.deserializeTask(it.trim())) }
             tasks.forEach { if (it.id > maxTaskId) maxTaskId = it.id }
-            return tasks
+            return SortedByDoneAndDateTasks(tasks)
         } catch (e: Exception) {
-            Log.i(TAG, platform.getString(R.string.task_file_broken))
+            Log.e(TAG, platform.getString(R.string.task_file_broken))
             platform.showToast(platform.getString(R.string.task_file_broken))
-            clearTasks();
-            return emptyList()
+            clearTasks()
+            return SortedByDoneAndDateTasks()
         }
     }
 

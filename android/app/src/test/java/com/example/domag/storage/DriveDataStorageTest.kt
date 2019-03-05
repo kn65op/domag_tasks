@@ -105,7 +105,7 @@ class DriveDataStorageTest : DriveDataStorageBaseFixture() {
     fun `Should return empty tasks when file does not exist`() {
         whenever(fileIo.exists(taskFile)).thenReturn(false)
 
-        assertThat(storage.loadTasks(), equalTo(emptyList()))
+        assertThat(storage.loadTasks().tasks, equalTo(emptyList()))
     }
 
     @Test
@@ -137,7 +137,7 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
         val onlyVersion = versionText
         whenever(fileIo.readFromFile(taskFile)).thenReturn(onlyVersion)
 
-        assertThat(storage.loadTasks(), equalTo(emptyList()))
+        assertThat(storage.loadTasks().tasks, equalTo(emptyList()))
 
         verify(fileIo, times(oneTime)).readFromFile(taskFile)
     }
@@ -154,7 +154,7 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
         whenever(fileIo.readFromFile(taskFile)).thenReturn(fileContentWithOneTask)
         whenever(taskDeserializer.deserializeTask(taskDataFromFile)).thenReturn(task)
 
-        val tasks = storage.loadTasks()
+        val tasks = storage.loadTasks().tasks
         assertThat(tasks, has(List<Task>::size, equalTo(oneItem)))
         assertThat(tasks, equalTo(listOf(task)))
     }

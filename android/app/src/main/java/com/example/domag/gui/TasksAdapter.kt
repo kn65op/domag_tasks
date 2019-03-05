@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.R
@@ -21,6 +22,7 @@ class TasksAdapter(
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewField: TextView = view.findViewById(R.id.taskView)
         val nextDeadlineField: TextView = view.findViewById(R.id.task_next_deadline)
+        val doneCheckBox : CheckBox = view.findViewById(R.id.task_view_done)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -31,10 +33,11 @@ class TasksAdapter(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.i(TAG, "Add item $position")
-        val task = taskStorage.loadTasks()[position]
-        holder.textViewField.text = task.name
+        val task = taskStorage.loadTasks().tasks[position]
+        holder.textViewField.text = task.summary
         holder.nextDeadlineField.text = task.nextDeadline.format(timeFormatter)
+        holder.doneCheckBox.isChecked = task.done
     }
 
-    override fun getItemCount(): Int = taskStorage.loadTasks().size
+    override fun getItemCount(): Int = taskStorage.loadTasks().tasks.size
 }

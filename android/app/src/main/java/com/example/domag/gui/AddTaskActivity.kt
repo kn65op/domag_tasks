@@ -17,29 +17,35 @@ import com.example.domag.tasks.JsonTaskDeserializer
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.utils.platform.AndroidWrapper
 import kotlinx.android.synthetic.main.activity_add_task.*
+import java.lang.Exception
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+val hardocodedHour: LocalTime = LocalTime.of(12, 0)
+
 class AddTaskActivity(
     val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
 ) : AppCompatActivity() {
 
     class DatePickerFragment(
-        val dateField: TextView,
-        val timeFormatter: DateTimeFormatter
+        private val dateField: TextView,
+        private val timeFormatter: DateTimeFormatter
     ) : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val dateWritten = LocalDate.parse(dateField.text, timeFormatter)
             Log.i(LOG_TAG, "Create date from: ${dateField.text}")
-            return DatePickerDialog(context, this, dateWritten.year, dateWritten.monthValue - 1, dateWritten.dayOfMonth)
+            if (context == null)
+                throw Exception("Dialog cannot be created without context")
+
+            return DatePickerDialog(context!!, this, dateWritten.year, dateWritten.monthValue - 1, dateWritten.dayOfMonth)
         }
 
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-            val currentTime = ZonedDateTime.of(LocalDate.of(year, month + 1, day), LocalTime.now(), ZoneId.systemDefault())
+            val currentTime = ZonedDateTime.of(LocalDate.of(year, month + 1, day), hardocodedHour, ZoneId.systemDefault())
 
             dateField.text = currentTime.format(timeFormatter)
         }
@@ -49,7 +55,7 @@ class AddTaskActivity(
         }
     }
 
-    fun showDatePicker(v: View) {
+    fun showDatePicker() {
         DatePickerFragment(add_task_deadline_date, timeFormatter).show(supportFragmentManager, "AddTaskDatePicker")
     }
 
@@ -61,7 +67,7 @@ class AddTaskActivity(
 
         addTaskButton.setOnClickListener {
             val storage = DriveDataStorage(applicationContext, AndroidWrapper(applicationContext), taskDeserializer = JsonTaskDeserializer())
-            val deadline = ZonedDateTime.of(LocalDate.parse(add_task_deadline_date.text, timeFormatter), LocalTime.now(), ZoneId.systemDefault())
+            val deadline = ZonedDateTime.of(LocalDate.parse(add_task_deadline_date.text, timeFormatter), hardocodedHour, ZoneId.systemDefault())
             storage.store(SimpleTask(newTaskName.text.toString(), deadline))
             finish()
         }

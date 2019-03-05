@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Domag</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="add_task_button">Dodaj zadanie</string>
+    <string name="day">Dzień</string>
+    <string name="prompt_task_name">Zadanie</string>
+    <string name="remove_tasks">Usuń zadania</string>
+    <string name="task_completed">Zakończone</string>
+    <string name="task_deadline">Termin</string>
+    <string name="task_file_broken">Dane zadań uszkodzone. Wszystkie zadania zostały usunięte</string>
+    <string name="time">Czas</string>
+    <string name="title_activity_add_task">Dodaj zadanie</string>
+</resources>
