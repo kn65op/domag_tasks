@@ -24,6 +24,7 @@ class SortedByDoneAndDateTasksTest {
     )
     private val secondDate = firstDate.withYear(2013)
     private val thirdDate = firstDate.withYear(2015)
+    private val earliersDate = firstDate.withYear(2010)
 
     private val firstSummary = "A"
     private val secondSummary = "B"
@@ -32,9 +33,11 @@ class SortedByDoneAndDateTasksTest {
     private val middleTaskWithFirstSummary: Task = mock()
     private val middleTaskWithSecondSummary: Task = mock()
     private val latestTask: Task = mock()
+    private val earliestDoneTask: Task = mock()
 
     private val unsortedTasks =
         listOf(
+            earliestDoneTask,
             latestTask,
             middleTaskWithSecondSummary,
             middleTaskWithFirstSummary,
@@ -44,19 +47,31 @@ class SortedByDoneAndDateTasksTest {
         earliestTask,
         middleTaskWithFirstSummary,
         middleTaskWithSecondSummary,
-        latestTask
+        latestTask,
+        earliestDoneTask
     )
+
+    private val notDone = false
+    private val done = true
 
     init {
         whenever(earliestTask.nextDeadline).thenReturn(firstDate)
         whenever(middleTaskWithFirstSummary.nextDeadline).thenReturn(secondDate)
         whenever(middleTaskWithSecondSummary.nextDeadline).thenReturn(secondDate)
         whenever(latestTask.nextDeadline).thenReturn(thirdDate)
+        whenever(earliestDoneTask.nextDeadline).thenReturn(earliersDate)
 
         whenever(earliestTask.summary).thenReturn(secondSummary)
         whenever(middleTaskWithFirstSummary.summary).thenReturn(firstSummary)
         whenever(middleTaskWithSecondSummary.summary).thenReturn(secondSummary)
         whenever(latestTask.summary).thenReturn(firstSummary)
+        whenever(earliestDoneTask.summary).thenReturn(firstSummary)
+
+        whenever(earliestTask.done).thenReturn(notDone)
+        whenever(middleTaskWithFirstSummary.done).thenReturn(notDone)
+        whenever(middleTaskWithSecondSummary.done).thenReturn(notDone)
+        whenever(latestTask.done).thenReturn(notDone)
+        whenever(earliestDoneTask.done).thenReturn(done)
     }
 
     @Test

@@ -55,7 +55,7 @@ class AddTaskActivity(
         }
     }
 
-    fun showDatePicker() {
+    fun showDatePicker(view : View) {
         DatePickerFragment(add_task_deadline_date, timeFormatter).show(supportFragmentManager, "AddTaskDatePicker")
     }
 

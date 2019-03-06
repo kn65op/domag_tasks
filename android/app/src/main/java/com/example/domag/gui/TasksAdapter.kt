@@ -13,7 +13,8 @@ import java.time.format.DateTimeFormatter
 
 class TasksAdapter(
     private val taskStorage: DataStorage,
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
+    private val refreshViewFunction : () -> Unit,
+    private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
 ) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
     companion object {
         const val TAG = "TaskAdapter"
@@ -22,7 +23,7 @@ class TasksAdapter(
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewField: TextView = view.findViewById(R.id.taskView)
         val nextDeadlineField: TextView = view.findViewById(R.id.task_next_deadline)
-        val doneCheckBox : CheckBox = view.findViewById(R.id.task_view_done)
+        val doneCheckBox: CheckBox = view.findViewById(R.id.task_view_done)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -37,6 +38,15 @@ class TasksAdapter(
         holder.textViewField.text = task.summary
         holder.nextDeadlineField.text = task.nextDeadline.format(timeFormatter)
         holder.doneCheckBox.isChecked = task.done
+        holder.doneCheckBox.setOnClickListener { view ->
+            if (view is CheckBox) {
+                task.done = view.isChecked
+                taskStorage.store(task)
+                refreshViewFunction()
+            } else {
+                Log.e(TAG, "OnClickListener for checkbox got other View then Checkbox")
+            }
+        }
     }
 
     override fun getItemCount(): Int = taskStorage.loadTasks().tasks.size

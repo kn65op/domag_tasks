@@ -9,9 +9,9 @@ import java.time.ZonedDateTime
 @Serializable
 class SimpleTask(
     override val summary: String,
-    @Serializable(with= ZoneDataTimeWithoutZoneChangeSerializer::class) override val nextDeadline: ZonedDateTime = ZonedDateTime.now(),
+    @Serializable(with = ZoneDataTimeWithoutZoneChangeSerializer::class) override val nextDeadline: ZonedDateTime = ZonedDateTime.now(),
     override var id: Id = 0,
-    override val done : Boolean = false
+    override var done: Boolean = false
 ) : Task {
     companion object {
         const val type = "SIMPLE TASK"
@@ -24,19 +24,25 @@ class SimpleTask(
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 
     override fun toString(): String {
-        return "$type($id): $summary"
+        return "$type($id): [$done] $summary - $nextDeadline"
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is SimpleTask) {
-            return other.id == id && other.summary == summary
+            return other.id == id
+                    && other.summary == summary
+                    && other.done == done
+                    && nextDeadline == other.nextDeadline
         }
         return false
     }
 
     override fun hashCode(): Int {
         var result = summary.hashCode()
+        result = 31 * result + nextDeadline.hashCode()
         result = 31 * result + id
+        result = 31 * result + done.hashCode()
         return result
     }
+
 }

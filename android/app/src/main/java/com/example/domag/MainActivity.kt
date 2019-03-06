@@ -30,7 +30,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         viewManager = LinearLayoutManager(this)
-        storage = DriveDataStorage(applicationContext, AndroidWrapper(applicationContext ), taskDeserializer = JsonTaskDeserializer())
+        storage = DriveDataStorage(
+            applicationContext,
+            AndroidWrapper(applicationContext),
+            taskDeserializer = JsonTaskDeserializer()
+        )
 
         prepareTaskView()
 
@@ -48,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun prepareTaskView() {
         MainTasksList.apply {
             layoutManager = viewManager
-            adapter = TasksAdapter(storage)
+            adapter = TasksAdapter(storage, { MainTasksList.adapter?.notifyDataSetChanged() })
         }
     }
 

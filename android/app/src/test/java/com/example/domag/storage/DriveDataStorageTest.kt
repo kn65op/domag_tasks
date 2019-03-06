@@ -49,6 +49,9 @@ open class DriveDataStorageBaseFixture {
     protected val taskDataFromFile = """$taskType
         |
         |Task data""".trimMargin()
+    protected val secondTaskDataFromFile = """$taskType
+        |
+        |$serializedData""".trimMargin()
     protected val fileContentWithOneTask = versionText + taskSeparator + taskData
     private val someText = "someText"
 
@@ -196,5 +199,33 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
         storage.store(taskFromFile)
 
         verify(fileIo, times(oneTime)).writeToFile(taskFile, textToWrite)
+    }
+
+    @Test
+    fun `Should replace task if task with the same id already exists and is not first in list`() {
+        whenever(fileIo.readFromFile(taskFile)).thenReturn(fileContentWithOneTask)
+        whenever(taskDeserializer.deserializeTask(taskDataFromFile)).thenReturn(taskFromFile)
+        whenever(taskFromFile.serializeToString()).thenReturn(taskData)
+        val textToWrite = "$versionText$taskSeparator$taskData"
+
+        storage.store(taskFromFile)
+
+        verify(fileIo, times(oneTime)).writeToFile(taskFile, textToWrite)
+    }
+
+    @Test
+    fun `Should replacte task if task with the same id already exists and is not first`() {
+        val fileText = fileContentWithOneTask + taskSeparator + serializedData
+
+        whenever(fileIo.readFromFile(taskFile)).thenReturn(fileText)
+        whenever(taskDeserializer.deserializeTask(taskDataFromFile)).thenReturn(taskFromFile)
+        whenever(taskDeserializer.deserializeTask(secondTaskDataFromFile)).thenReturn(task)
+        whenever(taskFromFile.serializeToString()).thenReturn(taskData)
+        whenever(task.serializeToString()).thenReturn(serializedData)
+        whenever(task.serializeToString()).thenReturn(serializedData)
+
+        storage.store(task)
+
+        verify(fileIo, times(oneTime)).writeToFile(taskFile, fileText)
     }
 }

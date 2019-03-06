@@ -15,7 +15,7 @@ import java.io.File
 
 class DriveDataStorage(
     private val androidContext: Context,
-    private val platform : PlatformWrapper,
+    private val platform: PlatformWrapper,
     private val fileIo: FileIo = FileIoImpl(),
     private val taskDeserializer: TasksDeserializer
 ) : DataStorage {
@@ -30,13 +30,16 @@ class DriveDataStorage(
         get() = File(androidContext.filesDir, "Tasks.txt")
 
     override fun store(task: Task) {
+        Log.i(TAG, "Storing $task")
         val currentTasks = loadTasks()
         updateIdIfNeeded(task)
-        val tasks = currentTasks.tasks.dropWhile { it.id == task.id } + task
+        Log.i(TAG, "Storing $task")
+        val tasks = currentTasks.tasks.filter { it.id != task.id } + task
         val serializedTasks =
             tasks.fold(String()) { acc, currentTask -> acc + taskSeparator(task.type) + currentTask.serializeToString() }
         val dataToStore = version + serializedTasks
         storeData(dataToStore)
+        Log.i(TAG, "Store complieted: ${tasks.size}.")
     }
 
     private fun updateIdIfNeeded(task: Task) {

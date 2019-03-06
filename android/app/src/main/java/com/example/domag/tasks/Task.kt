@@ -8,7 +8,7 @@ interface Task {
     var id: Id
     val summary: String
     val type: String
-    val done : Boolean
+    var done : Boolean
     val nextDeadline: ZonedDateTime
 
     fun serializeToString(): String
