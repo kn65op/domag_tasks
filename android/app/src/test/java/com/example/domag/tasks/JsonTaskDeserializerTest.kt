@@ -10,14 +10,14 @@ import kotlin.test.assertFailsWith
 class JsonTaskDeserializerTest {
     private val deserializer = JsonTaskDeserializer()
     private val expectedNextDeadline = ZonedDateTime.of(
-        2012,
+        2011,
         12,
         3,
         10,
         15,
-        40,
+        30,
         0,
-        ZoneId.of("Europe/Paris")
+        ZoneId.of("+01:00")
     )
 
     @Test
