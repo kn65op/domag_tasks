@@ -3,12 +3,12 @@ package com.example.domag.gui
 import android.annotation.TargetApi
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.DatePicker
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.example.domag.R
@@ -17,46 +17,67 @@ import com.example.domag.tasks.JsonTaskDeserializer
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.utils.platform.AndroidWrapper
 import kotlinx.android.synthetic.main.activity_add_task.*
-import java.lang.Exception
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-val hardocodedHour: LocalTime = LocalTime.of(12, 0)
+class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
+    internal lateinit var listener: DatePickerListener
 
-class AddTaskActivity(
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
-) : AppCompatActivity() {
+    lateinit var date: LocalDate
 
-    class DatePickerFragment(
-        private val dateField: TextView,
-        private val timeFormatter: DateTimeFormatter
-    ) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+    interface DatePickerListener {
+        fun onDialogPositiveClick(dialog: DialogFragment)
+        fun onDialogNegativeClick(dialog: DialogFragment)
+    }
 
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            val dateWritten = LocalDate.parse(dateField.text, timeFormatter)
-            Log.i(LOG_TAG, "Create date from: ${dateField.text}")
-            if (context == null)
-                throw Exception("Dialog cannot be created without context")
-
-            return DatePickerDialog(context!!, this, dateWritten.year, dateWritten.monthValue - 1, dateWritten.dayOfMonth)
-        }
-
-        override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-            val currentTime = ZonedDateTime.of(LocalDate.of(year, month + 1, day), hardocodedHour, ZoneId.systemDefault())
-
-            dateField.text = currentTime.format(timeFormatter)
-        }
-
-        companion object {
-            private const val LOG_TAG = "DataPickerFragment"
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as DatePickerListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(
+                (context.toString() + " must implement DatePickerListener")
+            )
         }
     }
 
-    fun showDatePicker(view : View) {
-        DatePickerFragment(add_task_deadline_date, timeFormatter).show(supportFragmentManager, "AddTaskDatePicker")
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        Log.i(LOG_TAG, "Create date from: ${date}")
+        if (context == null)
+            throw Exception("Dialog cannot be created without context")
+
+        return DatePickerDialog(
+            context!!,
+            this,
+            date.year,
+            date.monthValue - 1,
+            date.dayOfMonth
+        )
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+        date = LocalDate.of(year, month + 1, day)
+        listener.onDialogPositiveClick(this)
+    }
+
+    companion object {
+        private const val LOG_TAG = "DataPickerFragment"
+    }
+}
+
+class AddTaskActivity(
+    private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
+    private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
+) : AppCompatActivity(),
+    DatePickerFragment.DatePickerListener {
+
+    fun showDatePicker(view: View) {
+        val datePicker = DatePickerFragment()
+        datePicker.date = LocalDate.parse(add_task_deadline_date.text, timeFormatter)
+        datePicker.show(supportFragmentManager, "DatePickerFragment")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,15 +87,36 @@ class AddTaskActivity(
         add_task_deadline_date.text = ZonedDateTime.now().format(timeFormatter)
 
         addTaskButton.setOnClickListener {
-            val storage = DriveDataStorage(applicationContext, AndroidWrapper(applicationContext), taskDeserializer = JsonTaskDeserializer())
-            val deadline = ZonedDateTime.of(LocalDate.parse(add_task_deadline_date.text, timeFormatter), hardocodedHour, ZoneId.systemDefault())
+            val storage = DriveDataStorage(
+                applicationContext,
+                AndroidWrapper(applicationContext),
+                taskDeserializer = JsonTaskDeserializer()
+            )
+            val deadline = ZonedDateTime.of(
+                LocalDate.parse(add_task_deadline_date.text, timeFormatter),
+                hardcodedHour,
+                ZoneId.systemDefault()
+            )
             storage.store(SimpleTask(newTaskName.text.toString(), deadline))
             finish()
         }
     }
 
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        Log.i(LOG_TAG, "Do nothing")
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        dialog as DatePickerFragment
+        add_task_deadline_date.text = dialog.date.format(timeFormatter)
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private fun setupActionBar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    companion object {
+        private const val LOG_TAG = "AddTaskActivity"
     }
 }

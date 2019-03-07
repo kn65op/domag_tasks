@@ -27,7 +27,7 @@ class MainActivityUiTest {
         return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
             override fun describeTo(description: Description?) {
                 description?.appendText("has item on position $i ")
-                withText?.describeTo(description)
+                withText.describeTo(description)
             }
 
             override fun matchesSafely(item: RecyclerView?): Boolean {
