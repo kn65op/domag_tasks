@@ -11,4 +11,5 @@
     <string name="time">Time</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="task_completed">Completed</string>
+    <string name="remove_task">Remove</string>
 </resources>

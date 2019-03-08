@@ -4,10 +4,14 @@ import android.annotation.TargetApi
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.example.domag.R
+import com.example.domag.gui.utils.replaceText
+import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DriveDataStorage
 import com.example.domag.tasks.JsonTaskDeserializer
 import com.example.domag.tasks.SimpleTask
@@ -27,6 +31,7 @@ class SimpleTaskEditActivity(
     DatePickerFragment.DatePickerListener {
 
     private lateinit var task: Task;
+    private lateinit var storage : DataStorage
 
     fun showDatePicker(view: View) {
         val datePicker = DatePickerFragment()
@@ -41,14 +46,15 @@ class SimpleTaskEditActivity(
         val dataPassed = intent.getSerializableExtra("Task")
         task = dataPassed as? Task ?: SimpleTask("", ZonedDateTime.now())
         add_task_deadline_date.text = task.nextDeadline.format(timeFormatter)
-        newTaskName.text.replace(0, newTaskName.text.length, task.summary)
+        newTaskName.replaceText(task.summary)
+
+        storage = DriveDataStorage(
+            applicationContext,
+            AndroidWrapper(applicationContext),
+            taskDeserializer = JsonTaskDeserializer()
+        )
 
         addTaskButton.setOnClickListener {
-            val storage = DriveDataStorage(
-                applicationContext,
-                AndroidWrapper(applicationContext),
-                taskDeserializer = JsonTaskDeserializer()
-            )
             val deadline = ZonedDateTime.of(
                 LocalDate.parse(add_task_deadline_date.text, timeFormatter),
                 hardcodedHour,
@@ -73,6 +79,24 @@ class SimpleTaskEditActivity(
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private fun setupActionBar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.edit_task_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.i(LOG_TAG, "Menu item selected")
+        return when (item.itemId) {
+            R.id.remove_task_menu_item ->
+            {
+                storage.remove(task)
+                finish()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

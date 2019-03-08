@@ -11,4 +11,5 @@
     <string name="task_file_broken">Dane zadań uszkodzone. Wszystkie zadania zostały usunięte</string>
     <string name="time">Czas</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
+    <string name="remove_task">Usuń zadanie</string>
 </resources>

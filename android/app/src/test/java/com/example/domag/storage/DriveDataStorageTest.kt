@@ -214,7 +214,7 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
     }
 
     @Test
-    fun `Should replacte task if task with the same id already exists and is not first`() {
+    fun `Should replace task if task with the same id already exists and is not first`() {
         val fileText = fileContentWithOneTask + taskSeparator + serializedData
 
         whenever(fileIo.readFromFile(taskFile)).thenReturn(fileText)
@@ -222,10 +222,24 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
         whenever(taskDeserializer.deserializeTask(secondTaskDataFromFile)).thenReturn(task)
         whenever(taskFromFile.serializeToString()).thenReturn(taskData)
         whenever(task.serializeToString()).thenReturn(serializedData)
-        whenever(task.serializeToString()).thenReturn(serializedData)
 
         storage.store(task)
 
         verify(fileIo, times(oneTime)).writeToFile(taskFile, fileText)
+    }
+
+    @Test
+    fun `Should remove task`() {
+        val fileText = fileContentWithOneTask + taskSeparator + serializedData
+
+        whenever(fileIo.readFromFile(taskFile)).thenReturn(fileText)
+        whenever(taskDeserializer.deserializeTask(taskDataFromFile)).thenReturn(taskFromFile)
+        whenever(taskDeserializer.deserializeTask(secondTaskDataFromFile)).thenReturn(task)
+        whenever(task.serializeToString()).thenReturn(taskData)
+
+        storage.remove(taskFromFile)
+
+        val expectedFileText = fileContentWithOneTask
+        verify(fileIo, times(oneTime)).writeToFile(taskFile, expectedFileText)
     }
 }

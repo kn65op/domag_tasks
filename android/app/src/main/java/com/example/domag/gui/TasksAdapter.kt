@@ -33,7 +33,7 @@ class TasksAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        Log.i(TAG, "Create view holder")
+        Log.d(TAG, "Create view holder")
         val newView = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false) as View
         return TaskViewHolder(newView)
     }

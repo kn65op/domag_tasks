@@ -2,11 +2,16 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.domag.MainActivity">
-    <item android:title="@string/remove_tasks" android:orderInCategory="100" android:id="@+id/remove_tasks_menu_item"/>
     <group
-            android:orderInCategory="101"/>
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="102"
-          app:showAsAction="never"/>
+    >
+        <item android:title="@string/remove_tasks" android:orderInCategory="100"
+              android:id="@+id/remove_tasks_menu_item"/>
+    </group>
+    <group
+            android:orderInCategory="101">
+        <item android:id="@+id/action_settings"
+              android:title="@string/action_settings"
+              android:orderInCategory="102"
+              app:showAsAction="never"/>
+    </group>
 </menu>

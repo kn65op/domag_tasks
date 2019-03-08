@@ -3,10 +3,7 @@ package com.example.domag.storage
 import android.content.Context
 import android.util.Log
 import com.example.domag.R
-import com.example.domag.tasks.Id
-import com.example.domag.tasks.SortedByDoneAndDateTasks
-import com.example.domag.tasks.Task
-import com.example.domag.tasks.TasksDeserializer
+import com.example.domag.tasks.*
 import com.example.domag.utils.filesystem.FileIo
 import com.example.domag.utils.filesystem.FileIoError
 import com.example.domag.utils.filesystem.FileIoImpl
@@ -34,13 +31,25 @@ class DriveDataStorage(
         val currentTasks = loadTasks()
         updateIdIfNeeded(task)
         Log.i(TAG, "Storing $task")
-        val tasks = currentTasks.tasks.filter { it.id != task.id } + task
+        val tasks = tasksWithoutTask(currentTasks, task) + task
+        storeTasks(tasks)
+        Log.i(TAG, "Store completed: ${tasks.size}.")
+    }
+
+    private fun storeTasks(
+        tasks: List<Task>
+    ) {
+        Log.i(TAG, "Storing ${tasks.size}")
         val serializedTasks =
-            tasks.fold(String()) { acc, currentTask -> acc + taskSeparator(task.type) + currentTask.serializeToString() }
+            tasks.fold(String()) { acc, currentTask -> acc + taskSeparator(currentTask.type) + currentTask.serializeToString() }
         val dataToStore = version + serializedTasks
         storeData(dataToStore)
-        Log.i(TAG, "Store complieted: ${tasks.size}.")
     }
+
+    private fun tasksWithoutTask(
+        currentTasks: Tasks,
+        task: Task
+    ) = currentTasks.tasks.filter { it.id != task.id }
 
     private fun updateIdIfNeeded(task: Task) {
         if (task.id == 0) {
@@ -98,6 +107,11 @@ class DriveDataStorage(
 
     override fun clearTasks() {
         storeData(version)
+    }
+
+    override fun remove(task: Task) {
+        Log.i(TAG, "Removing $task")
+        storeTasks(tasksWithoutTask(loadTasks(), task))
     }
 
     companion object {
