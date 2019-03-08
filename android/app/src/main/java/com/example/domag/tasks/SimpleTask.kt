@@ -8,8 +8,8 @@ import java.time.ZonedDateTime
 
 @Serializable
 class SimpleTask(
-    override val summary: String,
-    @Serializable(with = ZoneDataTimeWithoutZoneChangeSerializer::class) override val nextDeadline: ZonedDateTime = ZonedDateTime.now(),
+    override var summary: String,
+    @Serializable(with = ZoneDataTimeWithoutZoneChangeSerializer::class) override var nextDeadline: ZonedDateTime = ZonedDateTime.now(),
     override var id: Id = 0,
     override var done: Boolean = false
 ) : Task {
@@ -44,5 +44,4 @@ class SimpleTask(
         result = 31 * result + done.hashCode()
         return result
     }
-
 }

@@ -1,11 +1,15 @@
 package com.example.domag.gui
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.R
 import com.example.domag.storage.DataStorage
@@ -13,14 +17,16 @@ import java.time.format.DateTimeFormatter
 
 class TasksAdapter(
     private val taskStorage: DataStorage,
-    private val refreshViewFunction : () -> Unit,
+    private val refreshViewFunction: () -> Unit,
+    private val activity: FragmentActivity,
+    private val context: Context,
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
 ) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
     companion object {
         const val TAG = "TaskAdapter"
     }
 
-    class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val textViewField: TextView = view.findViewById(R.id.taskView)
         val nextDeadlineField: TextView = view.findViewById(R.id.task_next_deadline)
         val doneCheckBox: CheckBox = view.findViewById(R.id.task_view_done)
@@ -46,6 +52,11 @@ class TasksAdapter(
             } else {
                 Log.e(TAG, "OnClickListener for checkbox got other View then Checkbox")
             }
+        }
+        holder.view.setOnClickListener {
+            val intent = Intent(activity, SimpleTaskEditActivity::class.java)
+            intent.putExtra("Task", task)
+            startActivity(context, intent, null)
         }
     }
 

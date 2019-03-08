@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domag.gui.AddTaskActivity
+import com.example.domag.gui.SimpleTaskEditActivity
 import com.example.domag.gui.TasksAdapter
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DriveDataStorage
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         prepareTaskView()
 
         addNewTaskButton.setOnClickListener {
-            val intent = Intent(this, AddTaskActivity::class.java)
+            val intent = Intent(this, SimpleTaskEditActivity::class.java)
             startActivity(intent)
         }
     }
@@ -52,7 +52,12 @@ class MainActivity : AppCompatActivity() {
     private fun prepareTaskView() {
         MainTasksList.apply {
             layoutManager = viewManager
-            adapter = TasksAdapter(storage, { MainTasksList.adapter?.notifyDataSetChanged() })
+            adapter = TasksAdapter(
+                storage,
+                { MainTasksList.adapter?.notifyDataSetChanged() },
+                this@MainActivity,
+                context
+            )
         }
     }
 

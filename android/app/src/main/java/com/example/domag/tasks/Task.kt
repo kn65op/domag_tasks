@@ -1,15 +1,16 @@
 package com.example.domag.tasks
 
+import java.io.Serializable
 import java.time.ZonedDateTime
 
 typealias Id = Int
 
-interface Task {
+interface Task : Serializable {
     var id: Id
-    val summary: String
+    var summary: String
     val type: String
-    var done : Boolean
-    val nextDeadline: ZonedDateTime
+    var done: Boolean
+    var nextDeadline: ZonedDateTime
 
     fun serializeToString(): String
 }

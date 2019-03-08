@@ -10,8 +10,8 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat" android:fullBackupContent="@xml/backup_descriptor">
         <activity
-                android:name=".gui.AddTaskActivity"
-                android:label="@string/title_activity_add_task"
+                android:name=".gui.SimpleTaskEditActivity"
+                android:label="@string/title_edit_simple_task_activity"
                 android:parentActivityName=".MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

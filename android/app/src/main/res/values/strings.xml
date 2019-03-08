@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Domag</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_add_task">Add task</string>
+    <string name="title_edit_simple_task_activity">Task</string>
     <!-- Strings related to add task -->
     <string name="prompt_task_name">Summary</string>
-    <string name="add_task_button">Add task</string>
+    <string name="confirm_task_changes">Confirm</string>
     <string name="remove_tasks">Remove tasks</string>
     <string name="task_deadline">Deadline</string>
     <string name="day">Day</string>
