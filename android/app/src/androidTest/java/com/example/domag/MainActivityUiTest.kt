@@ -33,7 +33,7 @@ class MainActivityUiTest {
             override fun matchesSafely(item: RecyclerView?): Boolean {
                 val viewHolder = item?.findViewHolderForAdapterPosition(i)
                 viewHolder ?: return false
-                return withText?.matches(viewHolder.itemView) ?: return false
+                return withText.matches(viewHolder.itemView)
             }
         }
     }

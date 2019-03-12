@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.gui.SimpleTaskEditActivity
 import com.example.domag.gui.TasksAdapter
+import com.example.domag.notifications.Alarm
+import com.example.domag.notifications.Notifications
 import com.example.domag.storage.DataStorage
-import com.example.domag.storage.DriveDataStorage
-import com.example.domag.tasks.JsonTaskDeserializer
-import com.example.domag.utils.platform.AndroidWrapper
+import com.example.domag.storage.DataStorageFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,12 +29,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        Alarm().start(applicationContext)
+        Notifications().registerChannels(applicationContext)
+
         viewManager = LinearLayoutManager(this)
-        storage = DriveDataStorage(
-            applicationContext,
-            AndroidWrapper(applicationContext),
-            taskDeserializer = JsonTaskDeserializer()
-        )
+        storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
         prepareTaskView()
 

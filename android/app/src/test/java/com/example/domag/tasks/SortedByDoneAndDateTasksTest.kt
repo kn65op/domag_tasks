@@ -10,7 +10,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class SortedByDoneAndDateTasksTest {
-    val initiallyEmptyTasks = SortedByDoneAndDateTasks(emptyList())
+    private val initiallyEmptyTasks = SortedByDoneAndDateTasks(emptyList())
 
     private val firstDate = ZonedDateTime.of(
         2012,
@@ -24,7 +24,7 @@ class SortedByDoneAndDateTasksTest {
     )
     private val secondDate = firstDate.withYear(2013)
     private val thirdDate = firstDate.withYear(2015)
-    private val earliersDate = firstDate.withYear(2010)
+    private val earlierDate = firstDate.withYear(2010)
 
     private val firstSummary = "A"
     private val secondSummary = "B"
@@ -59,7 +59,7 @@ class SortedByDoneAndDateTasksTest {
         whenever(middleTaskWithFirstSummary.nextDeadline).thenReturn(secondDate)
         whenever(middleTaskWithSecondSummary.nextDeadline).thenReturn(secondDate)
         whenever(latestTask.nextDeadline).thenReturn(thirdDate)
-        whenever(earliestDoneTask.nextDeadline).thenReturn(earliersDate)
+        whenever(earliestDoneTask.nextDeadline).thenReturn(earlierDate)
 
         whenever(earliestTask.summary).thenReturn(secondSummary)
         whenever(middleTaskWithFirstSummary.summary).thenReturn(firstSummary)

@@ -6,8 +6,8 @@ import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class SimplaTaskTest {
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd MMMM yyyy")
+class SimpleTaskTest {
+    private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd MMMM yyyy")
 
     @Test
     fun TestParser()

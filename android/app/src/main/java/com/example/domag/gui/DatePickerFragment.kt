@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import java.time.LocalDate
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
-    internal lateinit var listener: DatePickerListener
+    private lateinit var listener: DatePickerListener
 
     lateinit var date: LocalDate
 
@@ -25,13 +25,13 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
             listener = context as DatePickerListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
-                (context.toString() + " must implement DatePickerListener")
+                ("$context must implement DatePickerListener")
             )
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        Log.i(LOG_TAG, "Create date from: ${date}")
+        Log.i(LOG_TAG, "Create date from: $date")
         if (context == null)
             throw Exception("Dialog cannot be created without context")
 

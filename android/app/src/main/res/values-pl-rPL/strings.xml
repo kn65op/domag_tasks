@@ -12,4 +12,7 @@
     <string name="time">Czas</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
     <string name="remove_task">Usuń zadanie</string>
+    <string name="todays_tasks">Dzisiejsze zadania</string>
+    <string name="todays_tasks_notification_description">Przypominanie o dzisiejszych zadaniach</string>
+    <string name="todays_task_notification_name">Powiadaomieni o dzisiejszech zadania</string>
 </resources>

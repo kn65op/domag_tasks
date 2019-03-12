@@ -12,11 +12,9 @@ import androidx.fragment.app.DialogFragment
 import com.example.domag.R
 import com.example.domag.gui.utils.replaceText
 import com.example.domag.storage.DataStorage
-import com.example.domag.storage.DriveDataStorage
-import com.example.domag.tasks.JsonTaskDeserializer
+import com.example.domag.storage.DataStorageFactory
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
-import com.example.domag.utils.platform.AndroidWrapper
 import kotlinx.android.synthetic.main.simple_task_edit.*
 import java.time.LocalDate
 import java.time.LocalTime
@@ -30,7 +28,7 @@ class SimpleTaskEditActivity(
 ) : AppCompatActivity(),
     DatePickerFragment.DatePickerListener {
 
-    private lateinit var task: Task;
+    private lateinit var task: Task
     private lateinit var storage : DataStorage
 
     fun showDatePicker(view: View) {
@@ -48,11 +46,7 @@ class SimpleTaskEditActivity(
         add_task_deadline_date.text = task.nextDeadline.format(timeFormatter)
         newTaskName.replaceText(task.summary)
 
-        storage = DriveDataStorage(
-            applicationContext,
-            AndroidWrapper(applicationContext),
-            taskDeserializer = JsonTaskDeserializer()
-        )
+        storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
         addTaskButton.setOnClickListener {
             val deadline = ZonedDateTime.of(

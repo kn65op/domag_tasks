@@ -82,15 +82,15 @@ class DriveDataStorage(
         val fileData = dataFromFile.split(taskSeparatorText)
         val versionSize = 1
         val tasksData = fileData.drop(versionSize)
-        try {
+        return try {
             val tasks = tasksData.flatMap { listOf(taskDeserializer.deserializeTask(it.trim())) }
             tasks.forEach { if (it.id > maxTaskId) maxTaskId = it.id }
-            return SortedByDoneAndDateTasks(tasks)
+            SortedByDoneAndDateTasks(tasks)
         } catch (e: Exception) {
             Log.e(TAG, platform.getString(R.string.task_file_broken))
             platform.showToast(platform.getString(R.string.task_file_broken))
             clearTasks()
-            return SortedByDoneAndDateTasks()
+            SortedByDoneAndDateTasks()
         }
     }
 

@@ -12,4 +12,7 @@
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="task_completed">Completed</string>
     <string name="remove_task">Remove</string>
+    <string name="todays_tasks">Today\'s tasks</string>
+    <string name="todays_tasks_notification_description">Reminder of today\'s tasks</string>
+    <string name="todays_task_notification_name">Today\'s task notification</string>
 </resources>
