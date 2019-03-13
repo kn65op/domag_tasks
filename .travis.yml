@@ -53,6 +53,8 @@ matrix:
   include:
     - language: android
       jdk: oraclejdk8
+      env:
+        - ANDROID_TARGET=android-28  ANDROID_ABI=armeabi-v8a
       android: 
         components: 
           - tools 
