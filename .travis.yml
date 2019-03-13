@@ -60,6 +60,7 @@ matrix:
           - build-tools-28.0.3
       before_script:
         - cd android
+        - emulator -list-avds 
         - emulator -avd test -no-skin -no-audio -no-window &
         - android-wait-for-emulator
         - adb shell input keyevent 82 &
