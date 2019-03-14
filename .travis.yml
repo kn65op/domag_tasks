@@ -54,8 +54,7 @@ matrix:
     - language: android
       jdk: oraclejdk8
       env:
-        matrix:
-          - ANDROID_TARGET=android-28  ANDROID_ABI=google_apis/x86_64
+        - ANDROID_TARGET=android-28  ANDROID_ABI=google_apis/x86_64
       android: 
         components: 
           - tools 
