@@ -112,12 +112,24 @@ class MainActivityUiTest {
     fun whenTaskIsMarkedAsDone_shouldBeOnBottom() {
         prepareThreeTasks()
 
-        markTaskAsDone(firstTask)
+        switchTaskDone(firstTask)
 
         checkTasksSize(threeTasks)
         checkTaskOnPosition(0, secondTask)
         checkTaskOnPosition(1, thirdTask)
         checkTaskOnPosition(2, firstTask)
+    }
+
+    @Test
+    fun whenTaskIsUnmarkedAsDone_shouldBeInOwnPlaceBack() {
+        prepareThreeTasks()
+
+        switchTaskDone(firstTask)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask)
+        checkTaskOnPosition(1, secondTask)
+        checkTaskOnPosition(2, thirdTask)
     }
 
     @Test
@@ -214,7 +226,7 @@ class MainActivityUiTest {
         createTask(secondTask)
     }
 
-    private fun markTaskAsDone(task: String) {
+    private fun switchTaskDone(task: String) {
         onView(allOf(withId(R.id.task_view_done), hasSibling(withText(task)))).perform(click())
     }
 
