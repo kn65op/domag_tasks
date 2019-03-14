@@ -64,7 +64,7 @@ matrix:
         - cd android
         - android list targets
         - echo "android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI"
-        - android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+        - android create avd --force -n test -t $ANDROID_TARGET
         - emulator -list-avds 
         - emulator -avd test -no-skin -no-audio -no-window &
         - android-wait-for-emulator
