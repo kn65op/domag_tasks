@@ -48,7 +48,7 @@ class SimpleTaskEditActivity(
 
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
-        addTaskButton.setOnClickListener {
+        config_simple_task_button.setOnClickListener {
             val deadline = ZonedDateTime.of(
                 LocalDate.parse(add_task_deadline_date.text, timeFormatter),
                 hardcodedHour,
