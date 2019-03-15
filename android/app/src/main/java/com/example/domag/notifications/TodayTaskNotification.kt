@@ -24,7 +24,7 @@ class TodayTaskNotification : BroadcastReceiver() {
     private fun notifyTasks(context: Context) {
         Log.i(LOG_TAG, "Notify today tasks")
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
-        val tasksToNotify = tasks.getTodayNotDone() + tasks.getOverdueNotDone()
+        val tasksToNotify = tasks.getOverdueNotDone() + tasks.getTodayNotDone()
         if (tasksToNotify.isEmpty()) {
             Log.i(LOG_TAG, "There is no tasks to notify")
         } else {
