@@ -54,13 +54,17 @@ open class DriveDataStorageBaseFixture {
         |$serializedData""".trimMargin()
     protected val fileContentWithOneTask = versionText + taskSeparator + taskData
     private val someText = "someText"
+    private val done = true
+    private val notDone = false
 
     init {
         whenever(context.filesDir).thenReturn(filesDir)
         whenever(task.id).thenReturn(firstId)
         whenever(task.type).thenReturn(taskType)
+        whenever(task.done).thenReturn(notDone)
         whenever(taskFromFile.type).thenReturn(taskType)
         whenever(taskFromFile.id).thenReturn(secondId)
+        whenever(taskFromFile.done).thenReturn(done)
         whenever(platform.getString(any())).thenReturn(someText)
     }
 }
@@ -238,6 +242,20 @@ class DriveDataStorageTestWhenFileExists : DriveDataStorageBaseFixture() {
         whenever(task.serializeToString()).thenReturn(taskData)
 
         storage.remove(taskFromFile)
+
+        val expectedFileText = fileContentWithOneTask
+        verify(fileIo, times(oneTime)).writeToFile(taskFile, expectedFileText)
+    }
+
+    @Test
+    fun `Should remove done tasks`() {
+        val fileText = fileContentWithOneTask + taskSeparator + serializedData
+        whenever(fileIo.readFromFile(taskFile)).thenReturn(fileText)
+        whenever(taskDeserializer.deserializeTask(taskDataFromFile)).thenReturn(taskFromFile)
+        whenever(taskDeserializer.deserializeTask(secondTaskDataFromFile)).thenReturn(task)
+        whenever(task.serializeToString()).thenReturn(taskData)
+
+        storage.removeDoneTasks()
 
         val expectedFileText = fileContentWithOneTask
         verify(fileIo, times(oneTime)).writeToFile(taskFile, expectedFileText)

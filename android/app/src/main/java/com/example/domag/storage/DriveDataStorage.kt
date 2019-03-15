@@ -114,7 +114,12 @@ class DriveDataStorage(
         storeTasks(tasksWithoutTask(loadTasks(), task))
     }
 
+    override fun removeDoneTasks() {
+        storeTasks(loadTasks().filterOutDone())
+    }
+
     companion object {
         const val TAG = "DriveDataStorage"
     }
 }
+

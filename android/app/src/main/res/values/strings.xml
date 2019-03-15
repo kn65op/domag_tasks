@@ -15,4 +15,5 @@
     <string name="todays_tasks">Today\'s tasks</string>
     <string name="todays_tasks_notification_description">Reminder of today\'s tasks</string>
     <string name="todays_task_notification_name">Today\'s task notification</string>
+    <string name="remove_completed_tasks">Remove completed tasks</string>
 </resources>

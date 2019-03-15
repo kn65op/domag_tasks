@@ -15,4 +15,5 @@
     <string name="todays_tasks">Dzisiejsze zadania</string>
     <string name="todays_tasks_notification_description">Przypominanie o dzisiejszych zadaniach</string>
     <string name="todays_task_notification_name">Powiadaomieni o dzisiejszech zadania</string>
+    <string name="remove_completed_tasks">Usuń ukończone zadania</string>
 </resources>

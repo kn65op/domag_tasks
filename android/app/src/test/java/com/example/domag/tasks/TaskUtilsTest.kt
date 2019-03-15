@@ -68,4 +68,19 @@ class TaskUtilsTest {
     fun `getOverdueNotDone given yesterday done task should return empty list`() {
         assertThat(TestTasks(listOf(yesterdayDoneTask)).getOverdueNotDone(), equalTo(emptyList()))
     }
+
+    @Test
+    fun `filterOutDone given empty list should return empty list`() {
+        assertThat(TestTasks(emptyList()).filterOutDone(), equalTo(emptyList()))
+    }
+
+    @Test
+    fun `filerOutDone given not done task should return it`() {
+        assertThat(TestTasks(listOf(todayNotDoneTask)).filterOutDone(), equalTo(listOf(todayNotDoneTask)))
+    }
+
+    @Test
+    fun `filterOutDone given done task should return empty list`() {
+        assertThat(TestTasks(listOf(todayDoneTask)).filterOutDone(), equalTo(emptyList()))
+    }
 }

@@ -69,13 +69,25 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.remove_tasks_menu_item -> {
-                Log.i(TAG, "Removal of all tasks")
-                storage.clearTasks()
-                updateTasksView()
+                removeAllTasks()
                 return true
             }
-            else -> super.onOptionsItemSelected(item)
+            R.id.remove_complteted_task_button -> {
+                removeDoneTasks()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun removeDoneTasks() {
+        storage.removeDoneTasks()
+    }
+
+    private fun removeAllTasks() {
+        Log.i(TAG, "Removal of all tasks")
+        storage.clearTasks()
+        updateTasksView()
     }
 
     private fun updateTasksView() {

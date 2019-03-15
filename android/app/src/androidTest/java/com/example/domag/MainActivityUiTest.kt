@@ -44,7 +44,7 @@ class MainActivityUiTest {
     private fun hasNElements(n: Int): Matcher<in View>? {
         return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
             override fun describeTo(description: Description?) {
-                description?.appendText("is empty")
+                description?.appendText("has $n elements")
             }
 
             override fun matchesSafely(item: RecyclerView?): Boolean = item?.adapter?.itemCount == n
@@ -174,6 +174,19 @@ class MainActivityUiTest {
         checkTaskOnPosition(2, firstTask, date3)
     }
 
+    @Test
+    fun shouldRemoveOnlyCompletedTasks() {
+        prepareThreeTasks()
+        switchTaskDone(firstTask)
+
+        removeDoneTasks()
+
+        val remainingTasks = 2
+        checkTasksSize(remainingTasks)
+        checkTaskOnPosition(0, secondTask)
+        checkTaskOnPosition(1, thirdTask)
+
+    }
 
     private fun prepareOneTask() {
         prepareEmptyTasks()
@@ -266,5 +279,10 @@ class MainActivityUiTest {
         clickOnTask(originalTask)
         setTaskDate(date)
         clickConfirmTaskButton()
+    }
+
+    private fun removeDoneTasks() {
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext())
+        onView(withText("Remove completed tasks")).perform(click())
     }
 }

@@ -17,3 +17,8 @@ fun Tasks.getOverdueNotDone() : List<Task> {
         it.nextDeadline.toLocalDate() < today && it.done == notDone
     }
 }
+
+fun Tasks.filterOutDone(): List<Task> {
+    val done = true
+    return tasks.filter { it.done != done }
+}

@@ -11,4 +11,5 @@ interface DataStorage {
     fun loadTasks(): SortedByDoneAndDateTasks
     fun clearTasks()
     fun remove(task: Task)
+    fun removeDoneTasks()
 }
