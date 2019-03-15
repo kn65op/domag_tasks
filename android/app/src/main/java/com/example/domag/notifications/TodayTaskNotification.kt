@@ -1,6 +1,5 @@
 package com.example.domag.notifications
 
-import android.app.Notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,7 +8,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.domag.R
 import com.example.domag.storage.DataStorageFactory
-import java.time.LocalDate
+import com.example.domag.tasks.getOverdueNotDone
+import com.example.domag.tasks.getTodayNotDone
 
 class TodayTaskNotification : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -24,18 +24,18 @@ class TodayTaskNotification : BroadcastReceiver() {
     private fun notifyTasks(context: Context) {
         Log.i(LOG_TAG, "Notify today tasks")
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
-
-        val todayTasks = tasks.tasks.filter { it.nextDeadline.toLocalDate() == LocalDate.now() }
-        if (todayTasks.isEmpty()) {
-            Log.i(LOG_TAG, "There is no tasks for today")
+        val tasksToNotify = tasks.getTodayNotDone() + tasks.getOverdueNotDone()
+        if (tasksToNotify.isEmpty()) {
+            Log.i(LOG_TAG, "There is no tasks to notify")
         } else {
-            val text = todayTasks.fold("") { acc, task -> "$acc${task.summary}\n" }
+            val text = tasksToNotify.fold("") { acc, task -> "$acc${task.summary}\n" }
 
             val builder =
-                Notification.Builder(context, NotificationChannels.TodayTasks.name)
+                NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setContentTitle(context.getString(R.string.todays_tasks))
-                    .setContentText(text)
+                    .setContentText("You have ${tasksToNotify.size} tasks")
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
             val notificationId = 2
