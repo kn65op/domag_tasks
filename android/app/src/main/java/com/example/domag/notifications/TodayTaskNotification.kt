@@ -39,7 +39,7 @@ class TodayTaskNotification : BroadcastReceiver() {
                     .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-            val notificationId = 2
+            val notificationId = NotificationId.TodayTasksNotification.ordinal
             with(NotificationManagerCompat.from(context)) {
                 notify(notificationId, builder.build())
             }
