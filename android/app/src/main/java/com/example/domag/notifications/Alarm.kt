@@ -23,7 +23,7 @@ class Alarm {
         calendar: Calendar,
         alarmIntent: PendingIntent
     ) {
-        Log.i(LOG_TAG, "Alarm will be triggered at $calendar")
+        Log.i(LOG_TAG, "Alarm will be triggered at ${calendar.time}")
         alarmMgr.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
