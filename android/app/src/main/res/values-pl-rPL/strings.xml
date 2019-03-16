@@ -16,4 +16,10 @@
     <string name="todays_tasks_notification_description">Przypominanie o dzisiejszych zadaniach</string>
     <string name="todays_task_notification_name">Powiadaomieni o dzisiejszech zadania</string>
     <string name="remove_completed_tasks">Usuń ukończone zadania</string>
+    <plurals name="tasks_to_do">
+        <item quantity="one">Masz %d zadanie</item>
+        <item quantity="few">Masz %d zadania</item>
+        <item quantity="other">Masz %d zadań</item>
+        <item quantity="many">Masz %d zadań</item>
+    </plurals>
 </resources>
