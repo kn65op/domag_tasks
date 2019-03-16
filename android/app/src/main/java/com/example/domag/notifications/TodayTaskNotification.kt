@@ -29,12 +29,13 @@ class TodayTaskNotification : BroadcastReceiver() {
             Log.i(LOG_TAG, "There is no tasks to notify")
         } else {
             val text = tasksToNotify.fold("") { acc, task -> "$acc${task.summary}\n" }
+            val tasksCount = tasksToNotify.size
 
             val builder =
                 NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setContentTitle(context.getString(R.string.todays_tasks))
-                    .setContentText("You have ${tasksToNotify.size} tasks")
+                    .setContentText(context.resources.getQuantityString(R.plurals.tasks_to_do, tasksCount))
                     .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 

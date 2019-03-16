@@ -2,7 +2,6 @@
     <string name="app_name">Domag</string>
     <string name="action_settings">Settings</string>
     <string name="title_edit_simple_task_activity">Task</string>
-    <!-- Strings related to add task -->
     <string name="prompt_task_name">Summary</string>
     <string name="confirm_task_changes">Confirm</string>
     <string name="remove_tasks">Remove tasks</string>
@@ -16,4 +15,8 @@
     <string name="todays_tasks_notification_description">Reminder of today\'s tasks</string>
     <string name="todays_task_notification_name">Today\'s task notification</string>
     <string name="remove_completed_tasks">Remove completed tasks</string>
+    <plurals name="tasks_to_do">
+        <item quantity="one">You have %d task</item>
+        <item quantity="other">You have %d tasks</item>
+    </plurals>
 </resources>
