@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -31,15 +32,16 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         val todayTasksToNotify = tasks.getTodayNotDone()
         var text = ""
         if (pastTasksToNotify.isNotEmpty()) {
-            text += pastTasksToNotify.fold("<b>${context.getString(R.string.overdue_tasks)}:</b> ") { acc, task -> "$acc\n${task.summary}" }
+            text += pastTasksToNotify.fold("${Html.fromHtml(context.getString(R.string.overdue_tasks), Html.FROM_HTML_MODE_COMPACT)}:") { acc, task -> "$acc\n- ${task.summary}" }
         }
         if (todayTasksToNotify.isNotEmpty()) {
             if (text.isNotEmpty())
             {
                 text += "\n"
             }
-            text += todayTasksToNotify.fold("<b>${context.getString(R.string.today_tasks)}:</b> ") { acc, task -> "$acc\n${task.summary}" }
+            text += todayTasksToNotify.fold("${context.getString(R.string.today_tasks)}: ") { acc, task -> "$acc\n- ${task.summary}" }
         }
+        Log.i(LOG_TAG, "NEW")
         if (text.isEmpty()) {
             Log.i(LOG_TAG, "There is no tasks to notify")
         } else {

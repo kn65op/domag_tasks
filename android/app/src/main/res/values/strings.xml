@@ -16,7 +16,7 @@
     <string name="todays_task_notification_name">Today\'s task notification</string>
     <string name="remove_completed_tasks">Remove completed tasks</string>
     <string name="overdue_tasks">
-        <b>Overdue task</b>
+        <b>Overdue tasks</b>
     </string>
     <string name="today_tasks">
         <b>Today tasks</b>
