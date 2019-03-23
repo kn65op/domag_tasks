@@ -50,7 +50,7 @@ class TodayTaskNotification : BroadcastReceiver() {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
 
-            val notificationId = 2
+            val notificationId = NotificationId.TodayTasksNotification.ordinal
             with(NotificationManagerCompat.from(context)) {
                 notify(notificationId, builder.build())
             }
