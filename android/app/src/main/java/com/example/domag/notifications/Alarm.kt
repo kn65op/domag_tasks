@@ -34,13 +34,13 @@ class Alarm {
 
     private fun wakeUpDate(): Calendar = Calendar.getInstance().apply {
         timeInMillis = System.currentTimeMillis()
-        set(Calendar.HOUR_OF_DAY, 8)
-        set(Calendar.MINUTE, 0)
+        set(Calendar.HOUR_OF_DAY, 21)
+        set(Calendar.MINUTE, 30)
         set(Calendar.SECOND, 0)
     }
 
     private fun alarmIntent(context: Context?): PendingIntent =
-        Intent(context, TodayTaskNotification::class.java).let { intent ->
+        Intent(context, TodayAndPastTasksNotification::class.java).let { intent ->
             PendingIntent.getBroadcast(context, 0, intent, 0)
         }
 

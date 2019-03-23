@@ -11,11 +11,17 @@
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="task_completed">Completed</string>
     <string name="remove_task">Remove</string>
-    <string name="todays_tasks">Today\'s tasks</string>
+    <string name="tasks_to_do">Tasks to do</string>
     <string name="todays_tasks_notification_description">Reminder of today\'s tasks</string>
     <string name="todays_task_notification_name">Today\'s task notification</string>
     <string name="remove_completed_tasks">Remove completed tasks</string>
-    <plurals name="tasks_to_do">
+    <string name="overdue_tasks">
+        <b>Overdue task</b>
+    </string>
+    <string name="today_tasks">
+        <b>Today tasks</b>
+    </string>
+    <plurals name="tasks_to_do_with_number">
         <item quantity="one">You have %d task</item>
         <item quantity="other">You have %d tasks</item>
     </plurals>
