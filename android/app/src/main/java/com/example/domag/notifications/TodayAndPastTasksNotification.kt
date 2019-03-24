@@ -12,6 +12,7 @@ import androidx.core.app.TaskStackBuilder
 import com.example.domag.MainActivity
 import com.example.domag.R
 import com.example.domag.storage.DataStorageFactory
+import com.example.domag.tasks.SortedByDoneAndDateTasks
 import com.example.domag.tasks.getOverdueNotDone
 import com.example.domag.tasks.getTodayNotDone
 
@@ -28,46 +29,89 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
     private fun notifyTasks(context: Context) {
         Log.i(LOG_TAG, "Notify today tasks")
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
+        val pair = createNotificationText(tasks, context)
+        val tasksCount = pair.first
+        var text = pair.second
+        Log.i(LOG_TAG, "NEW")
+        if (tasksCount > 0) {
+            val pendingIntent = createNotificationIntent(context)
+            buildNotification(context, tasksCount, text, pendingIntent)
+        } else {
+            Log.i(LOG_TAG, "There is no tasks to notify")
+        }
+    }
+
+    private fun createNotificationText(
+        tasks: SortedByDoneAndDateTasks,
+        context: Context
+    ): Pair<Int, String> {
         val pastTasksToNotify = tasks.getOverdueNotDone()
         val todayTasksToNotify = tasks.getTodayNotDone()
+        val tasksCount = pastTasksToNotify.size + todayTasksToNotify.size
         var text = ""
         if (pastTasksToNotify.isNotEmpty()) {
-            text += pastTasksToNotify.fold("${Html.fromHtml(context.getString(R.string.overdue_tasks), Html.FROM_HTML_MODE_COMPACT)}:") { acc, task -> "$acc\n- ${task.summary}" }
+            text += pastTasksToNotify.fold(
+                "${Html.fromHtml(
+                    context.getString(R.string.overdue_tasks),
+                    Html.FROM_HTML_MODE_COMPACT
+                )}:"
+            ) { acc, task -> "$acc\n- ${task.summary}" }
         }
         if (todayTasksToNotify.isNotEmpty()) {
-            if (text.isNotEmpty())
-            {
+            if (text.isNotEmpty()) {
                 text += "\n"
             }
             text += todayTasksToNotify.fold("${context.getString(R.string.today_tasks)}: ") { acc, task -> "$acc\n- ${task.summary}" }
         }
-        Log.i(LOG_TAG, "NEW")
-        if (text.isEmpty()) {
-            Log.i(LOG_TAG, "There is no tasks to notify")
-        } else {
-            val tasksCount = pastTasksToNotify.size
+        return Pair(tasksCount, text)
+    }
 
-            val intent = Intent(context, MainActivity::class.java)
-            val pendingIntent = TaskStackBuilder.create(context).run {
-                addNextIntentWithParentStack(intent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-            }
-
-
-            val builder =
-                NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle(context.getString(R.string.tasks_to_do))
-                    .setContentText(context.resources.getQuantityString(R.plurals.tasks_to_do_with_number, tasksCount, tasksCount))
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-
-            val notificationId = NotificationId.TodayTasksNotification.ordinal
-            with(NotificationManagerCompat.from(context)) {
-                notify(notificationId, builder.build())
-            }
+    private fun createNotificationIntent(context: Context): PendingIntent? {
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
+        return pendingIntent
+    }
+
+    private fun buildNotification(
+        context: Context,
+        tasksCount: Int,
+        text: String,
+        pendingIntent: PendingIntent?
+    ) {
+        val builder =
+            createNotificationBuilder(context, tasksCount, text, pendingIntent)
+
+        val notificationId = NotificationId.TodayTasksNotification.ordinal
+        with(NotificationManagerCompat.from(context)) {
+            notify(notificationId, builder.build())
+        }
+    }
+
+    private fun createNotificationBuilder(
+        context: Context,
+        tasksCount: Int,
+        text: String,
+        pendingIntent: PendingIntent?
+    ): NotificationCompat.Builder? {
+        val builder =
+            NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(context.getString(R.string.tasks_to_do))
+                .setContentText(
+                    context.resources.getQuantityString(
+                        R.plurals.tasks_to_do_with_number,
+                        tasksCount,
+                        tasksCount
+                    )
+                )
+                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
+        return builder
     }
 
     companion object {
