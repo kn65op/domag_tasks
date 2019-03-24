@@ -39,7 +39,7 @@
         </receiver>
 
         <receiver
-                android:name=".notifications.TodayTaskNotification"
+                android:name=".notifications.TodayAndPastTasksNotification"
                 android:enabled="true"
                 android:exported="false">
         </receiver>

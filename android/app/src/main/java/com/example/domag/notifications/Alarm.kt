@@ -40,7 +40,7 @@ class Alarm {
     }
 
     private fun alarmIntent(context: Context?): PendingIntent =
-        Intent(context, TodayTaskNotification::class.java).let { intent ->
+        Intent(context, TodayAndPastTasksNotification::class.java).let { intent ->
             PendingIntent.getBroadcast(context, 0, intent, 0)
         }
 
