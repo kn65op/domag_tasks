@@ -12,11 +12,17 @@
     <string name="time">Czas</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
     <string name="remove_task">Usuń zadanie</string>
-    <string name="todays_tasks">Dzisiejsze zadania</string>
+    <string name="tasks_to_do">Zadania do zrobienia</string>
     <string name="todays_tasks_notification_description">Przypominanie o dzisiejszych zadaniach</string>
     <string name="todays_task_notification_name">Powiadaomieni o dzisiejszech zadania</string>
     <string name="remove_completed_tasks">Usuń ukończone zadania</string>
-    <plurals name="tasks_to_do">
+    <string name="overdue_tasks">
+        <b>Zaległe zadania</b>
+    </string>
+    <string name="today_tasks">
+        <b>Dziesiejsze zadania</b>
+    </string>
+    <plurals name="tasks_to_do_with_number">
         <item quantity="one">Masz %d zadanie</item>
         <item quantity="few">Masz %d zadania</item>
         <item quantity="other">Masz %d zadań</item>
