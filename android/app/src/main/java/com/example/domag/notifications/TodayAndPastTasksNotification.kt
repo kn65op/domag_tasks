@@ -31,7 +31,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
         val pair = createNotificationText(tasks, context)
         val tasksCount = pair.first
-        var text = pair.second
+        val text = pair.second
         Log.i(LOG_TAG, "NEW")
         if (tasksCount > 0) {
             val pendingIntent = createNotificationIntent(context)
@@ -95,7 +95,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         tasksCount: Int,
         text: String,
         pendingIntent: PendingIntent?
-    ): NotificationCompat.Builder? {
+    ): NotificationCompat.Builder {
         val builder =
             NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -110,7 +110,6 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setOnlyAlertOnce(true)
         return builder
     }
 
