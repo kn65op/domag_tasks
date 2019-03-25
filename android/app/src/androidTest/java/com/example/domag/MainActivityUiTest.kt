@@ -1,6 +1,8 @@
 package com.example.domag
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.example.domag.UiTestUtils.*
 import org.junit.Before
 import org.junit.Test
@@ -127,6 +129,8 @@ class MainActivityUiTest {
         checkTasksSize(remainingTasks)
         checkTaskOnPosition(0, secondTask)
         checkTaskOnPosition(1, thirdTask)
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        checkTaskIsNotInView(firstTask, device)
     }
 
 }

@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun removeDoneTasks() {
         storage.removeDoneTasks()
+        updateTasksView()
     }
 
     private fun removeAllTasks() {
