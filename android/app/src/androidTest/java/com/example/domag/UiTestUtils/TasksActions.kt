@@ -2,7 +2,6 @@ package com.example.domag.UiTestUtils
 
 import android.widget.DatePicker
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.*
@@ -52,7 +51,6 @@ fun setTaskDate(date: Date) {
 }
 
 fun prepareEmptyTasks() {
-    launchActivity<MainActivity>()
     openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext())
     onView(withText("Remove tasks")).perform(click())
 }
