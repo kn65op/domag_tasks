@@ -1,5 +1,6 @@
 package com.example.domag.notifications
 
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -26,7 +27,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         }
     }
 
-    private fun notifyTasks(context: Context) {
+    fun notifyTasks(context: Context) {
         Log.i(LOG_TAG, "Notify today tasks")
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
         val pair = createNotificationText(tasks, context)
@@ -34,11 +35,19 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         val text = pair.second
         Log.i(LOG_TAG, "NEW")
         if (tasksCount > 0) {
+            Log.i(LOG_TAG, "There is ${tasksCount} to notify, clear notification")
             val pendingIntent = createNotificationIntent(context)
             buildNotification(context, tasksCount, text, pendingIntent)
         } else {
-            Log.i(LOG_TAG, "There is no tasks to notify")
+            clearNotification(context)
         }
+    }
+
+    private fun clearNotification(context: Context) {
+        Log.i(LOG_TAG, "There is no tasks to notify, clear notification")
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(NotificationId.TodayTasksNotification.ordinal)
     }
 
     private fun createNotificationText(
@@ -110,6 +119,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
         return builder
     }
 
