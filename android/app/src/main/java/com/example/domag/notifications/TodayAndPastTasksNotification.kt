@@ -39,11 +39,15 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
             val pendingIntent = createNotificationIntent(context)
             buildNotification(context, tasksCount, text, pendingIntent)
         } else {
-            Log.i(LOG_TAG, "There is no tasks to notify, clear notification")
-            val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.cancel(NotificationId.TodayTasksNotification.ordinal)
+            clearNotification(context)
         }
+    }
+
+    private fun clearNotification(context: Context) {
+        Log.i(LOG_TAG, "There is no tasks to notify, clear notification")
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(NotificationId.TodayTasksNotification.ordinal)
     }
 
     private fun createNotificationText(
