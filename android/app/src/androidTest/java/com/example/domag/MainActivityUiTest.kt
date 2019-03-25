@@ -185,7 +185,6 @@ class MainActivityUiTest {
         checkTasksSize(remainingTasks)
         checkTaskOnPosition(0, secondTask)
         checkTaskOnPosition(1, thirdTask)
-
     }
 
     private fun prepareOneTask() {
