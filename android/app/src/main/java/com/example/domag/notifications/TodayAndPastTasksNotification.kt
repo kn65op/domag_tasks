@@ -26,7 +26,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         }
     }
 
-    private fun notifyTasks(context: Context) {
+    fun notifyTasks(context: Context) {
         Log.i(LOG_TAG, "Notify today tasks")
         val tasks = DataStorageFactory().createDriveDataStorageFactory(context).loadTasks()
         val pair = createNotificationText(tasks, context)

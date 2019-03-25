@@ -12,6 +12,7 @@ import com.example.domag.gui.SimpleTaskEditActivity
 import com.example.domag.gui.TasksAdapter
 import com.example.domag.notifications.Alarm
 import com.example.domag.notifications.Notifications
+import com.example.domag.notifications.TodayAndPastTasksNotification
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateTasksView()
+        TodayAndPastTasksNotification().notifyTasks(applicationContext)
     }
 
     private fun prepareTaskView() {
