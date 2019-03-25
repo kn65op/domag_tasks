@@ -47,6 +47,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateTasksView()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        notifyTasks()
+    }
+
+    private fun notifyTasks() {
         TodayAndPastTasksNotification().notifyTasks(applicationContext)
     }
 
