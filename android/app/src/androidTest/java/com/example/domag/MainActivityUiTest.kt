@@ -1,8 +1,6 @@
 package com.example.domag
 
-import android.view.View
 import android.widget.DatePicker
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
@@ -10,46 +8,18 @@ import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
-import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.domag.UiTestUtils.atPosition
+import com.example.domag.UiTestUtils.hasNElements
 import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.Description
-import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.lang.Thread.sleep
 
-
 @RunWith(AndroidJUnit4::class)
 class MainActivityUiTest {
-    private fun atPosition(i: Int, withText: Matcher<View>?): Matcher<in View>? {
-        checkNotNull(withText)
-
-        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-            override fun describeTo(description: Description?) {
-                description?.appendText("has item on position $i ")
-                withText.describeTo(description)
-            }
-
-            override fun matchesSafely(item: RecyclerView?): Boolean {
-                val viewHolder = item?.findViewHolderForAdapterPosition(i)
-                viewHolder ?: return false
-                return withText.matches(viewHolder.itemView)
-            }
-        }
-    }
-
-    private fun hasNElements(n: Int): Matcher<in View>? {
-        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-            override fun describeTo(description: Description?) {
-                description?.appendText("has $n elements")
-            }
-
-            override fun matchesSafely(item: RecyclerView?): Boolean = item?.adapter?.itemCount == n
-        }
-    }
 
     private val zeroTask = "0 task Zero"
     private val firstTask = "A first task"
@@ -243,7 +213,12 @@ class MainActivityUiTest {
     }
 
     private fun checkTaskOnPosition(position: Int, summary: String, date: Date = date1) {
-        onView(withId(R.id.MainTasksList)).check(matches(atPosition(position, hasDescendant(withText(summary)))))
+        onView(withId(R.id.MainTasksList)).check(matches(
+            atPosition(
+                position,
+                hasDescendant(withText(summary))
+            )
+        ))
         onView(withId(R.id.MainTasksList)).check(
             matches(
                 atPosition(
