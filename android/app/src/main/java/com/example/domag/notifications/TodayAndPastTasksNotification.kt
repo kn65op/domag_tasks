@@ -119,6 +119,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
         return builder
     }
 
