@@ -32,6 +32,7 @@ class SimpleTaskEditActivity(
     private lateinit var storage : DataStorage
 
     fun showDatePicker(view: View) {
+        Log.i(LOG_TAG, "Show date picker on ${view.id}")
         val datePicker = DatePickerFragment()
         datePicker.date = LocalDate.parse(add_task_deadline_date.text, timeFormatter)
         datePicker.show(supportFragmentManager, "DatePickerFragment")
