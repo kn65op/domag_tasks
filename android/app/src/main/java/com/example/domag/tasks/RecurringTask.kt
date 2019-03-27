@@ -1,19 +1,23 @@
 package com.example.domag.tasks
 
+import java.time.Period
 import java.time.ZonedDateTime
 
 class RecurringTask(
     override var summary: String,
-    override var nextDeadline: ZonedDateTime = ZonedDateTime.now(),
-    override var id: Id = 0,
-    override var done: Boolean = false
+    var firstDeadline: ZonedDateTime = ZonedDateTime.now(),
+    val period: Period,
+    override var id: Id = 0
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
     }
 
+    override var nextDeadline: ZonedDateTime = firstDeadline
     override val type
         get() = Companion.type
+    override var done: Boolean = false
+        set(value) {nextDeadline = firstDeadline.plus(period)}
 
     override fun serializeToString(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
