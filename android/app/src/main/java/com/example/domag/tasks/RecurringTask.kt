@@ -18,7 +18,7 @@ class RecurringTask(
         get() = Companion.type
     override var done: Boolean
         get() = false
-        set(value) { if (value) nextDeadline = nextDeadline.plus(period)}
+        set(value) { if (value) nextDeadline = ZonedDateTime.now().plus(period)}
 
     override fun serializeToString(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -19,11 +19,15 @@ class RecurringTaskTest {
         0,
         ZoneId.of("+01:00")
     )
-    private val dateAfterPeriod = date1.plusDays(3)
-    private val dateAfterTwoPeriods = dateAfterPeriod.plusDays(3)
+    private val dateAfterPeriod = ZonedDateTime.now().plusDays(3)
     private val period = Period.of(0, 0, 3)
     private val task = RecurringTask(summary, date1, period)
     private val notDone = false
+
+    fun assertDateMatch(task : Task)
+    {
+        assertThat(task.nextDeadline.toLocalDate(), equalTo(dateAfterPeriod.toLocalDate()))
+    }
 
     @Test
     fun `should has proper type`() {
@@ -41,10 +45,10 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done should be first date plus period`() {
+    fun `nextDeadline after marking done should be today plus period`() {
         task.done = true
 
-        assertThat(task.nextDeadline, equalTo(dateAfterPeriod))
+        assertDateMatch(task)
     }
 
     @Test
@@ -55,10 +59,10 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done twice should update date twice`() {
+    fun `nextDeadline after marking done twice should update date to today plus period`() {
         task.done = true
         task.done = true
 
-        assertThat(task.nextDeadline, equalTo(dateAfterTwoPeriods))
+        assertDateMatch(task)
     }
 }
