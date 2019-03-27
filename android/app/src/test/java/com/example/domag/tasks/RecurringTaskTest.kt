@@ -12,4 +12,11 @@ class RecurringTaskTest {
     fun `should has proper type`() {
         assertThat(task.type, equalTo("RECURRING TASK"))
     }
+
+    @Test
+    fun `should always be not done` () {
+        val notDone = false
+
+        assertThat(task.done, equalTo(notDone))
+    }
 }
