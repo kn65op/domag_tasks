@@ -16,7 +16,8 @@ class RecurringTask(
     override var nextDeadline: ZonedDateTime = firstDeadline
     override val type
         get() = Companion.type
-    override var done: Boolean = false
+    override var done: Boolean
+        get() = false
         set(value) { if (value) nextDeadline = firstDeadline.plus(period)}
 
     override fun serializeToString(): String {
