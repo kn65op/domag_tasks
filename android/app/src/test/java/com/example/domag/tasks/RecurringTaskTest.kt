@@ -54,4 +54,11 @@ class RecurringTaskTest {
 
         assertThat(task.nextDeadline, equalTo(dateAfterPeriod))
     }
+
+    @Test
+    fun `nextDeadline after marking not done should not be updated`() {
+        task.done = false
+
+        assertThat(task.nextDeadline, equalTo(date1))
+    }
 }

@@ -17,7 +17,7 @@ class RecurringTask(
     override val type
         get() = Companion.type
     override var done: Boolean = false
-        set(value) {nextDeadline = firstDeadline.plus(period)}
+        set(value) { if (value) nextDeadline = firstDeadline.plus(period)}
 
     override fun serializeToString(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
