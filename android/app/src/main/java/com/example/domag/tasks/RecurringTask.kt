@@ -5,8 +5,8 @@ import java.time.ZonedDateTime
 
 class RecurringTask(
     override var summary: String,
-    var firstDeadline: ZonedDateTime = ZonedDateTime.now(),
-    val period: Period,
+    firstDeadline: ZonedDateTime = ZonedDateTime.now(),
+    private val period: Period,
     override var id: Id = 0
 ) : Task {
     companion object {
@@ -18,7 +18,7 @@ class RecurringTask(
         get() = Companion.type
     override var done: Boolean
         get() = false
-        set(value) { if (value) nextDeadline = firstDeadline.plus(period)}
+        set(value) { if (value) nextDeadline = nextDeadline.plus(period)}
 
     override fun serializeToString(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

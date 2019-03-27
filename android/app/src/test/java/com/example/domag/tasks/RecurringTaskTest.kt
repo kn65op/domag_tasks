@@ -19,16 +19,8 @@ class RecurringTaskTest {
         0,
         ZoneId.of("+01:00")
     )
-    private val dateAfterPeriod = ZonedDateTime.of(
-        2011,
-        12,
-        6,
-        10,
-        15,
-        30,
-        0,
-        ZoneId.of("+01:00")
-    )
+    private val dateAfterPeriod = date1.plusDays(3)
+    private val dateAfterTwoPeriods = dateAfterPeriod.plusDays(3)
     private val period = Period.of(0, 0, 3)
     private val task = RecurringTask(summary, date1, period)
     private val notDone = false
@@ -60,5 +52,13 @@ class RecurringTaskTest {
         task.done = false
 
         assertThat(task.nextDeadline, equalTo(date1))
+    }
+
+    @Test
+    fun `nextDeadline after marking done twice should update date twice`() {
+        task.done = true
+        task.done = true
+
+        assertThat(task.nextDeadline, equalTo(dateAfterTwoPeriods))
     }
 }
