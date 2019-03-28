@@ -1,4 +1,4 @@
-package com.example.domag.utils
+package com.example.domag.utils.serializer
 
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.StringDescriptor
@@ -17,6 +17,8 @@ class ZoneDataTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     }
 
     override fun deserialize(decoder: Decoder): ZonedDateTime {
-        return ZonedDateTime.parse(decoder.decodeString(), timeFormatter)
+        return ZonedDateTime.parse(decoder.decodeString(),
+            timeFormatter
+        )
     }
 }
