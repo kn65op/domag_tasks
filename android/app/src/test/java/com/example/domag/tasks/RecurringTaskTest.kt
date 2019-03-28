@@ -67,8 +67,7 @@ class RecurringTaskTest {
 
     @Test
     fun `serializeToString should serialize to Json`() {
-        val expectedText = """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","id":0}"""
-        //val expectedText = """{"summary":"1","nextDeadline":"2011-12-03T10:15:30+01:00","id":0,"period":"3 days"}"""
+        val expectedText = """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":"P3D","id":0}"""
         assertThat(task.serializeToString(), equalTo(expectedText))
     }
 }

@@ -9,6 +9,7 @@ class ZoneDateTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     companion object {
         private val timeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     }
+
     override val descriptor: SerialDescriptor =
         StringDescriptor.withName("ZoneDateTime")
 
@@ -17,7 +18,8 @@ class ZoneDateTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     }
 
     override fun deserialize(decoder: Decoder): ZonedDateTime {
-        return ZonedDateTime.parse(decoder.decodeString(),
+        return ZonedDateTime.parse(
+            decoder.decodeString(),
             timeFormatter
         )
     }
