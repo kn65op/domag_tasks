@@ -24,8 +24,7 @@ class RecurringTaskTest {
     private val task = RecurringTask(summary, date1, period)
     private val notDone = false
 
-    fun assertDateMatch(task : Task)
-    {
+    fun assertDateMatch(task: Task) {
         assertThat(task.nextDeadline.toLocalDate(), equalTo(dateAfterPeriod.toLocalDate()))
     }
 
