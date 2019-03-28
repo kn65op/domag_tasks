@@ -5,7 +5,7 @@ import kotlinx.serialization.internal.StringDescriptor
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class ZoneDataTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
+class ZoneDateTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     companion object {
         private val timeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     }
