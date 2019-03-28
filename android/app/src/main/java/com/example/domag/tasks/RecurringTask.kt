@@ -10,8 +10,8 @@ import java.time.ZonedDateTime
 @Serializable
 class RecurringTask(
     override var summary: String,
-    @Transient
-    val firstDeadline: ZonedDateTime = ZonedDateTime.now(),
+    @Serializable(with = ZoneDataTimeWithoutZoneChangeSerializer::class)
+    override var nextDeadline: ZonedDateTime = ZonedDateTime.now(),
     @Transient
     private val period: Period = Period.of(1,0,0),
     override var id: Id = 0
@@ -19,9 +19,6 @@ class RecurringTask(
     companion object {
         const val type = "RECURRING TASK"
     }
-
-    @Serializable(with = ZoneDataTimeWithoutZoneChangeSerializer::class)
-    override var nextDeadline: ZonedDateTime = firstDeadline
 
     @Transient
     override val type
