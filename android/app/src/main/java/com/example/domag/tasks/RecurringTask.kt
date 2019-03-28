@@ -33,4 +33,26 @@ class RecurringTask(
         }
 
     override fun serializeToString(): String = Json.stringify(serializer(), this)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RecurringTask
+
+        if (summary != other.summary) return false
+        if (nextDeadline != other.nextDeadline) return false
+        if (period != other.period) return false
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = summary.hashCode()
+        result = 31 * result + nextDeadline.hashCode()
+        result = 31 * result + period.hashCode()
+        result = 31 * result + id
+        return result
+    }
 }
