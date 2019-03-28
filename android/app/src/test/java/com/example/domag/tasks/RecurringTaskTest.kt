@@ -64,4 +64,10 @@ class RecurringTaskTest {
 
         assertDateMatch(task)
     }
+
+    @Test
+    fun `serializeToString should serialize to Json`() {
+        val expectedText = """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":"P3D","id":0}"""
+        assertThat(task.serializeToString(), equalTo(expectedText))
+    }
 }

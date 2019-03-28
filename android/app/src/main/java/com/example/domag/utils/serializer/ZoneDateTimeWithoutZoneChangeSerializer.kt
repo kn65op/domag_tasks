@@ -1,14 +1,15 @@
-package com.example.domag.utils
+package com.example.domag.utils.serializer
 
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.StringDescriptor
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class ZoneDataTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
+class ZoneDateTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     companion object {
         private val timeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     }
+
     override val descriptor: SerialDescriptor =
         StringDescriptor.withName("ZoneDateTime")
 
@@ -17,6 +18,9 @@ class ZoneDataTimeWithoutZoneChangeSerializer : KSerializer<ZonedDateTime> {
     }
 
     override fun deserialize(decoder: Decoder): ZonedDateTime {
-        return ZonedDateTime.parse(decoder.decodeString(), timeFormatter)
+        return ZonedDateTime.parse(
+            decoder.decodeString(),
+            timeFormatter
+        )
     }
 }
