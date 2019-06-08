@@ -1,6 +1,6 @@
 package com.example.domag.UiTestUtils
 
-val year1 = 2019
+const val year1 = 2019
 val month1 = 2
 val monthName1 = "February"
 val month2 = 7

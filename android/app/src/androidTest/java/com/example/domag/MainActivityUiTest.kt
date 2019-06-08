@@ -129,7 +129,7 @@ class MainActivityUiTest {
         checkTasksSize(remainingTasks)
         checkTaskOnPosition(0, secondTask)
         checkTaskOnPosition(1, thirdTask)
-        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         checkTaskIsNotInView(firstTask, device)
     }
 

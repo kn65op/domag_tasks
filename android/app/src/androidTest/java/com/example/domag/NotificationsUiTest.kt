@@ -18,7 +18,7 @@ class NotificationsUiTest {
         launchApp()
     }
 
-    private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+    private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
     @After
     fun tearDown() {

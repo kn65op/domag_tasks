@@ -35,7 +35,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         val text = pair.second
         Log.i(LOG_TAG, "NEW")
         if (tasksCount > 0) {
-            Log.i(LOG_TAG, "There is ${tasksCount} to notify, clear notification")
+            Log.i(LOG_TAG, "There is $tasksCount to notify, clear notification")
             val pendingIntent = createNotificationIntent(context)
             buildNotification(context, tasksCount, text, pendingIntent)
         } else {
@@ -77,11 +77,10 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
 
     private fun createNotificationIntent(context: Context): PendingIntent? {
         val intent = Intent(context, MainActivity::class.java)
-        val pendingIntent = TaskStackBuilder.create(context).run {
+        return TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(intent)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-        return pendingIntent
     }
 
     private fun buildNotification(
