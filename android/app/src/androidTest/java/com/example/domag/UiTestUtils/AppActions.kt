@@ -21,4 +21,4 @@ fun openNotificationBarFromHome(device: UiDevice) {
 
 private const val commonNotificationText = "Tasks to do"
 
-fun tasksNotification(device: UiDevice) = device.findObject(UiSelector().text(commonNotificationText))
+fun tasksNotification(device: UiDevice) = device.findObject(UiSelector().text(commonNotificationText))!!

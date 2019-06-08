@@ -104,22 +104,20 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
         text: String,
         pendingIntent: PendingIntent?
     ): NotificationCompat.Builder {
-        val builder =
-            NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(context.getString(R.string.tasks_to_do))
-                .setContentText(
-                    context.resources.getQuantityString(
-                        R.plurals.tasks_to_do_with_number,
-                        tasksCount,
-                        tasksCount
-                    )
+        return NotificationCompat.Builder(context, NotificationChannels.TodayTasks.name)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(context.getString(R.string.tasks_to_do))
+            .setContentText(
+                context.resources.getQuantityString(
+                    R.plurals.tasks_to_do_with_number,
+                    tasksCount,
+                    tasksCount
                 )
-                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setOnlyAlertOnce(true)
-        return builder
+            )
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setOnlyAlertOnce(true)
     }
 
     companion object {
