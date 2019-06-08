@@ -13,7 +13,7 @@ const val firstTask = "A first task"
 const val secondTask = "B second task"
 const val thirdTask = "C task"
 const val threeTasks = 3
-const val date1 = Date(day1, month1, year1, monthName1)
-const val date2 = Date(day2, month2, year1, monthName2)
-const val date3 = Date(day3, month2, year1, monthName2)
+val date1 = Date(day1, month1, year1, monthName1)
+val date2 = Date(day2, month2, year1, monthName2)
+val date3 = Date(day3, month2, year1, monthName2)
 
