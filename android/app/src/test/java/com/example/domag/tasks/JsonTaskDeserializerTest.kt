@@ -44,7 +44,7 @@ class JsonTaskDeserializerTest {
             expectedNextDeadline,
             id
         )
-        assertThat(deserializer.deserializeTask(taskData), equalTo<Task>(expectedTask))
+        assertThat(deserializer.deserializeTask(taskData), equalTo(expectedTask))
     }
 
     @Test
@@ -66,7 +66,7 @@ class JsonTaskDeserializerTest {
             id = id,
             done = true
         )
-        assertThat(deserializer.deserializeTask(taskData), equalTo<Task>(expectedTask))
+        assertThat(deserializer.deserializeTask(taskData), equalTo(expectedTask))
     }
 
     @Test
@@ -83,6 +83,6 @@ class JsonTaskDeserializerTest {
             id
         )
 
-        assertThat(deserializer.deserializeTask(data), equalTo<Task>(expectedTask))
+        assertThat(deserializer.deserializeTask(data), equalTo(expectedTask))
     }
 }
