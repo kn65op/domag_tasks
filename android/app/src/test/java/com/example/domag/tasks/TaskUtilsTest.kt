@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 class TaskUtilsTest {
     class TestTasks(override var tasks: List<Task>) : Tasks
 
-    val today = ZonedDateTime.now()
+    private val today = ZonedDateTime.now()
     val notDone = false
     val done = true
     val todayNotDoneTask: Task = mock()

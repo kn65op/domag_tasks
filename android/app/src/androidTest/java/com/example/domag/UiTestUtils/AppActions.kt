@@ -19,6 +19,6 @@ fun openNotificationBarFromHome(device: UiDevice) {
     device.wait(Until.hasObject(By.text("No notifications")), timeout)
 }
 
-private val commonNotificationText = "Tasks to do"
+private const val commonNotificationText = "Tasks to do"
 
-fun tasksNotification(device: UiDevice) = device.findObject(UiSelector().text(commonNotificationText))
+fun tasksNotification(device: UiDevice) = device.findObject(UiSelector().text(commonNotificationText))!!
