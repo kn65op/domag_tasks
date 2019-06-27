@@ -8,6 +8,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.test.assertFailsWith
 
+@Suppress("RemoveExplicitTypeArguments")
 class JsonTaskDeserializerTest {
     private val deserializer = JsonTaskDeserializer()
     private val expectedNextDeadline = ZonedDateTime.of(
@@ -44,7 +45,7 @@ class JsonTaskDeserializerTest {
             expectedNextDeadline,
             id
         )
-        assertThat(deserializer.deserializeTask(taskData), equalTo(expectedTask))
+        assertThat(deserializer.deserializeTask(taskData), equalTo<Task>(expectedTask))
     }
 
     @Test
@@ -66,7 +67,7 @@ class JsonTaskDeserializerTest {
             id = id,
             done = true
         )
-        assertThat(deserializer.deserializeTask(taskData), equalTo(expectedTask))
+        assertThat(deserializer.deserializeTask(taskData), equalTo<Task>(expectedTask))
     }
 
     @Test
@@ -83,6 +84,6 @@ class JsonTaskDeserializerTest {
             id
         )
 
-        assertThat(deserializer.deserializeTask(data), equalTo(expectedTask))
+        assertThat(deserializer.deserializeTask(data), equalTo<Task>(expectedTask))
     }
 }
