@@ -12,7 +12,7 @@
             android:theme="@style/Theme.AppCompat" android:fullBackupContent="@xml/backup_descriptor">
 
         <activity
-                android:name=".gui.SimpleTaskEditActivity"
+                android:name=".gui.TaskEditActivity"
                 android:label="@string/title_edit_simple_task_activity"
                 android:parentActivityName=".MainActivity">
             <meta-data

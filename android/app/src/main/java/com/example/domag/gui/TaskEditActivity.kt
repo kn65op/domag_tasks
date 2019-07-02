@@ -15,14 +15,14 @@ import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
-import kotlinx.android.synthetic.main.simple_task_edit.*
+import kotlinx.android.synthetic.main.task_edit.*
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class SimpleTaskEditActivity(
+class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
     private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
 ) : AppCompatActivity(),
@@ -40,7 +40,7 @@ class SimpleTaskEditActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.simple_task_edit)
+        setContentView(R.layout.task_edit)
         setupActionBar()
         val dataPassed = intent.getSerializableExtra("Task")
         task = dataPassed as? Task ?: SimpleTask("", ZonedDateTime.now())
@@ -95,6 +95,6 @@ class SimpleTaskEditActivity(
     }
 
     companion object {
-        private const val LOG_TAG = "SimpleTaskEditActivity"
+        private const val LOG_TAG = "TaskEditActivity"
     }
 }
