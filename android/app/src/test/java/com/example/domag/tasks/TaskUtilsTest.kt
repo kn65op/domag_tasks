@@ -11,12 +11,12 @@ class TaskUtilsTest {
     class TestTasks(override var tasks: List<Task>) : Tasks
 
     private val today = ZonedDateTime.now()
-    val notDone = false
-    val done = true
-    val todayNotDoneTask: Task = mock()
-    val yesterdayNotDoneTask: Task = mock()
-    val todayDoneTask: Task = mock()
-    val yesterdayDoneTask: Task = mock()
+    private val notDone = false
+    private val done = true
+    private val todayNotDoneTask: Task = mock()
+    private val yesterdayNotDoneTask: Task = mock()
+    private val todayDoneTask: Task = mock()
+    private val yesterdayDoneTask: Task = mock()
 
     init {
         whenever(todayNotDoneTask.nextDeadline).thenReturn(today)

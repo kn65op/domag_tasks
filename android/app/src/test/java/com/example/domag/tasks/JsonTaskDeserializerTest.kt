@@ -8,6 +8,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.test.assertFailsWith
 
+@Suppress("RemoveExplicitTypeArguments")
 class JsonTaskDeserializerTest {
     private val deserializer = JsonTaskDeserializer()
     private val expectedNextDeadline = ZonedDateTime.of(
