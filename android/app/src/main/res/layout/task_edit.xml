@@ -42,6 +42,21 @@
                 android:onClick="showDatePicker"
         />
     </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="1" android:visibility="gone"
+            android:id="@+id/recurring_information_layout">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/editText" android:autofillHints=""/>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/spinner2"/>
+    </LinearLayout>
     <Button
             android:id="@+id/config_simple_task_button"
             style="?android:textAppearanceSmall"

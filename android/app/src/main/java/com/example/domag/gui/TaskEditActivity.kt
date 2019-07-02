@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -59,6 +60,8 @@ class TaskEditActivity(
     }
 
     private fun setConfirmToCreateSimpleTask() {
+        val information : LinearLayout = findViewById(R.id.recurring_information_layout)
+        information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
             val deadline = ZonedDateTime.of(
                 LocalDate.parse(add_task_deadline_date.text, timeFormatter),
@@ -73,6 +76,8 @@ class TaskEditActivity(
     }
 
     private fun setConfirmToCreateRecurringTask() {
+        val information : LinearLayout = findViewById(R.id.recurring_information_layout)
+        information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "Recurring")
             finish();
