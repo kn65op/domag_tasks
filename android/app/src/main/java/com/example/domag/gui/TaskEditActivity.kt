@@ -55,8 +55,6 @@ class TaskEditActivity(
         newTaskName.replaceText(task.summary)
 
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
-
-        setConfirmToCreateSimpleTask()
     }
 
     private fun setConfirmToCreateSimpleTask() {
