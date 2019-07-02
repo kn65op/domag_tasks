@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,8 @@ class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
     private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
 ) : AppCompatActivity(),
-    DatePickerFragment.DatePickerListener {
+    DatePickerFragment.DatePickerListener,
+    AdapterView.OnItemSelectedListener {
 
     private lateinit var task: Task
     private lateinit var storage: DataStorage
@@ -45,7 +47,7 @@ class TaskEditActivity(
         setContentView(R.layout.task_edit)
         setupActionBar()
         prepareTaskTypeSpinner()
-        
+
         val dataPassed = intent.getSerializableExtra("Task")
         task = dataPassed as? Task ?: SimpleTask("", ZonedDateTime.now())
         add_task_deadline_date.text = task.nextDeadline.format(timeFormatter)
@@ -53,6 +55,10 @@ class TaskEditActivity(
 
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
+        setConfirmToCreateSimpleTask()
+    }
+
+    private fun setConfirmToCreateSimpleTask() {
         config_simple_task_button.setOnClickListener {
             val deadline = ZonedDateTime.of(
                 LocalDate.parse(add_task_deadline_date.text, timeFormatter),
@@ -66,6 +72,13 @@ class TaskEditActivity(
         }
     }
 
+    private fun setConfirmToCreateRecurringTask() {
+        config_simple_task_button.setOnClickListener {
+            Log.i(LOG_TAG, "Recurring")
+            finish();
+        }
+    }
+
     private fun prepareTaskTypeSpinner() {
         val spinner: Spinner = findViewById(R.id.task_type_selection_spinner)
         ArrayAdapter.createFromResource(
@@ -74,6 +87,7 @@ class TaskEditActivity(
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
+            spinner.onItemSelectedListener = this
         }
     }
 
@@ -106,6 +120,18 @@ class TaskEditActivity(
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (position) {
+            0 -> setConfirmToCreateSimpleTask()
+            1 -> setConfirmToCreateRecurringTask()
+        }
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("nothing selection not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     companion object {
