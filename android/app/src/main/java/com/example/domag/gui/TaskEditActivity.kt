@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.example.domag.R
@@ -29,7 +31,7 @@ class TaskEditActivity(
     DatePickerFragment.DatePickerListener {
 
     private lateinit var task: Task
-    private lateinit var storage : DataStorage
+    private lateinit var storage: DataStorage
 
     fun showDatePicker(view: View) {
         Log.i(LOG_TAG, "Show date picker on ${view.id}")
@@ -42,6 +44,8 @@ class TaskEditActivity(
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_edit)
         setupActionBar()
+        prepareTaskTypeSpinner()
+        
         val dataPassed = intent.getSerializableExtra("Task")
         task = dataPassed as? Task ?: SimpleTask("", ZonedDateTime.now())
         add_task_deadline_date.text = task.nextDeadline.format(timeFormatter)
@@ -59,6 +63,17 @@ class TaskEditActivity(
             task.nextDeadline = deadline
             storage.store(task)
             finish()
+        }
+    }
+
+    private fun prepareTaskTypeSpinner() {
+        val spinner: Spinner = findViewById(R.id.task_type_selection_spinner)
+        ArrayAdapter.createFromResource(
+            this, R.array.task_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
         }
     }
 
@@ -84,8 +99,7 @@ class TaskEditActivity(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.i(LOG_TAG, "Menu item selected")
         return when (item.itemId) {
-            R.id.remove_task_menu_item ->
-            {
+            R.id.remove_task_menu_item -> {
                 storage.remove(task)
                 finish()
                 return true

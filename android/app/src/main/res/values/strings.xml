@@ -25,4 +25,8 @@
         <item quantity="one">You have %d task</item>
         <item quantity="other">You have %d tasks</item>
     </plurals>
+    <string-array name="task_types">
+        <item>One time task</item>
+        <item>Recurring task</item>
+    </string-array>
 </resources>

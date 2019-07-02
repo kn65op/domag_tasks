@@ -13,7 +13,8 @@
 
     <Spinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/spinner" android:layout_weight="1"/>
+            android:layout_height="wrap_content" android:id="@+id/task_type_selection_spinner" android:layout_weight="1"/>
+
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -28,4 +28,8 @@
         <item quantity="other">Masz %d zadań</item>
         <item quantity="many">Masz %d zadań</item>
     </plurals>
+    <string-array name="task_types">
+        <item>Zadanie jednorazowe</item>
+        <item>Zadanie cykliczne</item>
+    </string-array>
 </resources>
