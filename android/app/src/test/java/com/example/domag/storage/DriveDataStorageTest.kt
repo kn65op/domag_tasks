@@ -1,6 +1,5 @@
 package com.example.domag.storage
 
-import android.content.Context
 import com.example.domag.tasks.Id
 import com.example.domag.tasks.Task
 import com.example.domag.tasks.TasksDeserializer
@@ -16,11 +15,11 @@ import java.io.File
 import kotlin.test.assertFailsWith
 
 open class DriveDataStorageBaseFixture {
-    private val context: Context = mock()
+    private val filesDir = File("Directory/Internal")
     protected val platform: PlatformWrapper = mock()
     protected val fileIo: FileIo = mock()
     protected val taskDeserializer: TasksDeserializer = mock()
-    protected val storage = DriveDataStorage(context, platform, fileIo, taskDeserializer)
+    protected val storage = DriveDataStorage(filesDir, platform, fileIo, taskDeserializer)
 
     protected val task: Task = mock()
     protected val taskFromFile: Task = mock()
@@ -43,7 +42,6 @@ open class DriveDataStorageBaseFixture {
         |
         |
     """.trimMargin()
-    private val filesDir = File("Directory/Internal")
     protected val taskFile = File(filesDir, tasksFile)
     protected val taskData = "Task data"
     protected val taskDataFromFile = """$taskType
@@ -58,7 +56,6 @@ open class DriveDataStorageBaseFixture {
     private val notDone = false
 
     init {
-        whenever(context.filesDir).thenReturn(filesDir)
         whenever(task.id).thenReturn(firstId)
         whenever(task.type).thenReturn(taskType)
         whenever(task.done).thenReturn(notDone)

@@ -11,7 +11,7 @@ import com.example.domag.utils.platform.PlatformWrapper
 import java.io.File
 
 class DriveDataStorage(
-    private val androidContext: Context,
+    private val storageDirectory: File,
     private val platform: PlatformWrapper,
     private val fileIo: FileIo = FileIoImpl(),
     private val taskDeserializer: TasksDeserializer
@@ -24,7 +24,7 @@ class DriveDataStorage(
     private val taskSeparatorText = "=========="
 
     private val tasksFile: File
-        get() = File(androidContext.filesDir, "Tasks.txt")
+        get() = File(storageDirectory, "Tasks.txt")
 
     override fun store(task: Task) {
         Log.i(TAG, "Storing $task")
