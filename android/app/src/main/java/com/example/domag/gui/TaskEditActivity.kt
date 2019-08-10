@@ -26,6 +26,12 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+internal enum class PeriodType(val d : Int) {
+    Day(0),
+    Week(1),
+    Month(2),
+    Year(3)
+}
 
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
@@ -35,6 +41,7 @@ class TaskEditActivity(
 
     private lateinit var task: Task
     private lateinit var storage: DataStorage
+    internal var periodType = PeriodType.Day
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,16 +73,19 @@ class TaskEditActivity(
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
-            val deadline = ZonedDateTime.of(
-                LocalDate.parse(add_task_deadline_date.text, timeFormatter),
-                hardcodedHour,
-                ZoneId.systemDefault()
-            )
             task.summary = newTaskName.text.toString()
-            task.nextDeadline = deadline
+            task.nextDeadline = readTime()
             storage.store(task)
             finish()
         }
+    }
+
+    private fun readTime(): ZonedDateTime {
+        return ZonedDateTime.of(
+            LocalDate.parse(add_task_deadline_date.text, timeFormatter),
+            hardcodedHour,
+            ZoneId.systemDefault()
+        )
     }
 
     internal fun changeActivityToRecurringTask() {
@@ -89,7 +99,15 @@ class TaskEditActivity(
     }
 
     private fun preparePeriodTypeSpinner() {
-       
+        val spinner: Spinner = findViewById(R.id.task_period_type_spinner)
+        ArrayAdapter.createFromResource(
+            this, R.array.task_period_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+            spinner.onItemSelectedListener = PeriodTypeListener(this)
+        }
     }
 
     fun showDatePicker(view: View) {
@@ -140,6 +158,22 @@ class TaskTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemS
         when (position) {
             0 -> editActivity.changeActivityToSimpleTask()
             1 -> editActivity.changeActivityToRecurringTask()
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+}
+
+class PeriodTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        when (position) {
+            0 -> editActivity.periodType = PeriodType.Day
+            1 -> editActivity.periodType = PeriodType.Week
+            2 -> editActivity.periodType = PeriodType.Month
+            3 -> editActivity.periodType = PeriodType.Year
         }
     }
 
