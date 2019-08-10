@@ -36,13 +36,6 @@ class TaskEditActivity(
     private lateinit var task: Task
     private lateinit var storage: DataStorage
 
-    fun showDatePicker(view: View) {
-        Log.i(LOG_TAG, "Show date picker on ${view.id}")
-        val datePicker = DatePickerFragment()
-        datePicker.date = LocalDate.parse(add_task_deadline_date.text, timeFormatter)
-        datePicker.show(supportFragmentManager, "DatePickerFragment")
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_edit)
@@ -55,6 +48,18 @@ class TaskEditActivity(
         newTaskName.replaceText(task.summary)
 
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
+    }
+
+    private fun prepareTaskTypeSpinner() {
+        val spinner: Spinner = findViewById(R.id.task_type_selection_spinner)
+        ArrayAdapter.createFromResource(
+            this, R.array.task_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+            spinner.onItemSelectedListener = TaskTypeListener(this)
+        }
     }
 
     internal fun changeActivityToSimpleTask() {
@@ -83,16 +88,15 @@ class TaskEditActivity(
         preparePeriodTypeSpinner()
     }
 
-    private fun prepareTaskTypeSpinner() {
-        val spinner: Spinner = findViewById(R.id.task_type_selection_spinner)
-        ArrayAdapter.createFromResource(
-            this, R.array.task_types,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-            spinner.onItemSelectedListener = TaskTypeListener(this)
-        }
+    private fun preparePeriodTypeSpinner() {
+       
+    }
+
+    fun showDatePicker(view: View) {
+        Log.i(LOG_TAG, "Show date picker on ${view.id}")
+        val datePicker = DatePickerFragment()
+        datePicker.date = LocalDate.parse(add_task_deadline_date.text, timeFormatter)
+        datePicker.show(supportFragmentManager, "DatePickerFragment")
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
