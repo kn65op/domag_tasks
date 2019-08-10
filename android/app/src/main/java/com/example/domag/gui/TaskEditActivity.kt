@@ -17,6 +17,7 @@ import com.example.domag.R
 import com.example.domag.gui.utils.replaceText
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
+import com.example.domag.tasks.RecurringTask
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
 import kotlinx.android.synthetic.main.task_edit.*
@@ -26,7 +27,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-internal enum class PeriodType(val d : Int) {
+internal enum class PeriodType(val d: Int) {
     Day(0),
     Week(1),
     Month(2),
@@ -39,7 +40,9 @@ class TaskEditActivity(
 ) : AppCompatActivity(),
     DatePickerFragment.DatePickerListener {
 
-    private lateinit var task: Task
+    private var simpleTask: SimpleTask? = null
+    private var recurringTask: RecurringTask? = null
+    private var task: Task? = null
     private lateinit var storage: DataStorage
     internal var periodType = PeriodType.Day
 
@@ -49,12 +52,39 @@ class TaskEditActivity(
         setupActionBar()
         prepareTaskTypeSpinner()
 
-        val dataPassed = intent.getSerializableExtra("Task")
-        task = dataPassed as? Task ?: SimpleTask("", ZonedDateTime.now())
-        add_task_deadline_date.text = task.nextDeadline.format(timeFormatter)
-        newTaskName.replaceText(task.summary)
+        val simpleTaskPassed = intent.getSerializableExtra(SimpleTask.type)
+        val recurringTaskPassed = intent.getSerializableExtra(RecurringTask.type)
+        if (simpleTaskPassed != null && recurringTaskPassed != null)
+        {
+            Log.e(LOG_TAG, "passed two different task!")
+            finish()
+        }
+
+        if (simpleTaskPassed != null) {
+            simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
+            Log.i(LOG_TAG, "edit simple task: ${simpleTask?.summary}")
+            task = simpleTask
+            changeActivityToSimpleTask()
+            setCommonFieldsFromTask()
+        }
+        if (recurringTaskPassed != null)
+        {
+            recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask(",")
+            Log.i(LOG_TAG, "edit recurring task: ${recurringTask?.summary}")
+            task = recurringTask
+            changeActivityToRecurringTask()
+            setCommonFieldsFromTask()
+        }
 
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
+    }
+
+    private fun setCommonFieldsFromTask() {
+        val t = task
+        if (t != null) {
+            add_task_deadline_date.text = t.nextDeadline.format(timeFormatter)
+            newTaskName.replaceText(t.summary)
+        }
     }
 
     private fun prepareTaskTypeSpinner() {
@@ -73,12 +103,19 @@ class TaskEditActivity(
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
-            task.summary = newTaskName.text.toString()
-            task.nextDeadline = readTime()
-            storage.store(task)
+            var s = simpleTask
+            if (s == null)
+            {
+                s = SimpleTask(readSummary(), readTime())
+            }
+            s.summary = readSummary()
+            s.nextDeadline = readTime()
+            storage.store(s)
             finish()
         }
     }
+
+    private fun readSummary() = newTaskName.text.toString()
 
     private fun readTime(): ZonedDateTime {
         return ZonedDateTime.of(
@@ -140,7 +177,10 @@ class TaskEditActivity(
         Log.i(LOG_TAG, "Menu item selected")
         return when (item.itemId) {
             R.id.remove_task_menu_item -> {
-                storage.remove(task)
+                val t = task
+                if (t != null) {
+                    storage.remove(t)
+                }
                 finish()
                 return true
             }
