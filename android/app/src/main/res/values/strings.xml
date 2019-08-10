@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Domag</string>
     <string name="action_settings">Settings</string>
@@ -28,5 +29,11 @@
     <string-array name="task_types">
         <item>One time task</item>
         <item>Recurring task</item>
+    </string-array>
+    <string-array name="task_period_types">
+        <item>days</item>
+        <item>weeks</item>
+        <item>months</item>
+        <item>years</item>
     </string-array>
 </resources>

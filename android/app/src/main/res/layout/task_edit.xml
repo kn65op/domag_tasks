@@ -55,7 +55,8 @@
                 android:id="@+id/editText" android:autofillHints=""/>
         <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/spinner2"/>
+                android:layout_height="wrap_content" android:id="@+id/task_period_type_spinner"
+                android:spinnerMode="dropdown"/>
     </LinearLayout>
     <Button
             android:id="@+id/config_simple_task_button"

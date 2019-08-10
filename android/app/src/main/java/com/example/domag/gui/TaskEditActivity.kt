@@ -26,12 +26,12 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
     private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
 ) : AppCompatActivity(),
-    DatePickerFragment.DatePickerListener,
-    AdapterView.OnItemSelectedListener {
+    DatePickerFragment.DatePickerListener {
 
     private lateinit var task: Task
     private lateinit var storage: DataStorage
@@ -57,8 +57,8 @@ class TaskEditActivity(
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
     }
 
-    private fun setConfirmToCreateSimpleTask() {
-        val information : LinearLayout = findViewById(R.id.recurring_information_layout)
+    internal fun changeActivityToSimpleTask() {
+        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
             val deadline = ZonedDateTime.of(
@@ -73,13 +73,14 @@ class TaskEditActivity(
         }
     }
 
-    private fun setConfirmToCreateRecurringTask() {
-        val information : LinearLayout = findViewById(R.id.recurring_information_layout)
+    internal fun changeActivityToRecurringTask() {
+        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "Recurring")
-            finish();
+            finish()
         }
+        preparePeriodTypeSpinner()
     }
 
     private fun prepareTaskTypeSpinner() {
@@ -90,7 +91,7 @@ class TaskEditActivity(
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-            spinner.onItemSelectedListener = this
+            spinner.onItemSelectedListener = TaskTypeListener(this)
         }
     }
 
@@ -125,19 +126,21 @@ class TaskEditActivity(
         }
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (position) {
-            0 -> setConfirmToCreateSimpleTask()
-            1 -> setConfirmToCreateRecurringTask()
-        }
-
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("nothing selection not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
     }
+}
+
+class TaskTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        when (position) {
+            0 -> editActivity.changeActivityToSimpleTask()
+            1 -> editActivity.changeActivityToRecurringTask()
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
