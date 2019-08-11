@@ -59,23 +59,20 @@ class TaskEditActivity(
         if (simpleTaskPassed != null && recurringTaskPassed != null) {
             Log.e(LOG_TAG, "passed two different task!")
             finish()
-        } else if (simpleTaskPassed != null) {
-            simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
-            Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
-            task = simpleTask
-            spinner.setSelection(0)
         } else if (recurringTaskPassed != null) {
             recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
             Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
             task = recurringTask
+            setCommonFieldsFromTask()
+            //val periodUnits =
             spinner.setSelection(1)
         } else {
-            simpleTask = SimpleTask("")
-            recurringTask = RecurringTask("")
+            simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
+            Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
             task = simpleTask
-            changeActivityToSimpleTask()
+            setCommonFieldsFromTask()
+            spinner.setSelection(0)
         }
-        setCommonFieldsFromTask()
     }
 
     private fun setCommonFieldsFromTask() {
@@ -98,6 +95,8 @@ class TaskEditActivity(
 
     internal fun changeActivityToSimpleTask() {
         Log.i(LOG_TAG, "Editing simple task")
+        simpleTask = SimpleTask(summary = readSummary(), nextDeadline = readTime(), id = task.id)
+        task = simpleTask
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
@@ -121,6 +120,8 @@ class TaskEditActivity(
 
     internal fun changeActivityToRecurringTask() {
         Log.i(LOG_TAG, "Editing recurring task")
+        recurringTask = RecurringTask(summary = readSummary(), nextDeadline = readTime(), id = task.id)
+        task = recurringTask
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {

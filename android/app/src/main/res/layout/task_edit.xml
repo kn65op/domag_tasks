@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:ems="10"
-                android:id="@+id/editText" android:autofillHints=""/>
+                android:id="@+id/task_period_value" android:autofillHints=""/>
         <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/task_period_type_spinner"

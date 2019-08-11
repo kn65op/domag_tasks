@@ -13,8 +13,7 @@ class RecurringTask(
     override var summary: String,
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class)
     override var nextDeadline: ZonedDateTime = ZonedDateTime.now(),
-    @Serializable(with = PeriodSerializer::class)
-    private val period: Period = Period.of(1,0,0),
+    @Serializable(with = PeriodSerializer::class) var period: Period = Period.of(1,0,0),
     override var id: Id = 0
 ) : Task {
     companion object {
