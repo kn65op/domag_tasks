@@ -20,10 +20,7 @@ import com.example.domag.tasks.RecurringTask
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
 import kotlinx.android.synthetic.main.task_edit.*
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -145,6 +142,17 @@ class TaskEditActivity(
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
+            val periodValue = task_period_value.text.toString().toInt()
+            recurringTask.period =  when(periodType) {
+                day_type -> Period.ofDays(periodValue)
+                week_type -> Period.ofWeeks(periodValue)
+                month_type -> Period.ofMonths(periodValue)
+                year_type -> Period.ofYears(periodValue)
+                else -> {
+                    Log.e(LOG_TAG, "Invalid period type value ${periodType} defaultin to days")
+                    Period.ofDays(periodValue)
+                }
+            }
             storage.store(recurringTask)
             finish()
         }
