@@ -40,10 +40,11 @@ class TaskEditActivity(
 ) : AppCompatActivity(),
     DatePickerFragment.DatePickerListener {
 
-    private var simpleTask: SimpleTask? = null
-    private var recurringTask: RecurringTask? = null
-    private var task: Task? = null
+    private lateinit var simpleTask: SimpleTask
+    private lateinit var recurringTask: RecurringTask
+    private lateinit var task: Task
     private lateinit var storage: DataStorage
+    private lateinit var spinner: Spinner
     internal var periodType = PeriodType.Day
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,44 +52,40 @@ class TaskEditActivity(
         setContentView(R.layout.task_edit)
         setupActionBar()
         prepareTaskTypeSpinner()
+        storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
         val simpleTaskPassed = intent.getSerializableExtra(SimpleTask.type)
         val recurringTaskPassed = intent.getSerializableExtra(RecurringTask.type)
-        if (simpleTaskPassed != null && recurringTaskPassed != null)
-        {
+        if (simpleTaskPassed != null && recurringTaskPassed != null) {
             Log.e(LOG_TAG, "passed two different task!")
             finish()
-        }
-
-        if (simpleTaskPassed != null) {
+        } else if (simpleTaskPassed != null) {
             simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
-            Log.i(LOG_TAG, "edit simple task: ${simpleTask?.summary}")
+            Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
+            task = simpleTask
+            spinner.setSelection(0)
+        } else if (recurringTaskPassed != null) {
+            recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
+            Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
+            task = recurringTask
+            spinner.setSelection(1)
+        } else {
+            simpleTask = SimpleTask("")
+            recurringTask = RecurringTask("")
             task = simpleTask
             changeActivityToSimpleTask()
-            setCommonFieldsFromTask()
         }
-        if (recurringTaskPassed != null)
-        {
-            recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask(",")
-            Log.i(LOG_TAG, "edit recurring task: ${recurringTask?.summary}")
-            task = recurringTask
-            changeActivityToRecurringTask()
-            setCommonFieldsFromTask()
-        }
-
-        storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
+        setCommonFieldsFromTask()
     }
 
     private fun setCommonFieldsFromTask() {
         val t = task
-        if (t != null) {
-            add_task_deadline_date.text = t.nextDeadline.format(timeFormatter)
-            newTaskName.replaceText(t.summary)
-        }
+        add_task_deadline_date.text = t.nextDeadline.format(timeFormatter)
+        newTaskName.replaceText(t.summary)
     }
 
     private fun prepareTaskTypeSpinner() {
-        val spinner: Spinner = findViewById(R.id.task_type_selection_spinner)
+        spinner = findViewById(R.id.task_type_selection_spinner)
         ArrayAdapter.createFromResource(
             this, R.array.task_types,
             android.R.layout.simple_spinner_item
@@ -100,17 +97,14 @@ class TaskEditActivity(
     }
 
     internal fun changeActivityToSimpleTask() {
+        Log.i(LOG_TAG, "Editing simple task")
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
-            var s = simpleTask
-            if (s == null)
-            {
-                s = SimpleTask(readSummary(), readTime())
-            }
-            s.summary = readSummary()
-            s.nextDeadline = readTime()
-            storage.store(s)
+            Log.i(LOG_TAG, "store simple task")
+            simpleTask.summary = readSummary()
+            simpleTask.nextDeadline = readTime()
+            storage.store(simpleTask)
             finish()
         }
     }
@@ -126,10 +120,14 @@ class TaskEditActivity(
     }
 
     internal fun changeActivityToRecurringTask() {
+        Log.i(LOG_TAG, "Editing recurring task")
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
-            Log.i(LOG_TAG, "Recurring")
+            Log.i(LOG_TAG, "store recurring task")
+            recurringTask.summary = readSummary()
+            recurringTask.nextDeadline = readTime()
+            storage.store(recurringTask)
             finish()
         }
         preparePeriodTypeSpinner()
@@ -177,10 +175,7 @@ class TaskEditActivity(
         Log.i(LOG_TAG, "Menu item selected")
         return when (item.itemId) {
             R.id.remove_task_menu_item -> {
-                val t = task
-                if (t != null) {
-                    storage.remove(t)
-                }
+                storage.remove(task)
                 finish()
                 return true
             }
