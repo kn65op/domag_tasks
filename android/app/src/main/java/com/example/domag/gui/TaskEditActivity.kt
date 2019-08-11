@@ -1,8 +1,7 @@
 package com.example.domag.gui
 
 import android.annotation.TargetApi
-import android.os.Build
-import android.os.Bundle
+import android.os.Build import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -26,13 +25,12 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
-internal enum class PeriodType(val d: Int) {
-    Day(0),
-    Week(1),
-    Month(2),
-    Year(3)
-}
+private const val day_type = 0
+private const val week_type = 1
+private const val month_type = 2
+private const val year_type = 3
 
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
@@ -44,14 +42,14 @@ class TaskEditActivity(
     private lateinit var recurringTask: RecurringTask
     private lateinit var task: Task
     private lateinit var storage: DataStorage
-    private lateinit var spinner: Spinner
-    internal var periodType = PeriodType.Day
+    internal var periodType = day_type
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_edit)
         setupActionBar()
         prepareTaskTypeSpinner()
+        preparePeriodTypeSpinner()
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
         val simpleTaskPassed = intent.getSerializableExtra(SimpleTask.type)
@@ -64,14 +62,34 @@ class TaskEditActivity(
             Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
             task = recurringTask
             setCommonFieldsFromTask()
-            //val periodUnits =
-            spinner.setSelection(1)
+            val periodUnits = recurringTask.period.units
+            if (periodUnits.isEmpty())
+            {
+                Log.w(LOG_TAG, "period is not set")
+                periodUnits.add(ChronoUnit.DAYS)
+            }
+            val (unit, value) = when (periodUnits.first())
+            {
+                ChronoUnit.DAYS -> Pair(day_type, recurringTask.period.days)
+                ChronoUnit.MONTHS -> Pair(month_type, recurringTask.period.months)
+                ChronoUnit.WEEKS -> Pair(week_type, recurringTask.period.days / daysInWeek)
+                ChronoUnit.YEARS -> Pair(year_type, recurringTask.period.years)
+                else -> {
+                    Log.w(LOG_TAG, "Unsupported period, defaulting to  1 day")
+                    Pair(day_type, 1)
+                }
+            }
+            Log.i(LOG_TAG, "type is $unit with value $value")
+            task_type_selection_spinner.setSelection(1)
+            task_period_value.replaceText("$value")
+            Log.i(LOG_TAG, "set: $unit")
+            task_period_type_spinner.setSelection(unit)
         } else {
             simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
             Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
             task = simpleTask
             setCommonFieldsFromTask()
-            spinner.setSelection(0)
+            task_type_selection_spinner.setSelection(0)
         }
     }
 
@@ -82,14 +100,13 @@ class TaskEditActivity(
     }
 
     private fun prepareTaskTypeSpinner() {
-        spinner = findViewById(R.id.task_type_selection_spinner)
         ArrayAdapter.createFromResource(
             this, R.array.task_types,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-            spinner.onItemSelectedListener = TaskTypeListener(this)
+            task_type_selection_spinner.adapter = adapter
+            task_type_selection_spinner.onItemSelectedListener = TaskTypeListener(this)
         }
     }
 
@@ -131,7 +148,6 @@ class TaskEditActivity(
             storage.store(recurringTask)
             finish()
         }
-        preparePeriodTypeSpinner()
     }
 
     private fun preparePeriodTypeSpinner() {
@@ -186,6 +202,7 @@ class TaskEditActivity(
 
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
+        private const val daysInWeek = 7
     }
 }
 
@@ -205,11 +222,12 @@ class TaskTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemS
 
 class PeriodTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        Log.i("helper", "$position")
         when (position) {
-            0 -> editActivity.periodType = PeriodType.Day
-            1 -> editActivity.periodType = PeriodType.Week
-            2 -> editActivity.periodType = PeriodType.Month
-            3 -> editActivity.periodType = PeriodType.Year
+            0 -> editActivity.periodType = day_type
+            1 -> editActivity.periodType = week_type
+            2 -> editActivity.periodType = month_type
+            3 -> editActivity.periodType = year_type
         }
     }
 
