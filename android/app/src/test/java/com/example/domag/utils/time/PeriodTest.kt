@@ -46,4 +46,9 @@ class PeriodTest {
     fun `day period should store number of days`() {
         assertThat(Period.ofDays(number).count, equalTo(number))
     }
+
+    @Test
+    fun `year period should be converted to Java Period`() {
+        assertThat(Period.ofYears(number).toJavaPeriod(), equalTo(java.time.Period.ofYears(number)))
+    }
 }
