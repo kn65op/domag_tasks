@@ -6,59 +6,69 @@ import org.junit.Test
 
 class PeriodTest {
     private val number = 3
+    private fun yearsPeriod() = Period.ofYears(number)
+    private fun weeksPeriod() = Period.ofWeeks(number)
+    private fun daysPeriod() = Period.ofDays(number)
+    private fun monthsPeriod() = Period.ofMonths(number)
 
     @Test
     fun `year period should be type of Year`() {
-        assertThat(Period.ofYears(number).type, equalTo(PeriodType.Year))
+        assertThat(yearsPeriod().type, equalTo(PeriodType.Year))
     }
 
     @Test
     fun `year period should store number of years`() {
-        assertThat(Period.ofYears(number).count, equalTo(number))
+        assertThat(yearsPeriod().count, equalTo(number))
     }
 
     @Test
     fun `month period should be type of Month`() {
-        assertThat(Period.ofMonths(number).type, equalTo(PeriodType.Month))
+        assertThat(monthsPeriod().type, equalTo(PeriodType.Month))
     }
 
     @Test
     fun `month period should store number of months`() {
-        assertThat(Period.ofMonths(number).count, equalTo(number))
+        assertThat(monthsPeriod().count, equalTo(number))
     }
 
     @Test
     fun `week period should be type of Week`() {
-        assertThat(Period.ofWeeks(number).type, equalTo(PeriodType.Week))
+        assertThat(weeksPeriod().type, equalTo(PeriodType.Week))
     }
 
     @Test
     fun `week period should store number of weeks`() {
-        assertThat(Period.ofWeeks(number).count, equalTo(number))
+        assertThat(weeksPeriod().count, equalTo(number))
     }
 
     @Test
     fun `day period should be type of Days`() {
-        assertThat(Period.ofDays(number).type, equalTo(PeriodType.Day))
+        assertThat(daysPeriod().type, equalTo(PeriodType.Day))
     }
 
     @Test
     fun `day period should store number of days`() {
-        assertThat(Period.ofDays(number).count, equalTo(number))
+        assertThat(daysPeriod().count, equalTo(number))
     }
 
     @Test
     fun `year period should be converted to Java Period`() {
-        assertThat(Period.ofYears(number).toJavaPeriod(), equalTo(java.time.Period.ofYears(number)))
+        assertThat(yearsPeriod().toJavaPeriod(), equalTo(java.time.Period.ofYears(number)))
     }
 
     @Test
     fun `month period should be converted to Java Period`() {
-        assertThat(Period.ofMonths(number).toJavaPeriod(), equalTo(java.time.Period.ofMonths(number)))
+        assertThat(monthsPeriod().toJavaPeriod(), equalTo(java.time.Period.ofMonths(number)))
     }
 
     @Test
-    fun `weeks period shuold be converted to Java Period`() {
-        assertThat(Period.ofWeeks(number).toJavaPeriod(), equalTo(java.time.Period.ofWeeks(number)))
+    fun `weeks period should be converted to Java Period`() {
+        assertThat(weeksPeriod().toJavaPeriod(), equalTo(java.time.Period.ofWeeks(number)))
     }
+
+    @Test
+    fun `days period should be converted to Java Period`() {
+        assertThat(daysPeriod().toJavaPeriod(), equalTo(java.time.Period.ofDays(number)))
+    }
+
 }
