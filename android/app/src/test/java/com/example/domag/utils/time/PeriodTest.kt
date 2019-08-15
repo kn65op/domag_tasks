@@ -9,4 +9,9 @@ class PeriodTest {
     fun `year period shuold be type of Year`() {
         assertThat(Period.ofYears().type, equalTo(PeriodType.Year))
     }
+
+    @Test
+    fun `month period shuold be type of Month`() {
+        assertThat(Period.ofMonths().type, equalTo(PeriodType.Month))
+    }
 }
