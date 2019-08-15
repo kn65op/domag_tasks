@@ -1,9 +1,9 @@
 package com.example.domag.utils.time
 
-class Period(val type: PeriodType) {
+class Period(val type: PeriodType, val count: Int) {
 
     companion object {
-        fun ofYears() = Period(PeriodType.Year)
-        fun ofMonths() = Period(PeriodType.Month)
+        fun ofYears(number: Int) = Period(PeriodType.Year, number)
+        fun ofMonths() = Period(PeriodType.Month, 0)
     }
 }

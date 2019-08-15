@@ -5,13 +5,20 @@ import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 
 class PeriodTest {
+    val number = 3
+
     @Test
-    fun `year period shuold be type of Year`() {
-        assertThat(Period.ofYears().type, equalTo(PeriodType.Year))
+    fun `year period should be type of Year`() {
+        assertThat(Period.ofYears(number).type, equalTo(PeriodType.Year))
     }
 
     @Test
-    fun `month period shuold be type of Month`() {
+    fun `year period should store number of years`() {
+        assertThat(Period.ofYears(number).count, equalTo(number))
+    }
+
+    @Test
+    fun `month period should be type of Month`() {
         assertThat(Period.ofMonths().type, equalTo(PeriodType.Month))
     }
 }
