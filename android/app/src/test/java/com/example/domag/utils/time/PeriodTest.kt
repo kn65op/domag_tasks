@@ -51,4 +51,9 @@ class PeriodTest {
     fun `year period should be converted to Java Period`() {
         assertThat(Period.ofYears(number).toJavaPeriod(), equalTo(java.time.Period.ofYears(number)))
     }
+
+    @Test
+    fun `month period should be converted to Java Period`() {
+        assertThat(Period.ofMonths(number).toJavaPeriod(), equalTo(java.time.Period.ofMonths(number)))
+    }
 }

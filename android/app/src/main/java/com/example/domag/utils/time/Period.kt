@@ -1,7 +1,10 @@
 package com.example.domag.utils.time
 
 class Period(val type: PeriodType, val count: Int) {
-    fun toJavaPeriod() : java.time.Period = java.time.Period.ofYears(count)
+    fun toJavaPeriod(): java.time.Period = when (type) {
+        PeriodType.Year -> java.time.Period.ofYears(count)
+        else -> java.time.Period.ofMonths(count)
+    }
 
     companion object {
         fun ofYears(number: Int) = Period(PeriodType.Year, number)
