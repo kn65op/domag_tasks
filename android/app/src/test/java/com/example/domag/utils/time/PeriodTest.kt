@@ -6,8 +6,7 @@ import org.junit.Test
 
 class PeriodTest {
     @Test
-    fun `empty period should be type of None`()
-    {
-        assertThat(Period().type, equalTo(PeriodType.None))
+    fun `year period shuold be type of Year`() {
+        assertThat(Period.ofYears().type, equalTo(PeriodType.Year))
     }
 }
