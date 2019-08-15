@@ -39,9 +39,16 @@ class Period private constructor(val type: PeriodType, val count: Int) {
         fun ofJavaPeriod(period: java.time.Period): Period {
             if (period.years > noAmount) {
                 return ofYears(period.years)
+            } else if (period.months > noAmount) {
+                return ofMonths(period.months)
             }
-            return ofMonths(period.months)
+            else if (period.days % daysInWeek  == noAmount) {
+                return ofWeeks(period.days / daysInWeek)
+            }
+            return ofDays(period.days)
         }
+
         private const val noAmount = 0
+        private const val daysInWeek = 7
     }
 }
