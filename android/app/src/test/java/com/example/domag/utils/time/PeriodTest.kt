@@ -19,6 +19,11 @@ class PeriodTest {
 
     @Test
     fun `month period should be type of Month`() {
-        assertThat(Period.ofMonths().type, equalTo(PeriodType.Month))
+        assertThat(Period.ofMonths(number).type, equalTo(PeriodType.Month))
+    }
+
+    @Test
+    fun `month period should store number of months`() {
+        assertThat(Period.ofMonths(number).count, equalTo(number))
     }
 }
