@@ -1,6 +1,6 @@
 package com.example.domag.utils.time
 
-class Period(val type: PeriodType, val count: Int) {
+class Period private constructor(val type: PeriodType, val count: Int) {
 
     fun toJavaPeriod(): java.time.Period = when (type) {
         PeriodType.Year -> java.time.Period.ofYears(count)
@@ -27,11 +27,21 @@ class Period(val type: PeriodType, val count: Int) {
         return result
     }
 
+    override fun toString(): String {
+        return "Period(type=$type, count=$count)"
+    }
+
     companion object {
         fun ofYears(number: Int) = Period(PeriodType.Year, number)
         fun ofMonths(number: Int) = Period(PeriodType.Month, number)
         fun ofWeeks(number: Int) = Period(PeriodType.Week, number)
         fun ofDays(number: Int) = Period(PeriodType.Day, number)
-        fun ofJavaPeriod(period: java.time.Period) = Period(PeriodType.Year, period.years)
+        fun ofJavaPeriod(period: java.time.Period): Period {
+            if (period.years > noAmount) {
+                return ofYears(period.years)
+            }
+            return ofMonths(period.months)
+        }
+        private const val noAmount = 0
     }
 }
