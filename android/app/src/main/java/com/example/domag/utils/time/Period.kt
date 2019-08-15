@@ -1,3 +1,5 @@
 package com.example.domag.utils.time
 
-cl
+class Period {
+    var type = PeriodType.None
+}
