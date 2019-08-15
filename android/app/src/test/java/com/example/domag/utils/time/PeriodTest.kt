@@ -36,4 +36,14 @@ class PeriodTest {
     fun `week period should store number of weeks`() {
         assertThat(Period.ofWeeks(number).count, equalTo(number))
     }
+
+    @Test
+    fun `day period should be type of Days`() {
+        assertThat(Period.ofDays(number).type, equalTo(PeriodType.Day))
+    }
+
+    @Test
+    fun `day period should store number of days`() {
+        assertThat(Period.ofDays(number).count, equalTo(number))
+    }
 }
