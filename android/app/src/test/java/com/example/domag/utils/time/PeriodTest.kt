@@ -2,7 +2,11 @@ package com.example.domag.utils.time
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import com.natpryce.hamkrest.isA
+import com.natpryce.hamkrest.throws
+import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Test
+import kotlin.test.assertFailsWith
 
 class PeriodTest {
     private val number = 3
@@ -14,6 +18,8 @@ class PeriodTest {
     private fun javaMonthPeriod() = java.time.Period.ofMonths(number)
     private fun javaWeekPeriod() = java.time.Period.ofWeeks(number)
     private fun javaDayPeriod() = java.time.Period.ofDays(number)
+    private fun javaOneDayOneMonthPeriod() = java.time.Period.of(0, 1, 1)
+    private fun javaOnePositiveOneNegativePeriod() = java.time.Period.of(-1, 1, 0)
 
     @Test
     fun `year period should be type of Year`() {
@@ -81,17 +87,27 @@ class PeriodTest {
     }
 
     @Test
-    fun `month period should be converted from Java period`() {
+    fun `month period should be converted from Java Period`() {
         assertThat(Period.ofJavaPeriod(javaMonthPeriod()), equalTo(monthsPeriod()))
     }
 
     @Test
-    fun `week period should be converted from Java period`() {
+    fun `week period should be converted from Java Period`() {
         assertThat(Period.ofJavaPeriod(javaWeekPeriod()), equalTo(weeksPeriod()))
     }
 
     @Test
-    fun `day period should be converted from Java period` () {
+    fun `day period should be converted from Java Period`() {
         assertThat(Period.ofJavaPeriod(javaDayPeriod()), equalTo(daysPeriod()))
+    }
+
+    @Test
+    fun `given more then one type of unit in Java Period should throw`() {
+        assertFailsWith<Period.InvalidJavaPeriod> { Period.ofJavaPeriod(javaOneDayOneMonthPeriod()) }
+    }
+
+    @Test
+    fun `given negative and positive values in Java Period should throw`() {
+        assertFailsWith<Period.InvalidJavaPeriod> { Period.ofJavaPeriod(javaOnePositiveOneNegativePeriod()) }
     }
 }

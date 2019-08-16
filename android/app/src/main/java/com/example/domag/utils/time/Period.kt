@@ -1,6 +1,12 @@
 package com.example.domag.utils.time
 
+import java.lang.Exception
+import kotlin.math.abs
+import kotlin.math.sign
+
+
 class Period private constructor(val type: PeriodType, val count: Int) {
+    class InvalidJavaPeriod(message: String) : Exception(message)
 
     fun toJavaPeriod(): java.time.Period = when (type) {
         PeriodType.Year -> java.time.Period.ofYears(count)
@@ -37,15 +43,22 @@ class Period private constructor(val type: PeriodType, val count: Int) {
         fun ofWeeks(number: Int) = Period(PeriodType.Week, number)
         fun ofDays(number: Int) = Period(PeriodType.Day, number)
         fun ofJavaPeriod(period: java.time.Period): Period {
-            if (period.years > noAmount) {
-                return ofYears(period.years)
-            } else if (period.months > noAmount) {
-                return ofMonths(period.months)
+            if (moreThenOneUnit(period)) throw InvalidJavaPeriod("More then one unit in period")
+            when {
+                period.years > noAmount -> return ofYears(period.years)
+                period.months > noAmount -> return ofMonths(period.months)
+                period.days % daysInWeek == noAmount -> return ofWeeks(period.days / daysInWeek)
+                else -> return ofDays(period.days)
             }
-            else if (period.days % daysInWeek  == noAmount) {
-                return ofWeeks(period.days / daysInWeek)
-            }
-            return ofDays(period.days)
+        }
+
+        private fun moreThenOneUnit(period: java.time.Period): Boolean {
+            val oneField = 1
+            return listOf(
+                period.days,
+                period.months,
+                period.years
+            ).fold(0) { a, b -> (a + abs(sign(b.toDouble()))).toInt() } > oneField
         }
 
         private const val noAmount = 0
