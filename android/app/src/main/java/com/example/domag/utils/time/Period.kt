@@ -46,11 +46,11 @@ class Period private constructor(val type: PeriodType, val count: Int) : java.io
         fun ofDays(number: Int) = Period(PeriodType.Day, number)
         fun ofJavaPeriod(period: java.time.Period): Period {
             if (moreThenOneUnit(period)) throw InvalidJavaPeriod("More then one unit in period")
-            when {
-                period.years > noAmount -> return ofYears(period.years)
-                period.months > noAmount -> return ofMonths(period.months)
-                period.days % daysInWeek == noAmount -> return ofWeeks(period.days / daysInWeek)
-                else -> return ofDays(period.days)
+            return when {
+                period.years > noAmount -> ofYears(period.years)
+                period.months > noAmount -> ofMonths(period.months)
+                period.days % daysInWeek == noAmount -> ofWeeks(period.days / daysInWeek)
+                else -> ofDays(period.days)
             }
         }
 

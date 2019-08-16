@@ -1,7 +1,8 @@
 package com.example.domag.gui
 
 import android.annotation.TargetApi
-import android.os.Build import android.os.Bundle
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import com.example.domag.tasks.Task
 import com.example.domag.utils.time.Period
 import com.example.domag.utils.time.PeriodType
 import kotlinx.android.synthetic.main.task_edit.*
+import kotlin.NumberFormatException
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -63,18 +65,8 @@ class TaskEditActivity(
             Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
             task = recurringTask
             setCommonFieldsFromTask()
-            val unit = when (recurringTask.period.type)
-            {
-                PeriodType.Day -> day_type
-                PeriodType.Month -> month_type
-                PeriodType.Week -> week_type
-                PeriodType.Year -> year_type
-            }
-            Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.count}")
+            setRecurringTaskFields()
             task_type_selection_spinner.setSelection(1)
-            task_period_value.replaceText("${recurringTask.period.count}")
-            Log.i(LOG_TAG, "set: $unit")
-            task_period_type_spinner.setSelection(unit)
         } else {
             simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
             Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
@@ -82,6 +74,19 @@ class TaskEditActivity(
             setCommonFieldsFromTask()
             task_type_selection_spinner.setSelection(0)
         }
+    }
+
+    private fun setRecurringTaskFields() {
+        val unit = when (recurringTask.period.type) {
+            PeriodType.Day -> day_type
+            PeriodType.Month -> month_type
+            PeriodType.Week -> week_type
+            PeriodType.Year -> year_type
+        }
+        Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.count}")
+        task_period_value.replaceText("${recurringTask.period.count}")
+        Log.i(LOG_TAG, "set: $unit")
+        task_period_type_spinner.setSelection(unit)
     }
 
     private fun setCommonFieldsFromTask() {
@@ -130,14 +135,21 @@ class TaskEditActivity(
         Log.i(LOG_TAG, "Editing recurring task")
         recurringTask = RecurringTask(summary = readSummary(), nextDeadline = readTime(), id = task.id)
         task = recurringTask
+        setRecurringTaskFields()
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
-            val periodValue = task_period_value.text.toString().toInt()
-            recurringTask.period =  when(periodType) {
+            val periodValue =
+                try {
+                    task_period_value.text.toString().toInt()
+                } catch (e: NumberFormatException) {
+                    Log.w(LOG_TAG, "No number in ${task_period_value.text}, return 0")
+                    0
+                }
+            recurringTask.period = when (periodType) {
                 day_type -> Period.ofDays(periodValue)
                 week_type -> Period.ofWeeks(periodValue)
                 month_type -> Period.ofMonths(periodValue)
