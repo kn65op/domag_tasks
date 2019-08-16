@@ -1,9 +1,9 @@
 package com.example.domag.tasks
 
+import com.example.domag.utils.time.Period
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
-import java.time.Period
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.test.assertFailsWith
@@ -75,7 +75,7 @@ class JsonTaskDeserializerTest {
         val id = 9
         val summary = "SUM"
         val data = """RECURRING TASK
-            {"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":"P3D","id":$id}""".trimIndent()
+            {"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":{"type":"Day","count":3},"id":$id}""".trimIndent()
 
         val expectedTask = RecurringTask(
             summary,

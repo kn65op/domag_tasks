@@ -3,8 +3,9 @@ package com.example.domag.utils.time
 import java.lang.Exception
 import kotlin.math.abs
 import kotlin.math.sign
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 class Period private constructor(val type: PeriodType, val count: Int) {
     class InvalidJavaPeriod(message: String) : Exception(message)
 

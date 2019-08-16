@@ -19,10 +19,14 @@ import com.example.domag.storage.DataStorageFactory
 import com.example.domag.tasks.RecurringTask
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
+import com.example.domag.utils.time.Period
+import com.example.domag.utils.time.PeriodType
 import kotlinx.android.synthetic.main.task_edit.*
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 private const val day_type = 0
 private const val week_type = 1
@@ -59,26 +63,16 @@ class TaskEditActivity(
             Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
             task = recurringTask
             setCommonFieldsFromTask()
-            val periodUnits = recurringTask.period.units
-            if (periodUnits.isEmpty())
+            val unit = when (recurringTask.period.type)
             {
-                Log.w(LOG_TAG, "period is not set")
-                periodUnits.add(ChronoUnit.DAYS)
+                PeriodType.Day -> day_type
+                PeriodType.Month -> month_type
+                PeriodType.Week -> week_type
+                PeriodType.Year -> year_type
             }
-            val (unit, value) = when (periodUnits.first())
-            {
-                ChronoUnit.DAYS -> Pair(day_type, recurringTask.period.days)
-                ChronoUnit.MONTHS -> Pair(month_type, recurringTask.period.months)
-                ChronoUnit.WEEKS -> Pair(week_type, recurringTask.period.days / daysInWeek)
-                ChronoUnit.YEARS -> Pair(year_type, recurringTask.period.years)
-                else -> {
-                    Log.w(LOG_TAG, "Unsupported period, defaulting to  1 day")
-                    Pair(day_type, 1)
-                }
-            }
-            Log.i(LOG_TAG, "type is $unit with value $value")
+            Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.count}")
             task_type_selection_spinner.setSelection(1)
-            task_period_value.replaceText("$value")
+            task_period_value.replaceText("${recurringTask.period.count}")
             Log.i(LOG_TAG, "set: $unit")
             task_period_type_spinner.setSelection(unit)
         } else {
