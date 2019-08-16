@@ -25,13 +25,13 @@ class MainActivityUiTest {
 
     @Test
     fun whenThereIsTask_shouldBeOnList() {
-        prepareOneTask()
+        prepareOneSimpleTask()
         checkTaskOnPosition(0, firstTask)
     }
 
     @Test
     fun whenThereAreFewTasksWithSameDate_shouldBeSortedByName() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         checkTasksSize(threeTasks)
         checkTaskOnPosition(0, firstTask)
@@ -42,9 +42,9 @@ class MainActivityUiTest {
     @Test
     fun whenThereAreFewTasksWithDifferentDates_shouldBeSortedByDate() {
         prepareEmptyTasks()
-        createTask(thirdTask, date1)
-        createTask(firstTask, date3)
-        createTask(secondTask, date2)
+        createSimpleTask(thirdTask, date1)
+        createSimpleTask(firstTask, date3)
+        createSimpleTask(secondTask, date2)
 
         checkTasksSize(threeTasks)
         checkTaskOnPosition(0, thirdTask, date1)
@@ -54,7 +54,7 @@ class MainActivityUiTest {
 
     @Test
     fun whenTaskIsMarkedAsDone_shouldBeOnBottom() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         switchTaskDone(firstTask)
 
@@ -66,7 +66,7 @@ class MainActivityUiTest {
 
     @Test
     fun whenTaskIsUnmarkedAsDone_shouldBeInOwnPlaceBack() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         switchTaskDone(firstTask)
         switchTaskDone(firstTask)
@@ -78,7 +78,7 @@ class MainActivityUiTest {
 
     @Test
     fun afterRemovalOfTask_shouldHaveOnlyTwoTasks() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         removeTask(secondTask)
 
@@ -90,7 +90,7 @@ class MainActivityUiTest {
 
     @Test
     fun taskSummaryEdit() {
-        prepareOneTask()
+        prepareOneSimpleTask()
 
         changeTaskSummary(firstTask, secondTask)
 
@@ -99,7 +99,7 @@ class MainActivityUiTest {
 
     @Test
     fun taskDateEdit() {
-        prepareOneTask()
+        prepareOneSimpleTask()
 
         changeTaskDate(firstTask, date2)
 
@@ -108,7 +108,7 @@ class MainActivityUiTest {
 
     @Test
     fun tasksShouldBeSortedAfterChanges() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         changeTaskDate(firstTask, date3)
         changeTaskSummary(thirdTask, zeroTask)
@@ -120,7 +120,7 @@ class MainActivityUiTest {
 
     @Test
     fun shouldRemoveOnlyCompletedTasks() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
         switchTaskDone(firstTask)
 
         removeDoneTasks()

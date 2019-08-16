@@ -36,7 +36,7 @@ class NotificationsUiTest {
     fun whenAddedPastTask_shouldShowNotification() {
         prepareEmptyTasks()
 
-        createTask(firstTask)
+        createSimpleTask(firstTask)
 
         assertNotificationShown()
     }

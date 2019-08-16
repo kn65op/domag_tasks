@@ -12,12 +12,12 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matchers
 import java.lang.Thread.sleep
 
-fun prepareOneTask() {
+fun prepareOneSimpleTask() {
     prepareEmptyTasks()
-    createTask(firstTask)
+    createSimpleTask(firstTask)
 }
 
-fun createTask(taskSummary: String, date: Date = date1) {
+fun createSimpleTask(taskSummary: String, date: Date = date1) {
     clickAddNewTaskButton()
     setTaskSummary(taskSummary)
     setTaskDate(date)
@@ -55,11 +55,11 @@ fun prepareEmptyTasks() {
     onView(withText("Remove tasks")).perform(click())
 }
 
-fun prepareThreeTasks() {
+fun prepareThreeSimpleTasks() {
     prepareEmptyTasks()
-    createTask(thirdTask)
-    createTask(firstTask)
-    createTask(secondTask)
+    createSimpleTask(thirdTask)
+    createSimpleTask(firstTask)
+    createSimpleTask(secondTask)
 }
 
 fun switchTaskDone(task: String) {
