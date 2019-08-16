@@ -155,7 +155,7 @@ class TaskEditActivity(
                 month_type -> Period.ofMonths(periodValue)
                 year_type -> Period.ofYears(periodValue)
                 else -> {
-                    Log.e(LOG_TAG, "Invalid period type value ${periodType} defaultin to days")
+                    Log.e(LOG_TAG, "Invalid period type value $periodType defaulting to days")
                     Period.ofDays(periodValue)
                 }
             }
@@ -216,11 +216,10 @@ class TaskEditActivity(
 
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
-        private const val daysInWeek = 7
     }
 }
 
-class TaskTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+class TaskTypeListener(private var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         when (position) {
             0 -> editActivity.changeActivityToSimpleTask()
@@ -234,7 +233,7 @@ class TaskTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemS
 
 }
 
-class PeriodTypeListener(var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+class PeriodTypeListener(private var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         Log.i("helper", "$position")
         when (position) {

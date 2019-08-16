@@ -2,9 +2,6 @@ package com.example.domag.utils.time
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.isA
-import com.natpryce.hamkrest.throws
-import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
