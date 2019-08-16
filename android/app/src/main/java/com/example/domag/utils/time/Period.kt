@@ -4,9 +4,10 @@ import java.lang.Exception
 import kotlin.math.abs
 import kotlin.math.sign
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 @Serializable
-class Period private constructor(val type: PeriodType, val count: Int) {
+class Period private constructor(val type: PeriodType, val count: Int) : java.io.Serializable {
     class InvalidJavaPeriod(message: String) : Exception(message)
 
     fun toJavaPeriod(): java.time.Period = when (type) {
