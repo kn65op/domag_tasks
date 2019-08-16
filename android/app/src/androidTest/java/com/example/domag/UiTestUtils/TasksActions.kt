@@ -12,6 +12,9 @@ import com.example.domag.utils.time.PeriodType
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matchers
 import java.lang.Thread.sleep
+import java.time.ZonedDateTime
+import java.time.format.TextStyle
+import java.util.*
 
 fun prepareOneSimpleTask() {
     prepareEmptyTasks()
@@ -25,8 +28,7 @@ fun createSimpleTask(taskSummary: String, date: Date = date1) {
     clickConfirmTaskButton()
 }
 
-fun createRecurringTask(taskSummary : String, date :Date, periodAmount : Int, periodType : PeriodType)
-{
+fun createRecurringTask(taskSummary: String, date: Date, periodAmount: Int, periodType: PeriodType) {
     clickAddNewTaskButton()
     changeToRecurringTask()
     setTaskSummary(taskSummary)
@@ -38,8 +40,7 @@ fun createRecurringTask(taskSummary : String, date :Date, periodAmount : Int, pe
 
 fun setTaskPeriodType(type: PeriodType) {
     onView(withId(R.id.task_period_type_spinner)).perform(click())
-    val textToClick = when(type)
-    {
+    val textToClick = when (type) {
         PeriodType.Year -> "years"
         PeriodType.Month -> "moths"
         PeriodType.Week -> "weeks"
@@ -125,3 +126,11 @@ fun removeDoneTasks() {
     openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext())
     onView(withText("Remove completed tasks")).perform(click())
 }
+
+fun toOwnDate(time: ZonedDateTime) =
+    Date(
+        time.dayOfMonth,
+        time.monthValue,
+        time.year,
+        time.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+    )

@@ -140,7 +140,16 @@ class MainActivityUiTest {
         createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Day)
         switchTaskDone(firstTask)
 
-        checkTaskOnPosition(0, firstTask, dateAdvancedByDays)
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusDays))
+    }
+
+    @Test
+    fun recurringTaskShouldForwardWeeksPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Week)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusWeeks))
     }
 
 }
