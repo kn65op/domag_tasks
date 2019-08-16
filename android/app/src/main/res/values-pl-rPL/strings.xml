@@ -22,6 +22,7 @@
     <string name="today_tasks">
         <b>Dziesiejsze zadania</b>
     </string>
+    <string name="task_period_amount">Ilość</string>
     <plurals name="tasks_to_do_with_number">
         <item quantity="one">Masz %d zadanie</item>
         <item quantity="few">Masz %d zadania</item>
