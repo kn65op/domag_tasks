@@ -8,6 +8,7 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.domag.R
+import com.example.domag.utils.time.PeriodType
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matchers
 import java.lang.Thread.sleep
@@ -22,6 +23,38 @@ fun createSimpleTask(taskSummary: String, date: Date = date1) {
     setTaskSummary(taskSummary)
     setTaskDate(date)
     clickConfirmTaskButton()
+}
+
+fun createRecurringTask(taskSummary : String, date :Date, periodAmount : Int, periodType : PeriodType)
+{
+    clickAddNewTaskButton()
+    changeToRecurringTask()
+    setTaskSummary(taskSummary)
+    setTaskDate(date)
+    setTaskPeriodAmount(periodAmount)
+    setTaskPeriodType(periodType)
+    clickConfirmTaskButton()
+}
+
+fun setTaskPeriodType(type: PeriodType) {
+    onView(withId(R.id.task_period_type_spinner)).perform(click())
+    val textToClick = when(type)
+    {
+        PeriodType.Year -> "years"
+        PeriodType.Month -> "moths"
+        PeriodType.Week -> "weeks"
+        PeriodType.Day -> "days"
+    }
+    onView(withText(textToClick)).perform(click())
+}
+
+fun setTaskPeriodAmount(periodAmount: Int) {
+    onView(withId(R.id.task_period_value)).perform(clearText(), typeText(periodAmount.toString()), closeSoftKeyboard())
+}
+
+fun changeToRecurringTask() {
+    onView(withId(R.id.task_type_selection_spinner)).perform(click())
+    onView(withText("Recurring task")).perform(click())
 }
 
 fun clickAddNewTaskButton() {

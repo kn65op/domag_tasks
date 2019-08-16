@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.example.domag.UiTestUtils.*
+import com.example.domag.utils.time.PeriodType
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -131,6 +132,15 @@ class MainActivityUiTest {
         checkTaskOnPosition(1, thirdTask)
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         checkTaskIsNotInView(firstTask, device)
+    }
+
+    @Test
+    fun recurringTaskShouldForwardDaysPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Day)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, dateAdvancedByDays)
     }
 
 }
