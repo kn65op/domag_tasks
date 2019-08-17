@@ -9,7 +9,11 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".gui.SimpleTaskEditActivity">
+              tools:context=".gui.TaskEditActivity">
+
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/task_type_selection_spinner" android:layout_weight="1"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -26,7 +30,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-            android:layout_height="0dp" android:id="@+id/add_task_date"
+            android:layout_height="wrap_content" android:id="@+id/add_task_date"
             android:layout_width="match_parent"
             android:layout_weight=".6">
 
@@ -38,6 +42,27 @@
                 android:onClick="showDatePicker"
         />
     </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="1" android:visibility="visible"
+            android:id="@+id/recurring_information_layout">
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:hint="@string/task_period_amount"
+                android:id="@+id/task_period_value" android:autofillHints=""/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/task_period_type_spinner"
+                android:spinnerMode="dropdown"/>
+    </LinearLayout>
     <Button
             android:id="@+id/config_simple_task_button"
             style="?android:textAppearanceSmall"

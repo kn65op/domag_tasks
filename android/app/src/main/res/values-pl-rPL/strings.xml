@@ -22,10 +22,21 @@
     <string name="today_tasks">
         <b>Dziesiejsze zadania</b>
     </string>
+    <string name="task_period_amount">Ilość</string>
     <plurals name="tasks_to_do_with_number">
         <item quantity="one">Masz %d zadanie</item>
         <item quantity="few">Masz %d zadania</item>
         <item quantity="other">Masz %d zadań</item>
         <item quantity="many">Masz %d zadań</item>
     </plurals>
+    <string-array name="task_types">
+        <item>Zadanie jednorazowe</item>
+        <item>Zadanie cykliczne</item>
+    </string-array>
+    <string-array name="task_period_types">
+        <item>dni</item>
+        <item>tygodnie</item>
+        <item>miesiące</item>
+        <item>lata</item>
+    </string-array>
 </resources>

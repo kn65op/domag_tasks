@@ -1,9 +1,9 @@
 package com.example.domag.tasks
 
+import com.example.domag.utils.time.Period
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
-import java.time.Period
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -20,7 +20,7 @@ class RecurringTaskTest {
         ZoneId.of("+01:00")
     )
     private val dateAfterPeriod = ZonedDateTime.now().plusDays(3)
-    private val period = Period.of(0, 0, 3)
+    private val period = Period.ofDays(3)
     private val task = RecurringTask(summary, date1, period)
     private val notDone = false
 
@@ -67,7 +67,22 @@ class RecurringTaskTest {
 
     @Test
     fun `serializeToString should serialize to Json`() {
-        val expectedText = """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":"P3D","id":0}"""
+        val expectedText = """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":{"type":"Day","count":3},"id":0}"""
         assertThat(task.serializeToString(), equalTo(expectedText))
+    }
+
+    @Test
+    fun `should return period`() {
+        val expectedPeriod = period
+
+        assertThat(task.period, equalTo(expectedPeriod))
+    }
+
+    @Test
+    fun `should update period`() {
+        val somePeriod = Period.ofMonths(8)
+        task.period = somePeriod
+
+        assertThat(task.period, equalTo(somePeriod))
     }
 }

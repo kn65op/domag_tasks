@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.example.domag.UiTestUtils.*
+import com.example.domag.utils.time.PeriodType
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,13 +26,13 @@ class MainActivityUiTest {
 
     @Test
     fun whenThereIsTask_shouldBeOnList() {
-        prepareOneTask()
+        prepareOneSimpleTask()
         checkTaskOnPosition(0, firstTask)
     }
 
     @Test
     fun whenThereAreFewTasksWithSameDate_shouldBeSortedByName() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         checkTasksSize(threeTasks)
         checkTaskOnPosition(0, firstTask)
@@ -42,9 +43,9 @@ class MainActivityUiTest {
     @Test
     fun whenThereAreFewTasksWithDifferentDates_shouldBeSortedByDate() {
         prepareEmptyTasks()
-        createTask(thirdTask, date1)
-        createTask(firstTask, date3)
-        createTask(secondTask, date2)
+        createSimpleTask(thirdTask, date1)
+        createSimpleTask(firstTask, date3)
+        createSimpleTask(secondTask, date2)
 
         checkTasksSize(threeTasks)
         checkTaskOnPosition(0, thirdTask, date1)
@@ -54,7 +55,7 @@ class MainActivityUiTest {
 
     @Test
     fun whenTaskIsMarkedAsDone_shouldBeOnBottom() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         switchTaskDone(firstTask)
 
@@ -66,7 +67,7 @@ class MainActivityUiTest {
 
     @Test
     fun whenTaskIsUnmarkedAsDone_shouldBeInOwnPlaceBack() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         switchTaskDone(firstTask)
         switchTaskDone(firstTask)
@@ -78,7 +79,7 @@ class MainActivityUiTest {
 
     @Test
     fun afterRemovalOfTask_shouldHaveOnlyTwoTasks() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         removeTask(secondTask)
 
@@ -90,7 +91,7 @@ class MainActivityUiTest {
 
     @Test
     fun taskSummaryEdit() {
-        prepareOneTask()
+        prepareOneSimpleTask()
 
         changeTaskSummary(firstTask, secondTask)
 
@@ -99,7 +100,7 @@ class MainActivityUiTest {
 
     @Test
     fun taskDateEdit() {
-        prepareOneTask()
+        prepareOneSimpleTask()
 
         changeTaskDate(firstTask, date2)
 
@@ -108,7 +109,7 @@ class MainActivityUiTest {
 
     @Test
     fun tasksShouldBeSortedAfterChanges() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
 
         changeTaskDate(firstTask, date3)
         changeTaskSummary(thirdTask, zeroTask)
@@ -120,7 +121,7 @@ class MainActivityUiTest {
 
     @Test
     fun shouldRemoveOnlyCompletedTasks() {
-        prepareThreeTasks()
+        prepareThreeSimpleTasks()
         switchTaskDone(firstTask)
 
         removeDoneTasks()
@@ -133,4 +134,39 @@ class MainActivityUiTest {
         checkTaskIsNotInView(firstTask, device)
     }
 
+    @Test
+    fun recurringTaskShouldForwardDaysPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Day)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusDays))
+    }
+
+    @Test
+    fun recurringTaskShouldForwardWeeksPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Week)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusWeeks))
+    }
+
+    @Test
+    fun recurringTaskShouldForwardMonthsPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, monthsAdvance, PeriodType.Month)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusMonths))
+    }
+
+    @Test
+    fun recurringTaskShouldForwardYearsPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, yearsAdvance, PeriodType.Year)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusYears))
+    }
 }

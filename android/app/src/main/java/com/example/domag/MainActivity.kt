@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domag.gui.SimpleTaskEditActivity
+import com.example.domag.gui.TaskEditActivity
 import com.example.domag.gui.TasksAdapter
 import com.example.domag.notifications.Alarm
 import com.example.domag.notifications.Notifications
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         prepareTaskView()
 
         addNewTaskButton.setOnClickListener {
-            val intent = Intent(this, SimpleTaskEditActivity::class.java)
+            val intent = Intent(this, TaskEditActivity::class.java)
             startActivity(intent)
         }
     }

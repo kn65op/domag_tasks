@@ -54,8 +54,8 @@ class TasksAdapter(
             }
         }
         holder.view.setOnClickListener {
-            val intent = Intent(activity, SimpleTaskEditActivity::class.java)
-            intent.putExtra("Task", task)
+            val intent = Intent(activity, TaskEditActivity::class.java)
+            intent.putExtra(task.type, task)
             startActivity(context, intent, null)
         }
     }
