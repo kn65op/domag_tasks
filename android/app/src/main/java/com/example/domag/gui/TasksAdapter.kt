@@ -2,6 +2,7 @@ package com.example.domag.gui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.R
 import com.example.domag.storage.DataStorage
+import com.example.domag.tasks.Task
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class TasksAdapter(
@@ -30,6 +33,10 @@ class TasksAdapter(
         val textViewField: TextView = view.findViewById(R.id.taskView)
         val nextDeadlineField: TextView = view.findViewById(R.id.task_next_deadline)
         val doneCheckBox: CheckBox = view.findViewById(R.id.task_view_done)
+
+        fun setBackgroundColor(color: Int) {
+            view.setBackgroundColor(color)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -41,6 +48,7 @@ class TasksAdapter(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.i(TAG, "Add item $position")
         val task = taskStorage.loadTasks().tasks[position]
+        holder.setBackgroundColor(context.getColor(getColorForTask(task)))
         holder.textViewField.text = task.summary
         holder.nextDeadlineField.text = task.nextDeadline.format(timeFormatter)
         holder.doneCheckBox.isChecked = task.done
@@ -59,6 +67,20 @@ class TasksAdapter(
             startActivity(context, intent, null)
         }
     }
+
+    fun getColorForTask(task: Task): Int {
+        val today = ZonedDateTime.now().toLocalDate()
+        val taskDate = task.nextDeadline.toLocalDate()
+        return when
+        {
+            task.done -> R.color.taskBackground_done
+            today > taskDate -> R.color.taskBackground_past
+            today == taskDate -> R.color.taskBackground_today
+            else -> R.color.background_material_dark
+        }
+    }
+
+
 
     override fun getItemCount(): Int = taskStorage.loadTasks().tasks.size
 }
