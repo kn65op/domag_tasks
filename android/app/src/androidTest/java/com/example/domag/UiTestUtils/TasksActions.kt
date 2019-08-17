@@ -64,7 +64,7 @@ fun clickAddNewTaskButton() {
 
 fun clickConfirmTaskButton() {
     onView(withId(R.id.config_simple_task_button)).perform(click())
-    sleep(1000) //TODO: Seems that another add task cannot be run so fast
+    sleep(1000) //Seems that another add task cannot be run so fast
     // as click for add new task does not work fine
 }
 
