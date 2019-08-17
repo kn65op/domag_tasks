@@ -37,7 +37,7 @@ class Period private constructor(val type: PeriodType, val count: Int) : java.io
         return "Period(type=$type, count=$count)"
     }
 
-    fun toHumanReadableString() : String {
+    fun toHumanReadableString(): String {
         return "$count $type"
     }
 

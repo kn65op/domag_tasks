@@ -135,7 +135,12 @@ class TaskEditActivity(
 
     internal fun changeActivityToRecurringTask() {
         Log.i(LOG_TAG, "Editing recurring task")
-        recurringTask = RecurringTask(summary = readSummary(), nextDeadline = readTime(), id = task.id, period = translateToPeriod())
+        recurringTask = RecurringTask(
+            summary = readSummary(),
+            nextDeadline = readTime(),
+            id = task.id,
+            period = translateToPeriod()
+        )
         task = recurringTask
         setRecurringTaskFields()
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
