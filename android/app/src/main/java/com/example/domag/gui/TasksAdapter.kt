@@ -71,16 +71,13 @@ class TasksAdapter(
     fun getColorForTask(task: Task): Int {
         val today = ZonedDateTime.now().toLocalDate()
         val taskDate = task.nextDeadline.toLocalDate()
-        return when
-        {
+        return when {
             task.done -> R.color.taskBackground_done
             today > taskDate -> R.color.taskBackground_past
             today == taskDate -> R.color.taskBackground_today
             else -> R.color.background_material_dark
         }
     }
-
-
 
     override fun getItemCount(): Int = taskStorage.loadTasks().tasks.size
 }
