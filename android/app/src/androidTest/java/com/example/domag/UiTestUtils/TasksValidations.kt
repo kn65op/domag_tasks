@@ -36,3 +36,10 @@ fun checkTaskIsNotInView(task: String, device: UiDevice) {
     assertThat(element.exists(), equalTo(false))
 }
 
+fun checkPeriodTypeOnEdit(periodType : String) {
+    onView(withId(R.id.task_period_type_spinner)).check(
+        matches(
+            hasDescendant(withText(periodType))
+        )
+    )
+}

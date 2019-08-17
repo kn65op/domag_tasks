@@ -169,4 +169,13 @@ class MainActivityUiTest {
 
         checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusYears))
     }
+
+    @Test
+    fun recurringTaskEditShouldHaveGoodPeriodType() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, yearsAdvance, PeriodType.Year)
+        clickOnTask(firstTask)
+
+        checkPeriodTypeOnEdit(years)
+    }
 }

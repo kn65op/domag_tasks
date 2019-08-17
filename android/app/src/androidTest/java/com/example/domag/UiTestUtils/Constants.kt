@@ -27,3 +27,4 @@ const val monthsAdvance = 3
 val nowPlusMonths: ZonedDateTime = now.plusMonths(monthsAdvance.toLong())
 const val yearsAdvance =821
 val nowPlusYears: ZonedDateTime = now.plusYears(yearsAdvance.toLong())
+const val years = "years"
