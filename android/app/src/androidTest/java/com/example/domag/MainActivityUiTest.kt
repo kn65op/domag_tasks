@@ -152,4 +152,21 @@ class MainActivityUiTest {
         checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusWeeks))
     }
 
+    @Test
+    fun recurringTaskShouldForwardMonthsPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, monthsAdvance, PeriodType.Month)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusMonths))
+    }
+
+    @Test
+    fun recurringTaskShouldForwardYearsPeriod() {
+        prepareEmptyTasks()
+        createRecurringTask(firstTask, date1, yearsAdvance, PeriodType.Year)
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusYears))
+    }
 }

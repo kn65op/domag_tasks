@@ -42,7 +42,7 @@ fun setTaskPeriodType(type: PeriodType) {
     onView(withId(R.id.task_period_type_spinner)).perform(click())
     val textToClick = when (type) {
         PeriodType.Year -> "years"
-        PeriodType.Month -> "moths"
+        PeriodType.Month -> "months"
         PeriodType.Week -> "weeks"
         PeriodType.Day -> "days"
     }

@@ -1,8 +1,6 @@
 package com.example.domag.UiTestUtils
 
 import java.time.ZonedDateTime
-import java.time.format.TextStyle
-import java.util.*
 
 const val year1 = 2019
 const val month1 = 2
@@ -25,3 +23,7 @@ val now: ZonedDateTime = ZonedDateTime.now()
 val nowPlusDays: ZonedDateTime = now.plusDays(daysAdvance.toLong())
 const val weeksAdvance = 8
 val nowPlusWeeks: ZonedDateTime = now.plusWeeks(weeksAdvance.toLong())
+const val monthsAdvance = 3
+val nowPlusMonths: ZonedDateTime = now.plusMonths(monthsAdvance.toLong())
+const val yearsAdvance =821
+val nowPlusYears: ZonedDateTime = now.plusYears(yearsAdvance.toLong())
