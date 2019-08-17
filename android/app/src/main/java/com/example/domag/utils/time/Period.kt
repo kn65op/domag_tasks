@@ -37,6 +37,10 @@ class Period private constructor(val type: PeriodType, val count: Int) : java.io
         return "Period(type=$type, count=$count)"
     }
 
+    fun toHumanReadableString() : String {
+        return "$count $type"
+    }
+
     companion object {
         fun ofYears(number: Int) = Period(PeriodType.Year, number)
         fun ofMonths(number: Int) = Period(PeriodType.Month, number)

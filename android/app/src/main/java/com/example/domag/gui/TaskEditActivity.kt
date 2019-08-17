@@ -84,9 +84,11 @@ class TaskEditActivity(
             PeriodType.Year -> year_type
         }
         Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.count}")
+        Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.type}")
         task_period_value.replaceText("${recurringTask.period.count}")
         Log.i(LOG_TAG, "set: $unit")
         task_period_type_spinner.setSelection(unit)
+        periodType = unit
     }
 
     private fun setCommonFieldsFromTask() {
@@ -133,7 +135,7 @@ class TaskEditActivity(
 
     internal fun changeActivityToRecurringTask() {
         Log.i(LOG_TAG, "Editing recurring task")
-        recurringTask = RecurringTask(summary = readSummary(), nextDeadline = readTime(), id = task.id)
+        recurringTask = RecurringTask(summary = readSummary(), nextDeadline = readTime(), id = task.id, period = translateToPeriod())
         task = recurringTask
         setRecurringTaskFields()
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
@@ -142,25 +144,34 @@ class TaskEditActivity(
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
-            val periodValue =
-                try {
-                    task_period_value.text.toString().toInt()
-                } catch (e: NumberFormatException) {
-                    Log.w(LOG_TAG, "No number in ${task_period_value.text}, return 0")
-                    0
-                }
-            recurringTask.period = when (periodType) {
-                day_type -> Period.ofDays(periodValue)
-                week_type -> Period.ofWeeks(periodValue)
-                month_type -> Period.ofMonths(periodValue)
-                year_type -> Period.ofYears(periodValue)
-                else -> {
-                    Log.e(LOG_TAG, "Invalid period type value $periodType defaulting to days")
-                    Period.ofDays(periodValue)
-                }
-            }
+            recurringTask.period = translateToPeriod()
             storage.store(recurringTask)
             finish()
+        }
+    }
+
+    private fun translateToPeriod(): Period {
+        val periodValue =
+            readPeriodValue()
+        Log.i(LOG_TAG, "Translate from $periodType")
+        return when (periodType) {
+            day_type -> Period.ofDays(periodValue)
+            week_type -> Period.ofWeeks(periodValue)
+            month_type -> Period.ofMonths(periodValue)
+            year_type -> Period.ofYears(periodValue)
+            else -> {
+                Log.e(LOG_TAG, "Invalid period type value $periodType defaulting to days")
+                Period.ofDays(periodValue)
+            }
+        }
+    }
+
+    private fun readPeriodValue(): Int {
+        return try {
+            task_period_value.text.toString().toInt()
+        } catch (e: NumberFormatException) {
+            Log.w(LOG_TAG, "No number in ${task_period_value.text}, return 0")
+            0
         }
     }
 

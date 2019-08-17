@@ -21,6 +21,10 @@ class SimpleTask(
     override val type
         get() = Companion.type
 
+    @Transient
+    override val timeInformation: String
+        get() = nextDeadline.format(taskTimeFormat)
+
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 
     override fun toString(): String {

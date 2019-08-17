@@ -2,6 +2,7 @@ package com.example.domag.tasks
 
 import com.example.domag.utils.time.Period
 import com.natpryce.hamkrest.assertion.assertThat
+import com.natpryce.hamkrest.contains
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 import java.time.ZoneId
@@ -84,5 +85,10 @@ class RecurringTaskTest {
         task.period = somePeriod
 
         assertThat(task.period, equalTo(somePeriod))
+    }
+
+    @Test
+    fun `should return proper time information`() {
+        assertThat(task.timeInformation, contains(Regex(""".+03-.+-2011 \(3.+\)""")))
     }
 }

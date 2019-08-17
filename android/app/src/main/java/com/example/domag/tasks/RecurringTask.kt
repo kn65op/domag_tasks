@@ -30,6 +30,10 @@ class RecurringTask(
             if (value) nextDeadline = ZonedDateTime.now().plus(period.toJavaPeriod())
         }
 
+    @Transient
+    override val timeInformation: String
+        get() = "${nextDeadline.format(taskTimeFormat)} (${period.toHumanReadableString()})"
+
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 
     override fun equals(other: Any?): Boolean {

@@ -19,8 +19,7 @@ class TasksAdapter(
     private val taskStorage: DataStorage,
     private val refreshViewFunction: () -> Unit,
     private val activity: FragmentActivity,
-    private val context: Context,
-    private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy")
+    private val context: Context
 ) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
     companion object {
         const val TAG = "TaskAdapter"
@@ -42,7 +41,7 @@ class TasksAdapter(
         Log.i(TAG, "Add item $position")
         val task = taskStorage.loadTasks().tasks[position]
         holder.textViewField.text = task.summary
-        holder.nextDeadlineField.text = task.nextDeadline.format(timeFormatter)
+        holder.nextDeadlineField.text = task.timeInformation
         holder.doneCheckBox.isChecked = task.done
         holder.doneCheckBox.setOnClickListener { view ->
             if (view is CheckBox) {
