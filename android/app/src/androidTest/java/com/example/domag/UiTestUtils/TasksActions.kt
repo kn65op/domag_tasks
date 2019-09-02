@@ -28,7 +28,12 @@ fun createSimpleTask(taskSummary: String, date: Date = date1) {
     clickConfirmTaskButton()
 }
 
-fun createRecurringTask(taskSummary: String, date: Date, periodAmount: Int, periodType: PeriodType) {
+fun createRecurringTask(
+    taskSummary: String,
+    date: Date,
+    periodAmount: Int,
+    periodType: PeriodType
+) {
     clickAddNewTaskButton()
     changeToRecurringTask()
     setTaskSummary(taskSummary)
@@ -50,7 +55,11 @@ fun setTaskPeriodType(type: PeriodType) {
 }
 
 fun setTaskPeriodAmount(periodAmount: Int) {
-    onView(withId(R.id.task_period_value)).perform(clearText(), typeText(periodAmount.toString()), closeSoftKeyboard())
+    onView(withId(R.id.task_period_value)).perform(
+        clearText(),
+        typeText(periodAmount.toString()),
+        closeSoftKeyboard()
+    )
 }
 
 fun changeToRecurringTask() {
@@ -69,7 +78,11 @@ fun clickConfirmTaskButton() {
 }
 
 fun setTaskSummary(taskSummary: String) {
-    onView(withId(R.id.newTaskName)).perform(clearText(), typeText(taskSummary), closeSoftKeyboard())
+    onView(withId(R.id.newTaskName)).perform(
+        clearText(),
+        typeText(taskSummary),
+        closeSoftKeyboard()
+    )
 }
 
 fun setTaskDate(date: Date) {

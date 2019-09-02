@@ -1,5 +1,5 @@
 package com.example.domag.tasks
 
 interface Tasks {
-    var tasks : List<Task>
+    var tasks: List<Task>
 }

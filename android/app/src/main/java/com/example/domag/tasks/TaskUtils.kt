@@ -10,7 +10,7 @@ fun Tasks.getTodayNotDone(): List<Task> {
     }
 }
 
-fun Tasks.getOverdueNotDone() : List<Task> {
+fun Tasks.getOverdueNotDone(): List<Task> {
     val today = LocalDate.now()
     val notDone = false
     return tasks.filter {
