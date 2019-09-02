@@ -19,11 +19,9 @@ class RecurringTask(
         const val type = "RECURRING TASK"
     }
 
-    @Transient
     override val type
         get() = Companion.type
 
-    @Transient
     override var done: Boolean
         get() = false
         set(value) {
