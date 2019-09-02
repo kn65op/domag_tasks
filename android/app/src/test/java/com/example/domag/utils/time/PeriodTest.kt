@@ -121,7 +121,7 @@ class PeriodTest {
     fun `should return human readable text`() {
         val localization: Localization = mock()
         val someText = "some"
-        whenever(localization.getPluralFor(any(), eq(number))).thenReturn(someText)
+        whenever(localization.getPluralWithNumberFor(any(), eq(number))).thenReturn(someText)
         assertThat(weeksPeriod().toHumanReadableString(localization), equalTo("$number $someText"))
     }
 }

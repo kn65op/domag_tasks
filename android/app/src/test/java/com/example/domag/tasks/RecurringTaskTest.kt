@@ -97,7 +97,7 @@ class RecurringTaskTest {
     fun `should return proper time information`() {
         val localization: Localization = mock()
         val someText = "some"
-        whenever(localization.getPluralFor(any(), eq(3))).thenReturn(someText)
+        whenever(localization.getPluralWithNumberFor(any(), eq(3))).thenReturn(someText)
         assertThat(task.nextDeadlineText(localization), contains(Regex(""".+03-.+-2011 \(3.+\)""")))
     }
 }

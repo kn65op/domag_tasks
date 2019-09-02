@@ -7,17 +7,18 @@ import com.example.domag.utils.platform.localization.Localization.NotSupportedPl
 class AndroidLocalization(private val context: Context) :
     Localization {
 
-    override fun getPluralFor(baseText: String, numberOfItems: Int): String =
+    override fun getPluralWithNumberFor(baseText: String, numberOfItems: Int): String =
         context.resources.getQuantityString(
             toId(baseText),
-            numberOfItems
+            numberOfItems,
+                    numberOfItems
         )
 
     private fun toId(baseText: String) = when (baseText) {
-        "Week" -> R.plurals.week
-        "Month" -> R.plurals.month
-        "Day" -> R.plurals.day
-        "Year" -> R.plurals.year
+        "Week" -> R.plurals.each_week
+        "Month" -> R.plurals.each_month
+        "Day" -> R.plurals.each_day
+        "Year" -> R.plurals.each_year
         else -> throw NotSupportedPlural("$baseText")
     }
 

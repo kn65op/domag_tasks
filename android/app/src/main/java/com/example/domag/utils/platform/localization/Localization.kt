@@ -7,5 +7,5 @@ interface Localization {
         }
     }
 
-    fun getPluralFor(baseText: String, numberOfItems: Int): String
+    fun getPluralWithNumberFor(baseText: String, numberOfItems: Int): String
 }

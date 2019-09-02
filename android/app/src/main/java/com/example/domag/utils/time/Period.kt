@@ -39,7 +39,7 @@ class Period private constructor(val type: PeriodType, val count: Int) : java.io
     }
 
     fun toHumanReadableString(localization: Localization): String {
-        return "$count ${localization.getPluralFor("$type", count)}"
+        return "${localization.getPluralWithNumberFor("$type", count)}"
     }
 
     companion object {

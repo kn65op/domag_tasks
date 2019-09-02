@@ -36,20 +36,20 @@
         <item>months</item>
         <item>years</item>
     </string-array>
-    <plurals name="week">
-        <item quantity="one">week</item>
-        <item quantity="other">weeks</item>
+    <plurals name="each_week">
+        <item quantity="one">each week</item>
+        <item quantity="other">each %d weeks</item>
     </plurals>
-    <plurals name="month">
-        <item quantity="one">month</item>
-        <item quantity="other">months</item>
+    <plurals name="each_month">
+        <item quantity="one">each month</item>
+        <item quantity="other">each %s months</item>
     </plurals>
-    <plurals name="year">
-        <item quantity="one">year</item>
-        <item quantity="other">years</item>
+    <plurals name="each_year">
+        <item quantity="one">each year</item>
+        <item quantity="other">each %d years</item>
     </plurals>
-    <plurals name="day">
-        <item quantity="one">day</item>
-        <item quantity="other">days</item>
+    <plurals name="each_day">
+        <item quantity="one">each day</item>
+        <item quantity="other">each %d days</item>
     </plurals>
 </resources>
