@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.R
 import com.example.domag.storage.DataStorage
 import com.example.domag.tasks.Task
+import com.example.domag.utils.platform.localization.AndroidLocalization
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class TasksAdapter(
     private val taskStorage: DataStorage,
@@ -39,7 +39,8 @@ class TasksAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         Log.d(TAG, "Create view holder")
-        val newView = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false) as View
+        val newView =
+            LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false) as View
         return TaskViewHolder(newView)
     }
 
@@ -48,7 +49,7 @@ class TasksAdapter(
         val task = taskStorage.loadTasks().tasks[position]
         holder.setBackgroundColor(context.getColor(getColorForTask(task)))
         holder.textViewField.text = task.summary
-        holder.nextDeadlineField.text = task.timeInformation
+        holder.nextDeadlineField.text = task.nextDeadlineText(AndroidLocalization(context))
         holder.doneCheckBox.isChecked = task.done
         holder.doneCheckBox.setOnClickListener { view ->
             if (view is CheckBox) {

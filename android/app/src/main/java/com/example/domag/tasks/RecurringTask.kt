@@ -1,9 +1,9 @@
 package com.example.domag.tasks
 
+import com.example.domag.utils.platform.localization.Localization
 import com.example.domag.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import com.example.domag.utils.time.Period
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
 
@@ -28,9 +28,8 @@ class RecurringTask(
             if (value) nextDeadline = ZonedDateTime.now().plus(period.toJavaPeriod())
         }
 
-    @Transient
-    override val timeInformation: String
-        get() = "${nextDeadline.format(taskTimeFormat)} (${period.toHumanReadableString()})"
+    override fun nextDeadlineText(localization: Localization): String =
+        "${nextDeadline.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
 
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 

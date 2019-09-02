@@ -2,6 +2,7 @@ package com.example.domag.tasks
 
 import java.io.Serializable
 import java.time.ZonedDateTime
+import com.example.domag.utils.platform.localization.Localization
 
 typealias Id = Int
 
@@ -11,7 +12,7 @@ interface Task : Serializable {
     val type: String
     var done: Boolean
     var nextDeadline: ZonedDateTime
-    val timeInformation : String
 
+    fun nextDeadlineText(localization: Localization) : String
     fun serializeToString(): String
 }

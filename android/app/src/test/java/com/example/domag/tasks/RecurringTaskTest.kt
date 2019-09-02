@@ -1,9 +1,14 @@
 package com.example.domag.tasks
 
+import com.example.domag.utils.platform.localization.Localization
 import com.example.domag.utils.time.Period
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.contains
 import com.natpryce.hamkrest.equalTo
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -90,6 +95,9 @@ class RecurringTaskTest {
 
     @Test
     fun `should return proper time information`() {
-        assertThat(task.timeInformation, contains(Regex(""".+03-.+-2011 \(3.+\)""")))
+        val localization: Localization = mock()
+        val someText = "some"
+        whenever(localization.getPluralFor(any(), eq(3))).thenReturn(someText)
+        assertThat(task.nextDeadlineText(localization), contains(Regex(""".+03-.+-2011 \(3.+\)""")))
     }
 }

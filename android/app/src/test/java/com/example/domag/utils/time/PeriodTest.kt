@@ -1,7 +1,12 @@
 package com.example.domag.utils.time
 
+import com.example.domag.utils.platform.localization.Localization
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
@@ -105,6 +110,18 @@ class PeriodTest {
 
     @Test
     fun `given negative and positive values in Java Period should throw`() {
-        assertFailsWith<Period.InvalidJavaPeriod> { Period.ofJavaPeriod(javaOnePositiveOneNegativePeriod()) }
+        assertFailsWith<Period.InvalidJavaPeriod> {
+            Period.ofJavaPeriod(
+                javaOnePositiveOneNegativePeriod()
+            )
+        }
+    }
+
+    @Test
+    fun `should return human readable text`() {
+        val localization: Localization = mock()
+        val someText = "some"
+        whenever(localization.getPluralFor(any(), eq(number))).thenReturn(someText)
+        assertThat(weeksPeriod().toHumanReadableString(localization), equalTo("$number $someText"))
     }
 }
