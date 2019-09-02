@@ -2,7 +2,6 @@ package com.example.domag.tasks
 
 import com.example.domag.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
 
@@ -17,7 +16,6 @@ class SimpleTask(
         const val type = "SIMPLE TASK"
     }
 
-    @Transient
     override val type
         get() = Companion.type
 

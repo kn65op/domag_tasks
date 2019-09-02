@@ -2,7 +2,6 @@ package com.example.domag.gui
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +66,7 @@ class TasksAdapter(
         }
     }
 
-    fun getColorForTask(task: Task): Int {
+    private fun getColorForTask(task: Task): Int {
         val today = ZonedDateTime.now().toLocalDate()
         val taskDate = task.nextDeadline.toLocalDate()
         return when {
