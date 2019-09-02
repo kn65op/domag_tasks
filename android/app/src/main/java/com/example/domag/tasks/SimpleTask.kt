@@ -1,5 +1,6 @@
 package com.example.domag.tasks
 
+import com.example.domag.utils.platform.localization.Localization
 import com.example.domag.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -18,6 +19,9 @@ class SimpleTask(
 
     override val type
         get() = Companion.type
+
+    override fun nextDeadlineText(localization: Localization): String =
+        nextDeadline.format(taskTimeFormat)
 
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 

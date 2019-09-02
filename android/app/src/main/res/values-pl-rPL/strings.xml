@@ -3,7 +3,6 @@
     <string name="app_name">Domag</string>
     <string name="action_settings">Ustawienia</string>
     <string name="confirm_task_changes">Potwierdź</string>
-    <string name="day">Dzień</string>
     <string name="prompt_task_name">Zadanie</string>
     <string name="remove_tasks">Usuń zadania</string>
     <string name="task_completed">Zakończone</string>
@@ -39,4 +38,28 @@
         <item>miesiące</item>
         <item>lata</item>
     </string-array>
+    <plurals name="each_week">
+        <item quantity="one">co tydzień</item>
+        <item quantity="few">co %d tygodnie</item>
+        <item quantity="many">co %d tygodni</item>
+        <item quantity="other">co %d tygodni</item>
+    </plurals>
+    <plurals name="each_month">
+        <item quantity="one">co miesiąc</item>
+        <item quantity="few">co %d miesiące</item>
+        <item quantity="many">co %d miesięcy</item>
+        <item quantity="other">co %d miesięcy</item>
+    </plurals>
+    <plurals name="each_year">
+        <item quantity="one">co rok</item>
+        <item quantity="few">co %d lata</item>
+        <item quantity="many">co %d lat</item>
+        <item quantity="other">co %d lat</item>
+    </plurals>
+    <plurals name="each_day">
+        <item quantity="one">codziennie</item>
+        <item quantity="few">co %d dni</item>
+        <item quantity="many">co %d dni</item>
+        <item quantity="other">co %d dni</item>
+    </plurals>
 </resources>

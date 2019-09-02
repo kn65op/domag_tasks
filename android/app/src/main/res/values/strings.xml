@@ -7,7 +7,6 @@
     <string name="confirm_task_changes">Confirm</string>
     <string name="remove_tasks">Remove tasks</string>
     <string name="task_deadline">Deadline</string>
-    <string name="day">Day</string>
     <string name="time">Time</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="task_completed">Completed</string>
@@ -37,4 +36,20 @@
         <item>months</item>
         <item>years</item>
     </string-array>
+    <plurals name="each_week">
+        <item quantity="one">each week</item>
+        <item quantity="other">each %d weeks</item>
+    </plurals>
+    <plurals name="each_month">
+        <item quantity="one">each month</item>
+        <item quantity="other">each %s months</item>
+    </plurals>
+    <plurals name="each_year">
+        <item quantity="one">each year</item>
+        <item quantity="other">each %d years</item>
+    </plurals>
+    <plurals name="each_day">
+        <item quantity="one">each day</item>
+        <item quantity="other">each %d days</item>
+    </plurals>
 </resources>

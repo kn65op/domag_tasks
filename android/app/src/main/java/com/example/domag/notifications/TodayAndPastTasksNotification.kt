@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
-import com.example.domag.MainActivity
+import com.example.domag.gui.MainActivity
 import com.example.domag.R
 import com.example.domag.storage.DataStorageFactory
 import com.example.domag.tasks.SortedByDoneAndDateTasks

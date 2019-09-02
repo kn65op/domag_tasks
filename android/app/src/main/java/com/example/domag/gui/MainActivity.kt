@@ -1,4 +1,4 @@
-package com.example.domag
+package com.example.domag.gui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domag.gui.TaskEditActivity
-import com.example.domag.gui.TasksAdapter
+import com.example.domag.R
 import com.example.domag.notifications.Alarm
 import com.example.domag.notifications.Notifications
 import com.example.domag.notifications.TodayAndPastTasksNotification

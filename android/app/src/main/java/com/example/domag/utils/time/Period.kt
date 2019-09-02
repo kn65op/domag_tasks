@@ -1,5 +1,6 @@
 package com.example.domag.utils.time
 
+import com.example.domag.utils.platform.localization.Localization
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
 import kotlin.math.sign
@@ -35,6 +36,10 @@ class Period private constructor(val type: PeriodType, val count: Int) : java.io
 
     override fun toString(): String {
         return "Period(type=$type, count=$count)"
+    }
+
+    fun toHumanReadableString(localization: Localization): String {
+        return "${localization.getPluralWithNumberFor("$type", count)}"
     }
 
     companion object {

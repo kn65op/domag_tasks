@@ -37,7 +37,6 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/day"
                 android:id="@+id/add_task_deadline_date"
                 android:onClick="showDatePicker"
         />
