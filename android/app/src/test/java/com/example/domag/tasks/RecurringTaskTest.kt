@@ -98,6 +98,6 @@ class RecurringTaskTest {
         val localization: Localization = mock()
         val someText = "some"
         whenever(localization.getPluralWithNumberFor(any(), eq(3))).thenReturn(someText)
-        assertThat(task.nextDeadlineText(localization), contains(Regex(""".+03-.+-2011 \(3.+\)""")))
+        assertThat(task.nextDeadlineText(localization), contains(Regex(""".+03-.+-2011 \($someText\)""")))
     }
 }
