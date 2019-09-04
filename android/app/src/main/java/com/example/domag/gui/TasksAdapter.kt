@@ -74,7 +74,7 @@ class TasksAdapter(
             task.done -> R.color.taskBackground_done
             today > taskDate -> R.color.taskBackground_past
             today == taskDate -> R.color.taskBackground_today
-            else -> R.color.background_material_dark
+            else -> R.color.default_background
         }
     }
 

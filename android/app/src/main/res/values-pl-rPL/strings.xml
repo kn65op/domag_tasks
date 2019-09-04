@@ -5,10 +5,7 @@
     <string name="confirm_task_changes">Potwierdź</string>
     <string name="prompt_task_name">Zadanie</string>
     <string name="remove_tasks">Usuń zadania</string>
-    <string name="task_completed">Zakończone</string>
-    <string name="task_deadline">Termin</string>
     <string name="task_file_broken">Dane zadań uszkodzone. Wszystkie zadania zostały usunięte</string>
-    <string name="time">Czas</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
     <string name="remove_task">Usuń zadanie</string>
     <string name="tasks_to_do">Zadania do zrobienia</string>

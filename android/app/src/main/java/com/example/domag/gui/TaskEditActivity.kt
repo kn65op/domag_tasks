@@ -235,7 +235,8 @@ class TaskEditActivity(
     }
 }
 
-class TaskTypeListener(private var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+class TaskTypeListener(private var editActivity: TaskEditActivity) :
+    AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         when (position) {
             0 -> editActivity.changeActivityToSimpleTask()
@@ -249,7 +250,8 @@ class TaskTypeListener(private var editActivity: TaskEditActivity) : AdapterView
 
 }
 
-class PeriodTypeListener(private var editActivity: TaskEditActivity) : AdapterView.OnItemSelectedListener {
+class PeriodTypeListener(private var editActivity: TaskEditActivity) :
+    AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         Log.i("helper", "$position")
         when (position) {

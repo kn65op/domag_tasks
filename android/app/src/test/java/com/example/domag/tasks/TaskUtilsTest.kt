@@ -36,7 +36,10 @@ class TaskUtilsTest {
 
     @Test
     fun `getTodayNotDone given one today not done task should return it`() {
-        assertThat(TestTasks(listOf(todayNotDoneTask)).getTodayNotDone(), equalTo(listOf(todayNotDoneTask)))
+        assertThat(
+            TestTasks(listOf(todayNotDoneTask)).getTodayNotDone(),
+            equalTo(listOf(todayNotDoneTask))
+        )
     }
 
     @Test
@@ -61,7 +64,10 @@ class TaskUtilsTest {
 
     @Test
     fun `getOverdueNotDone given yesterday not done task should return it`() {
-        assertThat(TestTasks(listOf(yesterdayNotDoneTask)).getOverdueNotDone(), equalTo(listOf(yesterdayNotDoneTask)))
+        assertThat(
+            TestTasks(listOf(yesterdayNotDoneTask)).getOverdueNotDone(),
+            equalTo(listOf(yesterdayNotDoneTask))
+        )
     }
 
     @Test
@@ -76,7 +82,10 @@ class TaskUtilsTest {
 
     @Test
     fun `filerOutDone given not done task should return it`() {
-        assertThat(TestTasks(listOf(todayNotDoneTask)).filterOutDone(), equalTo(listOf(todayNotDoneTask)))
+        assertThat(
+            TestTasks(listOf(todayNotDoneTask)).filterOutDone(),
+            equalTo(listOf(todayNotDoneTask))
+        )
     }
 
     @Test

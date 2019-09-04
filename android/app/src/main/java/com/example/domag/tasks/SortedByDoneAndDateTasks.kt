@@ -5,7 +5,11 @@ class SortedByDoneAndDateTasks(
 ) : Tasks {
     override var tasks: List<Task> = emptyList()
         set(value) {
-            field = value.sortedWith(comparator = compareBy({ it.done }, { it.nextDeadline }, { it.summary }))
+            field = value.sortedWith(
+                comparator = compareBy({ it.done },
+                    { it.nextDeadline },
+                    { it.summary })
+            )
         }
 
     init {

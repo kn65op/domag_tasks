@@ -11,9 +11,10 @@ class Notifications {
         val name = context.getString(R.string.todays_task_notification_name)
         val descriptionText = context.getString(R.string.todays_tasks_notification_description)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(NotificationChannels.TodayTasks.name, name, importance).apply {
-            description = descriptionText
-        }
+        val channel =
+            NotificationChannel(NotificationChannels.TodayTasks.name, name, importance).apply {
+                description = descriptionText
+            }
         // Register the channel with the system
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

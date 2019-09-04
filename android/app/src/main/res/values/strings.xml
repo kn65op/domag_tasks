@@ -6,10 +6,7 @@
     <string name="prompt_task_name">Summary</string>
     <string name="confirm_task_changes">Confirm</string>
     <string name="remove_tasks">Remove tasks</string>
-    <string name="task_deadline">Deadline</string>
-    <string name="time">Time</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
-    <string name="task_completed">Completed</string>
     <string name="remove_task">Remove</string>
     <string name="tasks_to_do">Tasks to do</string>
     <string name="todays_tasks_notification_description">Reminder of today\'s tasks</string>

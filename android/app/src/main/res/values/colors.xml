@@ -6,4 +6,5 @@
     <color name="taskBackground_today">#423700</color>
     <color name="taskBackground_past">#410000</color>
     <color name="taskBackground_done">#103800</color>
+    <color name="default_background">#ff303030</color>
 </resources>
