@@ -13,6 +13,6 @@ interface Task : Serializable {
     var done: Boolean
     var nextDeadline: ZonedDateTime
 
-    fun nextDeadlineText(localization: Localization) : String
+    fun nextDeadlineText(localization: Localization): String
     fun serializeToString(): String
 }
