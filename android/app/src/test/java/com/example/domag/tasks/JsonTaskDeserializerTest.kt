@@ -86,4 +86,18 @@ class JsonTaskDeserializerTest {
 
         assertThat(deserializer.deserializeTask(data), equalTo<Task>(expectedTask))
     }
+
+    @Test
+    fun `Given no_deadline task should deserialize`() {
+        val id = 8
+        val summary = "No Dedad"
+        val taskData = """NO DEADLINE TASK
+            |{"summary":"$summary","id":$id}
+        """.trimMargin()
+
+        val expectedTask = NoDeadlineTask(summary, id)
+
+        assertThat(deserializer.deserializeTask(taskData), equalTo<Task>(expectedTask))
+
+    }
 }

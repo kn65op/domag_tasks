@@ -89,25 +89,22 @@ class TaskEditActivity(
         simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
         Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
         task = simpleTask
-        setCommonFieldsFromTask()
-        task_type_selection_spinner.setSelection(simple_task_type)
+        setCommonFieldsFromTask(simple_task_type)
     }
 
     private fun fillNoDeadlineTaskFields(noDeadlineTaskPassed: Serializable?) {
         noDeadlineTask = noDeadlineTaskPassed as? NoDeadlineTask ?: NoDeadlineTask("")
         Log.i(LOG_TAG, "edit no deadline task: ${noDeadlineTask.summary}")
         task = noDeadlineTask
-        setCommonFieldsFromTask()
-        task_type_selection_spinner.setSelection(no_deadline_task_type)
+        setCommonFieldsFromTask(no_deadline_task_type)
     }
 
     private fun fillRecurringTaskFields(recurringTaskPassed: Serializable?) {
         recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
         Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
         task = recurringTask
-        setCommonFieldsFromTask()
         fillRecurringTaskFields()
-        task_type_selection_spinner.setSelection(recurring_task_type)
+        setCommonFieldsFromTask(recurring_task_type)
     }
 
     private fun fillRecurringTaskFields() {
@@ -126,10 +123,11 @@ class TaskEditActivity(
         periodType = unit
     }
 
-    private fun setCommonFieldsFromTask() {
+    private fun setCommonFieldsFromTask(taskType : Int) {
         val t = task
         add_task_deadline_date.text = (t.nextDeadline ?: ZonedDateTime.now()).format(timeFormatter)
         newTaskName.replaceText(t.summary)
+        task_type_selection_spinner.setSelection(taskType)
     }
 
     private fun prepareTaskTypeSpinner() {

@@ -13,8 +13,8 @@ fun Tasks.getTodayNotDone(): List<Task> {
 fun Tasks.getOverdueNotDone(): List<Task> {
     val today = LocalDate.now()
     val notDone = false
-    return tasks.filter {
-        it.nextDeadline?.toLocalDate() ?: today < today && it.done == notDone
+    return tasks.filter fil@{
+        (it.nextDeadline?.toLocalDate() ?: return@fil false) < today && it.done == notDone
     }
 }
 
