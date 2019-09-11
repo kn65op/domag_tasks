@@ -3,45 +3,46 @@ package com.example.domag.tasks
 import com.example.domag.utils.platform.localization.Localization
 import com.example.domag.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
 
 @Serializable
-class SimpleTask(
+class NoDeadlineTask(
     override var summary: String,
-    @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class) override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     override var id: Id = 0,
     override var done: Boolean = false
 ) : Task {
     companion object {
-        const val type = "SIMPLE TASK"
+        const val type = "NO DEADLINE TASK"
     }
 
     override val type
         get() = Companion.type
 
-    override fun nextDeadlineText(localization: Localization) =
-        "${nextDeadline?.format(taskTimeFormat)}"
+    override var nextDeadline: ZonedDateTime?
+        get() = null
+        set(_) {}
+
+    override fun nextDeadlineText(localization: Localization) = "No deadline"
 
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 
     override fun toString(): String {
-        return "$type($id): [$done] $summary - $nextDeadline"
+        return "$type($id): [$done] $summary - no deadline"
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is SimpleTask) {
+        if (other is NoDeadlineTask) {
             return other.id == id
                     && other.summary == summary
                     && other.done == done
-                    && nextDeadline == other.nextDeadline
         }
         return false
     }
 
     override fun hashCode(): Int {
         var result = summary.hashCode()
-        result = 31 * result + nextDeadline.hashCode()
         result = 31 * result + id
         result = 31 * result + done.hashCode()
         return result

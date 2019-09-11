@@ -69,8 +69,9 @@ class TasksAdapter(
 
     private fun getColorForTask(task: Task): Int {
         val today = ZonedDateTime.now().toLocalDate()
-        val taskDate = task.nextDeadline.toLocalDate()
+        val taskDate = task.nextDeadline?.toLocalDate()
         return when {
+            taskDate == null -> R.color.taskBackground_today
             task.done -> R.color.taskBackground_done
             today > taskDate -> R.color.taskBackground_past
             today == taskDate -> R.color.taskBackground_today

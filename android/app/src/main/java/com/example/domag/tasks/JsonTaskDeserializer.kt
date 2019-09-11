@@ -9,6 +9,12 @@ class JsonTaskDeserializer : TasksDeserializer {
             return Json.parse(SimpleTask.serializer(), data.substring(SimpleTask.type.length))
         } else if (data.startsWith(RecurringTask.type)) {
             return Json.parse(RecurringTask.serializer(), data.substring(RecurringTask.type.length))
+        } else if (data.startsWith(NoDeadlineTask.type)) {
+            return Json.parse(
+
+                NoDeadlineTask.serializer(),
+                data.substring(NoDeadlineTask.type.length)
+            )
         }
         throw UnknownTask(data)
     }

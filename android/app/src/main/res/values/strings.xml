@@ -26,6 +26,7 @@
     <string-array name="task_types">
         <item>One time task</item>
         <item>Recurring task</item>
+        <item>No deadline task</item>
     </string-array>
     <string-array name="task_period_types">
         <item>days</item>
