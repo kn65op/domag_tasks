@@ -66,22 +66,28 @@ class TaskEditActivity(
     }
 
     private fun fillFields() {
-        val simpleTaskPassed = intent.getSerializableExtra(SimpleTask.type)
-        val recurringTaskPassed = intent.getSerializableExtra(RecurringTask.type)
-        val noDeadlineTaskPassed = intent.getSerializableExtra(NoDeadlineTask.type)
-        Log.i(LOG_TAG, "$simpleTaskPassed, $recurringTaskPassed, $noDeadlineTaskPassed")
+        val passedTasks = listOf(SimpleTask.type, RecurringTask.type, NoDeadlineTask.type).map {
+            Pair(
+                it,
+                intent.getSerializableExtra(it)
+            )
+        }.filter { it.second != null }
         when {
-            listOf(
-                simpleTaskPassed,
-                recurringTaskPassed,
-                noDeadlineTaskPassed
-            ).map { it != null }.filter { it }.size > 1 -> {
+            passedTasks.size > 1 -> {
                 Log.e(LOG_TAG, "passed two different task!")
                 finish()
             }
-            recurringTaskPassed != null -> fillRecurringTaskFields(recurringTaskPassed)
-            noDeadlineTaskPassed != null -> fillNoDeadlineTaskFields(noDeadlineTaskPassed)
-            else -> fillSimpleTaskFields(simpleTaskPassed)
+            passedTasks.isEmpty() -> fillSimpleTaskFields(null)
+            passedTasks.first().first == RecurringTask.type -> fillRecurringTaskFields(
+                passedTasks.first().second
+            )
+            passedTasks.first().first == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
+                passedTasks.first().second
+            )
+            passedTasks.first().first == SimpleTask.type -> fillNoDeadlineTaskFields(
+                passedTasks.first().second
+            )
+            else -> fillSimpleTaskFields(null)
         }
     }
 
@@ -123,7 +129,7 @@ class TaskEditActivity(
         periodType = unit
     }
 
-    private fun setCommonFieldsFromTask(taskType : Int) {
+    private fun setCommonFieldsFromTask(taskType: Int) {
         val t = task
         add_task_deadline_date.text = (t.nextDeadline ?: ZonedDateTime.now()).format(timeFormatter)
         newTaskName.replaceText(t.summary)
