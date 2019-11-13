@@ -72,6 +72,7 @@ class TaskEditActivity(
                 intent.getSerializableExtra(it)
             )
         }.filter { it.second != null }
+        Log.i(LOG_TAG, "$passedTasks")
         when {
             passedTasks.size > 1 -> {
                 Log.e(LOG_TAG, "passed two different task!")
@@ -84,7 +85,7 @@ class TaskEditActivity(
             passedTasks.first().first == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
                 passedTasks.first().second
             )
-            passedTasks.first().first == SimpleTask.type -> fillNoDeadlineTaskFields(
+            passedTasks.first().first == SimpleTask.type -> fillSimpleTaskFields(
                 passedTasks.first().second
             )
             else -> fillSimpleTaskFields(null)

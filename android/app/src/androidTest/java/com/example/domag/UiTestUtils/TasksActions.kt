@@ -99,7 +99,7 @@ fun setTaskDate(date: Date) {
 
 fun prepareEmptyTasks() {
     openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext())
-    onView(withText("Remove tasks")).perform(click())
+    onView(withText("Remove ALL tasks")).perform(click())
 }
 
 fun prepareThreeSimpleTasks() {
