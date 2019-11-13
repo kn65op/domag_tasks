@@ -5,7 +5,7 @@
     <string name="title_edit_simple_task_activity">Task</string>
     <string name="prompt_task_name">Summary</string>
     <string name="confirm_task_changes">Confirm</string>
-    <string name="remove_tasks">Remove tasks</string>
+    <string name="remove_tasks">Remove ALL tasks</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="remove_task">Remove</string>
     <string name="tasks_to_do">Tasks to do</string>

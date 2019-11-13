@@ -4,7 +4,7 @@
     <string name="action_settings">Ustawienia</string>
     <string name="confirm_task_changes">Potwierdź</string>
     <string name="prompt_task_name">Zadanie</string>
-    <string name="remove_tasks">Usuń zadania</string>
+    <string name="remove_tasks">Usuń WSZYSTKIE zadania</string>
     <string name="task_file_broken">Dane zadań uszkodzone. Wszystkie zadania zostały usunięte</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
     <string name="remove_task">Usuń zadanie</string>
