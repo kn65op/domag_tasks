@@ -24,6 +24,7 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
             <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tasks_tab"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

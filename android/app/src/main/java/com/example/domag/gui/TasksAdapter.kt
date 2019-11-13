@@ -13,11 +13,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domag.R
 import com.example.domag.storage.DataStorage
-import com.example.domag.tasks.Task
+import com.example.domag.tasks.*
 import com.example.domag.utils.platform.localization.AndroidLocalization
 import java.time.ZonedDateTime
 
-class TasksAdapter(
+abstract class TasksAdapter(
     private val taskStorage: DataStorage,
     private val refreshViewFunction: () -> Unit,
     private val activity: FragmentActivity,
@@ -26,6 +26,8 @@ class TasksAdapter(
     companion object {
         const val TAG = "TaskAdapter"
     }
+
+    abstract fun getTasks(): List<Task>
 
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val textViewField: TextView = view.findViewById(R.id.taskView)
@@ -46,7 +48,7 @@ class TasksAdapter(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.i(TAG, "Add item $position")
-        val task = taskStorage.loadTasks().tasks[position]
+        val task = getTasks()[position]
         holder.setBackgroundColor(context.getColor(getColorForTask(task)))
         holder.textViewField.text = task.summary
         holder.nextDeadlineField.text = task.nextDeadlineText(AndroidLocalization(context))
@@ -79,5 +81,29 @@ class TasksAdapter(
         }
     }
 
-    override fun getItemCount(): Int = taskStorage.loadTasks().tasks.size
+    override fun getItemCount(): Int = getTasks().size
+}
+
+class DeadlineTasksAdapter(
+    private val taskStorage: DataStorage,
+    private val refreshViewFunction: () -> Unit,
+    private val activity: FragmentActivity,
+    private val context: Context
+) : TasksAdapter(taskStorage, refreshViewFunction, activity, context) {
+
+    override fun getTasks() =
+        taskStorage.loadTasks().filterHasDeadline()
+
+}
+
+class NoDeadlineTasksAdapter(
+    private val taskStorage: DataStorage,
+    private val refreshViewFunction: () -> Unit,
+    private val activity: FragmentActivity,
+    private val context: Context
+) : TasksAdapter(taskStorage, refreshViewFunction, activity, context) {
+
+    override fun getTasks() =
+        taskStorage.loadTasks().filterNoDeadline()
+
 }

@@ -22,3 +22,9 @@ fun Tasks.filterOutDone(): List<Task> {
     val done = true
     return tasks.filter { it.done != done }
 }
+
+fun Tasks.filterHasDeadline(): List<Task> =
+    tasks.filter { it.nextDeadline != null }
+
+fun Tasks.filterNoDeadline(): List<Task> =
+    tasks.filter { it.nextDeadline == null }
