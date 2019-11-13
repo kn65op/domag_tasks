@@ -153,6 +153,8 @@ class TaskEditActivity(
         task = simpleTask
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store simple task")
             simpleTask.summary = readSummary()
@@ -184,6 +186,8 @@ class TaskEditActivity(
         fillRecurringTaskFields()
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
@@ -203,6 +207,8 @@ class TaskEditActivity(
         task = noDeadlineTask
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.GONE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             noDeadlineTask.summary = readSummary()
