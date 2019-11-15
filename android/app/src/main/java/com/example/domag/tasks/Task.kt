@@ -11,8 +11,8 @@ interface Task : Serializable {
     var summary: String
     val type: String
     var done: Boolean
-    var nextDeadline: ZonedDateTime
+    var nextDeadline: ZonedDateTime?
 
-    fun nextDeadlineText(localization: Localization) : String
+    fun nextDeadlineText(localization: Localization): String
     fun serializeToString(): String
 }

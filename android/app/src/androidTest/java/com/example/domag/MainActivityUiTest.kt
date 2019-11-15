@@ -178,4 +178,30 @@ class MainActivityUiTest {
 
         checkPeriodTypeOnEdit(years)
     }
+
+    @Test
+    fun taskWithoutDeadlineShouldBeShownInProperTab() {
+        prepareEmptyTasks()
+        createNoDeadlineTask(firstTask)
+
+        val noTasks = 0
+        checkTasksSize(noTasks)
+
+        goToNoDeadlineTasks()
+
+        checkTaskSummaryOnPosition(0, firstTask)
+    }
+
+    @Test
+    fun taskWithoutDeadlineShuoldBeRemovedIfDone() {
+        prepareEmptyTasks()
+        goToNoDeadlineTasks()
+        createNoDeadlineTask(firstTask)
+        switchTaskDone(firstTask)
+
+        removeDoneTasks()
+
+        val noTasks = 0
+        checkTasksSize(noTasks)
+    }
 }

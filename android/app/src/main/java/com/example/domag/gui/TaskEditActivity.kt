@@ -17,12 +17,14 @@ import com.example.domag.R
 import com.example.domag.gui.utils.replaceText
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
+import com.example.domag.tasks.NoDeadlineTask
 import com.example.domag.tasks.RecurringTask
 import com.example.domag.tasks.SimpleTask
 import com.example.domag.tasks.Task
 import com.example.domag.utils.time.Period
 import com.example.domag.utils.time.PeriodType
 import kotlinx.android.synthetic.main.task_edit.*
+import java.io.Serializable
 import kotlin.NumberFormatException
 import java.time.LocalDate
 import java.time.LocalTime
@@ -35,6 +37,10 @@ private const val week_type = 1
 private const val month_type = 2
 private const val year_type = 3
 
+private const val simple_task_type = 0
+private const val recurring_task_type = 1
+private const val no_deadline_task_type = 2
+
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
     private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
@@ -43,6 +49,7 @@ class TaskEditActivity(
 
     private lateinit var simpleTask: SimpleTask
     private lateinit var recurringTask: RecurringTask
+    private lateinit var noDeadlineTask: NoDeadlineTask
     private lateinit var task: Task
     private lateinit var storage: DataStorage
     internal var periodType = day_type
@@ -55,46 +62,79 @@ class TaskEditActivity(
         preparePeriodTypeSpinner()
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
-        val simpleTaskPassed = intent.getSerializableExtra(SimpleTask.type)
-        val recurringTaskPassed = intent.getSerializableExtra(RecurringTask.type)
-        if (simpleTaskPassed != null && recurringTaskPassed != null) {
-            Log.e(LOG_TAG, "passed two different task!")
-            finish()
-        } else if (recurringTaskPassed != null) {
-            recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
-            Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
-            task = recurringTask
-            setCommonFieldsFromTask()
-            setRecurringTaskFields()
-            task_type_selection_spinner.setSelection(1)
-        } else {
-            simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
-            Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
-            task = simpleTask
-            setCommonFieldsFromTask()
-            task_type_selection_spinner.setSelection(0)
+        fillFields()
+    }
+
+    private fun fillFields() {
+        val passedTasks = listOf(SimpleTask.type, RecurringTask.type, NoDeadlineTask.type).map {
+            Pair(
+                it,
+                intent.getSerializableExtra(it)
+            )
+        }.filter { it.second != null }
+        Log.i(LOG_TAG, "$passedTasks")
+        when {
+            passedTasks.size > 1 -> {
+                Log.e(LOG_TAG, "passed two different task!")
+                finish()
+            }
+            passedTasks.isEmpty() -> fillSimpleTaskFields(null)
+            passedTasks.first().first == RecurringTask.type -> fillRecurringTaskFields(
+                passedTasks.first().second
+            )
+            passedTasks.first().first == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
+                passedTasks.first().second
+            )
+            passedTasks.first().first == SimpleTask.type -> fillSimpleTaskFields(
+                passedTasks.first().second
+            )
+            else -> fillSimpleTaskFields(null)
         }
     }
 
-    private fun setRecurringTaskFields() {
+    private fun fillSimpleTaskFields(simpleTaskPassed: Serializable?) {
+        simpleTask = simpleTaskPassed as? SimpleTask ?: SimpleTask("")
+        Log.i(LOG_TAG, "edit simple task: ${simpleTask.summary}")
+        task = simpleTask
+        setCommonFieldsFromTask(simple_task_type)
+    }
+
+    private fun fillNoDeadlineTaskFields(noDeadlineTaskPassed: Serializable?) {
+        noDeadlineTask = noDeadlineTaskPassed as? NoDeadlineTask ?: NoDeadlineTask("")
+        Log.i(LOG_TAG, "edit no deadline task: ${noDeadlineTask.summary}")
+        task = noDeadlineTask
+        setCommonFieldsFromTask(no_deadline_task_type)
+    }
+
+    private fun fillRecurringTaskFields(recurringTaskPassed: Serializable?) {
+        recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
+        Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
+        task = recurringTask
+        fillRecurringTaskFields()
+        setCommonFieldsFromTask(recurring_task_type)
+    }
+
+    private fun fillRecurringTaskFields() {
         val unit = when (recurringTask.period.type) {
             PeriodType.Day -> day_type
             PeriodType.Month -> month_type
             PeriodType.Week -> week_type
             PeriodType.Year -> year_type
         }
-        Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.count}")
-        Log.i(LOG_TAG, "type is $unit with value ${recurringTask.period.type}")
+        Log.i(
+            LOG_TAG,
+            "type is $unit (${recurringTask.period.type} with value ${recurringTask.period.count}"
+        )
         task_period_value.replaceText("${recurringTask.period.count}")
-        Log.i(LOG_TAG, "set: $unit")
         task_period_type_spinner.setSelection(unit)
         periodType = unit
     }
 
-    private fun setCommonFieldsFromTask() {
+    private fun setCommonFieldsFromTask(taskType: Int) {
         val t = task
-        add_task_deadline_date.text = t.nextDeadline.format(timeFormatter)
+        add_task_deadline_date.text = (t.nextDeadline ?: ZonedDateTime.now()).format(timeFormatter)
         newTaskName.replaceText(t.summary)
+        task_type_selection_spinner.setSelection(taskType)
     }
 
     private fun prepareTaskTypeSpinner() {
@@ -114,6 +154,8 @@ class TaskEditActivity(
         task = simpleTask
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.GONE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store simple task")
             simpleTask.summary = readSummary()
@@ -142,15 +184,36 @@ class TaskEditActivity(
             period = translateToPeriod()
         )
         task = recurringTask
-        setRecurringTaskFields()
+        fillRecurringTaskFields()
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
             recurringTask.period = translateToPeriod()
             storage.store(recurringTask)
+            finish()
+        }
+    }
+
+    internal fun changeActivityToNoDeadlineTask() {
+        Log.i(LOG_TAG, "Editing no deadline task")
+        noDeadlineTask = NoDeadlineTask(
+            summary = readSummary(),
+            id = task.id
+        )
+        task = noDeadlineTask
+        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
+        information.visibility = LinearLayout.GONE
+        val date_information: LinearLayout = findViewById(R.id.add_task_date)
+        date_information.visibility = LinearLayout.GONE
+        config_simple_task_button.setOnClickListener {
+            Log.i(LOG_TAG, "store recurring task")
+            noDeadlineTask.summary = readSummary()
+            storage.store(noDeadlineTask)
             finish()
         }
     }
@@ -239,8 +302,9 @@ class TaskTypeListener(private var editActivity: TaskEditActivity) :
     AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         when (position) {
-            0 -> editActivity.changeActivityToSimpleTask()
-            1 -> editActivity.changeActivityToRecurringTask()
+            simple_task_type -> editActivity.changeActivityToSimpleTask()
+            recurring_task_type -> editActivity.changeActivityToRecurringTask()
+            no_deadline_task_type -> editActivity.changeActivityToNoDeadlineTask()
         }
     }
 
@@ -254,12 +318,7 @@ class PeriodTypeListener(private var editActivity: TaskEditActivity) :
     AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         Log.i("helper", "$position")
-        when (position) {
-            0 -> editActivity.periodType = day_type
-            1 -> editActivity.periodType = week_type
-            2 -> editActivity.periodType = month_type
-            3 -> editActivity.periodType = year_type
-        }
+        editActivity.periodType = position;
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

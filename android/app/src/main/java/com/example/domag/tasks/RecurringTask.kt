@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 class RecurringTask(
     override var summary: String,
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class)
-    override var nextDeadline: ZonedDateTime = ZonedDateTime.now(),
+    override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     var period: Period = Period.ofDays(1),
     override var id: Id = 0
 ) : Task {
@@ -29,7 +29,7 @@ class RecurringTask(
         }
 
     override fun nextDeadlineText(localization: Localization): String =
-        "${nextDeadline.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
+        "${nextDeadline?.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
 
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 

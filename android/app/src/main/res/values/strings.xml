@@ -5,7 +5,7 @@
     <string name="title_edit_simple_task_activity">Task</string>
     <string name="prompt_task_name">Summary</string>
     <string name="confirm_task_changes">Confirm</string>
-    <string name="remove_tasks">Remove tasks</string>
+    <string name="remove_tasks">Remove ALL tasks</string>
     <string name="task_file_broken">Task data file is corrupted. All task erased</string>
     <string name="remove_task">Remove</string>
     <string name="tasks_to_do">Tasks to do</string>
@@ -15,6 +15,8 @@
     <string name="overdue_tasks">
         <b>Overdue tasks</b>
     </string>
+    <string name="tasks_with_deadline">Tasks with deadline</string>
+    <string name="tasks_without_deadline">Tasks without deadline</string>
     <string name="today_tasks">
         <b>Today tasks</b>
     </string>
@@ -26,6 +28,7 @@
     <string-array name="task_types">
         <item>One time task</item>
         <item>Recurring task</item>
+        <item>No deadline task</item>
     </string-array>
     <string-array name="task_period_types">
         <item>days</item>

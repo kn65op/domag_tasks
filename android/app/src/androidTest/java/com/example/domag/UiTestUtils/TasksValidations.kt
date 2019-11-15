@@ -8,7 +8,7 @@ import androidx.test.uiautomator.UiSelector
 import com.example.domag.R
 import org.hamcrest.CoreMatchers.equalTo
 
-fun checkTaskOnPosition(position: Int, summary: String, date: Date = date1) {
+fun checkTaskSummaryOnPosition(position: Int, summary: String) {
     onView(withId(R.id.MainTasksList)).check(
         matches(
             atPosition(
@@ -17,6 +17,10 @@ fun checkTaskOnPosition(position: Int, summary: String, date: Date = date1) {
             )
         )
     )
+}
+
+fun checkTaskOnPosition(position: Int, summary: String, date: Date = date1) {
+    checkTaskSummaryOnPosition(position, summary)
     onView(withId(R.id.MainTasksList)).check(
         matches(
             atPosition(

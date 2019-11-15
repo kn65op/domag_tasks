@@ -14,6 +14,7 @@ import com.example.domag.gui.MainActivity
 import com.example.domag.R
 import com.example.domag.storage.DataStorageFactory
 import com.example.domag.tasks.SortedByDoneAndDateTasks
+import com.example.domag.tasks.Tasks
 import com.example.domag.tasks.getOverdueNotDone
 import com.example.domag.tasks.getTodayNotDone
 
@@ -51,7 +52,7 @@ class TodayAndPastTasksNotification : BroadcastReceiver() {
     }
 
     private fun createNotificationText(
-        tasks: SortedByDoneAndDateTasks,
+        tasks: Tasks,
         context: Context
     ): Pair<Int, String> {
         val pastTasksToNotify = tasks.getOverdueNotDone()

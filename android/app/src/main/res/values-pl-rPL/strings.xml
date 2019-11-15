@@ -4,7 +4,7 @@
     <string name="action_settings">Ustawienia</string>
     <string name="confirm_task_changes">Potwierdź</string>
     <string name="prompt_task_name">Zadanie</string>
-    <string name="remove_tasks">Usuń zadania</string>
+    <string name="remove_tasks">Usuń WSZYSTKIE zadania</string>
     <string name="task_file_broken">Dane zadań uszkodzone. Wszystkie zadania zostały usunięte</string>
     <string name="title_edit_simple_task_activity">Zadanie</string>
     <string name="remove_task">Usuń zadanie</string>
@@ -15,6 +15,8 @@
     <string name="overdue_tasks">
         <b>Zaległe zadania</b>
     </string>
+    <string name="tasks_with_deadline">Zadania z datą</string>
+    <string name="tasks_without_deadline">Zadania bez daty</string>
     <string name="today_tasks">
         <b>Dziesiejsze zadania</b>
     </string>
@@ -28,6 +30,7 @@
     <string-array name="task_types">
         <item>Zadanie jednorazowe</item>
         <item>Zadanie cykliczne</item>
+        <item>Zadanie bez terminu</item>
     </string-array>
     <string-array name="task_period_types">
         <item>dni</item>

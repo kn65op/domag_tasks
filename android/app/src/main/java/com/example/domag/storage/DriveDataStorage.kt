@@ -76,7 +76,7 @@ class DriveDataStorage(
         throw UnableToStoreTask("Unable to store tasks: ${e.message}")
     }
 
-    override fun loadTasks(): SortedByDoneAndDateTasks {
+    override fun loadTasks(): Tasks {
         val dataFromFile = readFromFile()
         val fileData = dataFromFile.split(taskSeparatorText)
         val versionSize = 1
