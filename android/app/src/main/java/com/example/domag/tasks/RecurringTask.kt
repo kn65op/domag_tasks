@@ -14,6 +14,7 @@ class RecurringTask(
     override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     var period: Period = Period.ofDays(1),
     override var id: Id = 0
+    //,var deadlineCalculationStrategy: DeadlineCalculationStrategy
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
