@@ -16,7 +16,7 @@ class FromNowDeadlineCalculationStrategyTest {
     }
 
     @Test
-    fun `when passed date should return time advenced from now`() {
+    fun `when passed date should return time advanced from now`() {
         assertDateMatch(
             FromNowDeadlineCalculationStrategy().calculateDeadline(anyDate, period),
             dateAfterPeriod
