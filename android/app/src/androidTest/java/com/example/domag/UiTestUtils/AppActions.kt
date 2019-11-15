@@ -8,7 +8,6 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
-import com.example.domag.R
 import com.example.domag.gui.MainActivity
 
 fun launchApp() {
