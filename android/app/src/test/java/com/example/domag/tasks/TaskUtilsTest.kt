@@ -17,6 +17,7 @@ class TaskUtilsTest {
     private val yesterdayNotDoneTask: Task = mock()
     private val todayDoneTask: Task = mock()
     private val yesterdayDoneTask: Task = mock()
+    private val noDeadlineTask: Task = mock()
 
     init {
         whenever(todayNotDoneTask.nextDeadline).thenReturn(today)
@@ -27,6 +28,7 @@ class TaskUtilsTest {
         whenever(todayDoneTask.done).thenReturn(done)
         whenever(yesterdayDoneTask.nextDeadline).thenReturn(today.minusDays(1))
         whenever(yesterdayDoneTask.done).thenReturn(done)
+        whenever(noDeadlineTask.nextDeadline).thenReturn(null)
     }
 
     @Test
@@ -91,5 +93,21 @@ class TaskUtilsTest {
     @Test
     fun `filterOutDone given done task should return empty list`() {
         assertThat(TestTasks(listOf(todayDoneTask)).filterOutDone(), equalTo(emptyList()))
+    }
+
+    @Test
+    fun `filterNoDeadline should filter no deadline task`() {
+        assertThat(
+            TestTasks(listOf(todayDoneTask, noDeadlineTask)).filterNoDeadline(),
+            equalTo(listOf(noDeadlineTask))
+        )
+    }
+
+    @Test
+    fun `filterHasDeadline should filter with deadline task`() {
+        assertThat(
+            TestTasks(listOf(todayDoneTask, noDeadlineTask)).filterHasDeadline(),
+            equalTo(listOf(todayDoneTask))
+        )
     }
 }
