@@ -43,6 +43,13 @@ fun createRecurringTask(
     clickConfirmTaskButton()
 }
 
+fun createNoDeadlineTask(taskSummary: String) {
+    clickAddNewTaskButton()
+    changeToNoDeadlineTask()
+    setTaskSummary(taskSummary)
+    clickConfirmTaskButton()
+}
+
 fun setTaskPeriodType(type: PeriodType) {
     onView(withId(R.id.task_period_type_spinner)).perform(click())
     val textToClick = when (type) {
@@ -65,6 +72,11 @@ fun setTaskPeriodAmount(periodAmount: Int) {
 fun changeToRecurringTask() {
     onView(withId(R.id.task_type_selection_spinner)).perform(click())
     onView(withText("Recurring task")).perform(click())
+}
+
+fun changeToNoDeadlineTask() {
+    onView(withId(R.id.task_type_selection_spinner)).perform(click())
+    onView(withText("No deadline task")).perform(click())
 }
 
 fun clickAddNewTaskButton() {
