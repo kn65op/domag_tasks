@@ -4,8 +4,8 @@ import com.example.domag.utils.time.Period
 import java.time.ZonedDateTime
 
 class FromPreviousDeadlineCalculationStrategy : DeadlineCalculationStrategy {
-    override fun calculateDeadline(someDate: ZonedDateTime, period: Period): ZonedDateTime {
-        var nextDeadline = someDate.plus(period.toJavaPeriod())
+    override fun calculateDeadline(currentDeadline: ZonedDateTime, period: Period): ZonedDateTime {
+        var nextDeadline = currentDeadline.plus(period.toJavaPeriod())
         val now = ZonedDateTime.now()
         while (nextDeadline <= now) {
             nextDeadline = nextDeadline.plus(period.toJavaPeriod())

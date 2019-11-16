@@ -134,6 +134,11 @@ class TaskEditActivity(
         task_period_value.replaceText("${recurringTask.period.count}")
         task_period_type_spinner.setSelection(unit)
         periodType = unit
+        deadline_strategy_type = recurringTask.deadlineCalculationStrategy.getType().ordinal
+        Log.i(
+            LOG_TAG,
+            "deadline strategy: ${recurringTask.deadlineCalculationStrategy.getType().ordinal}"
+        )
         next_deadline_strategy_type_spinner.setSelection(recurringTask.deadlineCalculationStrategy.getType().ordinal)
     }
 
@@ -243,6 +248,8 @@ class TaskEditActivity(
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
             recurringTask.period = translateToPeriod()
+            recurringTask.deadlineCalculationStrategy =
+                DeadlineCalculationStrategyFactory().createStrategy(deadline_strategy_type)
             storage.store(recurringTask)
             finish()
         }
