@@ -62,6 +62,7 @@ class TaskEditActivity(
         setupActionBar()
         prepareTaskTypeSpinner()
         preparePeriodTypeSpinner()
+        prepareDeadlineStrategySpinner()
         storage = DataStorageFactory().createDriveDataStorageFactory(applicationContext)
 
         fillFields()
@@ -155,13 +156,14 @@ class TaskEditActivity(
     }
 
     private fun prepareDeadlineStrategySpinner() {
+        val spinner: Spinner = findViewById(R.id.next_deadline_strategy_type_spinner)
         ArrayAdapter.createFromResource(
             this, R.array.deadline_strategies,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            task_type_selection_spinner.adapter = adapter
-            task_type_selection_spinner.onItemSelectedListener = DeadlineStrategyListener(this)
+            spinner.adapter = adapter
+            spinner.onItemSelectedListener = DeadlineStrategyListener(this)
         }
     }
 

@@ -4,18 +4,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.example.domag.UiTestUtils.*
+import com.example.domag.tasks.DeadlineCalculationStrategyType
 import com.example.domag.utils.time.PeriodType
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityUiTest {
+open class MainActivityUiTest {
     @Before
     fun setup() {
         launchApp()
     }
+}
 
+class NoTasksTest : MainActivityUiTest() {
     @Test
     fun whenNoTasks_shouldBeEmpty() {
         prepareEmptyTasks()
@@ -23,7 +26,9 @@ class MainActivityUiTest {
         val noTasks = 0
         checkTasksSize(noTasks)
     }
+}
 
+class SimpleTaskSortingTest : MainActivityUiTest() {
     @Test
     fun whenThereIsTask_shouldBeOnList() {
         prepareOneSimpleTask()
@@ -52,7 +57,9 @@ class MainActivityUiTest {
         checkTaskOnPosition(1, secondTask, date2)
         checkTaskOnPosition(2, firstTask, date3)
     }
+}
 
+class SimpleTaskDoneUndoneTest : MainActivityUiTest() {
     @Test
     fun whenTaskIsMarkedAsDone_shouldBeOnBottom() {
         prepareThreeSimpleTasks()
@@ -88,7 +95,9 @@ class MainActivityUiTest {
         checkTaskOnPosition(0, firstTask)
         checkTaskOnPosition(1, thirdTask)
     }
+}
 
+class SimpleTaskEdit : MainActivityUiTest() {
     @Test
     fun taskSummaryEdit() {
         prepareOneSimpleTask()
@@ -118,6 +127,9 @@ class MainActivityUiTest {
         checkTaskOnPosition(1, secondTask)
         checkTaskOnPosition(2, firstTask, date3)
     }
+}
+
+class TaskRemovalTest : MainActivityUiTest() {
 
     @Test
     fun shouldRemoveOnlyCompletedTasks() {
@@ -133,7 +145,9 @@ class MainActivityUiTest {
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         checkTaskIsNotInView(firstTask, device)
     }
+}
 
+class RecurringTaskWithFromNowStrategyTest : MainActivityUiTest() {
     @Test
     fun recurringTaskShouldForwardDaysPeriod() {
         prepareEmptyTasks()
@@ -169,7 +183,9 @@ class MainActivityUiTest {
 
         checkTaskOnPosition(0, firstTask, toOwnDate(nowPlusYears))
     }
+}
 
+class RecurringTaskEditTest : MainActivityUiTest() {
     @Test
     fun recurringTaskEditShouldHaveGoodPeriodType() {
         prepareEmptyTasks()
@@ -179,6 +195,26 @@ class MainActivityUiTest {
         checkPeriodTypeOnEdit(years)
     }
 
+    @Test
+    fun recurringTaskEditShouldHaveGoodNextDeadlineStrategy() {
+        prepareEmptyTasks()
+        createRecurringTask(
+            firstTask,
+            date1,
+            yearsAdvance,
+            PeriodType.Year,
+            DeadlineCalculationStrategyType.FromLastDeadline
+        )
+        clickOnTask(firstTask)
+
+        checkDeadlineStrategyTypeOnEdit(
+            DeadlineCalculationStrategyType.FromLastDeadline
+        )
+    }
+}
+
+
+class TaskWithoutDeadlineTest : MainActivityUiTest() {
     @Test
     fun taskWithoutDeadlineShouldBeShownInProperTab() {
         prepareEmptyTasks()
