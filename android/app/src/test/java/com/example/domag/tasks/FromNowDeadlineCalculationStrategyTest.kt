@@ -24,7 +24,7 @@ class FromNowDeadlineCalculationStrategyTest {
     }
 
     @Test
-    fun `shuold return proper type`() {
+    fun `should return proper type`() {
         assertThat(
             FromNowDeadlineCalculationStrategy().getType(),
             equalTo(DeadlineCalculationStrategyType.FromNow)

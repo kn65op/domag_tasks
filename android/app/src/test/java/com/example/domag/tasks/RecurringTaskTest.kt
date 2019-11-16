@@ -25,7 +25,8 @@ class RecurringTaskTest {
         0,
         ZoneId.of("+01:00")
     )
-    private val dateAfterPeriod = ZonedDateTime.now().plusDays(3)
+    private val someDate = ZonedDateTime.now().minusWeeks(3)
+    private val someDateTwo = ZonedDateTime.now().minusWeeks(2)
     private val period = Period.ofDays(3)
     private val strategy: DeadlineCalculationStrategy = mock()
     private val task = RecurringTask(
@@ -40,8 +41,8 @@ class RecurringTaskTest {
         whenever(strategy.getType()).thenReturn(DeadlineCalculationStrategyType.FromNow)
     }
 
-    private fun assertDateMatch(task: Task) {
-        assertThat(task.nextDeadline?.toLocalDate(), equalTo(dateAfterPeriod.toLocalDate()))
+    private fun assertDateMatch(task: Task, expectedDate: ZonedDateTime) {
+        assertThat(task.nextDeadline?.toLocalDate(), equalTo(expectedDate.toLocalDate()))
     }
 
     @Test
@@ -60,10 +61,11 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done should be today plus period`() {
+    fun `nextDeadline with after marking done should be date returned from strategy`() {
+        whenever(strategy.calculateDeadline(date1, period)).thenReturn(someDate)
         task.done = true
 
-        assertDateMatch(task)
+        assertDateMatch(task, someDate)
     }
 
     @Test
@@ -74,11 +76,13 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done twice should update date to today plus period`() {
+    fun `nextDeadline after marking done twice should update date to day returned from strategy`() {
+        whenever(strategy.calculateDeadline(date1, period)).thenReturn(someDate)
+        whenever(strategy.calculateDeadline(someDate, period)).thenReturn(someDateTwo)
         task.done = true
         task.done = true
 
-        assertDateMatch(task)
+        assertDateMatch(task, someDateTwo)
     }
 
     @Test

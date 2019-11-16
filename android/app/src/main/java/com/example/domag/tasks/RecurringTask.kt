@@ -27,7 +27,7 @@ class RecurringTask(
     override var done: Boolean
         get() = false
         set(value) {
-            if (value) nextDeadline = ZonedDateTime.now().plus(period.toJavaPeriod())
+            if (value) nextDeadline = deadlineCalculationStrategy.calculateDeadline(nextDeadline!!, period)
         }
 
     override fun nextDeadlineText(localization: Localization): String =

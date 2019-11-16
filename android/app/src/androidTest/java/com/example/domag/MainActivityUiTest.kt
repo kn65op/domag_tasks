@@ -213,6 +213,24 @@ class RecurringTaskEditTest : MainActivityUiTest() {
     }
 }
 
+class RecurringTaskWithFromLastDeadlineStrategy : MainActivityUiTest() {
+    @Test
+    fun recurringTaskShouldForwardDaysPeriod() {
+        val daysDifference = 1L
+        prepareEmptyTasks()
+        createRecurringTask(
+            firstTask,
+            toOwnDate(now.minusDays(daysDifference)),
+            daysAdvance,
+            PeriodType.Day,
+            DeadlineCalculationStrategyType.FromLastDeadline
+        )
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, toOwnDate(now.plusDays(daysAdvance - daysDifference)))
+    }
+}
+
 
 class TaskWithoutDeadlineTest : MainActivityUiTest() {
     @Test
