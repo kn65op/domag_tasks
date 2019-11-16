@@ -22,4 +22,12 @@ class FromNowDeadlineCalculationStrategyTest {
             dateAfterPeriod
         )
     }
+
+    @Test
+    fun `shuold return proper type`() {
+        assertThat(
+            FromNowDeadlineCalculationStrategy().getType(),
+            equalTo(DeadlineCalculationStrategyType.FromNow)
+        )
+    }
 }

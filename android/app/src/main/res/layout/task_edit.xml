@@ -62,6 +62,26 @@
                 android:layout_height="wrap_content" android:id="@+id/task_period_type_spinner"
                 android:spinnerMode="dropdown"/>
     </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/recurring_next_deadline_strategy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <Spinner
+                android:id="@+id/next_deadline_strategy_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+    </LinearLayout>
+
     <Button
             android:id="@+id/config_simple_task_button"
             style="?android:textAppearanceSmall"

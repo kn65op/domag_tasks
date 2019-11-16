@@ -43,4 +43,12 @@ class FromPreviousDeadlineCalculationStrategyTest {
             expectedNextDeadline
         )
     }
+
+    @Test
+    fun `shuold return proper type`() {
+        assertThat(
+            FromPreviousDeadlineCalculationStrategy().getType(),
+            equalTo(DeadlineCalculationStrategyType.FromLastDeadline)
+        )
+    }
 }

@@ -13,8 +13,9 @@ class RecurringTask(
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class)
     override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     var period: Period = Period.ofDays(1),
-    override var id: Id = 0
-    //,var deadlineCalculationStrategy: DeadlineCalculationStrategy
+    override var id: Id = 0,
+    @Serializable(with = DeadlineCalculationStrategySerializer::class)
+    var deadlineCalculationStrategy: DeadlineCalculationStrategy = DeadlineCalculationStrategyFactory().createStrategy(0)
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
@@ -32,6 +33,7 @@ class RecurringTask(
     override fun nextDeadlineText(localization: Localization): String =
         "${nextDeadline?.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
 
+
     override fun serializeToString(): String = Json.stringify(serializer(), this)
 
     override fun equals(other: Any?): Boolean {
@@ -44,15 +46,18 @@ class RecurringTask(
         if (nextDeadline != other.nextDeadline) return false
         if (period != other.period) return false
         if (id != other.id) return false
+        if (deadlineCalculationStrategy.getType() != other.deadlineCalculationStrategy.getType()) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = summary.hashCode()
-        result = 31 * result + nextDeadline.hashCode()
+        result = 31 * result + (nextDeadline?.hashCode() ?: 0)
         result = 31 * result + period.hashCode()
         result = 31 * result + id
+        result = 31 * result + deadlineCalculationStrategy.hashCode()
         return result
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.domag.gui
 
 import android.annotation.TargetApi
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,10 +18,7 @@ import com.example.domag.R
 import com.example.domag.gui.utils.replaceText
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
-import com.example.domag.tasks.NoDeadlineTask
-import com.example.domag.tasks.RecurringTask
-import com.example.domag.tasks.SimpleTask
-import com.example.domag.tasks.Task
+import com.example.domag.tasks.*
 import com.example.domag.utils.time.Period
 import com.example.domag.utils.time.PeriodType
 import kotlinx.android.synthetic.main.task_edit.*
@@ -41,6 +39,9 @@ private const val simple_task_type = 0
 private const val recurring_task_type = 1
 private const val no_deadline_task_type = 2
 
+private const val from_now_strategy = 0
+private const val from_last_deadline_strategy = 1
+
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
     private val hardcodedHour: LocalTime = LocalTime.of(12, 0)
@@ -53,6 +54,7 @@ class TaskEditActivity(
     private lateinit var task: Task
     private lateinit var storage: DataStorage
     internal var periodType = day_type
+    internal var deadline_strategy_type = from_now_strategy
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +109,10 @@ class TaskEditActivity(
     }
 
     private fun fillRecurringTaskFields(recurringTaskPassed: Serializable?) {
-        recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask("")
+        recurringTask = recurringTaskPassed as? RecurringTask ?: RecurringTask(
+            summary = "",
+            deadlineCalculationStrategy = createStrategy()
+        )
         Log.i(LOG_TAG, "edit recurring task: ${recurringTask.summary}")
         task = recurringTask
         fillRecurringTaskFields()
@@ -128,6 +133,7 @@ class TaskEditActivity(
         task_period_value.replaceText("${recurringTask.period.count}")
         task_period_type_spinner.setSelection(unit)
         periodType = unit
+        next_deadline_strategy_type_spinner.setSelection(recurringTask.deadlineCalculationStrategy.getType().ordinal)
     }
 
     private fun setCommonFieldsFromTask(taskType: Int) {
@@ -148,14 +154,45 @@ class TaskEditActivity(
         }
     }
 
+    private fun prepareDeadlineStrategySpinner() {
+        ArrayAdapter.createFromResource(
+            this, R.array.deadline_strategies,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            task_type_selection_spinner.adapter = adapter
+            task_type_selection_spinner.onItemSelectedListener = DeadlineStrategyListener(this)
+        }
+    }
+
+    private fun showViewItems(ids: List<Int>) {
+        changeItemsVisibility(ids, LinearLayout.VISIBLE)
+    }
+
+    private fun hideViewItems(ids: List<Int>) {
+        changeItemsVisibility(ids, LinearLayout.GONE)
+    }
+
+    private fun changeItemsVisibility(ids: List<Int>, visibility: Int) {
+        ids.forEach {
+            val field: LinearLayout = findViewById(it)
+            field.visibility = visibility
+        }
+    }
+
     internal fun changeActivityToSimpleTask() {
         Log.i(LOG_TAG, "Editing simple task")
         simpleTask = SimpleTask(summary = readSummary(), nextDeadline = readTime(), id = task.id)
         task = simpleTask
-        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
-        information.visibility = LinearLayout.GONE
-        val date_information: LinearLayout = findViewById(R.id.add_task_date)
-        date_information.visibility = LinearLayout.VISIBLE
+
+        showViewItems(listOf(R.id.add_task_date))
+        hideViewItems(
+            listOf(
+                R.id.recurring_information_layout,
+                R.id.recurring_next_deadline_strategy
+            )
+        )
+
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store simple task")
             simpleTask.summary = readSummary()
@@ -181,10 +218,20 @@ class TaskEditActivity(
             summary = readSummary(),
             nextDeadline = readTime(),
             id = task.id,
-            period = translateToPeriod()
+            period = translateToPeriod(),
+            deadlineCalculationStrategy = createStrategy()
         )
         task = recurringTask
         fillRecurringTaskFields()
+
+        showViewItems(
+            listOf(
+                R.id.add_task_date,
+                R.id.recurring_information_layout,
+                R.id.recurring_next_deadline_strategy
+            )
+        )
+
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
         val date_information: LinearLayout = findViewById(R.id.add_task_date)
@@ -206,10 +253,15 @@ class TaskEditActivity(
             id = task.id
         )
         task = noDeadlineTask
-        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
-        information.visibility = LinearLayout.GONE
-        val date_information: LinearLayout = findViewById(R.id.add_task_date)
-        date_information.visibility = LinearLayout.GONE
+
+        hideViewItems(
+            listOf(
+                R.id.add_task_date,
+                R.id.recurring_information_layout,
+                R.id.recurring_next_deadline_strategy
+            )
+        )
+
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             noDeadlineTask.summary = readSummary()
@@ -293,6 +345,9 @@ class TaskEditActivity(
         }
     }
 
+    private fun createStrategy() =
+        DeadlineCalculationStrategyFactory().createStrategy(deadline_strategy_type)
+
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
     }
@@ -318,7 +373,20 @@ class PeriodTypeListener(private var editActivity: TaskEditActivity) :
     AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         Log.i("helper", "$position")
-        editActivity.periodType = position;
+        editActivity.periodType = position
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+}
+
+class DeadlineStrategyListener(private var editActivity: TaskEditActivity) :
+    AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        Log.i("helper", "$position")
+        editActivity.deadline_strategy_type = position
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
