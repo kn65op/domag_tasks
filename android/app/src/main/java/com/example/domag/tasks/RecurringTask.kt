@@ -15,7 +15,9 @@ class RecurringTask(
     var period: Period = Period.ofDays(1),
     override var id: Id = 0,
     @Serializable(with = DeadlineCalculationStrategySerializer::class)
-    var deadlineCalculationStrategy: DeadlineCalculationStrategy = DeadlineCalculationStrategyFactory().createStrategy(0)
+    var deadlineCalculationStrategy: DeadlineCalculationStrategy = DeadlineCalculationStrategyFactory().createStrategy(
+        0
+    )
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
@@ -27,7 +29,8 @@ class RecurringTask(
     override var done: Boolean
         get() = false
         set(value) {
-            if (value) nextDeadline = deadlineCalculationStrategy.calculateDeadline(nextDeadline!!, period)
+            if (value) nextDeadline =
+                deadlineCalculationStrategy.calculateDeadline(nextDeadline!!, period)
         }
 
     override fun nextDeadlineText(localization: Localization): String =

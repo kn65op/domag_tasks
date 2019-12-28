@@ -2,7 +2,6 @@ package com.example.domag.gui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -143,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 removeAllTasks()
                 return true
             }
-            R.id.remove_complteted_task_button -> {
+            R.id.remove_completed_task_button -> {
                 removeDoneTasks()
                 return true
             }

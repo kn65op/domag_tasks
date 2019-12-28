@@ -1,7 +1,6 @@
 package com.example.domag.gui
 
 import android.annotation.TargetApi
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -54,7 +53,7 @@ class TaskEditActivity(
     private lateinit var task: Task
     private lateinit var storage: DataStorage
     internal var periodType = day_type
-    internal var deadline_strategy_type = from_now_strategy
+    internal var deadlineStrategyType = from_now_strategy
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,7 +133,7 @@ class TaskEditActivity(
         task_period_value.replaceText("${recurringTask.period.count}")
         task_period_type_spinner.setSelection(unit)
         periodType = unit
-        deadline_strategy_type = recurringTask.deadlineCalculationStrategy.getType().ordinal
+        deadlineStrategyType = recurringTask.deadlineCalculationStrategy.getType().ordinal
         Log.i(
             LOG_TAG,
             "deadline strategy: ${recurringTask.deadlineCalculationStrategy.getType().ordinal}"
@@ -241,15 +240,15 @@ class TaskEditActivity(
 
         val information: LinearLayout = findViewById(R.id.recurring_information_layout)
         information.visibility = LinearLayout.VISIBLE
-        val date_information: LinearLayout = findViewById(R.id.add_task_date)
-        date_information.visibility = LinearLayout.VISIBLE
+        val dateInformation: LinearLayout = findViewById(R.id.add_task_date)
+        dateInformation.visibility = LinearLayout.VISIBLE
         config_simple_task_button.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
             recurringTask.period = translateToPeriod()
             recurringTask.deadlineCalculationStrategy =
-                DeadlineCalculationStrategyFactory().createStrategy(deadline_strategy_type)
+                DeadlineCalculationStrategyFactory().createStrategy(deadlineStrategyType)
             storage.store(recurringTask)
             finish()
         }
@@ -355,7 +354,7 @@ class TaskEditActivity(
     }
 
     private fun createStrategy() =
-        DeadlineCalculationStrategyFactory().createStrategy(deadline_strategy_type)
+        DeadlineCalculationStrategyFactory().createStrategy(deadlineStrategyType)
 
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
@@ -395,7 +394,7 @@ class DeadlineStrategyListener(private var editActivity: TaskEditActivity) :
     AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         Log.i("helper", "$position")
-        editActivity.deadline_strategy_type = position
+        editActivity.deadlineStrategyType = position
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

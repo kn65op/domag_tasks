@@ -117,7 +117,7 @@ class JsonTaskDeserializerTest {
     @Test
     fun `Given no_deadline task should deserialize`() {
         val id = 8
-        val summary = "No Dedad"
+        val summary = "No Dead"
         val taskData = """NO DEADLINE TASK
             |{"summary":"$summary","id":$id}
         """.trimMargin()

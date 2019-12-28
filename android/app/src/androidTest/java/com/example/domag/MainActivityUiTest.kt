@@ -247,7 +247,7 @@ class TaskWithoutDeadlineTest : MainActivityUiTest() {
     }
 
     @Test
-    fun taskWithoutDeadlineShuoldBeRemovedIfDone() {
+    fun taskWithoutDeadlineShouldBeRemovedIfDone() {
         prepareEmptyTasks()
         goToNoDeadlineTasks()
         createNoDeadlineTask(firstTask)

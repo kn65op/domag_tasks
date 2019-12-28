@@ -1,7 +1,7 @@
 package com.example.domag.tasks
 
 class DeadlineCalculationStrategyFactory {
-    fun createStrategy(type: DeadlineCalculationStrategyType) =
+    private fun createStrategy(type: DeadlineCalculationStrategyType) =
         when (type) {
             DeadlineCalculationStrategyType.FromLastDeadline -> FromPreviousDeadlineCalculationStrategy()
             DeadlineCalculationStrategyType.FromNow -> FromNowDeadlineCalculationStrategy()

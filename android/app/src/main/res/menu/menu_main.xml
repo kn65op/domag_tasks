@@ -5,7 +5,7 @@
     <group>
         <item android:title="@string/remove_tasks" android:orderInCategory="100"
               android:id="@+id/remove_tasks_menu_item"/>
-        <item android:title="@string/remove_completed_tasks" android:id="@+id/remove_complteted_task_button"/>
+        <item android:title="@string/remove_completed_tasks" android:id="@+id/remove_completed_task_button"/>
     </group>
     <group
             android:orderInCategory="101">

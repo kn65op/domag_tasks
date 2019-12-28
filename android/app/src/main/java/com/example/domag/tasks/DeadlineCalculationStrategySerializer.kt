@@ -2,8 +2,6 @@ package com.example.domag.tasks
 
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.StringDescriptor
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class DeadlineCalculationStrategySerializer : KSerializer<DeadlineCalculationStrategy> {
     override val descriptor: SerialDescriptor =

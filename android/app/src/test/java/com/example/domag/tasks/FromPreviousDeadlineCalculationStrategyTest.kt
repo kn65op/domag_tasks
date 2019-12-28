@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
 
 class FromPreviousDeadlineCalculationStrategyTest {
     private val period = Period.ofDays(3)
-    private val today = ZonedDateTime.now();
+    private val today = ZonedDateTime.now()
     private val anyDate = today.minusDays(2)
     private val dateAfterPeriod = today.plusDays(1)
 
@@ -45,7 +45,7 @@ class FromPreviousDeadlineCalculationStrategyTest {
     }
 
     @Test
-    fun `shuold return proper type`() {
+    fun `should return proper type`() {
         assertThat(
             FromPreviousDeadlineCalculationStrategy().getType(),
             equalTo(DeadlineCalculationStrategyType.FromLastDeadline)

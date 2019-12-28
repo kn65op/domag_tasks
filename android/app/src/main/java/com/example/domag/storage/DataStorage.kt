@@ -1,6 +1,5 @@
 package com.example.domag.storage
 
-import com.example.domag.tasks.SortedByDoneAndDateTasks
 import com.example.domag.tasks.Task
 import com.example.domag.tasks.Tasks
 

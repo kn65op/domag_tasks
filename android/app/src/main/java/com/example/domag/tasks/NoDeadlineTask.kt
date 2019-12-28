@@ -1,9 +1,7 @@
 package com.example.domag.tasks
 
 import com.example.domag.utils.platform.localization.Localization
-import com.example.domag.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
 
