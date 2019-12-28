@@ -21,6 +21,7 @@
         <b>Dziesiejsze zadania</b>
     </string>
     <string name="task_period_amount">Ilość</string>
+    <string name="next_deadline_strategy">Strategia nowej daty</string>
     <plurals name="tasks_to_do_with_number">
         <item quantity="one">Masz %d zadanie</item>
         <item quantity="few">Masz %d zadania</item>
@@ -37,6 +38,10 @@
         <item>tygodnie</item>
         <item>miesiące</item>
         <item>lata</item>
+    </string-array>
+    <string-array name="deadline_strategies">
+        <item>Nowa data od dnia wykonania</item>
+        <item>Nowa data na bazie poprzedniej daty</item>
     </string-array>
     <plurals name="each_week">
         <item quantity="one">co tydzień</item>

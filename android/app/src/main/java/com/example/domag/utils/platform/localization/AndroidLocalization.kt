@@ -11,7 +11,7 @@ class AndroidLocalization(private val context: Context) :
         context.resources.getQuantityString(
             toId(baseText),
             numberOfItems,
-                    numberOfItems
+            numberOfItems
         )
 
     private fun toId(baseText: String) = when (baseText) {
@@ -19,7 +19,7 @@ class AndroidLocalization(private val context: Context) :
         "Month" -> R.plurals.each_month
         "Day" -> R.plurals.each_day
         "Year" -> R.plurals.each_year
-        else -> throw NotSupportedPlural("$baseText")
+        else -> throw NotSupportedPlural(baseText)
     }
 
 }

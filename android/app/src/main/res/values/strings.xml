@@ -21,6 +21,7 @@
         <b>Today tasks</b>
     </string>
     <string name="task_period_amount">Amount</string>
+    <string name="next_deadline_strategy">Next deadline strategy</string>
     <plurals name="tasks_to_do_with_number">
         <item quantity="one">You have %d task</item>
         <item quantity="other">You have %d tasks</item>
@@ -35,6 +36,10 @@
         <item>weeks</item>
         <item>months</item>
         <item>years</item>
+    </string-array>
+    <string-array name="deadline_strategies">
+        <item>Next deadline from task done date</item>
+        <item>Next deadline from last deadline</item>
     </string-array>
     <plurals name="each_week">
         <item quantity="one">each week</item>

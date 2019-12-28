@@ -87,9 +87,9 @@ abstract class TasksAdapter(
 
 class DeadlineTasksAdapter(
     private val taskStorage: DataStorage,
-    private val refreshViewFunction: () -> Unit,
-    private val activity: FragmentActivity,
-    private val context: Context
+    refreshViewFunction: () -> Unit,
+    activity: FragmentActivity,
+    context: Context
 ) : TasksAdapter(taskStorage, refreshViewFunction, activity, context) {
 
     override fun getTasks() =
@@ -99,9 +99,9 @@ class DeadlineTasksAdapter(
 
 class NoDeadlineTasksAdapter(
     private val taskStorage: DataStorage,
-    private val refreshViewFunction: () -> Unit,
-    private val activity: FragmentActivity,
-    private val context: Context
+    refreshViewFunction: () -> Unit,
+    activity: FragmentActivity,
+    context: Context
 ) : TasksAdapter(taskStorage, refreshViewFunction, activity, context) {
 
     override fun getTasks() =

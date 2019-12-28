@@ -25,13 +25,24 @@ class RecurringTaskTest {
         0,
         ZoneId.of("+01:00")
     )
-    private val dateAfterPeriod = ZonedDateTime.now().plusDays(3)
+    private val someDate = ZonedDateTime.now().minusWeeks(3)
+    private val someDateTwo = ZonedDateTime.now().minusWeeks(2)
     private val period = Period.ofDays(3)
-    private val task = RecurringTask(summary, date1, period)
+    private val strategy: DeadlineCalculationStrategy = mock()
+    private val task = RecurringTask(
+        summary = summary,
+        nextDeadline = date1,
+        period = period,
+        deadlineCalculationStrategy = strategy
+    )
     private val notDone = false
 
-    private fun assertDateMatch(task: Task) {
-        assertThat(task.nextDeadline?.toLocalDate(), equalTo(dateAfterPeriod.toLocalDate()))
+    init {
+        whenever(strategy.getType()).thenReturn(DeadlineCalculationStrategyType.FromNow)
+    }
+
+    private fun assertDateMatch(task: Task, expectedDate: ZonedDateTime) {
+        assertThat(task.nextDeadline?.toLocalDate(), equalTo(expectedDate.toLocalDate()))
     }
 
     @Test
@@ -50,10 +61,11 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done should be today plus period`() {
+    fun `nextDeadline with after marking done should be date returned from strategy`() {
+        whenever(strategy.calculateDeadline(date1, period)).thenReturn(someDate)
         task.done = true
 
-        assertDateMatch(task)
+        assertDateMatch(task, someDate)
     }
 
     @Test
@@ -64,17 +76,19 @@ class RecurringTaskTest {
     }
 
     @Test
-    fun `nextDeadline after marking done twice should update date to today plus period`() {
+    fun `nextDeadline after marking done twice should update date to day returned from strategy`() {
+        whenever(strategy.calculateDeadline(date1, period)).thenReturn(someDate)
+        whenever(strategy.calculateDeadline(someDate, period)).thenReturn(someDateTwo)
         task.done = true
         task.done = true
 
-        assertDateMatch(task)
+        assertDateMatch(task, someDateTwo)
     }
 
     @Test
     fun `serializeToString should serialize to Json`() {
         val expectedText =
-            """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":{"type":"Day","count":3},"id":0}"""
+            """{"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":{"type":"Day","count":3},"id":0,"deadlineCalculationStrategy":0}"""
         assertThat(task.serializeToString(), equalTo(expectedText))
     }
 
@@ -98,6 +112,9 @@ class RecurringTaskTest {
         val localization: Localization = mock()
         val someText = "some"
         whenever(localization.getPluralWithNumberFor(any(), eq(3))).thenReturn(someText)
-        assertThat(task.nextDeadlineText(localization), contains(Regex(""".+03-.+-2011 \($someText\)""")))
+        assertThat(
+            task.nextDeadlineText(localization),
+            contains(Regex(""".+03-.+-2011 \($someText\)"""))
+        )
     }
 }

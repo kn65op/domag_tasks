@@ -8,6 +8,7 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.domag.R
+import com.example.domag.tasks.DeadlineCalculationStrategyType
 import com.example.domag.utils.time.PeriodType
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matchers
@@ -32,7 +33,8 @@ fun createRecurringTask(
     taskSummary: String,
     date: Date,
     periodAmount: Int,
-    periodType: PeriodType
+    periodType: PeriodType,
+    deadlineStrategy: DeadlineCalculationStrategyType = DeadlineCalculationStrategyType.FromNow
 ) {
     clickAddNewTaskButton()
     changeToRecurringTask()
@@ -40,6 +42,7 @@ fun createRecurringTask(
     setTaskDate(date)
     setTaskPeriodAmount(periodAmount)
     setTaskPeriodType(periodType)
+    setTaskDeadlineStrategy(deadlineStrategy)
     clickConfirmTaskButton()
 }
 
@@ -59,6 +62,11 @@ fun setTaskPeriodType(type: PeriodType) {
         PeriodType.Day -> "days"
     }
     onView(withText(textToClick)).perform(click())
+}
+
+fun setTaskDeadlineStrategy(type: DeadlineCalculationStrategyType) {
+    onView(withId(R.id.next_deadline_strategy_type_spinner)).perform(click())
+    onView(withText(toDeadlineStrategyText(type))).perform(click())
 }
 
 fun setTaskPeriodAmount(periodAmount: Int) {
@@ -99,6 +107,7 @@ fun setTaskSummary(taskSummary: String) {
 
 fun setTaskDate(date: Date) {
     onView(withId(R.id.add_task_date)).perform(click())
+    sleep(1000) //Seems that another add task cannot be run so fast
     onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
         PickerActions.setDate(
             date.year,

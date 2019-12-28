@@ -3,6 +3,8 @@ package com.example.domag.tasks
 import com.example.domag.utils.time.Period
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -21,6 +23,11 @@ class JsonTaskDeserializerTest {
         0,
         ZoneId.of("+01:00")
     )
+    private val strategy: DeadlineCalculationStrategy = mock()
+
+    init {
+        whenever(strategy.getType()).thenReturn(DeadlineCalculationStrategyType.FromNow)
+    }
 
     @Test
     fun `Given unknown task should throw`() {
@@ -71,7 +78,7 @@ class JsonTaskDeserializerTest {
     }
 
     @Test
-    fun `Given Recurring task should deserialize`() {
+    fun `Given Recurring task without strategy should deserialize`() {
         val id = 9
         val summary = "SUM"
         val data = """RECURRING TASK
@@ -81,7 +88,27 @@ class JsonTaskDeserializerTest {
             summary,
             expectedNextDeadline,
             Period.ofDays(3),
-            id
+            id,
+            strategy
+        )
+
+        assertThat(deserializer.deserializeTask(data), equalTo<Task>(expectedTask))
+    }
+
+    @Test
+    fun `Given Recurring task should deserialize`() {
+        val id = 9
+        val summary = "SUM"
+        val data = """RECURRING TASK
+            {"summary":"$summary","nextDeadline":"2011-12-03T10:15:30+01:00","period":{"type":"Day","count":3},"id":$id,"deadlineCalculationStrategy":1}""".trimIndent()
+        whenever(strategy.getType()).thenReturn(DeadlineCalculationStrategyType.FromLastDeadline)
+
+        val expectedTask = RecurringTask(
+            summary,
+            expectedNextDeadline,
+            Period.ofDays(3),
+            id,
+            strategy
         )
 
         assertThat(deserializer.deserializeTask(data), equalTo<Task>(expectedTask))
@@ -90,7 +117,7 @@ class JsonTaskDeserializerTest {
     @Test
     fun `Given no_deadline task should deserialize`() {
         val id = 8
-        val summary = "No Dedad"
+        val summary = "No Dead"
         val taskData = """NO DEADLINE TASK
             |{"summary":"$summary","id":$id}
         """.trimMargin()

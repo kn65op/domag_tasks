@@ -6,6 +6,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import com.example.domag.R
+import com.example.domag.tasks.DeadlineCalculationStrategyType
 import org.hamcrest.CoreMatchers.equalTo
 
 fun checkTaskSummaryOnPosition(position: Int, summary: String) {
@@ -44,6 +45,14 @@ fun checkPeriodTypeOnEdit(periodType: String) {
     onView(withId(R.id.task_period_type_spinner)).check(
         matches(
             hasDescendant(withText(periodType))
+        )
+    )
+}
+
+fun checkDeadlineStrategyTypeOnEdit(strategy: DeadlineCalculationStrategyType) {
+    onView(withId(R.id.next_deadline_strategy_type_spinner)).check(
+        matches(
+            hasDescendant(withText(toDeadlineStrategyText(strategy)))
         )
     )
 }
