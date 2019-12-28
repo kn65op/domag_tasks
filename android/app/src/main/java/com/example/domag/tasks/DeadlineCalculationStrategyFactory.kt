@@ -11,7 +11,7 @@ class DeadlineCalculationStrategyFactory {
         when (strategy) {
             0 -> DeadlineCalculationStrategyType.FromNow
             1 -> DeadlineCalculationStrategyType.FromLastDeadline
-            else -> DeadlineCalculationStrategyType.FromNow //TODO: Add logger
+            else -> DeadlineCalculationStrategyType.FromNow
         }
     )
 

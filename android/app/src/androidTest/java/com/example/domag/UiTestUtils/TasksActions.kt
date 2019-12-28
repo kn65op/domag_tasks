@@ -66,7 +66,7 @@ fun setTaskPeriodType(type: PeriodType) {
 
 fun setTaskDeadlineStrategy(type: DeadlineCalculationStrategyType) {
     onView(withId(R.id.next_deadline_strategy_type_spinner)).perform(click())
-    onView((withText(toDeadlineStrategyText(type)))).perform(click())
+    onView(withText(toDeadlineStrategyText(type))).perform(click())
 }
 
 fun setTaskPeriodAmount(periodAmount: Int) {
@@ -107,6 +107,7 @@ fun setTaskSummary(taskSummary: String) {
 
 fun setTaskDate(date: Date) {
     onView(withId(R.id.add_task_date)).perform(click())
+    sleep(1000) //Seems that another add task cannot be run so fast
     onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
         PickerActions.setDate(
             date.year,
