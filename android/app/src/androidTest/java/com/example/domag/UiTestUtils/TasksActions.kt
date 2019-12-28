@@ -46,6 +46,12 @@ fun createRecurringTask(
     clickConfirmTaskButton()
 }
 
+fun createTask(taskSummary: String) {
+    clickAddNewTaskButton()
+    setTaskSummary(taskSummary)
+    clickConfirmTaskButton()
+}
+
 fun createNoDeadlineTask(taskSummary: String) {
     clickAddNewTaskButton()
     changeToNoDeadlineTask()
