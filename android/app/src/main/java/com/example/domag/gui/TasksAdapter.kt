@@ -65,7 +65,8 @@ abstract class TasksAdapter(
         holder.view.setOnClickListener {
             val intent = Intent(activity, TaskEditActivity::class.java)
             Log.i(TAG, "Edit $task")
-            intent.putExtra(task.type, task)
+            intent.putExtra(TaskEditActivity.taskTypeIntentName, task.type)
+            intent.putExtra(TaskEditActivity.taskIntentName, task)
             startActivity(context, intent, null)
         }
     }

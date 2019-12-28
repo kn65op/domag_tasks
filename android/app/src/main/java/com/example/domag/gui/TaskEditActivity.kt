@@ -68,27 +68,18 @@ class TaskEditActivity(
     }
 
     private fun fillFields() {
-        val passedTasks = listOf(SimpleTask.type, RecurringTask.type, NoDeadlineTask.type).map {
-            Pair(
-                it,
-                intent.getSerializableExtra(it)
-            )
-        }.filter { it.second != null }
-        Log.i(LOG_TAG, "$passedTasks")
+        val passedTaskType = intent.getStringExtra(taskTypeIntentName)
+        Log.i(LOG_TAG, "Passed task type: $passedTaskType")
         when {
-            passedTasks.size > 1 -> {
-                Log.e(LOG_TAG, "passed two different task!")
-                finish()
-            }
-            passedTasks.isEmpty() -> fillSimpleTaskFields(null)
-            passedTasks.first().first == RecurringTask.type -> fillRecurringTaskFields(
-                passedTasks.first().second
+            passedTaskType == null -> fillSimpleTaskFields(null)
+            passedTaskType == RecurringTask.type -> fillRecurringTaskFields(
+                intent.getSerializableExtra(taskIntentName)
             )
-            passedTasks.first().first == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
-                passedTasks.first().second
+            passedTaskType == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
+                intent.getSerializableExtra(taskIntentName)
             )
-            passedTasks.first().first == SimpleTask.type -> fillSimpleTaskFields(
-                passedTasks.first().second
+            passedTaskType == SimpleTask.type -> fillSimpleTaskFields(
+                intent.getSerializableExtra(taskIntentName)
             )
             else -> fillSimpleTaskFields(null)
         }
@@ -358,6 +349,8 @@ class TaskEditActivity(
 
     companion object {
         private const val LOG_TAG = "TaskEditActivity"
+        const val taskTypeIntentName = "Task_type"
+        const val taskIntentName = "Task"
     }
 }
 

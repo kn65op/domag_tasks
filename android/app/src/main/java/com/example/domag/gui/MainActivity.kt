@@ -14,6 +14,7 @@ import com.example.domag.notifications.Notifications
 import com.example.domag.notifications.TodayAndPastTasksNotification
 import com.example.domag.storage.DataStorage
 import com.example.domag.storage.DataStorageFactory
+import com.example.domag.tasks.NoDeadlineTask
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -70,6 +71,8 @@ class MainActivity : AppCompatActivity() {
 
         addNewTaskButton.setOnClickListener {
             val intent = Intent(this, TaskEditActivity::class.java)
+            if (tasks_tab.selectedTabPosition == no_deadline_tasks)
+                intent.putExtra(TaskEditActivity.taskTypeIntentName, NoDeadlineTask.type)
             startActivity(intent)
         }
     }

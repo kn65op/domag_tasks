@@ -247,6 +247,15 @@ class TaskWithoutDeadlineTest : MainActivityUiTest() {
     }
 
     @Test
+    fun whenOnTaksWithoutDeadlineTabShuoldCreateProperTask() {
+        prepareEmptyTasks()
+        goToNoDeadlineTasks()
+        createTask(firstTask)
+
+        checkTaskSummaryOnPosition(0, firstTask)
+    }
+
+    @Test
     fun taskWithoutDeadlineShouldBeRemovedIfDone() {
         prepareEmptyTasks()
         goToNoDeadlineTasks()
