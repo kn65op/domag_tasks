@@ -106,8 +106,7 @@ fun setTaskSummary(taskSummary: String) {
 }
 
 fun setTaskDate(date: Date) {
-    onView(withId(R.id.add_task_date)).perform(click())
-    sleep(1000) //Seems that another add task cannot be run so fast
+    onView(withId(R.id.add_task_deadline_date)).perform(click())
     onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
         PickerActions.setDate(
             date.year,
