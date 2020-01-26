@@ -247,7 +247,7 @@ class TaskWithoutDeadlineTest : MainActivityUiTest() {
     }
 
     @Test
-    fun whenOnTaksWithoutDeadlineTabShuoldCreateProperTask() {
+    fun whenOnTaskWithoutDeadlineTabShouldCreateProperTask() {
         prepareEmptyTasks()
         goToNoDeadlineTasks()
         createTask(firstTask)

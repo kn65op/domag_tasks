@@ -70,15 +70,15 @@ class TaskEditActivity(
     private fun fillFields() {
         val passedTaskType = intent.getStringExtra(taskTypeIntentName)
         Log.i(LOG_TAG, "Passed task type: $passedTaskType")
-        when {
-            passedTaskType == null -> fillSimpleTaskFields(null)
-            passedTaskType == RecurringTask.type -> fillRecurringTaskFields(
+        when (passedTaskType) {
+            null -> fillSimpleTaskFields(null)
+            RecurringTask.type -> fillRecurringTaskFields(
                 intent.getSerializableExtra(taskIntentName)
             )
-            passedTaskType == NoDeadlineTask.type -> fillNoDeadlineTaskFields(
+            NoDeadlineTask.type -> fillNoDeadlineTaskFields(
                 intent.getSerializableExtra(taskIntentName)
             )
-            passedTaskType == SimpleTask.type -> fillSimpleTaskFields(
+            SimpleTask.type -> fillSimpleTaskFields(
                 intent.getSerializableExtra(taskIntentName)
             )
             else -> fillSimpleTaskFields(null)
