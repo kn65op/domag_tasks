@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.example.domag.gui.MainActivity">
+      tools:context="io.github.kn65op.domag_tasks.gui.MainActivity">
     <group>
         <item android:title="@string/remove_tasks" android:orderInCategory="100"
               android:id="@+id/remove_tasks_menu_item"/>
