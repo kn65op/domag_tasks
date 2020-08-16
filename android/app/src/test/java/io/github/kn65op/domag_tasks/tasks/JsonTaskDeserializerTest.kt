@@ -40,9 +40,9 @@ class JsonTaskDeserializerTest {
         val id = 8
         val fineTask = "fineTask"
         val taskData = """|SIMPLE TASK
-            |{id: $id,
-            |done: false
-            |summary: $fineTask
+            |{"id": $id,
+            |"done": false
+            |"summary": "$fineTask"
             |"nextDeadline":"2011-12-03T10:15:30+01:00"
             |}
             |
@@ -61,9 +61,9 @@ class JsonTaskDeserializerTest {
         val id = 7
         val fineTask = "another"
         val taskData = """|SIMPLE TASK
-            |{id: $id,
-            |done: true
-            |summary: $fineTask
+            |{"id": $id,
+            |"done": true
+            |"summary": "$fineTask"
             |"nextDeadline":"2011-12-03T10:15:30+01:00"
             |}
             |
