@@ -36,7 +36,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
             throw Exception("Dialog cannot be created without context")
 
         return DatePickerDialog(
-            context!!,
+            requireContext(),
             this,
             date.year,
             date.monthValue - 1,
