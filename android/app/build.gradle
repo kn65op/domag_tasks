@@ -1,19 +1,21 @@
+plugins {
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.3.72'
+}
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlinx-serialization'
-
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.example.domag"
+        applicationId "io.github.domag_tasks"
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 2
-        versionName "0.0.5"
+        versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,17 +41,17 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    def nav_version="2.0.0"
+    def nav_version="2.3.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0"
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.android.material:material:1.3.0-alpha02'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
+    testImplementation 'junit:junit:4.13'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
@@ -60,5 +62,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha05'
 }

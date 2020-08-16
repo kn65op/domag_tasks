@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.kn65op.domag_tasks">
+          package="io.github.kn65op.domag_tasks">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
@@ -12,16 +12,16 @@
             android:theme="@style/Theme.AppCompat" android:fullBackupContent="@xml/backup_descriptor">
 
         <activity
-                android:name="com.kn65op.domag_tasks.gui.TaskEditActivity"
+                android:name="io.github.kn65op.domag_tasks.gui.TaskEditActivity"
                 android:label="@string/title_edit_simple_task_activity"
-                android:parentActivityName="com.kn65op.domag_tasks.gui.MainActivity">
+                android:parentActivityName="io.github.kn65op.domag_tasks.gui.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.kn65op.domag_tasks.gui.MainActivity"/>
+                    android:value="io.github.kn65op.domag_tasks.gui.MainActivity"/>
         </activity>
 
         <activity
-                android:name="com.kn65op.domag_tasks.gui.MainActivity"
+                android:name="io.github.kn65op.domag_tasks.gui.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -31,7 +31,7 @@
         </activity>
 
         <receiver
-                android:name="com.kn65op.domag_tasks.notifications.RestartAlarmsOnBoot"
+                android:name="io.github.kn65op.domag_tasks.notifications.RestartAlarmsOnBoot"
                 android:enabled="true"
         >
             <intent-filter>
@@ -40,7 +40,7 @@
         </receiver>
 
         <receiver
-                android:name="com.kn65op.domag_tasks.notifications.TodayAndPastTasksNotification"
+                android:name="io.github.kn65op.domag_tasks.notifications.TodayAndPastTasksNotification"
                 android:enabled="true"
                 android:exported="false">
         </receiver>

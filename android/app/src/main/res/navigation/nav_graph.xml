@@ -7,7 +7,7 @@
 
     <activity
             android:id="@+id/mainActivity"
-            android:name="com.kn65op.domag_tasks.gui.MainActivity"
+            android:name="io.github.kn65op.domag_tasks.gui.MainActivity"
             android:label="activity_main"
             tools:layout="@layout/activity_main" >
         <action
@@ -16,7 +16,7 @@
     </activity>
     <activity
             android:id="@+id/taskEditActivity"
-            android:name="com.kn65op.domag_tasks.gui.TaskEditActivity"
+            android:name="io.github.kn65op.domag_tasks.gui.TaskEditActivity"
             android:label="task_edit"
             tools:layout="@layout/task_edit" />
 </navigation>

@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".gui.MainActivity">
+        tools:context="io.github.kn65op.domag_tasks.gui.MainActivity">
 
     <LinearLayout
             android:orientation="vertical"
