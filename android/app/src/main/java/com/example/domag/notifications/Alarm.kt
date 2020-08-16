@@ -37,7 +37,6 @@ class Alarm {
         set(Calendar.HOUR_OF_DAY, 8)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
-
     }
 
     private fun alarmIntent(context: Context?): PendingIntent =
