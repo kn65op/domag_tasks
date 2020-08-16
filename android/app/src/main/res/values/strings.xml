@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Domag</string>
+    <string name="app_name">Domag Task</string>
     <string name="action_settings">Settings</string>
     <string name="title_edit_simple_task_activity">Task</string>
     <string name="prompt_task_name">Summary</string>
