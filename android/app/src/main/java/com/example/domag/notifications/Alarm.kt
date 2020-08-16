@@ -21,7 +21,6 @@ class Alarm {
     private fun createAlarm(
         alarmMgr: AlarmManager,
         calendar: Calendar,
-
         alarmIntent: PendingIntent
     ) {
         Log.i(LOG_TAG, "Alarm will be triggered at ${calendar.time}")
