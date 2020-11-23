@@ -174,7 +174,7 @@ class TaskEditActivity(
 
     private fun changeItemsVisibility(ids: List<Int>, visibility: Int) {
         ids.forEach {
-            val field: LinearLayout = findViewById(it)
+            val field: View = findViewById(it)
             field.visibility = visibility
         }
     }
@@ -187,8 +187,10 @@ class TaskEditActivity(
         showViewItems(listOf(R.id.add_task_date))
         hideViewItems(
             listOf(
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
@@ -226,13 +228,13 @@ class TaskEditActivity(
         showViewItems(
             listOf(
                 R.id.add_task_date,
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
-        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
-        information.visibility = LinearLayout.VISIBLE
         val dateInformation: LinearLayout = findViewById(R.id.add_task_date)
         dateInformation.visibility = LinearLayout.VISIBLE
         binding.configSimpleTaskButton.setOnClickListener {
@@ -258,8 +260,10 @@ class TaskEditActivity(
         hideViewItems(
             listOf(
                 R.id.add_task_date,
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
