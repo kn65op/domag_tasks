@@ -5,7 +5,6 @@ import io.github.kn65op.domag_tasks.utils.serializer.ZoneDateTimeWithoutZoneChan
 import io.github.kn65op.domag_tasks.utils.time.Period
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.time.ZonedDateTime
 
 @Serializable
@@ -22,7 +21,6 @@ class RecurringTask(
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
-        val json = Json(JsonConfiguration.Stable)
     }
 
     override val type
@@ -39,7 +37,7 @@ class RecurringTask(
         "${nextDeadline?.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
 
 
-    override fun serializeToString(): String = json.stringify(serializer(), this)
+    override fun serializeToString(): String = Json.encodeToString(serializer(), this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

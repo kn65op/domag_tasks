@@ -4,7 +4,6 @@ import io.github.kn65op.domag_tasks.utils.platform.localization.Localization
 import io.github.kn65op.domag_tasks.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.time.ZonedDateTime
 
 @Serializable
@@ -16,7 +15,6 @@ class SimpleTask(
 ) : Task {
     companion object {
         const val type = "SIMPLE TASK"
-        val json = Json(JsonConfiguration.Stable)
     }
 
     override val type
@@ -25,7 +23,7 @@ class SimpleTask(
     override fun nextDeadlineText(localization: Localization) =
         "${nextDeadline?.format(taskTimeFormat)}"
 
-    override fun serializeToString(): String = json.stringify(serializer(), this)
+    override fun serializeToString(): String = Json.encodeToString(serializer(), this)
 
     override fun toString(): String {
         return "$type($id): [$done] $summary - $nextDeadline"
