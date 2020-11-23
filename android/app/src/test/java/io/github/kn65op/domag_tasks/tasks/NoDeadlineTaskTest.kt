@@ -11,7 +11,16 @@ class NoDeadlineTaskTest {
     @Test
     fun `serializeToString should serialize to Json`() {
         val expectedText =
-            """{"summary":"$summary", "id":0}"""
+            """{"summary":"$summary","id":0}"""
         assertThat(task.serializeToString(), equalTo(expectedText))
     }
+
+    @Test
+    fun `serializeToString should serialize done task to Json`() {
+        val expectedText =
+            """{"summary":"$summary","id":0,"done":true}"""
+        val taskDone = NoDeadlineTask(summary, done = true)
+        assertThat(taskDone.serializeToString(), equalTo(expectedText))
+    }
 }
+

@@ -3,6 +3,7 @@ package io.github.kn65op.domag_tasks.tasks
 import io.github.kn65op.domag_tasks.utils.platform.localization.Localization
 import io.github.kn65op.domag_tasks.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import io.github.kn65op.domag_tasks.utils.time.Period
+import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
@@ -13,6 +14,7 @@ class RecurringTask(
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class)
     override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     var period: Period = Period.ofDays(1),
+    @Required
     override var id: Id = 0,
     @Serializable(with = DeadlineCalculationStrategySerializer::class)
     var deadlineCalculationStrategy: DeadlineCalculationStrategy = DeadlineCalculationStrategyFactory().createStrategy(

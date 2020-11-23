@@ -2,6 +2,7 @@ package io.github.kn65op.domag_tasks.tasks
 
 import io.github.kn65op.domag_tasks.utils.platform.localization.Localization
 import io.github.kn65op.domag_tasks.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
+import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.time.ZonedDateTime
@@ -10,6 +11,7 @@ import java.time.ZonedDateTime
 class SimpleTask(
     override var summary: String,
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class) override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
+    @Required
     override var id: Id = 0,
     override var done: Boolean = false
 ) : Task {
