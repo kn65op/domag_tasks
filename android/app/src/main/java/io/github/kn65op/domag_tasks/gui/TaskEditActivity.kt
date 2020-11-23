@@ -57,7 +57,8 @@ class TaskEditActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.task_edit)
+        binding = TaskEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupActionBar()
         prepareTaskTypeSpinner()
         preparePeriodTypeSpinner()

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         Log.i(TAG, "Create")
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
         Alarm().start(applicationContext)
@@ -72,7 +72,9 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
+        Log.i(TAG, "Set litener for: ${binding.addNewTaskButton}");
         binding.addNewTaskButton.setOnClickListener {
+            Log.d(TAG, "listener called")
             val intent = Intent(this, TaskEditActivity::class.java)
             if (binding.tasksTab.selectedTabPosition == no_deadline_tasks)
                 intent.putExtra(TaskEditActivity.taskTypeIntentName, NoDeadlineTask.type)
