@@ -48,7 +48,7 @@ class NoSkipDeadlineCalculationStrategyTest {
     fun `should return proper type`() {
         assertThat(
             NoSkipDeadlineCalculationStrategy().getType(),
-            equalTo(DeadlineCalculationStrategyType.FromLastDeadline)
+            equalTo(DeadlineCalculationStrategyType.NoSkip)
         )
     }
 }

@@ -8,5 +8,5 @@ class NoSkipDeadlineCalculationStrategy : DeadlineCalculationStrategy {
         currentDeadline.plus(period.toJavaPeriod())
 
     override fun getType(): DeadlineCalculationStrategyType =
-        DeadlineCalculationStrategyType.FromLastDeadline
+        DeadlineCalculationStrategyType.NoSkip
 }
