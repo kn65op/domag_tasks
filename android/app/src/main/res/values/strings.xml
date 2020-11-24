@@ -39,7 +39,8 @@
     </string-array>
     <string-array name="deadline_strategies">
         <item>Next deadline from task done date</item>
-        <item>Next deadline from last deadline</item>
+        <item>Next deadline from last deadline skipping past</item>
+        <item>Next deadline from last deadline without skipping past</item>
     </string-array>
     <plurals name="each_week">
         <item quantity="one">each week</item>

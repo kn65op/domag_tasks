@@ -163,6 +163,21 @@ class RecurringTaskWithFromNowStrategyTest : MainActivityUiTest() {
     }
 
     @Test
+    fun recurringTaskShouldNotSkipPast() {
+        prepareEmptyTasks()
+        createRecurringTask(
+            firstTask,
+            date1,
+            daysAdvance,
+            PeriodType.Day,
+            DeadlineCalculationStrategyType.NoSkip
+        )
+        switchTaskDone(firstTask)
+
+        checkTaskOnPosition(0, firstTask, date1PlusDays)
+    }
+
+    @Test
     fun recurringTaskShouldForwardWeeksPeriod() {
         prepareEmptyTasks()
         createRecurringTask(firstTask, date1, daysAdvance, PeriodType.Week)

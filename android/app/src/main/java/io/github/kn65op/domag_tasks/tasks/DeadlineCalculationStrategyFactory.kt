@@ -5,12 +5,14 @@ class DeadlineCalculationStrategyFactory {
         when (type) {
             DeadlineCalculationStrategyType.FromLastDeadline -> FromPreviousDeadlineCalculationStrategy()
             DeadlineCalculationStrategyType.FromNow -> FromNowDeadlineCalculationStrategy()
+            DeadlineCalculationStrategyType.NoSkip -> NoSkipDeadlineCalculationStrategy()
         }
 
     fun createStrategy(strategy: Int) = createStrategy(
         when (strategy) {
             0 -> DeadlineCalculationStrategyType.FromNow
             1 -> DeadlineCalculationStrategyType.FromLastDeadline
+            2 -> DeadlineCalculationStrategyType.NoSkip
             else -> DeadlineCalculationStrategyType.FromNow
         }
     )

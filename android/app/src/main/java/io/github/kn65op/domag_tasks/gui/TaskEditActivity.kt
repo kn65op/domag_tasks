@@ -37,8 +37,7 @@ private const val simple_task_type = 0
 private const val recurring_task_type = 1
 private const val no_deadline_task_type = 2
 
-private const val from_now_strategy = 0
-private const val from_last_deadline_strategy = 1
+private const val from_now_strategy_as_default = 0
 
 class TaskEditActivity(
     private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("ccc dd-MMMM-yyyy"),
@@ -53,7 +52,7 @@ class TaskEditActivity(
     private lateinit var storage: DataStorage
     private lateinit var binding: TaskEditBinding
     internal var periodType = day_type
-    internal var deadlineStrategyType = from_now_strategy
+    internal var deadlineStrategyType = from_now_strategy_as_default
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
