@@ -21,6 +21,7 @@ val date3 = Date(day3, month2, year1, monthName2)
 const val daysAdvance = 8
 val now: ZonedDateTime = ZonedDateTime.now()
 val nowPlusDays: ZonedDateTime = now.plusDays(daysAdvance.toLong())
+val date1PlusDays = Date(day1 + daysAdvance, month1, year1, monthName1)
 const val weeksAdvance = 8
 val nowPlusWeeks: ZonedDateTime = now.plusWeeks(weeksAdvance.toLong())
 const val monthsAdvance = 3
