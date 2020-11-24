@@ -16,7 +16,7 @@ import io.github.kn65op.domag_tasks.storage.DataStorage
 import io.github.kn65op.domag_tasks.storage.DataStorageFactory
 import io.github.kn65op.domag_tasks.tasks.NoDeadlineTask
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
+import io.github.kn65op.domag_tasks.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -29,12 +29,15 @@ class MainActivity : AppCompatActivity() {
     private var tabSelected: TabLayout.Tab? = null
     private lateinit var storage: DataStorage
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         Log.i(TAG, "Create")
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         Alarm().start(applicationContext)
         Notifications().registerChannels(applicationContext)
@@ -49,10 +52,10 @@ class MainActivity : AppCompatActivity() {
         val lastSelectedTabPosition = savedInstanceState?.getInt(tab_bundle_tag)
         if (lastSelectedTabPosition != null) {
             Log.i(TAG, "Selected tab is $lastSelectedTabPosition")
-            tabSelected = tasks_tab.getTabAt(lastSelectedTabPosition)
+            tabSelected = binding.tasksTab.getTabAt(lastSelectedTabPosition)
         }
 
-        tasks_tab.addOnTabSelectedListener(
+        binding.tasksTab.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tabSelected = tab
@@ -69,9 +72,11 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        addNewTaskButton.setOnClickListener {
+        Log.i(TAG, "Set litener for: ${binding.addNewTaskButton}");
+        binding.addNewTaskButton.setOnClickListener {
+            Log.d(TAG, "listener called")
             val intent = Intent(this, TaskEditActivity::class.java)
-            if (tasks_tab.selectedTabPosition == no_deadline_tasks)
+            if (binding.tasksTab.selectedTabPosition == no_deadline_tasks)
                 intent.putExtra(TaskEditActivity.taskTypeIntentName, NoDeadlineTask.type)
             startActivity(intent)
         }
@@ -87,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadTabSelected() {
         if (tabSelected != null) {
             Log.i(TAG, "Selecting tab")
-            tasks_tab.selectTab(tabSelected)
+            binding.tasksTab.selectTab(tabSelected)
         }
         Log.i(TAG, "No tab selected")
     }
@@ -110,11 +115,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareDeadlineTaskView() {
-        MainTasksList.apply {
+        binding.MainTasksList.apply {
             layoutManager = viewManager
             adapter = DeadlineTasksAdapter(
                 storage,
-                { MainTasksList.adapter?.notifyDataSetChanged() },
+                { binding.MainTasksList.adapter?.notifyDataSetChanged() },
                 this@MainActivity,
                 context
             )
@@ -122,11 +127,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareNoDeadlineTaskView() {
-        MainTasksList.apply {
+        binding.MainTasksList.apply {
             layoutManager = viewManager
             adapter = NoDeadlineTasksAdapter(
                 storage,
-                { MainTasksList.adapter?.notifyDataSetChanged() },
+                { binding.MainTasksList.adapter?.notifyDataSetChanged() },
                 this@MainActivity,
                 context
             )
@@ -166,13 +171,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTasksView() {
         Log.i(TAG, "Update task view")
-        prepareTaskView(tasks_tab.selectedTabPosition)
-        MainTasksList.adapter?.notifyDataSetChanged()
+        prepareTaskView(binding.tasksTab.selectedTabPosition)
+        binding.MainTasksList.adapter?.notifyDataSetChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         Log.i(TAG, "Storing state")
-        outState.putInt(tab_bundle_tag, tasks_tab.selectedTabPosition)
+        outState.putInt(tab_bundle_tag, binding.tasksTab.selectedTabPosition)
         super.onSaveInstanceState(outState)
     }
 }

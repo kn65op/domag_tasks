@@ -3,9 +3,9 @@ package io.github.kn65op.domag_tasks.tasks
 import io.github.kn65op.domag_tasks.utils.platform.localization.Localization
 import io.github.kn65op.domag_tasks.utils.serializer.ZoneDateTimeWithoutZoneChangeSerializer
 import io.github.kn65op.domag_tasks.utils.time.Period
+import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.time.ZonedDateTime
 
 @Serializable
@@ -14,6 +14,7 @@ class RecurringTask(
     @Serializable(with = ZoneDateTimeWithoutZoneChangeSerializer::class)
     override var nextDeadline: ZonedDateTime? = ZonedDateTime.now(),
     var period: Period = Period.ofDays(1),
+    @Required
     override var id: Id = 0,
     @Serializable(with = DeadlineCalculationStrategySerializer::class)
     var deadlineCalculationStrategy: DeadlineCalculationStrategy = DeadlineCalculationStrategyFactory().createStrategy(
@@ -22,7 +23,6 @@ class RecurringTask(
 ) : Task {
     companion object {
         const val type = "RECURRING TASK"
-        val json = Json(JsonConfiguration.Stable)
     }
 
     override val type
@@ -39,7 +39,7 @@ class RecurringTask(
         "${nextDeadline?.format(taskTimeFormat)} (${period.toHumanReadableString(localization)})"
 
 
-    override fun serializeToString(): String = json.stringify(serializer(), this)
+    override fun serializeToString(): String = Json.encodeToString(serializer(), this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

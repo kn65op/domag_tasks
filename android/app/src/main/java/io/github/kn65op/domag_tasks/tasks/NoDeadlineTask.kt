@@ -1,20 +1,20 @@
 package io.github.kn65op.domag_tasks.tasks
 
 import io.github.kn65op.domag_tasks.utils.platform.localization.Localization
+import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.time.ZonedDateTime
 
 @Serializable
 class NoDeadlineTask(
     override var summary: String,
+    @Required
     override var id: Id = 0,
     override var done: Boolean = false
 ) : Task {
     companion object {
         const val type = "NO DEADLINE TASK"
-        val json = Json(JsonConfiguration.Stable)
     }
 
     override val type
@@ -26,7 +26,7 @@ class NoDeadlineTask(
 
     override fun nextDeadlineText(localization: Localization) = "No deadline"
 
-    override fun serializeToString(): String = json.stringify(serializer(), this)
+    override fun serializeToString(): String = Json.encodeToString(serializer(), this)
 
     override fun toString(): String {
         return "$type($id): [$done] $summary - no deadline"

@@ -14,13 +14,13 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import io.github.kn65op.domag_tasks.R
+import io.github.kn65op.domag_tasks.databinding.TaskEditBinding
 import io.github.kn65op.domag_tasks.gui.utils.replaceText
 import io.github.kn65op.domag_tasks.storage.DataStorage
 import io.github.kn65op.domag_tasks.storage.DataStorageFactory
 import io.github.kn65op.domag_tasks.tasks.*
 import io.github.kn65op.domag_tasks.utils.time.Period
 import io.github.kn65op.domag_tasks.utils.time.PeriodType
-import kotlinx.android.synthetic.main.task_edit.*
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
@@ -51,12 +51,14 @@ class TaskEditActivity(
     private lateinit var noDeadlineTask: NoDeadlineTask
     private lateinit var task: Task
     private lateinit var storage: DataStorage
+    private lateinit var binding: TaskEditBinding
     internal var periodType = day_type
     internal var deadlineStrategyType = from_now_strategy
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.task_edit)
+        binding = TaskEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupActionBar()
         prepareTaskTypeSpinner()
         preparePeriodTypeSpinner()
@@ -120,22 +122,23 @@ class TaskEditActivity(
             LOG_TAG,
             "type is $unit (${recurringTask.period.type} with value ${recurringTask.period.count}"
         )
-        task_period_value.replaceText("${recurringTask.period.count}")
-        task_period_type_spinner.setSelection(unit)
+        binding.taskPeriodValue.replaceText("${recurringTask.period.count}")
+        binding.taskPeriodTypeSpinner.setSelection(unit)
         periodType = unit
         deadlineStrategyType = recurringTask.deadlineCalculationStrategy.getType().ordinal
         Log.i(
             LOG_TAG,
             "deadline strategy: ${recurringTask.deadlineCalculationStrategy.getType().ordinal}"
         )
-        next_deadline_strategy_type_spinner.setSelection(recurringTask.deadlineCalculationStrategy.getType().ordinal)
+        binding.nextDeadlineStrategyTypeSpinner.setSelection(recurringTask.deadlineCalculationStrategy.getType().ordinal)
     }
 
     private fun setCommonFieldsFromTask(taskType: Int) {
         val t = task
-        add_task_deadline_date.text = (t.nextDeadline ?: ZonedDateTime.now()).format(timeFormatter)
-        newTaskName.replaceText(t.summary)
-        task_type_selection_spinner.setSelection(taskType)
+        binding.addTaskDeadlineDate.text =
+            (t.nextDeadline ?: ZonedDateTime.now()).format(timeFormatter)
+        binding.newTaskName.replaceText(t.summary)
+        binding.taskTypeSelectionSpinner.setSelection(taskType)
     }
 
     private fun prepareTaskTypeSpinner() {
@@ -144,8 +147,8 @@ class TaskEditActivity(
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            task_type_selection_spinner.adapter = adapter
-            task_type_selection_spinner.onItemSelectedListener = TaskTypeListener(this)
+            binding.taskTypeSelectionSpinner.adapter = adapter
+            binding.taskTypeSelectionSpinner.onItemSelectedListener = TaskTypeListener(this)
         }
     }
 
@@ -171,7 +174,7 @@ class TaskEditActivity(
 
     private fun changeItemsVisibility(ids: List<Int>, visibility: Int) {
         ids.forEach {
-            val field: LinearLayout = findViewById(it)
+            val field: View = findViewById(it)
             field.visibility = visibility
         }
     }
@@ -184,12 +187,14 @@ class TaskEditActivity(
         showViewItems(listOf(R.id.add_task_date))
         hideViewItems(
             listOf(
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
-        config_simple_task_button.setOnClickListener {
+        binding.configSimpleTaskButton.setOnClickListener {
             Log.i(LOG_TAG, "store simple task")
             simpleTask.summary = readSummary()
             simpleTask.nextDeadline = readTime()
@@ -198,11 +203,11 @@ class TaskEditActivity(
         }
     }
 
-    private fun readSummary() = newTaskName.text.toString()
+    private fun readSummary() = binding.newTaskName.text.toString()
 
     private fun readTime(): ZonedDateTime {
         return ZonedDateTime.of(
-            LocalDate.parse(add_task_deadline_date.text, timeFormatter),
+            LocalDate.parse(binding.addTaskDeadlineDate.text, timeFormatter),
             hardcodedHour,
             ZoneId.systemDefault()
         )
@@ -223,16 +228,16 @@ class TaskEditActivity(
         showViewItems(
             listOf(
                 R.id.add_task_date,
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
-        val information: LinearLayout = findViewById(R.id.recurring_information_layout)
-        information.visibility = LinearLayout.VISIBLE
         val dateInformation: LinearLayout = findViewById(R.id.add_task_date)
         dateInformation.visibility = LinearLayout.VISIBLE
-        config_simple_task_button.setOnClickListener {
+        binding.configSimpleTaskButton.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             recurringTask.summary = readSummary()
             recurringTask.nextDeadline = readTime()
@@ -255,12 +260,14 @@ class TaskEditActivity(
         hideViewItems(
             listOf(
                 R.id.add_task_date,
-                R.id.recurring_information_layout,
-                R.id.recurring_next_deadline_strategy
+                R.id.next_deadline_strategy_type_spinner,
+                R.id.task_period_type_spinner,
+                R.id.task_period_value,
+                R.id.task_period_inpout_layout,
             )
         )
 
-        config_simple_task_button.setOnClickListener {
+        binding.configSimpleTaskButton.setOnClickListener {
             Log.i(LOG_TAG, "store recurring task")
             noDeadlineTask.summary = readSummary()
             storage.store(noDeadlineTask)
@@ -286,9 +293,9 @@ class TaskEditActivity(
 
     private fun readPeriodValue(): Int {
         return try {
-            task_period_value.text.toString().toInt()
+            binding.taskPeriodValue.text.toString().toInt()
         } catch (e: NumberFormatException) {
-            Log.w(LOG_TAG, "No number in ${task_period_value.text}, return 0")
+            Log.w(LOG_TAG, "No number in ${binding.taskPeriodValue.text}, return 0")
             0
         }
     }
@@ -308,7 +315,7 @@ class TaskEditActivity(
     fun showDatePicker(view: View) {
         Log.i(LOG_TAG, "Show date picker on ${view.id}")
         val datePicker = DatePickerFragment()
-        datePicker.date = LocalDate.parse(add_task_deadline_date.text, timeFormatter)
+        datePicker.date = LocalDate.parse(binding.addTaskDeadlineDate.text, timeFormatter)
         datePicker.show(supportFragmentManager, "DatePickerFragment")
     }
 
@@ -318,7 +325,7 @@ class TaskEditActivity(
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
         dialog as DatePickerFragment
-        add_task_deadline_date.text = dialog.date.format(timeFormatter)
+        binding.addTaskDeadlineDate.text = dialog.date.format(timeFormatter)
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

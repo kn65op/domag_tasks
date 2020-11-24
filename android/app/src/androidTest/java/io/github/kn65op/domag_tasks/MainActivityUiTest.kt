@@ -5,13 +5,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import io.github.kn65op.domag_tasks.UiTestUtils.*
 import io.github.kn65op.domag_tasks.tasks.DeadlineCalculationStrategyType
-import io.github.kn65op.domag_tasks.UiTestUtils.*
 import io.github.kn65op.domag_tasks.utils.time.PeriodType
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 open class MainActivityUiTest {
     @Before
     fun setup() {
@@ -19,6 +17,7 @@ open class MainActivityUiTest {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class NoTasksTest : MainActivityUiTest() {
     @Test
     fun whenNoTasks_shouldBeEmpty() {
@@ -29,6 +28,7 @@ class NoTasksTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class SimpleTaskSortingTest : MainActivityUiTest() {
     @Test
     fun whenThereIsTask_shouldBeOnList() {
@@ -60,6 +60,7 @@ class SimpleTaskSortingTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class SimpleTaskDoneUndoneTest : MainActivityUiTest() {
     @Test
     fun whenTaskIsMarkedAsDone_shouldBeOnBottom() {
@@ -98,6 +99,7 @@ class SimpleTaskDoneUndoneTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class SimpleTaskEdit : MainActivityUiTest() {
     @Test
     fun taskSummaryEdit() {
@@ -130,6 +132,7 @@ class SimpleTaskEdit : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class TaskRemovalTest : MainActivityUiTest() {
 
     @Test
@@ -148,6 +151,7 @@ class TaskRemovalTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class RecurringTaskWithFromNowStrategyTest : MainActivityUiTest() {
     @Test
     fun recurringTaskShouldForwardDaysPeriod() {
@@ -186,6 +190,7 @@ class RecurringTaskWithFromNowStrategyTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class RecurringTaskEditTest : MainActivityUiTest() {
     @Test
     fun recurringTaskEditShouldHaveGoodPeriodType() {
@@ -214,6 +219,7 @@ class RecurringTaskEditTest : MainActivityUiTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class RecurringTaskWithFromLastDeadlineStrategy : MainActivityUiTest() {
     @Test
     fun recurringTaskShouldForwardDaysPeriod() {
@@ -233,6 +239,7 @@ class RecurringTaskWithFromLastDeadlineStrategy : MainActivityUiTest() {
 }
 
 
+@RunWith(AndroidJUnit4::class)
 class TaskWithoutDeadlineTest : MainActivityUiTest() {
     @Test
     fun taskWithoutDeadlineShouldBeShownInProperTab() {
